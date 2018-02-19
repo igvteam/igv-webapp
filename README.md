@@ -1,2 +1,2 @@
-# igv-web
+# igv-webapp
 IGVJS Web App

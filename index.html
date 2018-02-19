@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>IGV Site</title>
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Bootstrap-Select Plugin CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.15/sc-1.4.2/se-1.2.2/datatables.min.css"/>
+
+    <!-- IGV CSS -->
+    <link rel="stylesheet" href="http://igv.org/web/beta/igv-beta.css">
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="css/site.css">
+
+    <!-- jQuery Popper Bootstrap 4 JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap-Select Plugin JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <!-- IGV JS -->
+    <script src="http://igv.org/web/beta/igv-beta.js"></script>
+
+    <!-- Site JS -->
+    <script src="js/site.js"></script>
+
+</head>
+<body>
+
+<!-- Encode modal -->
+<div id="encodeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="encodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="encodeModalLabel" class="modal-title">ENCODE</h4>
+                <button id="encodeModalTopCloseButton" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="encodeModalBody" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button id="encodeModalBottomCloseButton" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="encodeModalGoButton" type="button" class="btn btn-primary" data-dismiss="modal">Go</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Genome modal -->
+<div id="igv-genome-selection-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-genome-selection-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="igv-genome-selection-modal-label" class="modal-title">Select Genome</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fasta URL Modal -->
+<div id="igv-fasta-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-fasta-url-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="igv-fasta-url-modal-label" class="modal-title">Load Fasta URL</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <input id="hic-load-url" type="text" class="form-control" placeholder="Enter Fasta URL">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Site widget container -->
+    <div id="igv-genome-fasta-container" class="row">
+
+        <!-- Select Genome -->
+        <div class="col-md-2">
+
+            <div class="dropdown">
+
+                <button id="igv-genome-fasta-dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    Load Genome
+                    <span class="caret"></span>
+                </button>
+
+                <div class="dropdown-menu" role="menu" aria-labelledby="igv-genome-fasta-dropdown">
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-genome-selection-modal">Select Genome</button>
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-fasta-url-modal">Load Fasta URL</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Load Track -->
+        <div class="col-md-2">
+
+            <div class="dropdown">
+
+                <button id="igv-load-track-dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    Load Track
+                    <span class="caret"></span>
+                </button>
+
+                <div class="dropdown-menu" role="menu" aria-labelledby="igv-load-track-dropdown">
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#encodeModal">ENCODE</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- IGV browser container -->
+    <div class="row">
+        <div id="igv-container" class="col-md-12">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    site.init();
+</script>
+
+</body>
+</html>

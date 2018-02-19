@@ -1,0 +1,8 @@
+.DS_Store
+/.idea/workspace.xml
+/dist
+/igv.js.iml
+/node_modules/.bin/cake
+/node_modules
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/codeStyles/Project.xml

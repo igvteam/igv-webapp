@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  *
  */
-var site = (function (site) {
+var app = (function (app) {
 
-    site.init = function ($container) {
+    app.init = function ($container) {
 
         var options,
             config,
@@ -111,6 +111,6 @@ var site = (function (site) {
 
     };
 
-    return site;
+    return app;
 
-})(site || {});
+})(app || {});

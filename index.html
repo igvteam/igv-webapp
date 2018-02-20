@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Modal Table Example</title>
+    <title>IGV JS Web App</title>
 
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 
-    <!-- Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- Bootstrap-Select Plugin CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
@@ -23,31 +23,36 @@
     <!-- IGV CSS -->
     <link rel="stylesheet" href="http://igv.org/web/beta/igv-beta.css">
 
+    <!-- APP CSS -->
+    <link rel="stylesheet" href="css/app.css">
+
+    <!-- IGV JS -->
+    <script src="http://igv.org/web/beta/igv-beta.js"></script>
+
     <!-- Underscore JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
     <!-- JQuery JS -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/v/dt/dt-1.10.16/sc-1.4.3/datatables.min.js"></script>
+    <!-- Datatables JS -->
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
-    <!-- Popper - Bootstrap 4 pre-requisite -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap 4 JS -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <!-- Bootstrap-Select Plugin JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
-    <!-- IGV JS -->
-    <script src="http://igv.org/web/beta/igv-beta.js"></script>
-
-    <!-- Modal Table Example JS -->
+    <!-- Modal Table JS -->
     <script src="js/modalTable.js"></script>
-    <script src="js/site.js"></script>
+
+    <!-- App JS -->
+    <script src="js/app.js"></script>
 
 </head>
 
-<body>
+<body id="igv-app">
 
 <div id="encodeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="encodeModalLabel" aria-hidden="true">
 
@@ -78,42 +83,117 @@
 
 </div>
 
-<div class="igv-cursor-ui-header">
+<div class="container-fluid">
 
-    <div class="igv-cursor-ui-holder">
-        <div class="igv-cursor-ui">
-            <div class="igv-cursor-ui-item">
-                <div class="dropdown">
+    <!-- Modal presentation buttons -->
+    <div class="row">
 
-                    <button id="igvHeaderFileDropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                        File Open/Save
-                        <span class="caret"></span>
-                    </button>
+        <!-- Genomes -->
+        <div class="col-md-4">
 
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="igvHeaderFileDropdown">
+            <div class="dropdown">
 
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#encodeModal">
-                                ENCODE
-                            </a>
-                        </li>
+                <button id="igv-genome-dropdown-button" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    Genomes &nbsp;
+                    <span class="caret"></span>
+                </button>
 
-                    </ul>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="igv-genome-dropdown-button">
 
-                </div>
+                    <!-- genome from file -->
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-genome-from-file-modal">
+                            Load Genome From File...
+                        </a>
+                    </li>
+
+                    <!-- genome from url -->
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-genome-from-url-modal">
+                            Load Genome From URL...
+                        </a>
+                    </li>
+
+                    <!-- genome from file -->
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-genome-from-server-modal">
+                            Load Genome From Server...
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <!-- Tracks -->
+        <div class="col-md-4">
+
+            <div class="dropdown site-widget">
+
+                <button id="hic-track-dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span>Tracks &nbsp;</span>
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu" role="menu" aria-labelledby="hic-track-dropdown">
+
+                    <!-- Local Track File -->
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-track-from-file-modal">
+                            Load from File...
+                        </a>
+                    </li>
+
+                    <!-- Track URL -->
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-track-from-url-modal">
+                            Load from URL...
+                        </a>
+                    </li>
+
+                    <!-- Select ENCODE -->
+                    <li id="igv-encode-list-item" role="presentation">
+                        <!--<span id="hic-encode-loading" >&nbsp;&nbsp;&nbsp;&nbsp;ENCODE loading ...</span>-->
+                        <a id="igv-encode-list-item-button" role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#encodeModal">Load from ENCODE...</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <!-- Share (generate URL) -->
+            <div class="site-widget" title="Share">
+                <button id="hic-share-button" class="btn btn-default" type="button" data-toggle="modal"
+                        data-target="#hic-share-url-modal">
+                    Share
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- App container -->
+    <div class="row">
+        <div class="col-md-12">
+            <div id="igv-app-container">
             </div>
         </div>
     </div>
 
-</div>
 
-<div id="myDiv" style="padding-top: 50px;padding-bottom: 20px; height: auto">
 </div>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-        site.init($('#myDiv'));
+        app.init($('#igv-app-container'));
     });
 
 </script>

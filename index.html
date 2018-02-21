@@ -44,6 +44,9 @@
     <!-- Bootstrap-Select Plugin JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
+    <!-- Event Bus JS -->
+    <script src="js/eventBus.js"></script>
+
     <!-- Modal Table JS -->
     <script src="js/modalTable.js"></script>
 
@@ -142,21 +145,21 @@
                     <!-- Local Track File -->
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-track-from-file-modal">
-                            Load from File...
+                            Load Track from File...
                         </a>
                     </li>
 
                     <!-- Track URL -->
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-track-from-url-modal">
-                            Load from URL...
+                            Load Track from URL...
                         </a>
                     </li>
 
                     <!-- Select ENCODE -->
                     <li id="igv-encode-list-item" role="presentation">
                         <!--<span id="hic-encode-loading" >&nbsp;&nbsp;&nbsp;&nbsp;ENCODE loading ...</span>-->
-                        <a id="igv-encode-list-item-button" role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#encodeModal">Load from ENCODE...</a>
+                        <a id="igv-encode-list-item-button" role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#encodeModal">Load Tracks from ENCODE...</a>
                     </li>
 
                 </ul>

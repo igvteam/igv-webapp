@@ -215,14 +215,14 @@
         <!-- Tracks -->
         <div class="col-md-4">
 
-            <div class="dropdown site-widget">
+            <div class="dropdown">
 
-                <button id="hic-track-dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                <button id="igv-track-dropdown-button" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                     <span>Tracks &nbsp;</span>
                     <span class="caret"></span>
                 </button>
 
-                <ul class="dropdown-menu" role="menu" aria-labelledby="hic-track-dropdown">
+                <ul class="dropdown-menu" role="menu" aria-labelledby="igv-track-dropdown-button">
 
                     <!-- Local Track File -->
                     <li role="presentation">
@@ -240,7 +240,6 @@
 
                     <!-- Select ENCODE -->
                     <li id="igv-encode-list-item" role="presentation">
-                        <!--<span id="hic-encode-loading" >&nbsp;&nbsp;&nbsp;&nbsp;ENCODE loading ...</span>-->
                         <a id="igv-encode-list-item-button" role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#encodeModal">Load Tracks from ENCODE...</a>
                     </li>
 
@@ -253,7 +252,7 @@
         <div class="col-md-4">
 
             <!-- Share (generate URL) -->
-            <div class="site-widget" title="Share">
+            <div title="Share">
                 <button id="hic-share-button" class="btn btn-default" type="button" data-toggle="modal"
                         data-target="#hic-share-url-modal">
                     Share

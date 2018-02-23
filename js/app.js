@@ -29,7 +29,8 @@ var app = (function (app) {
             browser,
             columnFormat,
             encodeDatasource,
-            loadTracks;
+            loadTracks,
+            $encode_list_item_button;
 
         options =
             {
@@ -96,6 +97,8 @@ var app = (function (app) {
         loadTracks = function (configurationList) {
           browser.loadTracksWithConfigList(configurationList);
         };
+
+        $encode_list_item_button = $('#igv-encode-list-item-button');
         config =
             {
                 $modal:$('#encodeModal'),
@@ -104,7 +107,15 @@ var app = (function (app) {
                 $modalBottomCloseButton: $('#encodeModalBottomCloseButton'),
                 $modalGoButton: $('#encodeModalGoButton'),
                 datasource: encodeDatasource,
-                browserHandler: loadTracks
+                browserHandler: loadTracks,
+                willRetrieveData: function () {
+                    $encode_list_item_button.addClass('disabled');
+                    $encode_list_item_button.text('Configuring ENCODE table...');
+                },
+                didRetrieveData: function () {
+                    $encode_list_item_button.removeClass('disabled');
+                    $encode_list_item_button.text('Load Tracks from ENCODE...');
+                }
             };
 
         browser.encodeTable = new igv.ModalTable(config);

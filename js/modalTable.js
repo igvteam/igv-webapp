@@ -89,14 +89,11 @@ var igv = (function (igv) {
 
     igv.ModalTable.prototype.willRetrieveData = function () {
         this.$spinner.show();
-        $('#hic-encode-modal-button').hide();
-        $('#hic-encode-loading').show();
-
+        this.config.willRetrieveData();
     };
 
     igv.ModalTable.prototype.didRetrieveData = function () {
-        $('#hic-encode-loading').hide();
-        $('#hic-encode-modal-button').show();
+        this.config.didRetrieveData();
         this.buildTable(true);
     };
 

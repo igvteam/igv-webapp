@@ -1,4 +1,9 @@
 #encodeModal .modal-dialog {
   max-width: 75%; }
 
+.disabled {
+  color: #818181;
+  pointer-events: none;
+  opacity: 0.6; }
+
 /*# sourceMappingURL=app.css.map */

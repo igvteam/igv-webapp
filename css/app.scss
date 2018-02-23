@@ -1,3 +1,9 @@
 #encodeModal .modal-dialog {
   max-width: 75%;
 }
+
+.disabled {
+  color: #818181;
+  pointer-events:none; //This makes it not clickable
+  opacity:0.6;         //This grays it out to look disabled
+}

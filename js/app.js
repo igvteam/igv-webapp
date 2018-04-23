@@ -38,7 +38,8 @@ var app = (function (app) {
                 minimumBases: 6,
                 showIdeogram: true,
                 showRuler: true,
-                locus: 'brca1',
+                locus: 'myc',
+                // locus: 'brca1',
                 // locus: 'SLC25A3',
                 // locus: 'rs28372744',
                 // locus: ['egfr', 'myc', 'pten'],
@@ -95,7 +96,7 @@ var app = (function (app) {
         encodeDatasource = new igv.EncodeDataSource(columnFormat);
 
         loadTracks = function (configurationList) {
-          browser.loadTracksWithConfigList(configurationList);
+          browser.loadTrackList(configurationList);
         };
 
         $encode_list_item_button = $('#igv-encode-list-item-button');

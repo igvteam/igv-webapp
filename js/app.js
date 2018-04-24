@@ -30,7 +30,8 @@ var app = (function (app) {
             columnFormat,
             encodeDatasource,
             loadTracks,
-            $encode_list_item_button;
+            $encode_list_item_button,
+            $encode_modal;
 
         options =
             {
@@ -99,14 +100,15 @@ var app = (function (app) {
           browser.loadTrackList(configurationList);
         };
 
+        $encode_modal = $('#igv-app-encode-modal');
         $encode_list_item_button = $('#igv-encode-list-item-button');
         config =
             {
-                $modal:$('#igv-app-encode-modal'),
-                $modalBody:$('#mte-modal-body'),
-                $modalTopCloseButton: $('#encodeModalTopCloseButton'),
-                $modalBottomCloseButton: $('#encodeModalBottomCloseButton'),
-                $modalGoButton: $('#encodeModalGoButton'),
+                $modal:$encode_modal,
+                $modalBody:$encode_modal.find('.modal-body'),
+                $modalTopCloseButton: $('#igv-app-encode-modal-top-close-button'),
+                $modalBottomCloseButton: $('#igv-app-encode-modal-bottom-close-button'),
+                $modalGoButton: $('#igv-app-encode-modal-go-button'),
                 datasource: encodeDatasource,
                 browserHandler: loadTracks,
                 willRetrieveData: function () {

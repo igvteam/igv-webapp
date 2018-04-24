@@ -56,7 +56,7 @@
 
 
 <!-- genome from local file -->
-<div id="igv-genome-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-genome-from-file-modal-label" aria-hidden="true">
+<div id="igv-app-genome-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-file-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -65,13 +65,13 @@
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="igv-genome-from-file-modal-label">Load Genome File</h4>
+                <h4 class="modal-title" id="igv-app-genome-from-file-modal-label">Load Genome File</h4>
             </div>
 
             <div class="modal-body">
 
                 <div class="form-group">
-                    <input id="igv-genome-from-file-input" type="file" title="Load Local File"/>
+                    <input id="igv-app-genome-from-file-input" type="file" title="Load Local File"/>
                 </div>
 
             </div>
@@ -81,7 +81,7 @@
 </div>
 
 <!-- genome from url -->
-<div id="igv-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-genome-from-url-modal-label" aria-hidden="true">
+<div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -90,13 +90,13 @@
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="igv-genome-from-url-modal-label">Load Genome URL</h4>
+                <h4 class="modal-title" id="igv-app-genome-from-url-modal-label">Load Genome URL</h4>
             </div>
 
             <div class="modal-body">
 
                 <div class="form-group">
-                    <input id="igv-genome-from-url-input" type="text" class="form-control" placeholder="Enter URL"/>
+                    <input id="igv-app-genome-from-url-input" type="text" class="form-control" placeholder="Enter URL"/>
                 </div>
 
             </div>
@@ -106,7 +106,7 @@
 </div>
 
 <!-- genome from server -->
-<div id="igv-genome-from-server-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-genome-from-server-modal-label" aria-hidden="true">
+<div id="igv-app-genome-from-server-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-server-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -115,13 +115,13 @@
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="igv-genome-from-server-modal-label">Load Genome From Server</h4>
+                <h4 class="modal-title" id="igv-app-genome-from-server-modal-label">Load Genome From Server</h4>
             </div>
 
             <div class="modal-body">
 
                 <div class="form-group">
-                    <input id="igv-genome-from-server-input" type="file" title="Load From Server"/>
+                    <input id="igv-app-genome-from-server-input" type="file" title="Load From Server"/>
                 </div>
 
             </div>
@@ -131,27 +131,27 @@
 </div>
 
 <!-- ENCODE Table -->
-<div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="encodeModalLabel" aria-hidden="true">
+<div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
 
     <div class="modal-dialog modal-lg" role="document">
 
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title" id="encodeModalLabel">ENCODE</h4>
+                <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
 
-                <button id="encodeModalTopCloseButton" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button id="igv-app-encode-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
             </div>
 
-            <div id="mte-modal-body" class="modal-body">
+            <div class="modal-body">
             </div>
 
             <div class="modal-footer">
-                <button id="encodeModalBottomCloseButton" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="encodeModalGoButton"          type="button" class="btn btn-primary" data-dismiss="modal">Go</button>
+                <button id="igv-app-encode-modal-bottom-close-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="igv-app-encode-modal-go-button" type="button" class="btn btn-primary" data-dismiss="modal">Go</button>
             </div>
 
         </div>
@@ -170,30 +170,30 @@
 
             <div class="dropdown">
 
-                <button id="igv-genome-dropdown-button" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                <button id="igv-app-genome-dropdown-button" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                     Genomes &nbsp;
                     <span class="caret"></span>
                 </button>
 
-                <ul class="dropdown-menu" role="menu" aria-labelledby="igv-genome-dropdown-button">
+                <ul class="dropdown-menu" role="menu" aria-labelledby="igv-app-genome-dropdown-button">
 
                     <!-- genome from local file -->
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-genome-from-file-modal">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-app-genome-from-file-modal">
                             Load Genome From File...
                         </a>
                     </li>
 
                     <!-- genome from url -->
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-genome-from-url-modal">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">
                             Load Genome From URL...
                         </a>
                     </li>
 
                     <!-- genome from server -->
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-genome-from-server-modal">
+                        <a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-target="#igv-app-genome-from-server-modal">
                             Load Genome From Server...
                         </a>
                     </li>

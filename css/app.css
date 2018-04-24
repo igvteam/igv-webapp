@@ -1,7 +1,7 @@
-#encodeModal .modal-dialog {
+#igv-app-encode-modal .modal-dialog {
   max-width: 75%; }
 
-.disabled {
+.igv-app-disabled {
   color: #818181;
   pointer-events: none;
   opacity: 0.6; }

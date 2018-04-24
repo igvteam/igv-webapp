@@ -102,7 +102,7 @@ var app = (function (app) {
         $encode_list_item_button = $('#igv-encode-list-item-button');
         config =
             {
-                $modal:$('#encodeModal'),
+                $modal:$('#igv-app-encode-modal'),
                 $modalBody:$('#mte-modal-body'),
                 $modalTopCloseButton: $('#encodeModalTopCloseButton'),
                 $modalBottomCloseButton: $('#encodeModalBottomCloseButton'),
@@ -110,11 +110,11 @@ var app = (function (app) {
                 datasource: encodeDatasource,
                 browserHandler: loadTracks,
                 willRetrieveData: function () {
-                    $encode_list_item_button.addClass('disabled');
+                    $encode_list_item_button.addClass('igv-app-disabled');
                     $encode_list_item_button.text('Configuring ENCODE table...');
                 },
                 didRetrieveData: function () {
-                    $encode_list_item_button.removeClass('disabled');
+                    $encode_list_item_button.removeClass('igv-app-disabled');
                     $encode_list_item_button.text('Load Tracks from ENCODE...');
                 }
             };

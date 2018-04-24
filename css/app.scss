@@ -14,22 +14,3 @@ $igv-app-padding-width: 8px;
   pointer-events:none; // This makes it not clickable
   opacity:0.6;         // This grays it out to look disabled
 }
-
-ul.igv-app-dropdown-menu {
-
-  font-size: 14px;
-
-  a {
-    color: $igv-app-dark-color;
-    text-decoration: none;
-  }
-
-  li {
-    padding-left: $igv-app-padding-width;
-    padding-right: $igv-app-padding-width;
-    background-color: white;
-  }
-  li:hover {
-    background-color: $igv-app-light-color;
-  }
-}

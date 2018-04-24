@@ -5,6 +5,12 @@ $igv-app-dark-color: #5f5f5f;
 $igv-app-dark-dark-color: #373737;
 $igv-app-hover-color: #0f0f0f;
 $igv-app-padding-width: 8px;
+
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
 #igv-app-encode-modal .modal-dialog {
   max-width: 75%;
 }

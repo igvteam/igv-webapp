@@ -1,3 +1,7 @@
+.btn:focus, .btn:active {
+  outline: none !important;
+  box-shadow: none; }
+
 #igv-app-encode-modal .modal-dialog {
   max-width: 75%; }
 

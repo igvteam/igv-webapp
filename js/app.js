@@ -25,15 +25,10 @@ var app = (function (app) {
     app.init = function ($container, appConfig) {
 
         var igvjsConfig,
-            encodeTableConfig,
-            browser,
-            columnFormat,
-            encodeDatasource,
-            loadTracks,
-            $encode_list_item_button,
-            $encode_modal;
+            trackLoadConfig,
+            browser;
 
-        // browser configuration
+        // Browser Configuration
         igvjsConfig =
             {
                 encodeEnabled:true,
@@ -84,56 +79,22 @@ var app = (function (app) {
 
         browser = igv.createBrowser($container.get(0), igvjsConfig);
 
+        // Track Load Configuration
+        trackLoadConfig =
+            {
+                $fileModal: $('#igv-app-track-from-file-modal'),
+                $urlModal: $('#igv-app-track-from-url-modal'),
+                $encodeModal: $('#igv-app-encode-modal')
+            };
+        app.trackLoadController = new app.TrackLoadController(app, browser, trackLoadConfig);
 
-        // URL shortener configuration
+        // URL Shortener Configuration
         if (appConfig.urlShortener) {
             hic.setURLShortener(appConfig.urlShortener);
             app.shareController = new app.ShareController($('#hic-share-url-modal'), $container);
         } else {
             $("#hic-share-button").hide();
         }
-
-
-        // ENCODE table configuration
-        columnFormat =
-            [
-                {    'Assembly': '10%' },
-                {   'Cell Type': '10%' },
-                {      'Target': '10%' },
-                {  'Assay Type': '20%' },
-                { 'Output Type': '20%' },
-                {         'Lab': '20%' }
-
-            ];
-
-        encodeDatasource = new igv.EncodeDataSource(columnFormat);
-
-        loadTracks = function (configurationList) {
-          browser.loadTrackList(configurationList);
-        };
-
-        $encode_modal = $('#igv-app-encode-modal');
-        $encode_list_item_button = $('#igv-encode-list-item-button');
-        encodeTableConfig =
-            {
-                $modal:$encode_modal,
-                $modalBody:$encode_modal.find('.modal-body'),
-                $modalTopCloseButton: $('#igv-app-encode-modal-top-close-button'),
-                $modalBottomCloseButton: $('#igv-app-encode-modal-bottom-close-button'),
-                $modalGoButton: $('#igv-app-encode-modal-go-button'),
-                datasource: encodeDatasource,
-                browserHandler: loadTracks,
-                willRetrieveData: function () {
-                    $encode_list_item_button.addClass('igv-app-disabled');
-                    $encode_list_item_button.text('Configuring ENCODE table...');
-                },
-                didRetrieveData: function () {
-                    $encode_list_item_button.removeClass('igv-app-disabled');
-                    $encode_list_item_button.text('Load Tracks from ENCODE...');
-                }
-            };
-
-        browser.encodeTable = new igv.ModalTable(encodeTableConfig);
 
     };
 

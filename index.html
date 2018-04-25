@@ -44,203 +44,357 @@
     <!-- IGV JS -->
     <script src="http://igv.org/web/release/2.0.0-beta3/dist/igv.js"></script>
 
+    <!-- Twitter -->
+    <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
     <!-- Modal Table JS -->
     <script src="js/modalTable.js"></script>
 
     <!-- App JS -->
+
+
+    <script src="js/hicUrl.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/shareController.js"></script>
 
 </head>
 
 <body id="igv-app">
 
+<main>
+    <!-- Share URL Modal -->
+    <div id="hic-share-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="hic-share-url-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-<!-- genome from file -->
-<div id="igv-app-genome-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-file-modal-label" aria-hidden="true">
+                <div class="modal-header">
+                    <h4  id="hic-share-url-modal-label" class="modal-title">Share</h4>
 
-    <div class="modal-dialog modal-lg" role="document">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h4  id="igv-app-genome-from-file-modal-label" class="modal-title">Load Genome File</h4>
-
-                <button id="igv-app-genome-from-file-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <input id="igv-app-genome-from-file-input" class="form-control-file" type="file" title="Load Local File"/>
+                    <button id="hic-share-url-modal-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
 
-        </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
 
-    </div>
+                        <!-- copy url -->
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <input id="hic-share-url" type="text" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="hic-copy-link" type="button" class="btn btn-default">COPY</button>
+                            </div>
+                        </div>
 
-</div>
+                        <!-- social buttons -->
+                        <div class="hic-social-button-container">
 
-<!-- genome from url -->
-<div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
+                            <div id="tweetButtonContainer">
+                                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">TWEET</a>
+                            </div>
 
-    <div class="modal-dialog modal-lg" role="document">
+                            <div id="emailButtonContainer">
+                                <a id="emailButton" href="mailto:?body=https://aidenlab.org/juicebox">EMAIL</a>
+                            </div>
 
-        <div class="modal-content">
+                            <div id="hic-embed-button">EMBED</div>
 
-            <div class="modal-header">
-                <h4  id="igv-app-genome-from-url-modal-label" class="modal-title">Load Genome URL</h4>
+                            <div id="hic-qr-code-button">QR CODE</div>
 
-                <button id="igv-app-genome-from-url-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                        </div>
 
-            </div>
+                        <!-- qr code image -->
+                        <div class="row">
+                            <div id="hic-qr-code-image" class="col-md-offset-4 col-md-4"></div>
+                        </div>
 
-            <div class="modal-body">
-                <div class="form-group">
-                    <input id="igv-app-genome-from-url-input" class="form-control" type="text" title="Enter URL" placeholder="Enter URL"/>
+                        <!-- embed widget -->
+                        <div id="hic-embed-container" class="row">
+                            <div class="col-md-9 form-group">
+                                <textarea id="hic-embed" class="form-control" rows="4"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="hic-embed-copy-link" type="button" class="btn btn-default">COPY</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
-
         </div>
-
     </div>
 
-</div>
+    <!-- genome from file -->
+    <div id="igv-app-genome-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-file-modal-label" aria-hidden="true">
 
-<!-- genome from server -->
-<div id="igv-app-genome-from-server-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-server-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
 
-    <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
 
-        <div class="modal-content">
+                <div class="modal-header">
+                    <h4  id="igv-app-genome-from-file-modal-label" class="modal-title">Load Genome File</h4>
 
-            <div class="modal-header">
-                <h4  id="igv-app-genome-from-server-modal-label" class="modal-title">Load Genome From Server</h4>
+                    <button id="igv-app-genome-from-file-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
 
-                <button id="igv-app-genome-from-server-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <input id="igv-app-genome-from-server-input" class="form-control" type="text" title="Load From Server" placeholder="Load From Server"/>
                 </div>
-            </div>
 
-        </div>
-
-    </div>
-
-</div>
-
-<!-- ENCODE Table -->
-<div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
-
-    <div class="modal-dialog modal-lg" role="document">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
-
-                <button id="igv-app-encode-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-
-            </div>
-
-            <div class="modal-body">
-            </div>
-
-            <div class="modal-footer">
-                <button id="igv-app-encode-modal-bottom-close-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="igv-app-encode-modal-go-button" type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div class="container-fluid">
-
-    <!-- Modal presentation buttons -->
-    <div class="row">
-
-        <!-- Genomes -->
-        <div class="col-md-4">
-
-            <div class="dropdown">
-
-                <button class="btn btn-default dropdown-toggle" type="button" id="igv-app-genome-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Genomes
-                </button>
-
-                <div class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-file-modal">Load Genome From File...</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">Load Genome From URL...</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-server-modal">Load Genome From Server...</a>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="igv-app-genome-from-file-input" class="form-control-file" type="file" title="Load Local File"/>
+                    </div>
                 </div>
 
             </div>
 
         </div>
 
-        <!-- Tracks -->
-        <div class="col-md-4">
+    </div>
 
-            <div class="dropdown">
+    <!-- genome from url -->
+    <div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
 
-                <button class="btn btn-default dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Tracks
-                </button>
+        <div class="modal-dialog modal-lg" role="document">
 
-                <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-track-from-file-modal">Load Track from File...</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-track-from-url-modal">Load Track from URL...</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-genome-from-url-modal-label" class="modal-title">Load Genome URL</h4>
+
+                    <button id="igv-app-genome-from-url-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="igv-app-genome-from-url-input" class="form-control" type="text" title="Enter URL" placeholder="Enter URL"/>
+                    </div>
                 </div>
 
             </div>
 
         </div>
 
-        <div class="col-md-4">
+    </div>
 
-            <!-- Share (generate URL) -->
-            <div title="Share">
-                <button id="hic-share-button" class="btn btn-default" type="button" data-toggle="modal"
-                        data-target="#hic-share-url-modal">
-                    Share
-                </button>
+    <!-- genome from server -->
+    <div id="igv-app-genome-from-server-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-server-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-genome-from-server-modal-label" class="modal-title">Load Genome From Server</h4>
+
+                    <button id="igv-app-genome-from-server-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="igv-app-genome-from-server-input" class="form-control" type="text" title="Load From Server" placeholder="Load From Server"/>
+                    </div>
+                </div>
+
             </div>
 
         </div>
 
     </div>
 
-    <!-- App container -->
-    <div class="row">
-        <div class="col-md-12">
-            <div id="igv-app-container">
+    <!-- ENCODE Table -->
+    <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
+
+                    <button id="igv-app-encode-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button id="igv-app-encode-modal-bottom-close-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="igv-app-encode-modal-go-button" type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
             </div>
+
         </div>
+
     </div>
 
+    <!-- track from file -->
+    <div id="igv-app-track-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-modal-label" aria-hidden="true">
 
-</div>
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-track-from-file-modal-label" class="modal-title">Load Track File</h4>
+
+                    <button id="igv-app-track-from-file-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="igv-app-track-from-file-input" class="form-control-file" type="file" title="Load Local File"/>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- track from url -->
+    <div id="igv-app-track-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-url-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-track-from-url-modal-label" class="modal-title">Load Track URL</h4>
+
+                    <button id="igv-app-track-from-url-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="igv-app-track-from-url-input" class="form-control" type="text" title="Enter URL" placeholder="Enter URL"/>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+
+        <!-- Modal presentation buttons -->
+        <div class="row">
+
+            <!-- Genomes -->
+            <div class="col-md-4">
+
+                <div class="dropdown">
+
+                    <button class="btn btn-default dropdown-toggle" type="button" id="igv-app-genome-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Genomes
+                    </button>
+
+                    <div class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-file-modal">Load Genome From File...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">Load Genome From URL...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-server-modal">Load Genome From Server...</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Tracks -->
+            <div class="col-md-4">
+
+                <div class="dropdown">
+
+                    <button class="btn btn-default dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tracks
+                    </button>
+
+                    <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-modal">Load Track from File...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-url-modal">Load Track from URL...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <!-- Share (generate URL) -->
+                <div title="Share">
+                    <button id="hic-share-button" class="btn btn-default" type="button" data-toggle="modal" data-target="#hic-share-url-modal">Share</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- App container -->
+        <div class="row">
+            <div class="col-md-12">
+                <div id="igv-app-container">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</main>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-        app.init($('#igv-app-container'));
+        var config;
+
+        config =
+            {
+                urlShortener:
+                    [
+                        {
+                            provider: "google",
+                            apiKey: "ABCD",        // TODO -- replace with your Google API Key
+                            hostname: "goo.gl"
+                        }
+                        // ,
+                        // {
+                        //     provider: "bitly",
+                        //     apiKey: "ABCD",        // TODO -- replace with your Bitly access token
+                        //     hostname: 'bit.ly'
+                        // }
+                    ],
+
+                apiKey: "ABCD",   // TODO -- replace with your Google API Key
+
+                embedTarget: "https://igv.org/web/jb/release/1.0.0/site/embed.html"
+
+            };
+
+        app.init($('#igv-app-container'), config);
     });
 
 </script>

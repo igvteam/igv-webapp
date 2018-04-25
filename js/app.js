@@ -22,10 +22,10 @@
  */
 var app = (function (app) {
 
-    app.init = function ($container) {
+    app.init = function ($container, appConfig) {
 
-        var options,
-            config,
+        var igvjsConfig,
+            encodeTableConfig,
             browser,
             columnFormat,
             encodeDatasource,
@@ -33,7 +33,8 @@ var app = (function (app) {
             $encode_list_item_button,
             $encode_modal;
 
-        options =
+        // browser configuration
+        igvjsConfig =
             {
                 encodeEnabled:true,
                 minimumBases: 6,
@@ -81,8 +82,19 @@ var app = (function (app) {
                     ]
             };
 
-        browser = igv.createBrowser($container.get(0), options);
+        browser = igv.createBrowser($container.get(0), igvjsConfig);
 
+
+        // URL shortener configuration
+        if (appConfig.urlShortener) {
+            hic.setURLShortener(appConfig.urlShortener);
+            app.shareController = new app.ShareController($('#hic-share-url-modal'), $container);
+        } else {
+            $("#hic-share-button").hide();
+        }
+
+
+        // ENCODE table configuration
         columnFormat =
             [
                 {    'Assembly': '10%' },
@@ -102,7 +114,7 @@ var app = (function (app) {
 
         $encode_modal = $('#igv-app-encode-modal');
         $encode_list_item_button = $('#igv-encode-list-item-button');
-        config =
+        encodeTableConfig =
             {
                 $modal:$encode_modal,
                 $modalBody:$encode_modal.find('.modal-body'),
@@ -121,7 +133,7 @@ var app = (function (app) {
                 }
             };
 
-        browser.encodeTable = new igv.ModalTable(config);
+        browser.encodeTable = new igv.ModalTable(encodeTableConfig);
 
     };
 

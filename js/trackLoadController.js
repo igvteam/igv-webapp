@@ -69,7 +69,7 @@ var app = (function (app) {
                 }
             };
 
-        browser.encodeTable = new igv.ModalTable(encodeTableConfig);
+        this.encodeTable = new igv.ModalTable(encodeTableConfig);
 
     };
 

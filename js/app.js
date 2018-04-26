@@ -24,14 +24,44 @@ var app = (function (app) {
 
     app.init = function ($container, appConfig) {
 
-        var igvjsConfig,
-            trackLoadConfig,
-            browser;
+        var trackLoadConfig;
 
         // Browser Configuration
-        igvjsConfig =
+        igv
+            .createBrowser($container.get(0), igvConfigurator())
+            .then(function (browser) {
+
+                // Track Load Configuration
+                trackLoadConfig =
+                    {
+                        $fileModal: $('#igv-app-track-from-file-modal'),
+                        $urlModal: $('#igv-app-track-from-url-modal'),
+                        $encodeModal: $('#igv-app-encode-modal')
+                    };
+
+                app.trackLoadController = new app.TrackLoadController(app, browser, trackLoadConfig);
+
+                app.trackLoadController.encodeTable.loadData(browser.genome.id);
+
+                // URL Shortener Configuration
+                if (appConfig.urlShortener) {
+                    hic.setURLShortener(appConfig.urlShortener);
+                    app.shareController = new app.ShareController($('#hic-share-url-modal'), $container);
+                } else {
+                    $("#hic-share-button").hide();
+                }
+
+            });
+
+
+    };
+
+    function igvConfigurator() {
+        var configuration;
+
+        configuration =
             {
-                encodeEnabled:true,
+                promisified:true,
                 minimumBases: 6,
                 showIdeogram: true,
                 showRuler: true,
@@ -77,26 +107,9 @@ var app = (function (app) {
                     ]
             };
 
-        browser = igv.createBrowser($container.get(0), igvjsConfig);
+        return configuration;
+    }
 
-        // Track Load Configuration
-        trackLoadConfig =
-            {
-                $fileModal: $('#igv-app-track-from-file-modal'),
-                $urlModal: $('#igv-app-track-from-url-modal'),
-                $encodeModal: $('#igv-app-encode-modal')
-            };
-        app.trackLoadController = new app.TrackLoadController(app, browser, trackLoadConfig);
-
-        // URL Shortener Configuration
-        if (appConfig.urlShortener) {
-            hic.setURLShortener(appConfig.urlShortener);
-            app.shareController = new app.ShareController($('#hic-share-url-modal'), $container);
-        } else {
-            $("#hic-share-button").hide();
-        }
-
-    };
 
     return app;
 

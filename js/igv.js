@@ -25962,8 +25962,12 @@ var igv = (function (igv) {
 
     igv.BAMTrack.prototype.paintAxis = function (ctx, pixelWidth, pixelHeight) {
 
-        this.coverageTrack.paintAxis(ctx, pixelWidth, this.coverageTrack.height);
-
+        if(igv.browser.isMultiLocus()) {
+                ctx.clearRect(0, 0, pixelWidth, pixelHeight);
+        }
+        else {
+            this.coverageTrack.paintAxis(ctx, pixelWidth, this.coverageTrack.height);
+        }
     };
 
     igv.BAMTrack.prototype.contextMenuItemList = function (config) {
@@ -29898,6 +29902,10 @@ var igv = (function (igv) {
         return igv.Browser.knownFileExtensions.has(extension);
     };
 
+    igv.Browser.prototype.isMultiLocus = function () {
+        return this.genomicStateList && this.genomicStateList.length > 1;
+    }
+    
     //
     igv.Browser.prototype.updateUIWithGenomicStateListChange = function (genomicStateList) {
 
@@ -30794,7 +30802,7 @@ var igv = (function (igv) {
 
         loci = string.split(' ');
 
-        this.getGenomicStateList(loci)
+        this.createGenomicStateList(loci)
 
             .then(function (genomicStateList) {
                 var viewportWidth;
@@ -30843,7 +30851,7 @@ var igv = (function (igv) {
      *
      * @param loci - array of locus strings (e.g. chr1:1-100,  egfr)
      */
-    igv.Browser.prototype.getGenomicStateList = function (loci) {
+    igv.Browser.prototype.createGenomicStateList = function (loci) {
 
         var self = this,
             searchConfig = igv.browser.searchConfig,
@@ -36866,6 +36874,7 @@ var igv = (function (igv) {
 
     igv.WIGTrack = function (config) {
 
+        this.featureType = 'numeric';
         this.config = config;
         this.url = config.url;
 
@@ -36975,7 +36984,6 @@ var igv = (function (igv) {
             featureValueMinimum,
             featureValueMaximum,
             featureValueRange,
-            defaultRange,
             baselineColor;
 
 
@@ -36989,16 +36997,10 @@ var igv = (function (igv) {
 
         if (features && features.length > 0) {
 
-            if (self.autoscale || self.dataRange === undefined) {
-                var s = autoscale(features);
-                featureValueMinimum = self.config.min || s.min;      // If min is explicitly set use it
-                featureValueMaximum = s.max;
-
-            }
-            else {
+           
                 featureValueMinimum = self.dataRange.min === undefined ? 0 : self.dataRange.min;
                 featureValueMaximum = self.dataRange.max;
-            }
+       
 
             if (undefined === self.dataRange) {
                 self.dataRange = {};
@@ -37122,19 +37124,7 @@ var igv = (function (igv) {
         this.trackView = undefined;
     }
 
-    function autoscale(features) {
-        var min = 0,
-            max = -Number.MAX_VALUE;
 
-        features.forEach(function (f) {
-            if (!Number.isNaN(f.value)) {
-                min = Math.min(min, f.value);
-                max = Math.max(max, f.value);
-            }
-        });
-
-        return {min: min, max: max};
-    }
 
     function signsDiffer(a, b) {
         return (a > 0 && b < 0 || a < 0 && b > 0);
@@ -37214,6 +37204,22 @@ var igv = (function (igv) {
         }
     }
 
+
+    // Static function
+    igv.WIGTrack.autoscale = function (features) {
+        var min = 0,
+            max = -Number.MAX_VALUE;
+
+        features.forEach(function (f) {
+            if (!Number.isNaN(f.value)) {
+                min = Math.min(min, f.value);
+                max = Math.max(max, f.value);
+            }
+        });
+
+        return {min: min, max: max};
+    }
+
     return igv;
 
 })(igv || {});
@@ -37284,7 +37290,7 @@ var igv = (function (igv) {
         var height = icon[1];
         var data = icon[4];
 
-        color = color || "currentColor"
+        color = color || "currentColor";
 
         return '<svg ' +
             'class="svg-inline--fa5" ' +
@@ -42847,7 +42853,7 @@ var igv = (function (igv) {
     igv.createBrowser = function (parentDiv, config) {
 
         var browser,
-            dev_null;
+            promise;
 
         if (igv.browser) {
             //console.log("Attempt to create 2 browsers.");
@@ -42902,12 +42908,8 @@ var igv = (function (igv) {
         if (config.apiKey) igv.setApiKey(config.apiKey);
         if (config.oauthToken) igv.setOauthToken(config.oauthToken);
 
-        if (config.promisified && true === config.promisified) {
-            return Promise.resolve(doPromiseChain(browser, config));
-        } else {
-            dev_null = doPromiseChain(browser, config);
-            return browser;
-        }
+        promise = doPromiseChain(browser, config);
+        return true === config.promisified ? promise : browser;
 
     };
 
@@ -42945,19 +42947,11 @@ var igv = (function (igv) {
             })
 
             .then(function (genome) {
-
                 browser.genome = genome;
                 browser.genome.id = config.reference.id;
-
-                if (true === config.encodeEnabled) {
-                    browser.encodeTable.loadData(config.reference.id, undefined, undefined, undefined);
-                }
-
                 browser.chromosomeSelectWidget.update(browser.genome);
-
-                return browser.getGenomicStateList(getInitialLocus(config))
+                return browser.createGenomicStateList(getInitialLocus(config))
             })
-
             .then(function (genomicStateList) {
 
                 var viewportWidth,
@@ -43312,8 +43306,8 @@ var igv = (function (igv) {
 
     function setDefaults(config) {
 
-        if (undefined === config.encodeEnabled) {
-            config.encodeEnabled = false;
+        if (undefined === config.promisified) {
+            config.promisified = false;
         }
 
         if (undefined === config.showLoadFileWidget) {
@@ -50458,7 +50452,7 @@ var igv = (function (igv) {
 
         this.viewports[index].$viewport.remove();
         this.viewports.splice(index, 1);
-        
+
         this.decorateViewports();
     };
 
@@ -50730,57 +50724,77 @@ var igv = (function (igv) {
 
     };
 
+    /**
+     * Repaint all viewports without loading any new data.   Use this for events that change visual aspect of data,
+     * e.g. color, sort order, etc, but do not change the genomic state.
+     */
     igv.TrackView.prototype.repaintViews = function () {
         this.viewports.forEach(function (viewport) {
             viewport.repaint();
         })
     }
-    
+
     /**
-     * Repaint existing features (e.g. a color, resort, or display mode change).
-     *
-     * viewport.repaint returns a promise.
+     * Update viewports to reflect current genomic state, possibly loading additional data.
      */
     igv.TrackView.prototype.updateViews = function (force) {
 
         if (!(igv.browser && igv.browser.genomicStateList)) return;
 
-        var self = this,
-            promises = [],
-            rpV;
+        var self = this, promises, rpV;
+
 
         this.viewports.forEach(function (viewport) {
-           viewport.shift();
+            viewport.shift();
         });
 
         // List of viewports that need reloading
         rpV = this.viewports.filter(function (viewport) {
-            var referenceFrame, chr, start, end, bpPerPixel;
+            var bpPerPixel, referenceFrame, chr, start, end;
             referenceFrame = viewport.genomicState.referenceFrame;
             chr = referenceFrame.chrName;
             start = referenceFrame.start;
             end = start + referenceFrame.toBP($(viewport.contentDiv).width());
             bpPerPixel = referenceFrame.bpPerPixel;
-
             return force || (!viewport.tile || viewport.tile.invalidate || !viewport.tile.containsRange(chr, start, end, bpPerPixel))
         });
 
+        promises = rpV.map(function (vp) {
+            return vp.loadFeatures();
+        });
 
-        rpV.forEach(function (vp) {
-            promises.push(vp.loadFeatures());
-        })
 
         Promise.all(promises)
-          
+
             .then(function (tiles) {
-                
+
                 // TODO -- autoscale here.
-                
-                var i, len;
-                len = tiles.length;
-                for(i=0; i<len; i++) {
-                    rpV[i].repaint(tiles[i]);
+                if ('numeric' === self.track.featureType && (self.track.autoscale || self.track.dataRange === undefined)) {
+
+                    var allFeatures = [];
+                    self.viewports.forEach(function (vp) {
+                        var referenceFrame, chr, start, end, cache;
+                        referenceFrame = vp.genomicState.referenceFrame;
+                        chr = referenceFrame.chrName;
+                        start = referenceFrame.start;
+                        end = start + referenceFrame.toBP($(vp.contentDiv).width());
+
+                        cache = new igv.FeatureCache(vp.tile.features);
+
+                        allFeatures = allFeatures.concat(cache.queryFeatures(chr, start, end));
+                    });
+                    self.track.dataRange = igv.WIGTrack.autoscale(allFeatures);
+                    self.viewports.forEach(function (vp) {
+                        vp.repaint();
+                    })
                 }
+                else {
+                    rpV.forEach(function (vp) {
+                        vp.repaint();
+                    })
+                }
+
+
             })
             .then(function (ignore) {
                 adjustTrackHeight.call(self);
@@ -50789,6 +50803,7 @@ var igv = (function (igv) {
 
 
     function adjustTrackHeight() {
+
         var maxHeight = maxContentHeight(this.viewports);
         if (this.track.autoHeight) {
             this.setTrackHeight(maxHeight, false);
@@ -50952,7 +50967,6 @@ var igv = (function (igv) {
             this.$outerScroll.hide();
         }
     };
-
 
 
     return igv;

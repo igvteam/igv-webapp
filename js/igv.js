@@ -26289,7 +26289,7 @@ var igv = (function (igv) {
             xOffset = config.x,
             yOffset = config.y,
             referenceFrame = config.viewport.genomicState.referenceFrame,
-            coverageMap = this.featureSource.alignmentContainer.coverageMap,
+            coverageMap = config.viewport.tile.features.coverageMap,
             coverageMapIndex,
             coverage,
             nameValues = [],
@@ -34960,41 +34960,6 @@ var igv = (function (igv) {
                 });
         });
 
-
-        return menuItems;
-
-    };
-
-
-    igv.FeatureTrack.prototype.contextMenuItemList = function (config) {
-
-        if (this.render === renderSnp) {
-
-            var menuItems = [], self = this;
-
-            menuItems.push({
-                label: 'Color by function',
-                click: function () {
-                    setColorBy('function');
-                }
-            });
-            menuItems.push({
-                label: 'Color by class',
-                click: function () {
-                    setColorBy('class');
-                }
-            });
-
-            return menuItems;
-
-        } else {
-            return [];
-        }
-
-        function setColorBy(value) {
-            self.colorBy = value;
-            self.trackView.repaintViews();
-        }
     };
 
 
@@ -36923,7 +36888,7 @@ var igv = (function (igv) {
         menuItems.push(igv.dataRangeMenuItem(this.trackView));
 
         menuItems.push({
-            object: igv.createCheckbox("Autoscale", self.autoscale),  
+            object: igv.createCheckbox("Autoscale", self.autoscale),
             click: function () {
                 var $fa = $(this).find('i');
 
@@ -36987,8 +36952,6 @@ var igv = (function (igv) {
             baselineColor;
 
 
-        this.currentFeatures = options.features;    // Cache for popup text
-
         // Temp hack
         if (typeof self.color === "string" && self.color.startsWith("rgb(")) {
             baselineColor = igv.Color.addAlpha(self.color, 0.1);
@@ -36997,10 +36960,10 @@ var igv = (function (igv) {
 
         if (features && features.length > 0) {
 
-           
-                featureValueMinimum = self.dataRange.min === undefined ? 0 : self.dataRange.min;
-                featureValueMaximum = self.dataRange.max;
-       
+
+            featureValueMinimum = self.dataRange.min === undefined ? 0 : self.dataRange.min;
+            featureValueMaximum = self.dataRange.max;
+
 
             if (undefined === self.dataRange) {
                 self.dataRange = {};
@@ -37083,7 +37046,7 @@ var igv = (function (igv) {
 
         // We use the featureCache property rather than method to avoid async load.  If the
         // feature is not already loaded this won't work,  but the user wouldn't be mousing over it either.
-        if (this.currentFeatures) {
+        if (config.viewport.tile.features) {
 
             var genomicLocation = config.genomicLocation,
 
@@ -37091,9 +37054,10 @@ var igv = (function (igv) {
                 tolerance,
                 featureList,
                 popupData,
-                selectedFeature;
+                selectedFeature,
+                posString;
 
-            featureList = this.currentFeatures;
+            featureList = config.viewport.tile.features;
 
             if (featureList.length > 0) {
 
@@ -37104,8 +37068,14 @@ var igv = (function (igv) {
                 selectedFeature = binarySearch(featureList, genomicLocation, tolerance);
 
                 if (selectedFeature) {
-                    popupData.push({name: "Position:", value: igv.numberFormatter(selectedFeature.start + 1) + "-" + igv.numberFormatter(selectedFeature.end)});
-                    popupData.push({name: "Value:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", value: igv.numberFormatter(selectedFeature.value)});
+                    posString = (selectedFeature.end - selectedFeature.start) === 1 ?
+                        igv.numberFormatter(selectedFeature.start + 1)
+                        : igv.numberFormatter(selectedFeature.start + 1) + "-" + igv.numberFormatter(selectedFeature.end);
+                    popupData.push({name: "Position:", value: posString});
+                    popupData.push({
+                        name: "Value:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+                        value: igv.numberFormatter(selectedFeature.value)
+                    });
                 }
 
                 return popupData;
@@ -37123,7 +37093,6 @@ var igv = (function (igv) {
     igv.WIGTrack.prototype.dispose = function () {
         this.trackView = undefined;
     }
-
 
 
     function signsDiffer(a, b) {
@@ -40000,11 +39969,11 @@ var igv = (function (igv) {
 
         // We use the featureCache property rather than method to avoid async load.  If the
         // feature is not already loaded this won't work,  but the user wouldn't be mousing over it either.
-        if (this.featureSource.featureCache) {
+        if (config.viewport.tile.features) {
 
             var chr = referenceFrame.chrName,
                 tolerance = 2 * this.dotSize * referenceFrame.bpPerPixel,
-                featureList = this.featureSource.featureCache.queryFeatures(chr, genomicLocation - tolerance, genomicLocation + tolerance),
+                featureList = config.viewport.tile.features,
                 dotSize = this.dotSize,
                 tissue = this.name;
 
@@ -53450,15 +53419,15 @@ var igv = (function (igv) {
         var genomicLocation = config.genomicLocation,
             xOffset = config.x,
             yOffset = config.y,
-            referenceFrame = config.viewport.genomicState.referenceFrame;
+            referenceFrame = config.viewport.genomicState.referenceFrame,
+            featureList = config.viewport.tile.features;
 
         // We use the featureCache property rather than method to avoid async load.  If the
         // feature is not already loaded this won't work,  but the user wouldn't be mousing over it either.
-        if (this.featureSource.featureCache) {
+        if (featureList) {
 
             var chr = referenceFrame.chrName,
                 tolerance = Math.floor(2 * referenceFrame.bpPerPixel),  // We need some tolerance around genomicLocation, start with +/- 2 pixels
-                featureList = this.featureSource.featureCache.queryFeatures(chr, genomicLocation - tolerance, genomicLocation + tolerance),
                 vGap = (this.displayMode === 'EXPANDED') ? this.expandedVGap : this.squishedVGap,
                 groupGap = (this.displayMode === 'EXPANDED') ? this.expandedGroupGap : this.squishedGroupGap,
                 popupData = [],
@@ -54372,6 +54341,7 @@ var igv = (function (igv) {
         self.hideMessage();
 
         if(!tile) tile = this.tile;
+        if(!tile) return;
 
         genomicState = this.genomicState;
         referenceFrame = this.genomicState.referenceFrame;

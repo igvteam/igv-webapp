@@ -29,7 +29,9 @@ var app = (function (app) {
             encodeDatasource,
             loadTracks,
             $encode_list_item_button,
-            encodeTableConfig;
+            encodeTableConfig,
+            $file_input,
+            $url_input;
 
         // ENCODE table configuration
         columnFormat =
@@ -70,6 +72,32 @@ var app = (function (app) {
             };
 
         this.encodeTable = new igv.ModalTable(encodeTableConfig);
+
+        $file_input = config.$fileModal.find('input');
+        $file_input.on('change', function (e) {
+
+            var file;
+
+            file = ($(this).get(0).files)[0];
+
+            browser.loadTrack({url: file, name: file.name });
+
+            $(this).val("");
+            config.$fileModal.modal('hide');
+
+        });
+
+        $url_input = config.$urlModal.find('input');
+        $url_input.on('change', function (e) {
+            var url;
+
+            url = $(this).val();
+            browser.loadTrack({ url: url });
+
+            $(this).val("");
+            config.$urlModal.modal('hide');
+
+        });
 
     };
 

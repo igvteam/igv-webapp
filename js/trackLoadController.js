@@ -28,7 +28,6 @@ var app = (function (app) {
             columnFormat,
             encodeDatasource,
             loadTracks,
-            $encode_list_item_button,
             encodeTableConfig,
             $file_input,
             $url_input;
@@ -51,28 +50,28 @@ var app = (function (app) {
             browser.loadTrackList(configurationList);
         };
 
-        $encode_list_item_button = $('#igv-encode-list-item-button');
         encodeTableConfig =
             {
                 $modal:config.$encodeModal,
                 $modalBody:config.$encodeModal.find('.modal-body'),
-                $modalTopCloseButton: config.$encodeModal.find('#igv-app-encode-modal-top-close-button'),
-                $modalBottomCloseButton: config.$encodeModal.find('#igv-app-encode-modal-bottom-close-button'),
-                $modalGoButton: config.$encodeModal.find('#igv-app-encode-modal-go-button'),
+                $modalTopCloseButton: config.$encodeModal.find('.modal-header').children('button'),
+                $modalBottomCloseButton: config.$encodeModal.find('.modal-footer button:nth-child(1)'),
+                $modalGoButton: config.$encodeModal.find('.modal-footer button:nth-child(2)'),
                 datasource: encodeDatasource,
                 browserHandler: loadTracks,
                 willRetrieveData: function () {
-                    $encode_list_item_button.addClass('igv-app-disabled');
-                    $encode_list_item_button.text('Configuring ENCODE table...');
+                    config.$encodeModalPresentationButton.addClass('igv-app-disabled');
+                    config.$encodeModalPresentationButton.text('Configuring ENCODE table...');
                 },
                 didRetrieveData: function () {
-                    $encode_list_item_button.removeClass('igv-app-disabled');
-                    $encode_list_item_button.text('Load Tracks from ENCODE...');
+                    config.$encodeModalPresentationButton.removeClass('igv-app-disabled');
+                    config.$encodeModalPresentationButton.text('Load Tracks from ENCODE...');
                 }
             };
 
         this.encodeTable = new igv.ModalTable(encodeTableConfig);
 
+        // local track file
         $file_input = config.$fileModal.find('input');
         $file_input.on('change', function (e) {
 
@@ -87,6 +86,7 @@ var app = (function (app) {
 
         });
 
+        // URL track file
         $url_input = config.$urlModal.find('input');
         $url_input.on('change', function (e) {
             var url;

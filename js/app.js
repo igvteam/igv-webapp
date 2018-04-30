@@ -36,7 +36,8 @@ var app = (function (app) {
                     {
                         $fileModal: $('#igv-app-track-from-file-modal'),
                         $urlModal: $('#igv-app-track-from-url-modal'),
-                        $encodeModal: $('#igv-app-encode-modal')
+                        $encodeModal: $('#igv-app-encode-modal'),
+                        $encodeModalPresentationButton: $('#igv-encode-list-item-button')
                     };
 
                 app.trackLoadController = new app.TrackLoadController(app, browser, trackLoadConfig);

@@ -73,8 +73,8 @@ var app = (function (app) {
 
         // local track file
         $file_input = config.$fileModal.find('input');
-        $file_input.on('change', function (e) {
 
+        $file_input.on('change', function (e) {
             var file;
 
             file = ($(this).get(0).files)[0];
@@ -83,13 +83,16 @@ var app = (function (app) {
 
             $(this).val("");
             config.$fileModal.modal('hide');
-
         });
 
         // URL track file
         $url_input = config.$urlModal.find('input');
-        $url_input.on('change', function (e) {
+        $url_input.on('keyup', function (e) {
             var url;
+
+            if (13 !== e.keyCode) {
+                return;
+            }
 
             url = $(this).val();
             browser.loadTrack({ url: url });

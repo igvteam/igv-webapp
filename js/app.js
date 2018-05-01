@@ -24,14 +24,24 @@ var app = (function (app) {
 
     app.init = function ($container, appConfig) {
 
-        var trackLoadConfig;
+        var genomeConfig,
+            trackLoadConfig;
 
         // Browser Configuration
         igv
             .createBrowser($container.get(0), igvConfigurator())
             .then(function (browser) {
 
-                // Track Load Configuration
+                // Genome controller configuration
+                genomeConfig =
+                    {
+                        $fileModal: $('#igv-app-genome-from-file-modal'),
+                        $urlModal: $('#igv-app-genome-from-url-modal')
+                    };
+
+                app.genomeController = new app.GenomeController(app, browser, genomeConfig);
+
+                // Track load controller configuration
                 trackLoadConfig =
                     {
                         $fileModal: $('#igv-app-track-from-file-modal'),

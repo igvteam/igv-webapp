@@ -24,7 +24,9 @@ var app = (function (app) {
 
     app.GenomeController = function (app, browser, config) {
         var $file_input,
-            $url_input;
+            $file_close,
+            $url_input,
+            $url_close;
 
         // local genome file
         $file_input = config.$fileModal.find('input');
@@ -39,6 +41,11 @@ var app = (function (app) {
             $(this).val("");
             config.$fileModal.modal('hide');
 
+        });
+
+        $file_close = config.$fileModal.find('.modal-header').children('button');
+        $file_close.on('click', function () {
+            $file_input.val('');
         });
 
         // URL genome file
@@ -58,6 +65,11 @@ var app = (function (app) {
             $(this).val("");
             config.$urlModal.modal('hide');
 
+        });
+
+        $url_close = config.$urlModal.find('.modal-header').children('button');
+        $url_close.on('click', function () {
+            $url_input.val('');
         });
 
     };

@@ -30,7 +30,9 @@ var app = (function (app) {
             loadTracks,
             encodeTableConfig,
             $file_input,
-            $url_input;
+            $file_close,
+            $url_input,
+            $url_close;
 
         // ENCODE table configuration
         columnFormat =
@@ -85,6 +87,11 @@ var app = (function (app) {
             config.$fileModal.modal('hide');
         });
 
+        $file_close = config.$fileModal.find('.modal-header').children('button');
+        $file_close.on('click', function () {
+            $file_input.val('');
+        });
+
         // URL track file
         $url_input = config.$urlModal.find('input');
         $url_input.on('keyup', function (e) {
@@ -100,6 +107,11 @@ var app = (function (app) {
             $(this).val("");
             config.$urlModal.modal('hide');
 
+        });
+
+        $url_close = config.$urlModal.find('.modal-header').children('button');
+        $url_close.on('click', function () {
+            $url_input.val('');
         });
 
     };

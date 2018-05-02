@@ -8,10 +8,10 @@ $igv-app-dark-dark-color: #373737;
 $igv-app-hover-color: #0f0f0f;
 $igv-app-padding-width: 8px;
 
-.btn:focus,.btn:active {
-  outline: none !important;
-  box-shadow: none;
-}
+//.btn:focus,.btn:active {
+//  outline: none !important;
+//  box-shadow: none;
+//}
 
 #igv-app-encode-modal .modal-dialog {
   max-width: 75%;
@@ -21,4 +21,9 @@ $igv-app-padding-width: 8px;
   color: $igv-app-medium-color;
   pointer-events:none; // This makes it not clickable
   opacity:0.6;         // This grays it out to look disabled
+}
+
+.btn-default.app-button {
+  color: $igv-app-dark-color;
+  border-color: $igv-app-medium-color;
 }

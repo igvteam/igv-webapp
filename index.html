@@ -56,23 +56,26 @@
     <script src="js/app.js"></script>
     <script src="js/genomeController.js"></script>
     <script src="js/trackLoadController.js"></script>
-
+    <script src="js/shareController.js"></script>
 </head>
 
 <body id="igv-app">
 
 <main>
     <!-- Share URL Modal -->
-    <div id="hic-share-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="hic-share-url-modal-label" aria-hidden="true">
-        <div class="modal-dialog">
+    <div id="hic-share-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="hic-share-input-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog" role="document">
+
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="hic-share-url-modal-label" class="modal-title">Share</h4>
+                    <h4  id="hic-share-input-modal-close-button" class="modal-title">Share</h4>
 
-                    <button id="hic-share-url-modal-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+
                 </div>
 
                 <div class="modal-body">
@@ -82,43 +85,43 @@
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="form-group">
-                                    <input id="hic-share-url" type="text" class="form-control" placeholder="">
+                                    <input id="hic-share-input" type="text" class="form-control" placeholder="">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <button id="hic-copy-link" type="button" class="btn btn-default">COPY</button>
+                                <button id="hic-copy-link-button" type="button" class="btn btn-default">COPY</button>
                             </div>
                         </div>
 
                         <!-- social buttons -->
                         <div class="hic-social-button-container">
 
-                            <div id="tweetButtonContainer">
+                            <div id="hic-tweet-button-container">
                                 <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">TWEET</a>
                             </div>
 
-                            <div id="emailButtonContainer">
-                                <a id="emailButton" href="mailto:?body=https://aidenlab.org/juicebox">EMAIL</a>
+                            <div>
+                                <a id="hic-email-button" href="mailto:?body=https://aidenlab.org/juicebox">EMAIL</a>
                             </div>
 
                             <div id="hic-embed-button">EMBED</div>
 
-                            <div id="hic-qr-code-button">QR CODE</div>
+                            <div id="hic-qrcode-button">QR CODE</div>
 
                         </div>
 
                         <!-- qr code image -->
                         <div class="row">
-                            <div id="hic-qr-code-image" class="col-md-offset-4 col-md-4"></div>
+                            <div id="hic-qrcode-image" class="col-md-offset-4 col-md-4"></div>
                         </div>
 
                         <!-- embed widget -->
                         <div id="hic-embed-container" class="row">
                             <div class="col-md-9 form-group">
-                                <textarea id="hic-embed" class="form-control" rows="4"></textarea>
+                                <textarea class="form-control" rows="4"></textarea>
                             </div>
                             <div class="col-md-3">
-                                <button id="hic-embed-copy-link" type="button" class="btn btn-default">COPY</button>
+                                <button type="button" class="btn btn-default">COPY</button>
                             </div>
                         </div>
 
@@ -126,7 +129,9 @@
                 </div>
 
             </div>
+
         </div>
+
     </div>
 
     <!-- genome from file -->
@@ -342,11 +347,11 @@
 
             </div>
 
+            <!-- Share (generate URL) -->
             <div class="col-md-4">
 
-                <!-- Share (generate URL) -->
                 <div title="Share">
-                    <button id="hic-share-button" class="btn btn-default" type="button" data-toggle="modal" data-target="#hic-share-url-modal">Share</button>
+                    <button id="hic-share-button" class="btn btn-default" type="button" data-toggle="modal" data-target="#hic-share-modal">Share</button>
                 </div>
 
             </div>

@@ -1,0 +1,75 @@
+$default-font-family: 'Open Sans', sans-serif;
+$default-dark-color: #5f5f5f;
+
+#hic-share-modal {
+
+  color: $default-dark-color;
+
+  .modal-body {
+    font-family: $default-font-family;
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
+#hic-qrcode-image {
+  display:none;
+}
+
+#hic-embed-container {
+  display:none;
+}
+
+a#hic-email-button {
+  color: $default-dark-color;
+  text-decoration: none;
+}
+
+a#hic-email-button:hover,
+a#hic-email-button:focus,
+a#hic-email-button:active  {
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+#hic-embed-button:hover,
+#hic-embed-button:focus,
+#hic-embed-button:active  {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+#hic-qrcode-button:hover,
+#hic-qrcode-button:focus,
+#hic-qrcode-button:active  {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.hic-social-button-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  height: 40px;
+
+  div {
+    margin-left: 8px;
+    margin-right: 8px;
+    //background-color: red;
+  }
+
+  div:first-child {
+    width:65px;
+    margin-top:4px;
+  }
+
+  margin-bottom: 10px;
+}
+
+.hic-social-button {
+  float: left;
+}

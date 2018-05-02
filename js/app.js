@@ -25,7 +25,8 @@ var app = (function (app) {
     app.init = function ($container, appConfig) {
 
         var genomeConfig,
-            trackLoadConfig;
+            trackLoadConfig,
+            shareConfig;
 
         // Browser Configuration
         igv
@@ -57,7 +58,22 @@ var app = (function (app) {
                 // URL Shortener Configuration
                 if (appConfig.urlShortener) {
                     hic.setURLShortener(appConfig.urlShortener);
-                    app.shareController = new app.ShareController($('#hic-share-url-modal'), $container);
+
+                    shareConfig =
+                        {
+                            $modal: $('#hic-share-modal'),
+                            $share_input: $('#hic-share-input'),
+                            $copy_link_button: $('#hic-copy-link-button'),
+                            $tweet_button_container: $('#hic-tweet-button-container'),
+                            $email_button: $('#hic-email-button'),
+                            $embed_button: $('#hic-embed-button'),
+                            $qrcode_button: $('#hic-qrcode-button'),
+                            $embed_container: $('#hic-embed-container'),
+                            $qrcode_image: $('#hic-qrcode-image')
+                        };
+
+                    app.shareController = new app.ShareController($container, browser, shareConfig);
+
                 } else {
                     $("#hic-share-button").hide();
                 }

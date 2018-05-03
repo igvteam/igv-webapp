@@ -94,6 +94,7 @@ var app = (function (app) {
                         embed: true,
                         $widgetParent: $('#igv-app-track-from-file-or-url-modal').find('.modal-body')
                     },
+                showChromosomeWidget:true,
                 promisified:true,
                 minimumBases: 6,
                 showIdeogram: true,
@@ -142,7 +143,6 @@ var app = (function (app) {
 
         return configuration;
     }
-
 
     return app;
 

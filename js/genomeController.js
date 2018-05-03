@@ -22,57 +22,43 @@
  */
 var app = (function (app) {
 
-    app.GenomeController = function (app, browser, config) {
-        var $file_input,
-            $file_close,
-            $url_input,
-            $url_close;
-
-        // local genome file
-        $file_input = config.$fileModal.find('input');
-        $file_input.on('change', function (e) {
-            var file;
-
-            file = ($(this).get(0).files)[0];
-
-            // do stuff
-            console.log('do stuff with ' + file.name);
-
-            $(this).val("");
-            config.$fileModal.modal('hide');
-
-        });
-
-        $file_close = config.$fileModal.find('.modal-header').children('button');
-        $file_close.on('click', function () {
-            $file_input.val('');
-        });
-
-        // URL genome file
-        $url_input = config.$urlModal.find('input');
-        $url_input.on('keyup', function (e) {
-            var url;
-
-            if (13 !== e.keyCode) {
-                return;
-            }
-
-            url = $(this).val();
-
-            // do stuff
-            console.log('do stuff with ' + url.split('/').pop());
-
-            $(this).val("");
-            config.$urlModal.modal('hide');
-
-        });
-
-        $url_close = config.$urlModal.find('.modal-header').children('button');
-        $url_close.on('click', function () {
-            $url_input.val('');
-        });
-
+    app.GenomeController = function (browser, config) {
+        this.$dropdown_menu = config.$dropdown_menu;
     };
+
+    app.GenomeController.prototype.getGenomes = function () {
+        var self = this;
+
+        return igv.xhr
+            .loadJson(app.GenomeController.defaultGenomeURL, {})
+            .then(function (list) {
+                self.genomes = {};
+                list.forEach(function (json) {
+                    var $button;
+
+                    self.genomes[ json.id ] = json;
+
+                    $button = createButton(json.id);
+                    self.$dropdown_menu.append($button);
+                    $button.on('click', function () {
+                        var key;
+                        key = $(this).text();
+                        igv.browser.loadGenome( self.genomes[ key ]);
+                    });
+                });
+            })
+    };
+
+    app.GenomeController.defaultGenomeURL = 'https://s3.amazonaws.com/igv.org.genomes/genomes.json';
+
+    function createButton (title) {
+        var $button;
+
+        $button = $('<button>', { class:'dropdown-item', type:'button' });
+        $button.text(title);
+
+        return $button;
+    }
 
     return app;
 })(app || {});

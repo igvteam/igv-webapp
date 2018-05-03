@@ -36,11 +36,11 @@ var app = (function (app) {
                 // Genome controller configuration
                 genomeConfig =
                     {
-                        $fileModal: $('#igv-app-genome-from-file-modal'),
-                        $urlModal: $('#igv-app-genome-from-url-modal')
+                        $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu')
                     };
 
-                app.genomeController = new app.GenomeController(app, browser, genomeConfig);
+                app.genomeController = new app.GenomeController(browser, genomeConfig);
+                app.genomeController.getGenomes();
 
                 // Track load controller configuration
                 trackLoadConfig =

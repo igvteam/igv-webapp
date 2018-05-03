@@ -51,9 +51,9 @@ var app = (function (app) {
                         $encodeModalPresentationButton: $('#igv-encode-list-item-button')
                     };
 
-                app.trackLoadController = new app.TrackLoadController(app, browser, trackLoadConfig);
+                app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
 
-                app.trackLoadController.encodeTable.loadData(browser.genome.id);
+
 
                 // URL Shortener Configuration
                 if (appConfig.urlShortener) {

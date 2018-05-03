@@ -8,10 +8,23 @@ $igv-app-dark-dark-color: #373737;
 $igv-app-hover-color: #0f0f0f;
 $igv-app-padding-width: 8px;
 
-//.btn:focus,.btn:active {
-//  outline: none !important;
-//  box-shadow: none;
-//}
+nav {
+  color: $igv-app-light-color;
+  background-color: $igv-app-medium-color;
+
+  a {
+    text-decoration: none;
+    color: $igv-app-light-color;
+  }
+}
+
+.igv-app-site-widget {
+  float: left;
+  margin-left: 4px;
+  margin-right: 32px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
 
 #igv-app-encode-modal .modal-dialog {
   max-width: 75%;

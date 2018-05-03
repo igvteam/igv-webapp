@@ -52,6 +52,20 @@ a#hic-email-button:active {
 .hic-social-button {
   float: left; }
 
+nav {
+  color: #f7f7f7;
+  background-color: #a6a6a6; }
+  nav a {
+    text-decoration: none;
+    color: #f7f7f7; }
+
+.igv-app-site-widget {
+  float: left;
+  margin-left: 4px;
+  margin-right: 32px;
+  margin-top: 16px;
+  margin-bottom: 16px; }
+
 #igv-app-encode-modal .modal-dialog {
   max-width: 75%; }
 

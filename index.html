@@ -61,7 +61,75 @@
 
 <body id="igv-app">
 
+<nav class="navbar navbar-expand-md fixed-top">
+    <a class="navbar-brand" href="#">IGV JS - Web App</a>
+</nav>
+
 <main>
+
+    <div class="container-fluid">
+
+        <!-- Empty row (shim) -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1>&nbsp;</h1>
+            </div>
+        </div>
+
+        <!-- Modal presentation buttons -->
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <!-- Genomes -->
+                <div class="dropdown igv-app-site-widget">
+
+                    <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-app-genome-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Genomes
+                    </button>
+
+                    <div class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-file-modal">Load Genome From File...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">Load Genome From URL...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-server-modal">Load Genome From Server...</a>
+                    </div>
+
+                </div>
+
+                <!-- Tracks -->
+                <div class="dropdown igv-app-site-widget">
+
+                    <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tracks
+                    </button>
+
+                    <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-or-url-modal">Load Track from File or URL...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
+                    </div>
+
+                </div>
+
+                <!-- Share (generate URL) -->
+                <div class="igv-app-site-widget">
+                    <button id="hic-share-button" class="btn btn-default app-button" type="button" data-toggle="modal" data-target="#hic-share-modal">Share</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- App container -->
+        <div class="row">
+            <div class="col-md-12">
+                <div id="igv-app-container">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
     <!-- Share URL Modal -->
     <div id="hic-share-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="hic-share-input-modal-label" aria-hidden="true">
 
@@ -275,70 +343,6 @@
             </div>
 
         </div>
-
-    </div>
-
-    <div class="container-fluid">
-
-        <!-- Modal presentation buttons -->
-        <div class="row">
-
-            <!-- Genomes -->
-            <div class="col-md-4">
-
-                <div class="dropdown">
-
-                    <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-app-genome-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Genomes
-                    </button>
-
-                    <div class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-file-modal">Load Genome From File...</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">Load Genome From URL...</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-genome-from-server-modal">Load Genome From Server...</a>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Tracks -->
-            <div class="col-md-4">
-
-                <div class="dropdown">
-
-                    <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Tracks
-                    </button>
-
-                    <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-or-url-modal">Load Track from File or URL...</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Share (generate URL) -->
-            <div class="col-md-4">
-
-                <div title="Share">
-                    <button id="hic-share-button" class="btn btn-default app-button" type="button" data-toggle="modal" data-target="#hic-share-modal">Share</button>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- App container -->
-        <div class="row">
-            <div class="col-md-12">
-                <div id="igv-app-container">
-                </div>
-            </div>
-        </div>
-
 
     </div>
 

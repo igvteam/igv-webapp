@@ -218,7 +218,7 @@
 
     </div>
 
-    <!-- ENCODE Table -->
+    <!-- track from ENCODE Table -->
     <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
@@ -248,15 +248,15 @@
 
     </div>
 
-    <!-- track from file -->
-    <div id="igv-app-track-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-modal-label" aria-hidden="true">
+    <!-- track from file or url -->
+    <div id="igv-app-track-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-or-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-from-file-modal-label" class="modal-title">Load Track File</h4>
+                    <h4  id="igv-app-track-from-file-or-url-modal-label" class="modal-title">Load Track File or URL</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -265,37 +265,11 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="form-group">
-                        <input class="form-control-file" type="file" title="Load Local File"/>
-                    </div>
                 </div>
 
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- track from url -->
-    <div id="igv-app-track-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-url-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4  id="igv-app-track-from-url-modal-label" class="modal-title">Load Track URL</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input class="form-control" type="text" title="Enter URL" placeholder="Enter URL"/>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
                 </div>
 
             </div>
@@ -338,8 +312,7 @@
                     </button>
 
                     <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-modal">Load Track from File...</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-url-modal">Load Track from URL...</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-or-url-modal">Load Track from File or URL...</a>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
                     </div>
 

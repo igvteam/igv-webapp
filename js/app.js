@@ -45,7 +45,7 @@ var app = (function (app) {
                 // Track load controller configuration
                 trackLoadConfig =
                     {
-                        $fileModal: $('#igv-app-track-from-file-modal'),
+                        $fileModal: $('#igv-app-track-from-file-or-url-modal'),
                         $urlModal: $('#igv-app-track-from-url-modal'),
                         $encodeModal: $('#igv-app-encode-modal'),
                         $encodeModalPresentationButton: $('#igv-encode-list-item-button')
@@ -88,6 +88,12 @@ var app = (function (app) {
 
         configuration =
             {
+                fileLoadWidget:
+                    {
+                        hidden: false,
+                        embed: true,
+                        $widgetParent: $('#igv-app-track-from-file-or-url-modal').find('.modal-body')
+                    },
                 promisified:true,
                 minimumBases: 6,
                 showIdeogram: true,

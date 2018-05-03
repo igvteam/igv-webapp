@@ -29,10 +29,8 @@ var app = (function (app) {
             encodeDatasource,
             loadTracks,
             encodeTableConfig,
-            $file_input,
-            $file_close,
-            $url_input,
-            $url_close;
+            $file_ok,
+            $file_dismiss;
 
         // ENCODE table configuration
         columnFormat =
@@ -73,45 +71,22 @@ var app = (function (app) {
 
         this.encodeTable = new igv.ModalTable(encodeTableConfig);
 
-        // local track file
-        $file_input = config.$fileModal.find('input');
-
-        $file_input.on('change', function (e) {
-            var file;
-
-            file = ($(this).get(0).files)[0];
-
-            browser.loadTrack({url: file, name: file.name });
-
-            $(this).val("");
-            config.$fileModal.modal('hide');
+        // upper dismiss - x - button
+        $file_dismiss = config.$fileModal.find('.modal-header').children('button');
+        $file_dismiss.on('click', function () {
+            browser.trackFileLoad.dismiss();
         });
 
-        $file_close = config.$fileModal.find('.modal-header').children('button');
-        $file_close.on('click', function () {
-            $file_input.val('');
+        // lower dismiss - close - button
+        $file_dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
+        $file_dismiss.on('click', function () {
+            browser.trackFileLoad.dismiss();
         });
 
-        // URL track file
-        $url_input = config.$urlModal.find('input');
-        $url_input.on('keyup', function (e) {
-            var url;
-
-            if (13 !== e.keyCode) {
-                return;
-            }
-
-            url = $(this).val();
-            browser.loadTrack({ url: url });
-
-            $(this).val("");
-            config.$urlModal.modal('hide');
-
-        });
-
-        $url_close = config.$urlModal.find('.modal-header').children('button');
-        $url_close.on('click', function () {
-            $url_input.val('');
+        // ok - button
+        $file_ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
+        $file_ok.on('click', function () {
+            browser.trackFileLoad.okHandler();
         });
 
     };

@@ -25,53 +25,12 @@ var app = (function (app) {
     app.TrackLoadController = function (browser, config) {
 
         var self = this,
-            columnFormat,
-            encodeDatasource,
-            loadTracks,
-            encodeTableConfig,
             $file_ok,
             $file_dismiss;
 
-        // ENCODE table configuration
-        columnFormat =
-            [
-                {    'Assembly': '10%' },
-                {   'Cell Type': '10%' },
-                {      'Target': '10%' },
-                {  'Assay Type': '20%' },
-                { 'Output Type': '20%' },
-                {         'Lab': '20%' }
-
-            ];
-
-        encodeDatasource = new igv.EncodeDataSource(columnFormat);
-
-        loadTracks = function (configurationList) {
-            browser.loadTrackList(configurationList);
-        };
-
-        encodeTableConfig =
-            {
-                $modal:config.$encodeModal,
-                $modalBody:config.$encodeModal.find('.modal-body'),
-                $modalTopCloseButton: config.$encodeModal.find('.modal-header button:nth-child(1)'),
-                $modalBottomCloseButton: config.$encodeModal.find('.modal-footer button:nth-child(1)'),
-                $modalGoButton: config.$encodeModal.find('.modal-footer button:nth-child(2)'),
-                datasource: encodeDatasource,
-                browserHandler: loadTracks,
-                willRetrieveData: function () {
-                    config.$encodeModalPresentationButton.addClass('igv-app-disabled');
-                    config.$encodeModalPresentationButton.text('Configuring ENCODE table...');
-                },
-                didRetrieveData: function () {
-                    config.$encodeModalPresentationButton.removeClass('igv-app-disabled');
-                    config.$encodeModalPresentationButton.text('Load Tracks from ENCODE...');
-                }
-            };
-
-        this.encodeTable = new igv.ModalTable(encodeTableConfig);
-
-        this.encodeTable.loadData(browser.genome.id);
+        this.browser = browser;
+        this.config = config;
+        this.createEncodeTable(browser.genome.id);
 
         // upper dismiss - x - button
         $file_dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
@@ -90,6 +49,59 @@ var app = (function (app) {
         $file_ok.on('click', function () {
             browser.trackFileLoad.okHandler();
         });
+
+    };
+
+    app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
+
+        var self = this,
+            columnFormat,
+            encodeDatasource,
+            loadTracks,
+            encodeTableConfig;
+
+        this.encodeTable = undefined;
+
+        // ENCODE table configuration
+        columnFormat =
+            [
+                {    'Assembly': '10%' },
+                {   'Cell Type': '10%' },
+                {      'Target': '10%' },
+                {  'Assay Type': '20%' },
+                { 'Output Type': '20%' },
+                {         'Lab': '20%' }
+
+            ];
+
+        encodeDatasource = new igv.EncodeDataSource(columnFormat);
+
+        loadTracks = function (configurationList) {
+            self.browser.loadTrackList(configurationList);
+        };
+
+        encodeTableConfig =
+            {
+                $modal:this.config.$encodeModal,
+                $modalBody:this.config.$encodeModal.find('.modal-body'),
+                $modalTopCloseButton: this.config.$encodeModal.find('.modal-header button:nth-child(1)'),
+                $modalBottomCloseButton: this.config.$encodeModal.find('.modal-footer button:nth-child(1)'),
+                $modalGoButton: this.config.$encodeModal.find('.modal-footer button:nth-child(2)'),
+                datasource: encodeDatasource,
+                browserHandler: loadTracks,
+                willRetrieveData: function () {
+                    self.config.$encodeModalPresentationButton.addClass('igv-app-disabled');
+                    self.config.$encodeModalPresentationButton.text('Configuring ENCODE table...');
+                },
+                didRetrieveData: function () {
+                    self.config.$encodeModalPresentationButton.removeClass('igv-app-disabled');
+                    self.config.$encodeModalPresentationButton.text('Load Tracks from ENCODE...');
+                }
+            };
+
+        this.encodeTable = new igv.ModalTable(encodeTableConfig);
+
+        this.encodeTable.loadData(genomeID);
 
     };
 

@@ -63,7 +63,7 @@ var app = (function (app) {
                             $button.on('click', function () {
                                 var key;
                                 key = $(this).text();
-                                igv.browser.loadGenome(genomeDictionary[ key ]);
+                                browser.loadGenome(genomeDictionary[ key ]);
                                 app.trackLoadController.createEncodeTable(genomeDictionary[ key ].id);
                             });
 

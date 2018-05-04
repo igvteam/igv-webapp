@@ -8,15 +8,11 @@ $igv-app-dark-dark-color: #373737;
 $igv-app-hover-color: #0f0f0f;
 $igv-app-padding-width: 8px;
 
-nav {
-  color: $igv-app-light-color;
-  background-color: $igv-app-medium-color;
 
-  a {
-    text-decoration: none;
-    color: $igv-app-light-color;
-  }
+.igv-app-navbar-backdrop {
+  background-color: $igv-app-dark-color;
 }
+
 
 .igv-app-site-widget {
   float: left;

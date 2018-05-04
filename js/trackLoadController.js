@@ -62,7 +62,6 @@ var app = (function (app) {
 
         this.encodeTable = undefined;
 
-        // ENCODE table configuration
         columnFormat =
             [
                 {    'Assembly': '10%' },

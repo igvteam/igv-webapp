@@ -24,23 +24,13 @@ var app = (function (app) {
 
     app.init = function ($container, appConfig) {
 
-        var genomeConfig,
-            trackLoadConfig,
+        var trackLoadConfig,
             shareConfig;
 
         // Browser Configuration
         igv
             .createBrowser($container.get(0), igvConfigurator())
             .then(function (browser) {
-
-                // Genome controller configuration
-                genomeConfig =
-                    {
-                        $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu')
-                    };
-
-                app.genomeController = new app.GenomeController(browser, genomeConfig);
-                app.genomeController.getGenomes();
 
                 // Track load controller configuration
                 trackLoadConfig =
@@ -53,7 +43,33 @@ var app = (function (app) {
 
                 app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
 
+                // Genome controller configuration
+                app.genomeController = new app.GenomeController();
+                app.genomeController.getGenomes()
+                    .then(function (genomeDictionary) {
+                        var $dropdown_menu,
+                            keys;
 
+                        $dropdown_menu = $('#igv-app-genome-dropdown').find('.dropdown-menu');
+
+                        keys = Object.keys(genomeDictionary);
+
+                        keys.forEach(function (jsonID) {
+                            var $button;
+
+                            $button = createButton(jsonID);
+                            $dropdown_menu.append($button);
+
+                            $button.on('click', function () {
+                                var key;
+                                key = $(this).text();
+                                igv.browser.loadGenome(genomeDictionary[ key ]);
+                                app.trackLoadController.createEncodeTable(genomeDictionary[ key ].id);
+                            });
+
+                        });
+
+                    });
 
                 // URL Shortener Configuration
                 if (appConfig.urlShortener) {
@@ -142,6 +158,15 @@ var app = (function (app) {
             };
 
         return configuration;
+    }
+
+    function createButton (title) {
+        var $button;
+
+        $button = $('<button>', { class:'dropdown-item', type:'button' });
+        $button.text(title);
+
+        return $button;
     }
 
     return app;

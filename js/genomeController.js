@@ -22,8 +22,7 @@
  */
 var app = (function (app) {
 
-    app.GenomeController = function (browser, config) {
-        this.$dropdown_menu = config.$dropdown_menu;
+    app.GenomeController = function () {
     };
 
     app.GenomeController.prototype.getGenomes = function () {
@@ -32,34 +31,17 @@ var app = (function (app) {
         return igv.xhr
             .loadJson(app.GenomeController.defaultGenomeURL, {})
             .then(function (list) {
+
                 self.genomes = {};
                 list.forEach(function (json) {
-                    var $button;
-
                     self.genomes[ json.id ] = json;
-
-                    $button = createButton(json.id);
-                    self.$dropdown_menu.append($button);
-                    $button.on('click', function () {
-                        var key;
-                        key = $(this).text();
-                        igv.browser.loadGenome( self.genomes[ key ] );
-                        app.trackLoadController.createEncodeTable(self.genomes[ key ].id);
-                    });
                 });
+
+                return self.genomes;
             })
     };
 
     app.GenomeController.defaultGenomeURL = 'https://s3.amazonaws.com/igv.org.genomes/genomes.json';
-
-    function createButton (title) {
-        var $button;
-
-        $button = $('<button>', { class:'dropdown-item', type:'button' });
-        $button.text(title);
-
-        return $button;
-    }
 
     return app;
 })(app || {});

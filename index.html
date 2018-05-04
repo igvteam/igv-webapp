@@ -61,70 +61,58 @@
 
 <body id="igv-app">
 
-<nav class="navbar navbar-expand-md fixed-top">
+<nav class="navbar navbar-expand-sm">
     <a class="navbar-brand" href="#">IGV JS - Web App</a>
 </nav>
 
-<main>
+<main role="main" class="container-fluid">
 
-    <div class="container-fluid">
+    <!-- Modal presentation buttons -->
+    <div class="row">
 
-        <!-- Empty row (shim) -->
-        <div class="row">
-            <div class="col-sm">
-                <h1>&nbsp;</h1>
-            </div>
-        </div>
+        <div class="col-sm">
 
-        <!-- Modal presentation buttons -->
-        <div class="row">
+            <!-- Genomes -->
+            <div id="igv-app-genome-dropdown" class="dropdown igv-app-site-widget">
 
-            <div class="col-sm">
+                <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-app-genome-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Genomes
+                </button>
 
-                <!-- Genomes -->
-                <div id="igv-app-genome-dropdown" class="dropdown igv-app-site-widget">
-
-                    <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-app-genome-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Genomes
-                    </button>
-
-                    <div class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
-                    </div>
-
-                </div>
-
-                <!-- Tracks -->
-                <div class="dropdown igv-app-site-widget">
-
-                    <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Tracks
-                    </button>
-
-                    <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-or-url-modal">Load Track from File or URL...</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
-                    </div>
-
-                </div>
-
-                <!-- Share (generate URL) -->
-                <div class="igv-app-site-widget">
-                    <button id="hic-share-button" class="btn btn-default app-button" type="button" data-toggle="modal" data-target="#hic-share-modal">Share</button>
+                <div class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
                 </div>
 
             </div>
 
+            <!-- Tracks -->
+            <div class="dropdown igv-app-site-widget">
+
+                <button class="btn btn-default app-button dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Tracks
+                </button>
+
+                <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-or-url-modal">Load Track from File or URL...</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
+                </div>
+
+            </div>
+
+            <!-- Share (generate URL) -->
+            <div class="igv-app-site-widget">
+                <button id="hic-share-button" class="btn btn-default app-button" type="button" data-toggle="modal" data-target="#hic-share-modal">Share</button>
+            </div>
+
         </div>
 
-        <!-- App container -->
-        <div class="row">
-            <div class="col-sm">
-                <div id="igv-app-container">
-                </div>
+    </div>
+
+    <!-- App container -->
+    <div class="row">
+        <div class="col-sm">
+            <div id="igv-app-container">
             </div>
         </div>
-
-
     </div>
 
     <!-- Share URL Modal -->

@@ -48,6 +48,8 @@ var app = (function (app) {
                 app.genomeController.getGenomes()
                     .then(function (genomeDictionary) {
                         var $dropdown_menu,
+                            $divider,
+                            $button,
                             keys;
 
                         $dropdown_menu = $('#igv-app-genome-dropdown').find('.dropdown-menu');
@@ -55,7 +57,6 @@ var app = (function (app) {
                         keys = Object.keys(genomeDictionary);
 
                         keys.forEach(function (jsonID) {
-                            var $button;
 
                             $button = createButton(jsonID);
                             $dropdown_menu.append($button);
@@ -68,6 +69,18 @@ var app = (function (app) {
                             });
 
                         });
+
+                        // menu divider
+                        $divider  = $('<div>', { class:'dropdown-divider' });
+                        $dropdown_menu.append($divider);
+
+                        // genome from file or url button
+                        $button = createButton('file or url ...');
+                        $dropdown_menu.append($button);
+                        $button.on('click', function () {
+                            $('#igv-app-genome-from-file-or-url-modal').modal();
+                        });
+
 
                     });
 

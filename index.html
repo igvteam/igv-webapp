@@ -118,6 +118,96 @@
         </div>
     </div>
 
+    <!-- genome from file or url -->
+    <div id="igv-app-genome-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-file-or-url-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-genome-from-file-or-url-modal-label" class="modal-title">Load Genome File or URL</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- track from ENCODE Table -->
+    <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- track from file or url -->
+    <div id="igv-app-track-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-or-url-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-track-from-file-or-url-modal-label" class="modal-title">Load Track File or URL</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- Share URL Modal -->
     <div id="hic-share-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="hic-share-input-modal-label" aria-hidden="true">
 
@@ -182,150 +272,6 @@
                         </div>
 
                     </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- genome from file -->
-    <div id="igv-app-genome-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-file-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4  id="igv-app-genome-from-file-modal-label" class="modal-title">Load Genome File</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input class="form-control-file" type="file" title="Load Local File"/>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- genome from url -->
-    <div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4  id="igv-app-genome-from-url-modal-label" class="modal-title">Load Genome URL</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input class="form-control" type="text" title="Enter URL" placeholder="Enter URL"/>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- genome from server -->
-    <div id="igv-app-genome-from-server-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-server-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4  id="igv-app-genome-from-server-modal-label" class="modal-title">Load Genome From Server</h4>
-
-                    <button id="igv-app-genome-from-server-modal-top-close-button" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input id="igv-app-genome-from-server-input" class="form-control" type="text" title="Load From Server" placeholder="Load From Server"/>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- track from ENCODE Table -->
-    <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- track from file or url -->
-    <div id="igv-app-track-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-or-url-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4  id="igv-app-track-from-file-or-url-modal-label" class="modal-title">Load Track File or URL</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
                 </div>
 
             </div>

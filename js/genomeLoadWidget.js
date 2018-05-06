@@ -37,47 +37,16 @@ var igv = (function (igv) {
         this.config = config;
         this.$parent = config.$widgetParent;
 
-        this.fileLoadManager = new igv.GenomeLoadManager(this);
-
-        // file load navbar button
-        if (false === config.embed) {
-            this.$presentationButton = $("<div>", { id:"igv-drag-and-drop-presentation-button", class:'igv-nav-bar-button' });
-            config.$buttonParent.append(this.$presentationButton);
-
-            this.$presentationButton.text('Load Track');
-
-            this.$presentationButton.on('click', function () {
-
-                if (self.$container.is(':visible')) {
-                    self.dismiss();
-                } else {
-                    self.present();
-                }
-
-            });
-        }
+        this.genomeLoadManager = new igv.GenomeLoadManager(this);
 
         // file load widget
-        this.$container = $('<div>', { id:'igv-file-load-widget-container', class: config.embed ? 'igv-file-load-widget-container-embed-position' : 'igv-file-load-widget-container-igvjs-position' });
+        this.$container = $('<div>', { id:'igv-file-load-widget-container', class: 'igv-file-load-widget-container-embed-position' });
         this.$parent.append(this.$container);
-
-        if (false === config.embed) {
-
-            // header
-            $header = $("<div>", { id:"igv-file-load-widget-header" });
-            this.$container.append($header);
-            // header - dismiss button
-            igv.attachDialogCloseHandlerWithParent($header, function () {
-                self.dismiss();
-            });
-
-        }
 
         // local data/index
         obj =
             {
-                dataTitle: 'Local data file',
-                indexTitle: 'Local index file'
+                dataTitle: 'Local data file'
             };
         createInputContainer.call(this, this.$container, obj);
 
@@ -85,8 +54,7 @@ var igv = (function (igv) {
         obj =
             {
                 doURL: true,
-                dataTitle: 'Data URL',
-                indexTitle: 'Index URL'
+                dataTitle: 'Data URL'
             };
         createInputContainer.call(this, this.$container, obj);
 
@@ -134,7 +102,7 @@ var igv = (function (igv) {
     igv.GenomeLoadWidget.prototype.okHandler = function () {
 
         var obj;
-        obj = this.fileLoadManager.trackLoadConfiguration();
+        obj = this.genomeLoadManager.trackLoadConfiguration();
         if (obj) {
             igv.browser.loadTrackList( [ obj ] );
             this.dismiss();
@@ -177,28 +145,14 @@ var igv = (function (igv) {
             createLocalFileContainer.call(this, $input_data_row, 'igv-flw-local-data-file', false);
         }
 
-        // index
-        $input_index_row = $("<div>", { class:"igv-flw-input-row" });
-        $container.append($input_index_row);
-        // label
-        $label = $("<div>", { class:"igv-flw-input-label" });
-        $input_index_row.append($label);
-        $label.text(config.indexTitle);
-
-        if (true === config.doURL) {
-            createURLContainer.call(this, $input_index_row, 'igv-flw-index-url', true);
-        } else {
-            createLocalFileContainer.call(this, $input_index_row, 'igv-flw-local-index-file', true);
-        }
-
     }
 
-    function createURLContainer($parent, id, isIndexFile) {
+    function createURLContainer($parent, id) {
         var self = this,
             $data_drop_target,
             $input;
 
-        $input = $('<input>', { type:'text', placeholder:(true === isIndexFile ? 'Enter index URL' : 'Enter data URL') });
+        $input = $('<input>', { type:'text', placeholder:('Enter data URL') });
         $parent.append($input);
 
         $input.on('focus', function () {
@@ -206,7 +160,7 @@ var igv = (function (igv) {
         });
 
         $input.on('change', function (e) {
-            self.fileLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = $(this).val();
+            self.genomeLoadManager.dictionary[ 'data' ] = $(this).val();
         });
 
         $data_drop_target = $("<div>", { class:"igv-flw-drag-drop-target" });
@@ -227,15 +181,15 @@ var igv = (function (igv) {
                 $(this).removeClass('igv-flw-input-row-hover-state');
             })
             .on('drop', function (e) {
-                if (false === self.fileLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
-                    $input.val(isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName());
+                if (false === self.genomeLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
+                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    $input.val(self.genomeLoadManager.dataName());
                 }
             });
 
     }
 
-    function createLocalFileContainer($parent, id, isIndexFile) {
+    function createLocalFileContainer($parent, id) {
         var self = this,
             $file_chooser_container,
             $data_drop_target,
@@ -266,7 +220,7 @@ var igv = (function (igv) {
 
             self.dismissErrorMessage();
 
-            self.fileLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = e.target.files[ 0 ];
+            self.genomeLoadManager.dictionary[ 'data' ] = e.target.files[ 0 ];
             $file_name.text(e.target.files[ 0 ].name);
             $file_name.attr('title', e.target.files[ 0 ].name);
             $file_name.show();
@@ -286,13 +240,12 @@ var igv = (function (igv) {
             })
             .on('drop', function (e) {
                 var str;
-                if (true === self.fileLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
-                    str = isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName();
+                if (true === self.genomeLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
+                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    str = self.genomeLoadManager.dataName();
                     $file_name.text(str);
                     $file_name.attr('title', str);
                     $file_name.show();
-
                 }
             });
 
@@ -329,7 +282,7 @@ var igv = (function (igv) {
             this.$container.hide();
         }
 
-        this.fileLoadManager.reset();
+        this.genomeLoadManager.reset();
 
         if (false === this.config.embed) {
             this.$container.css({ top:'64px', left:0 });
@@ -364,7 +317,7 @@ var igv = (function (igv) {
         return (files && files.length > 0);
     };
 
-    igv.GenomeLoadManager.prototype.ingestDataTransfer = function (dataTransfer, isIndexFile) {
+    igv.GenomeLoadManager.prototype.ingestDataTransfer = function (dataTransfer) {
         var url,
             files;
 
@@ -372,9 +325,9 @@ var igv = (function (igv) {
         files = dataTransfer.files;
 
         if (files && files.length > 0) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = files[ 0 ];
+            this.dictionary[ 'data' ] = files[ 0 ];
         } else if (url && '' !== url) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = url;
+            this.dictionary[ 'data' ] = url;
         }
 
     };
@@ -396,91 +349,15 @@ var igv = (function (igv) {
     };
 
     igv.GenomeLoadManager.prototype.trackLoadConfiguration = function () {
-        var extension,
-            key,
-            config,
-            _isIndexFile,
-            _isIndexable,
-            indexFileStatus;
-
 
         if (undefined === this.dictionary.data) {
             this.fileLoadWidget.presentErrorMessage('Error: No data file');
             return undefined;
         } else {
-
-            _isIndexFile = isAnIndexFile.call(this, this.dictionary.data);
-            if (true === _isIndexFile) {
-                this.fileLoadWidget.presentErrorMessage('Error: index file submitted as data file.');
-                return undefined;
-            } else {
-
-                if (this.dictionary.index) {
-                    _isIndexFile = isAnIndexFile.call(this, this.dictionary.index);
-                    if (false === _isIndexFile) {
-                        this.fileLoadWidget.presentErrorMessage('Error: index file is not valid.');
-                        return undefined;
-                    }
-                }
-
-                _isIndexable = isIndexable.call(this, this.dictionary.data);
-
-                extension = igv.getExtension({ url: this.dictionary.data });
-
-                key = (this.keyToIndexExtension[ extension ]) ? extension : 'any';
-
-                indexFileStatus = this.keyToIndexExtension[ key ];
-
-                if (true === _isIndexable && false === indexFileStatus.optional) {
-
-                    if (undefined === this.dictionary.index) {
-                        this.fileLoadWidget.presentErrorMessage('Error: index file must be provided.');
-                        return undefined;
-
-                    } else {
-                        return { url: this.dictionary.data, indexURL: this.dictionary.index }
-                    }
-
-                } else {
-
-                    config =
-                        {
-                            url: this.dictionary.data,
-                            indexURL: this.dictionary.index || undefined
-                        };
-
-                    if (undefined === this.dictionary.index) {
-                        config.indexed = false;
-                    }
-
-                    return config;
-                }
-
-            }
-
+            return { url: this.dictionary.data };
         }
 
     };
-
-    function isAnIndexFile(fileOrURL) {
-        var extension;
-
-        extension = igv.getExtension({ url: fileOrURL });
-        return _.contains(_.keys(this.indexExtensionToKey), extension);
-    }
-
-    function isIndexable(fileOrURL) {
-
-        var extension;
-
-        if (true === isAnIndexFile(fileOrURL)) {
-            return false;
-        } else {
-            extension = igv.getExtension({ url: fileOrURL });
-            return (extension !== 'wig' && extension !== 'seg');
-        }
-
-    }
 
     return igv;
 })(igv || {});

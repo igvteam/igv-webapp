@@ -35,6 +35,7 @@ var app = (function (app) {
             $dismiss,
             $ok;
 
+        this.config = config;
         this.$parent = config.$modal.find('.modal-body');
 
         this.genomeLoadManager = new app.GenomeLoadManager(this);
@@ -90,34 +91,6 @@ var app = (function (app) {
 
     };
 
-    app.GenomeLoadWidget.prototype.okHandler = function () {
-
-        var obj;
-        obj = this.genomeLoadManager.genomeLoadConfiguration();
-        if (obj) {
-            console.log('ingest genome');
-            this.dismiss();
-        }
-
-    };
-
-    app.GenomeLoadWidget.prototype.presentErrorMessage = function(message) {
-        this.$error_message.find('#igv-flw-error-message').text(message);
-        this.$error_message.show();
-    };
-
-    app.GenomeLoadWidget.prototype.dismissErrorMessage = function() {
-        this.$error_message.hide();
-        this.$error_message.find('#igv-flw-error-message').text('');
-    };
-
-    app.GenomeLoadWidget.prototype.dismiss = function () {
-        this.dismissErrorMessage();
-        this.$container.find('input').val(undefined);
-        this.$container.find('.igv-flw-local-file-name-container').hide();
-        this.genomeLoadManager.reset();
-    };
-
     app.GenomeLoadWidget.prototype.dropdownLayout = function (config) {
         var $divider,
             $button,
@@ -158,6 +131,43 @@ var app = (function (app) {
         });
 
 
+    };
+
+    app.GenomeLoadWidget.prototype.okHandler = function () {
+
+        var self = this,
+            obj;
+
+        obj = this.genomeLoadManager.genomeLoadConfiguration();
+
+        if (obj) {
+
+            app.genomeController
+                .getGenomes(obj.url)
+                .then(function (genome) {
+                    self.config.browser.loadGenome(genome);
+                    app.trackLoadController.createEncodeTable(genome.id);
+                    self.dismiss();
+                });
+        }
+
+    };
+
+    app.GenomeLoadWidget.prototype.presentErrorMessage = function(message) {
+        this.$error_message.find('#igv-flw-error-message').text(message);
+        this.$error_message.show();
+    };
+
+    app.GenomeLoadWidget.prototype.dismissErrorMessage = function() {
+        this.$error_message.hide();
+        this.$error_message.find('#igv-flw-error-message').text('');
+    };
+
+    app.GenomeLoadWidget.prototype.dismiss = function () {
+        this.dismissErrorMessage();
+        this.$container.find('input').val(undefined);
+        this.$container.find('.igv-flw-local-file-name-container').hide();
+        this.genomeLoadManager.reset();
     };
 
     function loadGenomeHelper (genome) {

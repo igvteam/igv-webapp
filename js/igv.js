@@ -29918,7 +29918,7 @@ var igv = (function (igv) {
             });
         }
 
-        return igv.Genome.loadGenome(config)
+        return igv.GenomeUtils.loadGenome(config)
 
             .then(function (genome) {
 
@@ -29940,15 +29940,15 @@ var igv = (function (igv) {
             .then(function (genome) {
                 if (genomeChange) {
                     return self.search('all');
-                } 
-            })
-            .then(function (genomicStateList) {
-                self.genomicStateList = genomicStateList;
-                if (config.tracks) {
-                    self.loadTrackList(config.tracks);
                 }
             })
+
             .then(function (ignore) {
+
+                if (genomeChange) {
+                    self.loadTrackList(config.tracks);
+                }
+
                 return self.genome;
             })
 
@@ -31398,6 +31398,77 @@ var igv = (function (igv) {
         })
 
     };
+
+    igv.Browser.prototype.toJSON = function () {
+
+        var json = {
+            "reference": this.genome.toJSON()
+        }
+
+        // Use rulerTrack to get current loci.   This is really obtuse and fragile
+        var locus = [];
+        this.rulerTrack.trackView.viewports.forEach(function (viewport) {
+            locus.push(viewport.genomicState.referenceFrame.showLocus(viewport.$viewport.width()));
+
+        })
+        json["locus"] = locus;
+
+
+        var trackJson = [];
+        this.trackViews.forEach(function (tv) {
+
+            var track = tv.track;
+
+            if(track.config) {
+                trackJson.push(track.config);
+            }
+        });
+
+        json["tracks"] = trackJson;
+
+        return JSON.stringify(json);
+
+    }
+
+    igv.Browser.prototype.compressedSession = function () {
+
+        var json, bytes, deflate, compressedBytes, compressedString, enc;
+
+        json = this.toJSON();
+        bytes = [];
+        for (var i = 0; i < json.length; i++) {
+            bytes.push(json.charCodeAt(i));
+        }
+        compressedBytes = new Zlib.RawDeflate(bytes).compress();            // UInt8Arry
+        compressedString = String.fromCharCode.apply(null, compressedBytes);      // Convert to string
+        enc = btoa(compressedString);
+        enc = enc.replace(/\+/g, '.').replace(/\//g, '_').replace(/\=/g, '-');   // URL safe
+
+        //console.log(json);
+        //console.log(enc);
+        
+        return enc;
+    }
+
+    igv.Browser.uncompressSession = function (enc) {
+
+        var compressedString, compressedBytes, bytes, decompressedString, json, i;
+
+        enc = enc.replace(/\./g, '+').replace(/_/g, '/').replace(/-/g, '=')
+
+        compressedString = atob(enc);
+        compressedBytes = [];
+        for (i = 0; i < compressedString.length; i++) {
+            compressedBytes.push(compressedString.charCodeAt(i));
+        }
+        bytes = new Zlib.RawInflate(compressedBytes).decompress();
+        json = String.fromCharCode.apply(null, bytes);
+
+        return json;
+
+
+    }
+
 
     function addMouseHandlers() {
 
@@ -39417,10 +39488,79 @@ var igv = (function (igv) {
 
 var igv = (function (igv) {
 
+    var KNOWN_GENOMES;
 
-    igv.Genome = function (id, sequence, ideograms, aliases) {
+    igv.GenomeUtils = {
 
-        this.id = id;
+        loadGenome: function (config) {
+
+            var cytobandUrl, cytobands, aliasURL, chrNames, chromosomes, sequence;
+
+            cytobandUrl = config.cytobandURL;
+            aliasURL = config.aliasURL;
+            chromosomes = {};
+            sequence = new igv.FastaSequence(config);
+
+            return sequence.init()
+
+                .then(function () {
+
+                    chrNames = sequence.chromosomeNames;
+                    chromosomes = sequence.chromosomes;
+
+                })
+                .then(function (ignore) {
+                    if (cytobandUrl) {
+                        return loadCytobands(cytobandUrl, sequence.config);
+                    } else {
+                        return undefined
+                    }
+                })
+                .then(function (c) {
+
+                    cytobands = c;
+
+                    if (aliasURL) {
+                        return loadAliases(aliasURL, sequence.config);
+                    }
+                    else {
+                        return undefined;
+                    }
+                })
+                .then(function (aliases) {
+                    return new Genome(config, sequence, cytobands, aliases);
+                })
+        },
+
+        getKnownGenomes: function () {
+
+            if (KNOWN_GENOMES) {
+                return Promise.resolve(KNOWN_GENOMES)
+            }
+            else {
+                return igv.xhr.loadJson("https://s3.amazonaws.com/igv.org.genomes/genomes.json", {})
+                    .then(function (jsonArray) {
+
+                        var table = {};
+
+                        jsonArray.forEach(function (json) {
+                            table[json.id] = json;
+                        });
+
+                        KNOWN_GENOMES = table;
+
+                        return table;
+                    })
+
+            }
+        }
+    };
+
+
+    Genome = function (config, sequence, ideograms, aliases) {
+
+        this.config = config;
+        this.id = config.id;
         this.sequence = sequence;
         this.chromosomeNames = sequence.chromosomeNames;
         this.chromosomes = sequence.chromosomes;  // An object (functions as a dictionary)
@@ -39475,67 +39615,27 @@ var igv = (function (igv) {
         this.chrAliasTable = chrAliasTable;
 
     }
+    
+    Genome.prototype.toJSON = function () {
 
-    igv.Genome.loadGenome = function (reference) {
-
-        var cytobandUrl = reference.cytobandURL,
-            cytobands,
-            aliasURL = reference.aliasURL,
-            chrNames,
-            chromosomes = {},
-            sequence;
-
-        sequence = new igv.FastaSequence(reference);
-
-        return sequence.init()
-            
-            .then(function () {
-
-                var order = 0;
-
-                chrNames = sequence.chromosomeNames;
-                chromosomes = sequence.chromosomes;
-
-            })
-            .then(function (ignore) {
-                if (cytobandUrl) {
-                    return loadCytobands(cytobandUrl, sequence.config);
-                } else {
-                    return undefined
-                }
-            })
-            .then(function (c) {
-
-                cytobands = c;
-
-                if (aliasURL) {
-                    return loadAliases(aliasURL, sequence.config);
-                }
-                else {
-                    return undefined;
-                }
-            })
-            .then(function (aliases) {
-                return new igv.Genome(reference.id, sequence, cytobands, aliases);
-            })
+        return Object.assign({}, this.config, {tracks: undefined});
     }
 
-
-    igv.Genome.prototype.getChromosomeName = function (str) {
+    Genome.prototype.getChromosomeName = function (str) {
         var chr = this.chrAliasTable[str.toLowerCase()];
         return chr ? chr : str;
     }
 
-    igv.Genome.prototype.getChromosome = function (chr) {
+    Genome.prototype.getChromosome = function (chr) {
         chr = this.getChromosomeName(chr);
         return this.chromosomes[chr];
     }
 
-    igv.Genome.prototype.getCytobands = function (chr) {
+    Genome.prototype.getCytobands = function (chr) {
         return this.ideograms ? this.ideograms[chr] : null;
     }
 
-    igv.Genome.prototype.getLongestChromosome = function () {
+    Genome.prototype.getLongestChromosome = function () {
 
         var longestChr,
             key,
@@ -39551,7 +39651,7 @@ var igv = (function (igv) {
         }
     }
 
-    igv.Genome.prototype.getChromosomes = function () {
+    Genome.prototype.getChromosomes = function () {
         return this.chromosomes;
     }
 
@@ -39559,7 +39659,7 @@ var igv = (function (igv) {
      * Return the genome coordinate in kb for the give chromosome and position.
      * NOTE: This might return undefined if the chr is filtered from whole genome view.
      */
-    igv.Genome.prototype.getGenomeCoordinate = function (chr, bp) {
+    Genome.prototype.getGenomeCoordinate = function (chr, bp) {
 
         var offset = this.getCumulativeOffset(chr);
         if (offset === undefined) return undefined;
@@ -39570,7 +39670,7 @@ var igv = (function (igv) {
     /**
      * Return the chromosome and coordinate in bp for the given genome coordinate
      */
-    igv.Genome.prototype.getChromosomeCoordinate = function (genomeCoordinate) {
+    Genome.prototype.getChromosomeCoordinate = function (genomeCoordinate) {
 
         var self = this,
             lastChr,
@@ -39604,7 +39704,7 @@ var igv = (function (igv) {
      * Return the offset in genome coordinates (kb) of the start of the given chromosome
      * NOTE:  This might return undefined if the chromosome is filtered from whole genome view.
      */
-    igv.Genome.prototype.getCumulativeOffset = function (chr) {
+    Genome.prototype.getCumulativeOffset = function (chr) {
 
         var self = this,
             queryChr = this.getChromosomeName(chr);
@@ -39630,7 +39730,7 @@ var igv = (function (igv) {
     /**
      * Return the genome length in kb
      */
-    igv.Genome.prototype.getGenomeLength = function () {
+    Genome.prototype.getGenomeLength = function () {
         var lastChr, offset;
         lastChr = _.last(this.wgChromosomeNames);
         return this.getCumulativeOffset(lastChr) + this.getChromosome(lastChr).bpLength;
@@ -39811,30 +39911,6 @@ var igv = (function (igv) {
 
     }
 
-
-    igv.Genome.getKnownGenomes = function () {
-
-        if (igv.Genome.KnownGenomes) {
-            return Promise.resolve(igv.Genome.KnownGenomes)
-        }
-        else {
-            return igv.xhr.loadJson("https://s3.amazonaws.com/igv.org.genomes/genomes.json", {})
-                .then(function (jsonArray) {
-
-                    var table = {};
-
-                    jsonArray.forEach(function (json) {
-                        table[json.id] = json;
-                    });
-
-                    igv.Genome.KnownGenomes = table;
-
-                    return table;
-                })
-
-        }
-
-    }
 
     return igv;
 
@@ -42986,16 +43062,20 @@ var igv = (function (igv) {
         if (config.oauthToken) igv.setOauthToken(config.oauthToken);
 
         promise = doPromiseChain(browser, config);
+
         return true === config.promisified ? promise : browser;
 
     };
 
     function doPromiseChain(browser, config) {
 
-        return igv.Genome.getKnownGenomes()
+        var knownGenomes;
+
+        return igv.GenomeUtils.getKnownGenomes()
 
             .then(function (genomeTable) {
                 // Potentially load a session file
+                knownGenomes = genomeTable;
                 return loadSessionFile(config.sessionURL);
             })
 
@@ -43005,16 +43085,14 @@ var igv = (function (igv) {
 
                 if (session) {
                     config = Object.assign(config, session);
-                    if (locus) config.locus = locus;    // Restore
-
-                    if (undefined === config.tracks) config.tracks = [];
-                    config.tracks.push({type: "sequence", order: -Number.MAX_VALUE});
+                    if (locus) {
+                        config.locus = locus;  // Restore possible override by session
+                    }
                 }
 
                 // Expand genome IDs and deal with legacy genome definition options
-                setReferenceConfiguration(config);
+                return setReferenceConfiguration(config);
 
-                return config;
             })
 
             .then(function (config) {
@@ -43024,11 +43102,16 @@ var igv = (function (igv) {
                 return browser.createGenomicStateList(getInitialLocus(config, genome));
             })
             .then(function (genomicStateList) {
+                browser.genomicStateList = genomicStateList;
+                if (config.reference.tracks) {
+                    browser.loadTrackList(config.reference.tracks);
+                }
+            })
+            .then(function (ignore) {
 
                 var viewportWidth,
                     errorString;
 
-                browser.genomicStateList = genomicStateList;
 
                 if (browser.genomicStateList.length > 0) {
 
@@ -43187,23 +43270,33 @@ var igv = (function (igv) {
 
     function setReferenceConfiguration(conf) {
 
+        var genomeID;
+
         if (conf.genome) {
+            genomeID = conf.genome;
             conf.reference = expandGenome(conf.genome);
         }
-        else if (conf.fastaURL) {   // legacy property
-            conf.reference = {
-                fastaURL: conf.fastaURL,
-                cytobandURL: conf.cytobandURL
-            }
-        }
         else if (conf.reference && conf.reference.id !== undefined && conf.reference.fastaURL === undefined) {
+            genomeID = conf.reference.id;
             conf.reference = expandGenome(conf.reference.id);
         }
 
-        if (!(conf.reference && conf.reference.fastaURL)) {
-            //alert("Fatal error:  reference must be defined");
-            igv.presentAlert("Fatal error:  reference must be defined", undefined);
-            throw new Error("Fatal error:  reference must be defined");
+
+        if (genomeID) {
+            return igv.GenomeUtils.getKnownGenomes()
+                .then(function (knownGenomes) {
+                    conf.reference = knownGenomes[genomeID];
+                    if (!conf.reference)igv.presentAlert("Uknown genome id: " + genomeID, undefined);
+                    return conf;
+                })
+        }
+        else {
+            if (!(conf.reference && conf.reference.fastaURL)) {
+                //alert("Fatal error:  reference must be defined");
+                igv.presentAlert("Fatal error:  reference must be defined", undefined);
+                throw new Error("Fatal error:  reference must be defined");
+            }
+            return Promise.resolve(conf);
         }
 
 
@@ -43215,11 +43308,7 @@ var igv = (function (igv) {
          */
         function expandGenome(genomeId) {
 
-            var reference = igv.Genome.KnownGenomes[genomeId];
 
-            if (!reference)igv.presentAlert("Uknown genome id: " + genomeId, undefined);
-
-            return reference;
         }
 
     }
@@ -43524,7 +43613,7 @@ var igv = (function (igv) {
                     value = decodeURIComponent(tokens[1]);
 
                     if ('file' === key) {
-
+                        // IGV desktop style file parameter
                         if (!config.tracks) config.tracks = [];
                         value.split(',').forEach(function (t) {
                             config.tracks.push({
@@ -43543,16 +43632,23 @@ var igv = (function (igv) {
         return query;
     }
 
-    function loadSessionFile(igvSession, locus) {
+    function loadSessionFile(igvSession) {
 
-        if (igvSession) {
+        if (igvSession && igvSession.startsWith("blob:")) {
+            var json = igv.Browser.uncompressSession(igvSession.substring(5));
+            return JSON.parse(json);
+        }
+        else if (igvSession && igvSession.endsWith(".xml")) {
             return igv.xhr.loadString(igvSession)
                 .then(function (string) {
                     return new igv.XMLSession(string);
                 })
         }
+        else if (igvSession && igvSession.endsWith(".json")) {
+            return igv.xhr.loadJson(igvSession);
+        }
         else {
-            return Promise.resolve(undefined);
+            return Promise.resolve(undefined)
         }
     }
 
@@ -46928,7 +47024,7 @@ var igv = (function (igv) {
     igv.ReferenceFrame = function (chrName, start, end, bpPerPixel) {
         this.chrName = chrName;
         this.start = start;
-        this.end = end;
+        this.end = end;                 // TODO WARNING THIS IS NOT UPDATED !!!
         this.bpPerPixel = bpPerPixel;
     };
 

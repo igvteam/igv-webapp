@@ -23,30 +23,80 @@
 var app = (function (app) {
 
     app.GenomeController = function () {
+        this.fileReader = new FileReader();
+        promisifyFileReader(this.fileReader);
     };
 
     app.GenomeController.prototype.getGenomes = function (url) {
-        var self = this;
 
-        return igv.xhr
-            .loadJson(url, {})
-            .then(function (result) {
-                var dictionary;
+        if (url instanceof File) {
 
-                dictionary = {};
-                if (true === Array.isArray(result)) {
+            return this.fileReader
+                .readAsTextAsync(url)
+                .then(function (result) {
+                    return JSON.parse(result);
+                });
 
-                    result.forEach(function (json) {
-                        dictionary[ json.id ] = json;
-                    });
+        } else {
+            return igv.xhr
+                .loadJson(url, {})
+                .then(function (result) {
+                    var dictionary;
 
-                } else {
-                    dictionary[ result.id ] = result;
-                }
+                    dictionary = {};
+                    if (true === Array.isArray(result)) {
+                        result.forEach(function (json) {
+                            dictionary[ json.id ] = json;
+                        });
+                    } else {
+                        dictionary[ result.id ] = result;
+                    }
 
-                return dictionary;
-            })
+                    return dictionary;
+                })
+        }
+
     };
+
+    function promisifyFileReader (filereader) {
+
+        function composeAsync (key) {
+            return function () {
+                var args = arguments;
+
+                return new Promise (function (resolve, reject) {
+                    //
+                    function resolveHandler () {
+                        cleanHandlers();
+                        resolve(filereader.result)
+                    }
+                    function rejectHandler () {
+                        cleanHandlers();
+                        reject(filereader.error)
+                    }
+                    function cleanHandlers () {
+                        filereader.removeEventListener('load', resolveHandler);
+                        filereader.removeEventListener('abort', rejectHandler);
+                        filereader.removeEventListener('error', rejectHandler);
+                    }
+
+                    // :: ehhhhh
+                    filereader.addEventListener('load', resolveHandler);
+                    filereader.addEventListener('abort', rejectHandler);
+                    filereader.addEventListener('error', rejectHandler);
+
+                    // :: go!
+                    filereader[key].apply(filereader, args);
+                })
+            }
+        }
+        for (var key in filereader) {
+            if (!key.match(/^read/) || typeof filereader[key] !== 'function') {
+                continue;
+            }
+            filereader[key + 'Async'] = composeAsync(key);
+        }
+    }
 
     app.GenomeController.defaultGenomeURL = 'https://s3.amazonaws.com/igv.org.genomes/genomes.json';
 

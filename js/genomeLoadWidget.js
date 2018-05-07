@@ -32,16 +32,15 @@ var app = (function (app) {
     app.GenomeLoadWidget = function (config) {
         var self = this,
             obj,
-            $header,
-            $div;
+            $dismiss,
+            $ok;
 
-        this.config = config;
-        this.$parent = config.$widgetParent;
+        this.$parent = config.$modal.find('.modal-body');
 
         this.genomeLoadManager = new app.GenomeLoadManager(this);
 
         // file load widget
-        this.$container = $('<div>', { id:'igv-file-load-widget-container', class: 'igv-file-load-widget-container-embed-position' });
+        this.$container = $('<div>', { id:'igv-file-load-widget-container', class: 'igv-app-genome-load-widget-position' });
         this.$parent.append(this.$container);
 
         // local data/index
@@ -70,42 +69,33 @@ var app = (function (app) {
         });
         this.dismissErrorMessage();
 
-        if (false === config.embed) {
 
-            // ok | cancel - container
-            $div = $("<div>", { id:"igv-file-load-widget-ok-cancel" });
-            this.$container.append($div);
+        // upper dismiss - x - button
+        $dismiss = config.$modal.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.dismiss();
+        });
 
-            // ok
-            this.$ok = $('<div>');
-            $div.append(this.$ok);
-            this.$ok.text('OK');
-            this.$ok.on('click', function () {
-                self.okHandler();
-            });
+        // lower dismiss - close - button
+        $dismiss = config.$modal.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.dismiss();
+        });
 
-            // cancel
-            this.$cancel = $('<div>');
-            $div.append(this.$cancel);
-            this.$cancel.text('Cancel');
-            this.$cancel.on('click', function () {
-                self.dismiss();
-            });
-
-            this.$container.draggable({ handle: $header.get(0) });
-
-            this.$container.hide();
-
-        }
+        // ok - button
+        $ok = config.$modal.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
+            self.okHandler();
+        });
 
     };
 
     app.GenomeLoadWidget.prototype.okHandler = function () {
 
         var obj;
-        obj = this.genomeLoadManager.trackLoadConfiguration();
+        obj = this.genomeLoadManager.genomeLoadConfiguration();
         if (obj) {
-            igv.browser.loadTrackList( [ obj ] );
+            console.log('ingest genome');
             this.dismiss();
         }
 
@@ -121,28 +111,65 @@ var app = (function (app) {
         this.$error_message.find('#igv-flw-error-message').text('');
     };
 
-    app.GenomeLoadWidget.prototype.present = function () {
-        this.$container.show();
-    };
-
     app.GenomeLoadWidget.prototype.dismiss = function () {
-
         this.dismissErrorMessage();
-
         this.$container.find('input').val(undefined);
         this.$container.find('.igv-flw-local-file-name-container').hide();
-
-        if (false === this.config.embed) {
-            this.$container.hide();
-        }
-
         this.genomeLoadManager.reset();
+    };
 
-        if (false === this.config.embed) {
-            this.$container.css({ top:'64px', left:0 });
-        }
+    app.GenomeLoadWidget.prototype.dropdownLayout = function (config) {
+        var $divider,
+            $button,
+            keys;
+
+        config.$dropdown_menu.empty();
+
+        keys = Object.keys(config.genomeDictionary);
+
+        keys.forEach(function (jsonID) {
+
+            $button = createButton(jsonID);
+            config.$dropdown_menu.append($button);
+
+            $button.on('click', function () {
+                var key;
+
+                key = $(this).text();
+
+                config.browser.loadGenome(config.genomeDictionary[ key ]);
+
+                app.trackLoadController.createEncodeTable(config.genomeDictionary[ key ].id);
+            });
+
+        });
+
+        // menu divider
+        $divider  = $('<div>', { class:'dropdown-divider' });
+        config.$dropdown_menu.append($divider);
+
+        // genome from file or url button
+        $button = createButton('file or url ...');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$modal.modal();
+        });
+
 
     };
+
+    function loadGenomeHelper (genome) {
+
+    }
+
+    function createButton (title) {
+        var $button;
+
+        $button = $('<button>', { class:'dropdown-item', type:'button' });
+        $button.text(title);
+
+        return $button;
+    }
 
     function createInputContainer($parent, config) {
         var $container,
@@ -171,7 +198,7 @@ var app = (function (app) {
 
     }
 
-    function createURLContainer($parent, id) {
+    function createURLContainer($parent) {
         var self = this,
             $data_drop_target,
             $input;
@@ -275,23 +302,9 @@ var app = (function (app) {
 
     }
 
-    app.GenomeLoadManager = function (fileLoadWidget) {
-
-        this.fileLoadWidget = fileLoadWidget;
-
+    app.GenomeLoadManager = function (genomeLoadWidget) {
+        this.genomeLoadWidget = genomeLoadWidget;
         this.dictionary = {};
-
-        this.keyToIndexExtension =
-            {
-                bam: { extension: 'bai', optional: false },
-                any: { extension: 'idx', optional: true  },
-                gz: { extension: 'tbi', optional: true  }
-            };
-
-        this.indexExtensionToKey = _.invert(_.mapObject(this.keyToIndexExtension, function (val) {
-            return val.extension;
-        }));
-
     };
 
     app.GenomeLoadManager.prototype.didDragFile = function (dataTransfer) {
@@ -325,10 +338,10 @@ var app = (function (app) {
         this.dictionary = {};
     };
 
-    app.GenomeLoadManager.prototype.trackLoadConfiguration = function () {
+    app.GenomeLoadManager.prototype.genomeLoadConfiguration = function () {
 
         if (undefined === this.dictionary.data) {
-            this.fileLoadWidget.presentErrorMessage('Error: No data file');
+            this.genomeLoadWidget.presentErrorMessage('Error: No data file');
             return undefined;
         } else {
             return { url: this.dictionary.data };

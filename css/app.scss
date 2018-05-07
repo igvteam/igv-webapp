@@ -7,7 +7,16 @@ $igv-app-dark-color: #5f5f5f;
 $igv-app-dark-dark-color: #373737;
 $igv-app-hover-color: #0f0f0f;
 $igv-app-padding-width: 8px;
+$igv-app-genome-load-widget-height: 200px;
 
+.igv-app-genome-load-widget-position {
+  position: relative;
+
+  height: $igv-app-genome-load-widget-height;
+
+  border-color: transparent;
+
+}
 
 .igv-app-navbar-backdrop {
   background-color: $igv-app-dark-color;

@@ -43,53 +43,29 @@ var app = (function (app) {
                 app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
 
                 // Genome Load Widget
-                // genomeLoadWidgetConfig =
-                //     {
-                //         embed: true,
-                //         $widgetParent: $('#igv-app-genome-from-file-or-url-modal').find('.modal-body')
-                //     };
-                //
-                // app.genomeLoadWidget = new app.GenomeLoadWidget(genomeLoadWidgetConfig);
+                genomeLoadWidgetConfig =
+                    {
+                        browser: browser,
+                        $modal: $('#igv-app-genome-from-file-or-url-modal')
+                    };
+
+                app.genomeLoadWidget = new app.GenomeLoadWidget(genomeLoadWidgetConfig);
 
                 // Genome controller configuration
                 app.genomeController = new app.GenomeController();
-                app.genomeController.getGenomes()
+                app.genomeController.getGenomes(app.GenomeController.defaultGenomeURL)
                     .then(function (genomeDictionary) {
-                        var $dropdown_menu,
-                            $divider,
-                            $button,
-                            keys;
+                        var config;
 
-                        $dropdown_menu = $('#igv-app-genome-dropdown').find('.dropdown-menu');
+                        config =
+                            {
+                                browser: browser,
+                                $modal: $('#igv-app-genome-from-file-or-url-modal'),
+                                $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
+                                genomeDictionary: genomeDictionary
 
-                        keys = Object.keys(genomeDictionary);
-
-                        keys.forEach(function (jsonID) {
-
-                            $button = createButton(jsonID);
-                            $dropdown_menu.append($button);
-
-                            $button.on('click', function () {
-                                var key;
-                                key = $(this).text();
-                                browser.loadGenome(genomeDictionary[ key ]);
-                                app.trackLoadController.createEncodeTable(genomeDictionary[ key ].id);
-                            });
-
-                        });
-
-                        // menu divider
-                        $divider  = $('<div>', { class:'dropdown-divider' });
-                        $dropdown_menu.append($divider);
-
-                        // genome from file or url button
-                        $button = createButton('file or url ...');
-                        $dropdown_menu.append($button);
-                        $button.on('click', function () {
-                            $('#igv-app-genome-from-file-or-url-modal').modal();
-                        });
-
-
+                            };
+                        app.genomeLoadWidget.dropdownLayout(config)
                     });
 
                 // URL Shortener Configuration
@@ -181,14 +157,6 @@ var app = (function (app) {
         return configuration;
     }
 
-    function createButton (title) {
-        var $button;
-
-        $button = $('<button>', { class:'dropdown-item', type:'button' });
-        $button.text(title);
-
-        return $button;
-    }
 
     return app;
 

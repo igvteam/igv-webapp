@@ -25,11 +25,11 @@ var app = (function (app) {
     app.GenomeController = function () {
     };
 
-    app.GenomeController.prototype.getGenomes = function () {
+    app.GenomeController.prototype.getGenomes = function (url) {
         var self = this;
 
         return igv.xhr
-            .loadJson(app.GenomeController.defaultGenomeURL, {})
+            .loadJson(url, {})
             .then(function (list) {
 
                 self.genomes = {};

@@ -52,6 +52,11 @@ a#hic-email-button:active {
 .hic-social-button {
   float: left; }
 
+.igv-app-genome-load-widget-position {
+  position: relative;
+  height: 200px;
+  border-color: transparent; }
+
 .igv-app-navbar-backdrop {
   background-color: #5f5f5f; }
 

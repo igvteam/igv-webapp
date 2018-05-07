@@ -51953,7 +51953,7 @@ var igv = (function (igv) {
             })
             .on('drop', function (e) {
                 if (false === self.fileLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
                     $input.val(isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName());
                 }
             });
@@ -52012,7 +52012,7 @@ var igv = (function (igv) {
             .on('drop', function (e) {
                 var str;
                 if (true === self.fileLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
                     str = isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName();
                     $file_name.text(str);
                     $file_name.attr('title', str);

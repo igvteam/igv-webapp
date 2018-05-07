@@ -27,8 +27,8 @@
 /**
  * Created by dat on 4/8/18.
  */
-var igv = (function (igv) {
-    igv.GenomeLoadWidget = function (config) {
+var app = (function (app) {
+    app.GenomeLoadWidget = function (config) {
         var self = this,
             obj,
             $header,
@@ -37,7 +37,7 @@ var igv = (function (igv) {
         this.config = config;
         this.$parent = config.$widgetParent;
 
-        this.genomeLoadManager = new igv.GenomeLoadManager(this);
+        this.genomeLoadManager = new app.GenomeLoadManager(this);
 
         // file load widget
         this.$container = $('<div>', { id:'igv-file-load-widget-container', class: 'igv-file-load-widget-container-embed-position' });
@@ -99,7 +99,7 @@ var igv = (function (igv) {
 
     };
 
-    igv.GenomeLoadWidget.prototype.okHandler = function () {
+    app.GenomeLoadWidget.prototype.okHandler = function () {
 
         var obj;
         obj = this.genomeLoadManager.trackLoadConfiguration();
@@ -110,12 +110,12 @@ var igv = (function (igv) {
 
     };
 
-    igv.GenomeLoadWidget.prototype.presentErrorMessage = function(message) {
+    app.GenomeLoadWidget.prototype.presentErrorMessage = function(message) {
         this.$error_message.find('#igv-flw-error-message').text(message);
         this.$error_message.show();
     };
 
-    igv.GenomeLoadWidget.prototype.dismissErrorMessage = function() {
+    app.GenomeLoadWidget.prototype.dismissErrorMessage = function() {
         this.$error_message.hide();
         this.$error_message.find('#igv-flw-error-message').text('');
     };
@@ -267,11 +267,11 @@ var igv = (function (igv) {
 
     }
 
-    igv.GenomeLoadWidget.prototype.present = function () {
+    app.GenomeLoadWidget.prototype.present = function () {
         this.$container.show();
     };
 
-    igv.GenomeLoadWidget.prototype.dismiss = function () {
+    app.GenomeLoadWidget.prototype.dismiss = function () {
 
         this.dismissErrorMessage();
 
@@ -290,7 +290,7 @@ var igv = (function (igv) {
 
     };
 
-    igv.GenomeLoadManager = function (fileLoadWidget) {
+    app.GenomeLoadManager = function (fileLoadWidget) {
 
         this.fileLoadWidget = fileLoadWidget;
 
@@ -309,7 +309,7 @@ var igv = (function (igv) {
 
     };
 
-    igv.GenomeLoadManager.prototype.didDragFile = function (dataTransfer) {
+    app.GenomeLoadManager.prototype.didDragFile = function (dataTransfer) {
         var files;
 
         files = dataTransfer.files;
@@ -317,7 +317,7 @@ var igv = (function (igv) {
         return (files && files.length > 0);
     };
 
-    igv.GenomeLoadManager.prototype.ingestDataTransfer = function (dataTransfer) {
+    app.GenomeLoadManager.prototype.ingestDataTransfer = function (dataTransfer) {
         var url,
             files;
 
@@ -332,11 +332,11 @@ var igv = (function (igv) {
 
     };
 
-    igv.GenomeLoadManager.prototype.indexName = function () {
+    app.GenomeLoadManager.prototype.indexName = function () {
         return itemName(this.dictionary.index);
     };
 
-    igv.GenomeLoadManager.prototype.dataName = function () {
+    app.GenomeLoadManager.prototype.dataName = function () {
         return itemName(this.dictionary.data);
     };
 
@@ -344,11 +344,11 @@ var igv = (function (igv) {
         return igv.isFilePath(item) ? item.name : item;
     }
 
-    igv.GenomeLoadManager.prototype.reset = function () {
+    app.GenomeLoadManager.prototype.reset = function () {
         this.dictionary = {};
     };
 
-    igv.GenomeLoadManager.prototype.trackLoadConfiguration = function () {
+    app.GenomeLoadManager.prototype.trackLoadConfiguration = function () {
 
         if (undefined === this.dictionary.data) {
             this.fileLoadWidget.presentErrorMessage('Error: No data file');

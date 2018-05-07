@@ -24,13 +24,12 @@ var app = (function (app) {
 
     app.init = function ($container, appConfig) {
 
-        var trackLoadConfig,
-            shareConfig;
-
-        // Browser Configuration
         igv
             .createBrowser($container.get(0), igvConfigurator())
             .then(function (browser) {
+                var trackLoadConfig,
+                    genomeLoadWidgetConfig,
+                    shareConfig;
 
                 // Track load controller configuration
                 trackLoadConfig =
@@ -42,6 +41,15 @@ var app = (function (app) {
                     };
 
                 app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
+
+                // Genome Load Widget
+                // genomeLoadWidgetConfig =
+                //     {
+                //         embed: true,
+                //         $widgetParent: $('#igv-app-genome-from-file-or-url-modal').find('.modal-body')
+                //     };
+                //
+                // app.genomeLoadWidget = new app.GenomeLoadWidget(genomeLoadWidgetConfig);
 
                 // Genome controller configuration
                 app.genomeController = new app.GenomeController();

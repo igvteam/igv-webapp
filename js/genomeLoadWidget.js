@@ -28,6 +28,7 @@
  * Created by dat on 4/8/18.
  */
 var app = (function (app) {
+
     app.GenomeLoadWidget = function (config) {
         var self = this,
             obj,
@@ -118,6 +119,29 @@ var app = (function (app) {
     app.GenomeLoadWidget.prototype.dismissErrorMessage = function() {
         this.$error_message.hide();
         this.$error_message.find('#igv-flw-error-message').text('');
+    };
+
+    app.GenomeLoadWidget.prototype.present = function () {
+        this.$container.show();
+    };
+
+    app.GenomeLoadWidget.prototype.dismiss = function () {
+
+        this.dismissErrorMessage();
+
+        this.$container.find('input').val(undefined);
+        this.$container.find('.igv-flw-local-file-name-container').hide();
+
+        if (false === this.config.embed) {
+            this.$container.hide();
+        }
+
+        this.genomeLoadManager.reset();
+
+        if (false === this.config.embed) {
+            this.$container.css({ top:'64px', left:0 });
+        }
+
     };
 
     function createInputContainer($parent, config) {
@@ -251,45 +275,6 @@ var app = (function (app) {
 
     }
 
-    function echoDraggedItem (dataTransfer) {
-
-        var url,
-            files;
-
-        url = dataTransfer.getData('text/uri-list');
-        files = dataTransfer.files;
-
-        if (files && files.length > 0) {
-            console.log('file dragged');
-        } else if (url && '' !== url) {
-            console.log('url dragged');
-        }
-
-    }
-
-    app.GenomeLoadWidget.prototype.present = function () {
-        this.$container.show();
-    };
-
-    app.GenomeLoadWidget.prototype.dismiss = function () {
-
-        this.dismissErrorMessage();
-
-        this.$container.find('input').val(undefined);
-        this.$container.find('.igv-flw-local-file-name-container').hide();
-
-        if (false === this.config.embed) {
-            this.$container.hide();
-        }
-
-        this.genomeLoadManager.reset();
-
-        if (false === this.config.embed) {
-            this.$container.css({ top:'64px', left:0 });
-        }
-
-    };
-
     app.GenomeLoadManager = function (fileLoadWidget) {
 
         this.fileLoadWidget = fileLoadWidget;
@@ -332,17 +317,9 @@ var app = (function (app) {
 
     };
 
-    app.GenomeLoadManager.prototype.indexName = function () {
-        return itemName(this.dictionary.index);
-    };
-
     app.GenomeLoadManager.prototype.dataName = function () {
         return itemName(this.dictionary.data);
     };
-
-    function itemName (item) {
-        return igv.isFilePath(item) ? item.name : item;
-    }
 
     app.GenomeLoadManager.prototype.reset = function () {
         this.dictionary = {};
@@ -359,5 +336,9 @@ var app = (function (app) {
 
     };
 
-    return igv;
-})(igv || {});
+    function itemName (item) {
+        return igv.isFilePath(item) ? item.name : item;
+    }
+
+    return app;
+})(app || {});

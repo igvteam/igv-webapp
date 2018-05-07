@@ -53,7 +53,7 @@ var app = (function (app) {
 
                 // Genome controller configuration
                 app.genomeController = new app.GenomeController();
-                app.genomeController.getGenomes(app.GenomeController.defaultGenomeURL)
+                app.genomeController.getGenomes(/*app.GenomeController.defaultGenomeURL*/'resources/genome.json')
                     .then(function (genomeDictionary) {
                         var config;
 

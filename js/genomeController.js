@@ -30,14 +30,21 @@ var app = (function (app) {
 
         return igv.xhr
             .loadJson(url, {})
-            .then(function (list) {
+            .then(function (result) {
+                var dictionary;
 
-                self.genomes = {};
-                list.forEach(function (json) {
-                    self.genomes[ json.id ] = json;
-                });
+                dictionary = {};
+                if (true === Array.isArray(result)) {
 
-                return self.genomes;
+                    result.forEach(function (json) {
+                        dictionary[ json.id ] = json;
+                    });
+
+                } else {
+                    dictionary[ result.id ] = result;
+                }
+
+                return dictionary;
             })
     };
 

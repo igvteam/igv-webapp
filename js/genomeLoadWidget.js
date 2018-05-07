@@ -133,13 +133,15 @@ var app = (function (app) {
             config.$dropdown_menu.append($button);
 
             $button.on('click', function () {
-                var key;
+                var key,
+                    genome;
 
                 key = $(this).text();
 
-                config.browser.loadGenome(config.genomeDictionary[ key ]);
+                genome = config.genomeDictionary[ key ];
 
-                app.trackLoadController.createEncodeTable(config.genomeDictionary[ key ].id);
+                config.browser.loadGenome(genome);
+                app.trackLoadController.createEncodeTable(genome.id);
             });
 
         });

@@ -42,12 +42,15 @@ var app = (function (app) {
             hic.shortJuiceboxURL(href)
                 .then(function (jbUrl) {
 
+                    /*
                     getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl)
                         .then(function (embedSnippet) {
                             shareConfig.$embed_container.find('textarea').val(embedSnippet);
                             shareConfig.$embed_container.find('textarea').get(0).select();
                         });
+                    */
 
+                    /*
                     hic.shortenURL(jbUrl)
                         .then(function (shortURL) {
 
@@ -86,6 +89,54 @@ var app = (function (app) {
 
                             qrcode.makeCode(shortURL);
                         });
+                    */
+
+                    return getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl);
+                })
+                .then(function (embedSnippet, jbUrl) {
+
+                    shareConfig.$embed_container.find('textarea').val(embedSnippet);
+                    shareConfig.$embed_container.find('textarea').get(0).select();
+
+                    // TODO: HACK - dat
+                    // return hic.shortenURL(jbUrl);
+                    return 'http://www.apple.com';
+                })
+                .then(function (shortURL) {
+
+                    var obj;
+
+                    // Shorten second time
+                    // e.g. converts https://aidenlab.org/juicebox?juiceboxURL=https://goo.gl/WUb1mL  to https://goo.gl/ERHp5u
+
+                    shareConfig.$share_input.val(shortURL);
+                    shareConfig.$share_input.get(0).select();
+
+                    shareConfig.$email_button.attr('href', 'mailto:?body=' + shortURL);
+
+                    // QR code generation
+                    shareConfig.$qrcode_image.empty();
+                    obj =
+                        {
+                            width: 128,
+                            height: 128,
+                            correctLevel: QRCode.CorrectLevel.H
+                        };
+
+                    qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
+
+                    qrcode.makeCode(shortURL);
+
+                    shareConfig.$tweet_button_container.empty();
+                    obj =
+                        {
+                            text: 'Contact map: '
+                        };
+
+                    return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
+                })
+                .then(function (el) {
+                    console.log("Tweet button updated");
                 });
         });
 
@@ -146,7 +197,7 @@ var app = (function (app) {
             embedUrl = (embedTarget || getEmbedTarget()) + params;
             width = $appContainer.width() + 50;
             height = $appContainer.height();
-            fulfill('<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>');
+            fulfill('<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>', jbUrl);
         });
 
     }

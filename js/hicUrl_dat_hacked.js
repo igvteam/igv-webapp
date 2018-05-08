@@ -102,6 +102,8 @@ var hic = (function (hic) {
         var url, queryString,
             self = this;
 
+        // TODO: HACK - dat
+        /*
         url = base + "?juicebox=";
 
         queryString = "{";
@@ -111,11 +113,14 @@ var hic = (function (hic) {
         });
 
         url = url + encodeURIComponent(queryString);
+        */
 
-        return self.shortenURL(url)
+        // TODO: HACK - dat
+        return self.shortenURL('http://www.apple.com')
 
             .then(function (shortURL) {
 
+                /*
                 // Now shorten a second time, with short url as a parameter.  This solves the problem of
                 // the expanded url (after a redirect) being over the browser limit.
 
@@ -128,7 +133,9 @@ var hic = (function (hic) {
                 }
 
                 url = href + "?juiceboxURL=" + shortURL;
-                return url;
+                */
+
+                return shortURL;
             })
     };
 

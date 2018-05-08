@@ -70,6 +70,7 @@ var app = (function (app) {
 
                 // URL Shortener Configuration
                 if (appConfig.urlShortener) {
+
                     hic.setURLShortener(appConfig.urlShortener);
 
                     shareConfig =

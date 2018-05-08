@@ -71,7 +71,7 @@ var app = (function (app) {
                 // URL Shortener Configuration
                 if (appConfig.urlShortener) {
 
-                    hic.setURLShortener(appConfig.urlShortener);
+                    app.setURLShortener(appConfig.urlShortener);
 
                     shareConfig =
                         {
@@ -102,6 +102,7 @@ var app = (function (app) {
 
         configuration =
             {
+                queryParametersSupported: true,
                 fileLoadWidget:
                     {
                         hidden: false,
@@ -113,46 +114,61 @@ var app = (function (app) {
                 minimumBases: 6,
                 showIdeogram: true,
                 showRuler: true,
-                locus: 'myc',
-                // locus: 'brca1',
-                // locus: 'SLC25A3',
-                // locus: 'rs28372744',
-                // locus: ['egfr', 'myc', 'pten'],
-                // locus: ['2', '4', '8'],
+                // locus: 'myc',
+                // // locus: 'brca1',
+                // // locus: 'SLC25A3',
+                // // locus: 'rs28372744',
+                // // locus: ['egfr', 'myc', 'pten'],
+                // // locus: ['2', '4', '8'],
                 reference:
                     {
                         id: "hg19",
                         fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/1kg_v37/human_g1k_v37_decoy.fasta",
-                        cytobandURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/b37/b37_cytoband.txt"
-                    },
-                flanking: 75000,
-                search: {
-                    url: "https://dev.gtexportal.org/rest/v1/reference/features/$FEATURE$",
-                    resultsField: "features"
-                },
-                apiKey: 'AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0',
-                palette:
-                    [
-                        "#00A0B0",
-                        "#6A4A3C",
-                        "#CC333F",
-                        "#EB6841"
-                    ],
-                tracks:
-                    [
-                        {
-                            name: "Genes",
-                            searchable: false,
-                            type: "annotation",
-                            format: "gtf",
-                            sourceType: "file",
-                            url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
-                            indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
-                            visibilityWindow: 10000000,
-                            order: Number.MAX_VALUE,
-                            displayMode: "EXPANDED"
-                        }
-                    ]
+                        cytobandURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/b37/b37_cytoband.txt",
+                        tracks:
+                            [
+                                {
+                                    name: "Genes",
+                                    searchable: false,
+                                    type: "annotation",
+                                    format: "gtf",
+                                    sourceType: "file",
+                                    url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
+                                    indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
+                                    visibilityWindow: 10000000,
+                                    order: Number.MAX_VALUE,
+                                    displayMode: "EXPANDED"
+                                }
+                            ]
+                    }
+                // flanking: 75000,
+                // search: {
+                //     url: "https://dev.gtexportal.org/rest/v1/reference/features/$FEATURE$",
+                //     resultsField: "features"
+                // },
+                // apiKey: 'AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0',
+                // palette:
+                //     [
+                //         "#00A0B0",
+                //         "#6A4A3C",
+                //         "#CC333F",
+                //         "#EB6841"
+                //     ],
+                // tracks:
+                //     [
+                //         {
+                //             name: "Genes",
+                //             searchable: false,
+                //             type: "annotation",
+                //             format: "gtf",
+                //             sourceType: "file",
+                //             url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
+                //             indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
+                //             visibilityWindow: 10000000,
+                //             order: Number.MAX_VALUE,
+                //             displayMode: "EXPANDED"
+                //         }
+                //     ]
             };
 
         return configuration;

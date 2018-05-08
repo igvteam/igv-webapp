@@ -24,11 +24,11 @@
 /**
  * Created by dat on 3/8/17.
  */
-var hic = (function (hic) {
+var app = (function (app) {
 
     var urlShorteners;
 
-    hic.setURLShortener = function (shortenerConfigs) {
+    app.setURLShortener = function (shortenerConfigs) {
 
         if (!shortenerConfigs || shortenerConfigs === "none") {
 
@@ -53,7 +53,6 @@ var hic = (function (hic) {
             }
             else {    // Custom
                 if (typeof shortener.shortenURL === "function" &&
-                    typeof shortener.expandURL === "function" &&
                     typeof shortener.hostname === "string") {
                     return shortener;
                 }
@@ -64,7 +63,7 @@ var hic = (function (hic) {
         }
     }
 
-    hic.shortenURL = function (url) {
+    app.shortenURL = function (url) {
         if (urlShorteners) {
             return urlShorteners[0].shortenURL(url);
         }
@@ -73,91 +72,21 @@ var hic = (function (hic) {
         }
     }
 
-    /**
-     * Returns a promise to expand the URL
-     */
-    hic.expandURL = function (url) {
 
-        var urlObject = new URL(url),
-            hostname = urlObject.hostname,
-            i,
-            expander;
-
-        if (urlShorteners) {
-            for (i = 0; i < urlShorteners.length; i++) {
-                expander = urlShorteners[i];
-                if (hostname === expander.hostname) {
-                    return expander.expandURL(url);
-                }
-            }
-        }
-
-        igv.presentAlert("No expanders for URL: " + url);
-
-        return Promise.resolve(url);
-    }
-
-    hic.shortJuiceboxURL = function (base) {
+    app.shortJuiceboxURL = function (base) {
 
         var url, queryString,
             self = this;
 
         // TODO: HACK - dat
-        /*
-        url = base + "?juicebox=";
+        url = base + "?sessionURL=blob:";
 
-        queryString = "{";
-        hic.allBrowsers.forEach(function (browser, index) {
-            queryString += encodeURIComponent(browser.getQueryString());
-            queryString += (index === hic.allBrowsers.length - 1 ? "}" : "},{");
-        });
+        url += igv.browser.compressedSession();
 
-        url = url + encodeURIComponent(queryString);
-        */
+        return self.shortenURL(url)
 
-        // TODO: HACK - dat
-        return self.shortenURL('http://www.apple.com')
-
-            .then(function (shortURL) {
-
-                /*
-                // Now shorten a second time, with short url as a parameter.  This solves the problem of
-                // the expanded url (after a redirect) being over the browser limit.
-
-                var idx, href, url;
-
-                href = window.location.href;
-                idx = href.indexOf("?");
-                if (idx > 0) {
-                    href = href.substr(0, idx);
-                }
-
-                url = href + "?juiceboxURL=" + shortURL;
-                */
-
-                return shortURL;
-            })
     };
 
-
-    hic.decodeJBUrl = function (jbURL) {
-
-        var q, parts, config;
-
-        q = hic.extractQuery(jbURL)["juicebox"];
-
-        if (q.startsWith("%7B")) {
-            q = decodeURIComponent(q);
-        }
-
-        q = q.substr(1, q.length - 2);  // Strip leading and trailing bracket
-        parts = q.split("},{");
-
-        return {
-            queryString: decodeURIComponent(parts[0]),
-            oauthToken: oauthToken
-        }
-    }
 
 
     var BitlyURL = function (config) {
@@ -188,31 +117,6 @@ var hic = (function (hic) {
     };
 
 
-    BitlyURL.prototype.expandURL = function (url) {
-
-        var self = this;
-
-        return getApiKey.call(this)
-
-            .then(function (key) {
-
-                var endpoint = self.api + "/v3/expand?access_token=" + key + "&shortUrl=" + encodeURIComponent(url);
-
-                return igv.xhr.loadJson(endpoint, {})
-            })
-
-            .then(function (json) {
-
-                var longUrl = json.data.expand[0].long_url;
-
-                // Fix some Bitly "normalization"
-                longUrl = longUrl.replace("{", "%7B").replace("}", "%7D");
-
-                return longUrl;
-
-            })
-    }
-
 
     var GoogleURL = function (config) {
         this.api = "https://www.googleapis.com/urlshortener/v1/url";
@@ -241,31 +145,6 @@ var hic = (function (hic) {
             })
     }
 
-
-    GoogleURL.prototype.expandURL = function (url) {
-
-        var self = this;
-        return getApiKey.call(this)
-
-            .then(function (apiKey) {
-
-                var endpoint;
-
-                if (url.includes("goo.gl")) {
-
-                    endpoint = self.api + "?shortUrl=" + url + "&key=" + apiKey;
-
-                    return igv.xhr.loadJson(endpoint, {contentType: "application/json"})
-                        .then(function (json) {
-                            return json.longUrl;
-                        })
-                }
-                else {
-                    // Not a google url or no api key
-                    return Promise.resolve(url);
-                }
-            })
-    }
 
     function getApiKey() {
 
@@ -317,7 +196,7 @@ var hic = (function (hic) {
     }
 
 
-    return hic;
+    return app;
 
 })
-(hic || {});
+(app || {});

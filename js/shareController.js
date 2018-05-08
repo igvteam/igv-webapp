@@ -27,6 +27,7 @@ var app = (function (app) {
         var qrcode;
 
         qrcode = undefined;
+  
         shareConfig.$modal.on('show.bs.modal', function (e) {
 
             var href,
@@ -39,7 +40,7 @@ var app = (function (app) {
                 href = href.substring(0, idx);
             }
 
-            hic.shortJuiceboxURL(href)
+            app.shortJuiceboxURL(href)
                 .then(function (jbUrl) {
                     return getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl);
                 })
@@ -49,7 +50,7 @@ var app = (function (app) {
                     shareConfig.$embed_container.find('textarea').get(0).select();
 
                     // TODO: HACK - dat
-                    // return hic.shortenURL(jbUrl);
+                    // return app.shortenURL(jbUrl);
                     return config.url;
                 })
                 .then(function (shortURL) {

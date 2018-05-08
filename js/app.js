@@ -43,7 +43,7 @@ var app = (function (app) {
 
 
                 // Genome Modal Controller
-                app.genomeModalController = new app.GenomeModalController($('#igv-app-genome-from-file-or-url-modal'));
+                app.genomeModalController = new app.GenomeModalController(browser, $('#igv-app-genome-from-file-or-url-modal'));
 
                 // Genome Controller
                 app.genomeController = new app.GenomeController();

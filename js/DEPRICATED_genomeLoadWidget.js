@@ -25,29 +25,30 @@
  */
 
 /**
- * Created by dat on 5/8/18.
+ * Created by dat on 4/8/18.
  */
 var app = (function (app) {
 
-    app.GenomeModalController = function (browser, $modal) {
+    app.GenomeLoadWidget = function (config) {
         var self = this,
             obj,
-            classes,
             $dismiss,
-            $ok;
+            $ok,
+            classes;
 
-        this.browser = browser;
+        this.config = config;
+        this.$parent = config.$modal.find('.modal-body');
+
         this.genomeLoadManager = new app.GenomeLoadManager(this);
 
         classes = 'igv-file-load-widget-container' + ' ' + 'igv-app-genome-modal-position';
         this.$container = $('<div>', { class: classes });
-        $modal.find('.modal-body').append(this.$container);
+        this.$parent.append(this.$container);
 
         // local data/index
         obj =
             {
-                dataTitle: 'Local data file',
-                indexTitle: 'Local index file'
+                dataTitle: 'Local data file'
             };
         createInputContainer.call(this, this.$container, obj);
 
@@ -55,83 +56,132 @@ var app = (function (app) {
         obj =
             {
                 doURL: true,
-                dataTitle: 'Data URL',
-                indexTitle: 'Index URL'
+                dataTitle: 'Data URL'
             };
         createInputContainer.call(this, this.$container, obj);
 
         // error message container
-        this.$error_message = $("<div>", { class:"igv-flw-error-message-container" });
+        this.$error_message = $("<div>", { id:"igv-flw-error-message-container" });
         this.$container.append(this.$error_message);
         // error message
-        this.$error_message.append($("<div>", { class:"igv-flw-error-message" }));
+        this.$error_message.append($("<div>", { id:"igv-flw-error-message" }));
         // error dismiss button
         igv.attachDialogCloseHandlerWithParent(this.$error_message, function () {
             self.dismissErrorMessage();
         });
         this.dismissErrorMessage();
 
+
         // upper dismiss - x - button
-        $dismiss = $modal.find('.modal-header button:nth-child(1)');
+        $dismiss = config.$modal.find('.modal-header button:nth-child(1)');
         $dismiss.on('click', function () {
             self.dismiss();
         });
 
         // lower dismiss - close - button
-        $dismiss = $modal.find('.modal-footer button:nth-child(1)');
+        $dismiss = config.$modal.find('.modal-footer button:nth-child(1)');
         $dismiss.on('click', function () {
             self.dismiss();
         });
 
         // ok - button
-        $ok = $modal.find('.modal-footer button:nth-child(2)');
+        $ok = config.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
             self.okHandler();
         });
 
     };
 
-    app.GenomeModalController.prototype.okHandler = function () {
+    app.GenomeLoadWidget.prototype.dropdownLayout = function (config) {
+        var $divider,
+            $button,
+            keys;
+
+        config.$dropdown_menu.empty();
+
+        keys = Object.keys(config.genomeDictionary);
+
+        keys.forEach(function (jsonID) {
+
+            $button = createButton(jsonID);
+            config.$dropdown_menu.append($button);
+
+            $button.on('click', function () {
+                var key,
+                    genome;
+
+                key = $(this).text();
+
+                genome = config.genomeDictionary[ key ];
+
+                config.browser.loadGenome(genome);
+                app.trackLoadController.createEncodeTable(genome.id);
+            });
+
+        });
+
+        // menu divider
+        $divider  = $('<div>', { class:'dropdown-divider' });
+        config.$dropdown_menu.append($divider);
+
+        // genome from file or url button
+        $button = createButton('file or url ...');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$modal.modal();
+        });
+
+    };
+
+    app.GenomeLoadWidget.prototype.okHandler = function () {
 
         var self = this,
             obj;
 
         obj = this.genomeLoadManager.genomeLoadConfiguration();
+
         if (obj) {
 
             app.genomeController
                 .getGenomes(obj.url)
                 .then(function (genome) {
-                    self.browser.loadGenome(genome);
+                    self.config.browser.loadGenome(genome);
                     app.trackLoadController.createEncodeTable(genome.id);
                     self.dismiss();
                 });
-
         }
 
-        // this.dismiss();
     };
 
-    app.GenomeModalController.prototype.presentErrorMessage = function(message) {
-        this.$error_message.find('.igv-flw-error-message').text(message);
+    app.GenomeLoadWidget.prototype.presentErrorMessage = function(message) {
+        this.$error_message.find('#igv-flw-error-message').text(message);
         this.$error_message.show();
     };
 
-    app.GenomeModalController.prototype.dismissErrorMessage = function() {
+    app.GenomeLoadWidget.prototype.dismissErrorMessage = function() {
         this.$error_message.hide();
-        this.$error_message.find('.igv-flw-error-message').text('');
-    };
-    
-    app.GenomeModalController.prototype.present = function () {
-        this.$container.show();
+        this.$error_message.find('#igv-flw-error-message').text('');
     };
 
-    app.GenomeModalController.prototype.dismiss = function () {
+    app.GenomeLoadWidget.prototype.dismiss = function () {
         this.dismissErrorMessage();
         this.$container.find('input').val(undefined);
         this.$container.find('.igv-flw-local-file-name-container').hide();
         this.genomeLoadManager.reset();
     };
+
+    function loadGenomeHelper (genome) {
+
+    }
+
+    function createButton (title) {
+        var $button;
+
+        $button = $('<button>', { class:'dropdown-item', type:'button' });
+        $button.text(title);
+
+        return $button;
+    }
 
     function createInputContainer($parent, config) {
         var $container,
@@ -153,33 +203,19 @@ var app = (function (app) {
         $label.text(config.dataTitle);
 
         if (true === config.doURL) {
-            createURLContainer.call(this, $input_data_row, 'igv-app-genome-modal-url', false);
+            createURLContainer.call(this, $input_data_row, 'igv-flw-data-url', false);
         } else {
-            createLocalFileContainer.call(this, $input_data_row, 'igv-app-genome-modal-data-file', false);
-        }
-
-        // index
-        $input_index_row = $("<div>", { class:"igv-flw-input-row" });
-        $container.append($input_index_row);
-        // label
-        $label = $("<div>", { class:"igv-flw-input-label" });
-        $input_index_row.append($label);
-        $label.text(config.indexTitle);
-
-        if (true === config.doURL) {
-            createURLContainer.call(this, $input_index_row, 'igv-app-genome-modal-index-url', true);
-        } else {
-            createLocalFileContainer.call(this, $input_index_row, 'igv-app-genome-modal-index-file', true);
+            createLocalFileContainer.call(this, $input_data_row, 'igv-flw-local-data-file', false);
         }
 
     }
 
-    function createURLContainer($parent, id, isIndexFile) {
+    function createURLContainer($parent) {
         var self = this,
             $data_drop_target,
             $input;
 
-        $input = $('<input>', { type:'text', placeholder:(true === isIndexFile ? 'Enter index URL' : 'Enter data URL') });
+        $input = $('<input>', { type:'text', placeholder:('Enter data URL') });
         $parent.append($input);
 
         $input.on('focus', function () {
@@ -187,7 +223,7 @@ var app = (function (app) {
         });
 
         $input.on('change', function (e) {
-            self.genomeLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = $(this).val();
+            self.genomeLoadManager.dictionary[ 'data' ] = $(this).val();
         });
 
         $data_drop_target = $("<div>", { class:"igv-flw-drag-drop-target" });
@@ -209,14 +245,14 @@ var app = (function (app) {
             })
             .on('drop', function (e) {
                 if (false === self.genomeLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
-                    $input.val(isIndexFile ? self.genomeLoadManager.indexName() : self.genomeLoadManager.dataName());
+                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    $input.val(self.genomeLoadManager.dataName());
                 }
             });
 
     }
 
-    function createLocalFileContainer($parent, id, isIndexFile) {
+    function createLocalFileContainer($parent, id) {
         var self = this,
             $file_chooser_container,
             $data_drop_target,
@@ -247,7 +283,7 @@ var app = (function (app) {
 
             self.dismissErrorMessage();
 
-            self.genomeLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = e.target.files[ 0 ];
+            self.genomeLoadManager.dictionary[ 'data' ] = e.target.files[ 0 ];
             $file_name.text(e.target.files[ 0 ].name);
             $file_name.attr('title', e.target.files[ 0 ].name);
             $file_name.show();
@@ -268,34 +304,19 @@ var app = (function (app) {
             .on('drop', function (e) {
                 var str;
                 if (true === self.genomeLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
-                    str = isIndexFile ? self.genomeLoadManager.indexName() : self.genomeLoadManager.dataName();
+                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    str = self.genomeLoadManager.dataName();
                     $file_name.text(str);
                     $file_name.attr('title', str);
                     $file_name.show();
-
                 }
             });
 
     }
 
-    app.GenomeLoadManager = function (genomeModalController) {
-
-        this.genomeModalController = genomeModalController;
-
+    app.GenomeLoadManager = function (genomeLoadWidget) {
+        this.genomeLoadWidget = genomeLoadWidget;
         this.dictionary = {};
-
-        this.keyToIndexExtension =
-            {
-                bam: { extension: 'bai', optional: false },
-                any: { extension: 'idx', optional: true  },
-                gz: { extension: 'tbi', optional: true  }
-            };
-
-        this.indexExtensionToKey = _.invert(_.mapObject(this.keyToIndexExtension, function (val) {
-            return val.extension;
-        }));
-
     };
 
     app.GenomeLoadManager.prototype.didDragFile = function (dataTransfer) {
@@ -306,7 +327,7 @@ var app = (function (app) {
         return (files && files.length > 0);
     };
 
-    app.GenomeLoadManager.prototype.ingestDataTransfer = function (dataTransfer, isIndexFile) {
+    app.GenomeLoadManager.prototype.ingestDataTransfer = function (dataTransfer) {
         var url,
             files;
 
@@ -314,15 +335,11 @@ var app = (function (app) {
         files = dataTransfer.files;
 
         if (files && files.length > 0) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = files[ 0 ];
+            this.dictionary[ 'data' ] = files[ 0 ];
         } else if (url && '' !== url) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = url;
+            this.dictionary[ 'data' ] = url;
         }
 
-    };
-
-    app.GenomeLoadManager.prototype.indexName = function () {
-        return itemName(this.dictionary.index);
     };
 
     app.GenomeLoadManager.prototype.dataName = function () {
@@ -334,94 +351,18 @@ var app = (function (app) {
     };
 
     app.GenomeLoadManager.prototype.genomeLoadConfiguration = function () {
-        var extension,
-            key,
-            config,
-            _isIndexFile,
-            _isIndexable,
-            indexFileStatus;
-
 
         if (undefined === this.dictionary.data) {
-            this.genomeModalController.presentErrorMessage('Error: No data file');
+            this.genomeLoadWidget.presentErrorMessage('Error: No data file');
             return undefined;
         } else {
-
-            _isIndexFile = isAnIndexFile.call(this, this.dictionary.data);
-            if (true === _isIndexFile) {
-                this.genomeModalController.presentErrorMessage('Error: index file submitted as data file.');
-                return undefined;
-            } else {
-
-                if (this.dictionary.index) {
-                    _isIndexFile = isAnIndexFile.call(this, this.dictionary.index);
-                    if (false === _isIndexFile) {
-                        this.genomeModalController.presentErrorMessage('Error: index file is not valid.');
-                        return undefined;
-                    }
-                }
-
-                _isIndexable = isIndexable.call(this, this.dictionary.data);
-
-                extension = igv.getExtension({ url: this.dictionary.data });
-
-                key = (this.keyToIndexExtension[ extension ]) ? extension : 'any';
-
-                indexFileStatus = this.keyToIndexExtension[ key ];
-
-                if (true === _isIndexable && false === indexFileStatus.optional) {
-
-                    if (undefined === this.dictionary.index) {
-                        this.genomeModalController.presentErrorMessage('Error: index file must be provided.');
-                        return undefined;
-
-                    } else {
-                        return { url: this.dictionary.data, indexURL: this.dictionary.index }
-                    }
-
-                } else {
-
-                    config =
-                        {
-                            url: this.dictionary.data,
-                            indexURL: this.dictionary.index || undefined
-                        };
-
-                    if (undefined === this.dictionary.index) {
-                        config.indexed = false;
-                    }
-
-                    return config;
-                }
-
-            }
-
+            return { url: this.dictionary.data };
         }
 
     };
 
     function itemName (item) {
         return igv.isFilePath(item) ? item.name : item;
-    }
-
-    function isAnIndexFile(fileOrURL) {
-        var extension;
-
-        extension = igv.getExtension({ url: fileOrURL });
-        return _.contains(_.keys(this.indexExtensionToKey), extension);
-    }
-
-    function isIndexable(fileOrURL) {
-
-        var extension;
-
-        if (true === isAnIndexFile(fileOrURL)) {
-            return false;
-        } else {
-            extension = igv.getExtension({ url: fileOrURL });
-            return (extension !== 'wig' && extension !== 'seg');
-        }
-
     }
 
     return app;

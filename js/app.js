@@ -28,7 +28,6 @@ var app = (function (app) {
             .createBrowser($container.get(0), igvConfigurator())
             .then(function (browser) {
                 var trackLoadConfig,
-                    genomeLoadWidgetConfig,
                     shareConfig;
 
                 // Track load controller configuration
@@ -42,19 +41,13 @@ var app = (function (app) {
 
                 app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
 
-                /*
-                // Genome Load Widget
-                genomeLoadWidgetConfig =
-                    {
-                        browser: browser,
-                        $modal: $('#igv-app-genome-from-file-or-url-modal')
-                    };
 
-                app.genomeLoadWidget = new app.GenomeLoadWidget(genomeLoadWidgetConfig);
-                */
+                // Genome Modal Controller
+                app.genomeModalController = new app.GenomeModalController($('#igv-app-genome-from-file-or-url-modal'));
 
-                // Genome controller configuration
+                // Genome Controller
                 app.genomeController = new app.GenomeController();
+
                 app.genomeController.getGenomes(app.GenomeController.defaultGenomeURL)
                     .then(function (genomeDictionary) {
                         var config;
@@ -65,7 +58,6 @@ var app = (function (app) {
                                 $modal: $('#igv-app-genome-from-file-or-url-modal'),
                                 $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
                                 genomeDictionary: genomeDictionary
-
                             };
 
                         genomeDropdownLayout(config);
@@ -129,7 +121,6 @@ var app = (function (app) {
 
         });
 
-        /*
         // menu divider
         $divider  = $('<div>', { class:'dropdown-divider' });
         config.$dropdown_menu.append($divider);
@@ -140,7 +131,6 @@ var app = (function (app) {
         $button.on('click', function () {
             config.$modal.modal();
         });
-        */
 
     }
 

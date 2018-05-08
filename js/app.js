@@ -42,6 +42,7 @@ var app = (function (app) {
 
                 app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
 
+                /*
                 // Genome Load Widget
                 genomeLoadWidgetConfig =
                     {
@@ -50,6 +51,7 @@ var app = (function (app) {
                     };
 
                 app.genomeLoadWidget = new app.GenomeLoadWidget(genomeLoadWidgetConfig);
+                */
 
                 // Genome controller configuration
                 app.genomeController = new app.GenomeController();
@@ -65,7 +67,8 @@ var app = (function (app) {
                                 genomeDictionary: genomeDictionary
 
                             };
-                        app.genomeLoadWidget.dropdownLayout(config)
+
+                        genomeDropdownLayout(config);
                     });
 
                 // URL Shortener Configuration
@@ -96,6 +99,59 @@ var app = (function (app) {
 
 
     };
+
+    function genomeDropdownLayout(config) {
+
+        var $divider,
+            $button,
+            keys;
+
+        config.$dropdown_menu.empty();
+
+        keys = Object.keys(config.genomeDictionary);
+
+        keys.forEach(function (jsonID) {
+
+            $button = createButton(jsonID);
+            config.$dropdown_menu.append($button);
+
+            $button.on('click', function () {
+                var key,
+                    genome;
+
+                key = $(this).text();
+
+                genome = config.genomeDictionary[ key ];
+
+                config.browser.loadGenome(genome);
+                app.trackLoadController.createEncodeTable(genome.id);
+            });
+
+        });
+
+        /*
+        // menu divider
+        $divider  = $('<div>', { class:'dropdown-divider' });
+        config.$dropdown_menu.append($divider);
+
+        // genome from file or url button
+        $button = createButton('file or url ...');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$modal.modal();
+        });
+        */
+
+    }
+
+    function createButton (title) {
+        var $button;
+
+        $button = $('<button>', { class:'dropdown-item', type:'button' });
+        $button.text(title);
+
+        return $button;
+    }
 
     function igvConfigurator() {
         var configuration;

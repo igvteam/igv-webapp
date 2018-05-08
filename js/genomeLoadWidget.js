@@ -33,15 +33,16 @@ var app = (function (app) {
         var self = this,
             obj,
             $dismiss,
-            $ok;
+            $ok,
+            classes;
 
         this.config = config;
         this.$parent = config.$modal.find('.modal-body');
 
         this.genomeLoadManager = new app.GenomeLoadManager(this);
 
-        // file load widget
-        this.$container = $('<div>', { id:'igv-file-load-widget-container', class: 'igv-app-genome-load-widget-position' });
+        classes = 'igv-file-load-widget-container' + ' ' + 'igv-app-genome-load-widget-position';
+        this.$container = $('<div>', { class: classes });
         this.$parent.append(this.$container);
 
         // local data/index
@@ -129,7 +130,6 @@ var app = (function (app) {
         $button.on('click', function () {
             config.$modal.modal();
         });
-
 
     };
 

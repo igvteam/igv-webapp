@@ -41,73 +41,20 @@ var app = (function (app) {
 
             hic.shortJuiceboxURL(href)
                 .then(function (jbUrl) {
-
-                    /*
-                    getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl)
-                        .then(function (embedSnippet) {
-                            shareConfig.$embed_container.find('textarea').val(embedSnippet);
-                            shareConfig.$embed_container.find('textarea').get(0).select();
-                        });
-                    */
-
-                    /*
-                    hic.shortenURL(jbUrl)
-                        .then(function (shortURL) {
-
-                            var obj;
-
-                            // Shorten second time
-                            // e.g. converts https://aidenlab.org/juicebox?juiceboxURL=https://goo.gl/WUb1mL  to https://goo.gl/ERHp5u
-
-                            shareConfig.$share_input.val(shortURL);
-                            shareConfig.$share_input.get(0).select();
-
-                            shareConfig.$tweet_button_container.empty();
-                            obj =
-                                {
-                                    text: 'Contact map: '
-                                };
-
-                            window.twttr.widgets
-                                .createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj)
-                                .then(function (el) {
-                                    console.log("Tweet button updated");
-                                });
-
-                            shareConfig.$email_button.attr('href', 'mailto:?body=' + shortURL);
-
-                            // QR code generation
-                            shareConfig.$qrcode_image.empty();
-                            obj =
-                                {
-                                    width: 128,
-                                    height: 128,
-                                    correctLevel: QRCode.CorrectLevel.H
-                                };
-
-                            qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
-
-                            qrcode.makeCode(shortURL);
-                        });
-                    */
-
                     return getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl);
                 })
-                .then(function (embedSnippet, jbUrl) {
+                .then(function (config) {
 
-                    shareConfig.$embed_container.find('textarea').val(embedSnippet);
+                    shareConfig.$embed_container.find('textarea').val(config.snippet);
                     shareConfig.$embed_container.find('textarea').get(0).select();
 
                     // TODO: HACK - dat
                     // return hic.shortenURL(jbUrl);
-                    return 'http://www.apple.com';
+                    return config.url;
                 })
                 .then(function (shortURL) {
 
                     var obj;
-
-                    // Shorten second time
-                    // e.g. converts https://aidenlab.org/juicebox?juiceboxURL=https://goo.gl/WUb1mL  to https://goo.gl/ERHp5u
 
                     shareConfig.$share_input.val(shortURL);
                     shareConfig.$share_input.get(0).select();
@@ -190,14 +137,20 @@ var app = (function (app) {
                 embedUrl,
                 params,
                 width,
-                height;
+                height,
+                obj;
 
             idx = jbUrl.indexOf("?");
             params = jbUrl.substring(idx);
             embedUrl = (embedTarget || getEmbedTarget()) + params;
             width = $appContainer.width() + 50;
             height = $appContainer.height();
-            fulfill('<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>', jbUrl);
+            obj =
+                {
+                  snippet: '<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>',
+                  url: jbUrl
+                };
+            fulfill(obj);
         });
 
     }

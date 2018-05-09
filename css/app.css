@@ -1,40 +1,40 @@
-#hic-share-modal {
+#igv-app-share-modal {
   color: #5f5f5f; }
-  #hic-share-modal .modal-body {
+  #igv-app-share-modal .modal-body {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
     font-weight: 400; }
 
-#hic-qrcode-image {
+#igv-app-qrcode-image {
   display: none; }
 
-#hic-embed-container {
+#igv-app-embed-container {
   display: none; }
 
-a#hic-email-button {
+a#igv-app-email-button {
   color: #5f5f5f;
   text-decoration: none; }
 
-a#hic-email-button:hover,
-a#hic-email-button:focus,
-a#hic-email-button:active {
+a#igv-app-email-button:hover,
+a#igv-app-email-button:focus,
+a#igv-app-email-button:active {
   cursor: pointer;
   font-weight: 700;
   text-decoration: none; }
 
-#hic-embed-button:hover,
-#hic-embed-button:focus,
-#hic-embed-button:active {
+#igv-app-embed-button:hover,
+#igv-app-embed-button:focus,
+#igv-app-embed-button:active {
   cursor: pointer;
   font-weight: 700; }
 
-#hic-qrcode-button:hover,
-#hic-qrcode-button:focus,
-#hic-qrcode-button:active {
+#igv-app-qrcode-button:hover,
+#igv-app-qrcode-button:focus,
+#igv-app-qrcode-button:active {
   cursor: pointer;
   font-weight: 700; }
 
-.hic-social-button-container {
+.igv-app-social-button-container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -42,14 +42,14 @@ a#hic-email-button:active {
   align-items: center;
   height: 40px;
   margin-bottom: 10px; }
-  .hic-social-button-container div {
+  .igv-app-social-button-container div {
     margin-left: 8px;
     margin-right: 8px; }
-  .hic-social-button-container div:first-child {
+  .igv-app-social-button-container div:first-child {
     width: 65px;
     margin-top: 4px; }
 
-.hic-social-button {
+.igv-app-social-button {
   float: left; }
 
 .igv-app-genome-modal-position {

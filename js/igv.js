@@ -29910,7 +29910,7 @@ var igv = (function (igv) {
         var self = this,
             genomeChange;
 
-        // A bit of a hack -- config can be either an object or json.  This only matters for the boolean indexed property
+        // Backward compatibility hack -- some early genome json definitions used strings for all property values
         if (config.tracks) {
             config.tracks.forEach(function (t) {
                 if (t.indexed && typeof t.indexed === 'string') t.indexed = t.indexed === 'true';
@@ -29922,13 +29922,14 @@ var igv = (function (igv) {
 
             .then(function (genome) {
 
-                genomeChange = self.genome && (self.genome.id != config.id);
+                genomeChange = self.genome && (self.genome.id !== config.id);
 
                 self.genome = genome;
                 self.genome.id = config.id;
+
+                self.$current_genome.text(genome.id || '');
+                self.$current_genome.attr('title', genome.id || '');
                 self.chromosomeSelectWidget.update(genome);
-                self.$current_genome.text(genome.id/*'abcde%%fghij'*/);
-                self.$current_genome.attr('title', genome.id);
 
                 if (genomeChange) {
                     self.removeAllTracks();
@@ -29940,9 +29941,10 @@ var igv = (function (igv) {
             .then(function (genome) {
                 if (genomeChange) {
                     return self.search('all');
+                } else {
+                    return undefined;
                 }
             })
-
             .then(function (ignore) {
 
                 if (config.tracks && genomeChange) {
@@ -29952,11 +29954,11 @@ var igv = (function (igv) {
                 return self.genome;
             })
 
-    }
+    };
 
     igv.Browser.prototype.isMultiLocus = function () {
         return this.genomicStateList && this.genomicStateList.length > 1;
-    }
+    };
 
     //
     igv.Browser.prototype.updateUIWithGenomicStateListChange = function (genomicStateList) {
@@ -31419,7 +31421,7 @@ var igv = (function (igv) {
 
             var track = tv.track;
 
-            if(track.config) {
+            if (track.config) {
                 trackJson.push(track.config);
             }
         });
@@ -31446,7 +31448,7 @@ var igv = (function (igv) {
 
         //console.log(json);
         //console.log(enc);
-        
+
         return enc;
     }
 
@@ -43200,7 +43202,6 @@ var igv = (function (igv) {
                 }
 
                 if (true === config.promisified) {
-                    console.log('doPromiseChain - return browser');
                     return browser;
                 }
             })
@@ -45487,9 +45488,22 @@ var igv = (function (igv) {
 
     igv.xhr.load = function (url, options) {
 
+        options = options || {};
+
+        if (url instanceof File) {
+            return loadFileSlice(url, options);
+        } else {
+             return load.call(this, url, options);
+        }
+
+    };
+
+
+    function load(url, options) {
+
         url = mapUrl(url);
 
-        options = options ||  {};
+        options = options || {};
 
         if (!options.oauthToken) {
             return getLoadPromise(url, options);
@@ -45625,7 +45639,8 @@ var igv = (function (igv) {
                         options.sendData = "url=" + url;
                         options.crossDomainRetried = true;
 
-                        igv.xhr.load(igv.browser.crossDomainProxy, options).then(fullfill);
+                        load.call(this, igv.browser.crossDomainProxy, options)
+                            .then(fullfill);
                     }
                     else {
                         handleError("Error accessing resource: " + url + " Status: " + xhr.status);
@@ -45664,12 +45679,13 @@ var igv = (function (igv) {
     igv.xhr.loadArrayBuffer = function (url, options) {
 
         options = options || {};
+        options.responseType = "arraybuffer";
 
         if (url instanceof File) {
             return loadFileSlice(url, options);
         } else {
-            options.responseType = "arraybuffer";
-            return igv.xhr.load(url, options);
+
+            return load.call(this, url, options);
         }
 
     };
@@ -45684,8 +45700,7 @@ var igv = (function (igv) {
 
         return new Promise(function (fullfill, reject) {
 
-            igv.xhr
-                .load(url, options)
+            load.call(this, url, options)
                 .then(function (result) {
                     if (result) {
                         fullfill(JSON.parse(result));
@@ -45722,20 +45737,6 @@ var igv = (function (igv) {
 
             fileReader.onload = function (e) {
 
-                var compression,
-                    result;
-
-                if (options.bgz) {
-                    compression = BGZF;
-                } else if (localfile.name.endsWith(".gz")) {
-                    compression = GZIP;
-                } else {
-                    compression = NONE;
-                }
-
-                // result = igv.xhr.arrayBufferToString(fileReader.result, compression);
-                // console.log('loadFileSlice byte length ' + fileReader.result.byteLength);
-
                 fullfill(fileReader.result);
 
             };
@@ -45748,9 +45749,18 @@ var igv = (function (igv) {
             if (options.range) {
                 rangeEnd = options.range.start + options.range.size - 1;
                 blob = localfile.slice(options.range.start, rangeEnd + 1);
-                fileReader.readAsArrayBuffer(blob);
+                if("arraybuffer" === options.responseType) {
+                    fileReader.readAsArrayBuffer(blob);
+                } else {
+                    fileReader.readAsBinaryString(blob);
+                }
             } else {
-                fileReader.readAsArrayBuffer(localfile);
+                if("arraybuffer" === options.responseType) {
+                    fileReader.readAsArrayBuffer(localfile);
+                }
+                else {
+                    fileReader.readAsBinaryString(blob);
+                }
             }
 
         });
@@ -45816,10 +45826,10 @@ var igv = (function (igv) {
 
         if (compression === NONE) {
             options.mimeType = 'text/plain; charset=x-user-defined';
-            return igv.xhr.load(url, options);
+            return load.call(this, url, options);
         } else {
             options.responseType = "arraybuffer";
-            return igv.xhr.load(url, options)
+            return load.call(this, url, options)
                 .then(function (data) {
                     return arrayBufferToString(data, compression);
                 })
@@ -45916,7 +45926,7 @@ var igv = (function (igv) {
     const href = window.document.location.href;
     if (!(href.includes("localhost") || href.includes("127.0.0.1"))) {
         var url = "https://data.broadinstitute.org/igv/projects/current/counter_igvjs.php?version=" + "0";
-        igv.xhr.load(url).then(function (ignore) {
+        load.call(this, url).then(function (ignore) {
             console.log(ignore);
         }).catch(function (error) {
             console.log(error);
@@ -51515,14 +51525,11 @@ var igv = (function (igv) {
 
         list = genome.chromosomeNames.slice();
         list.unshift('all');
-        _.each(list, function (name) {
+        list.forEach(function (name) {
             var $o;
 
             $o = $('<option>', { 'value':name });
             self.$select.append($o);
-
-            // $o.prop('selected', (1 === r));
-
             $o.text(name);
         });
 

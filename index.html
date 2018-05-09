@@ -106,7 +106,7 @@
 
             <!-- Share (generate URL) -->
             <div class="igv-app-site-widget">
-                <button id="hic-share-button" class="btn btn-sm btn-outline-secondary" type="button" data-toggle="modal" data-target="#hic-share-modal">Share</button>
+                <button id="igv-app-share-button" class="btn btn-sm btn-outline-secondary" type="button" data-toggle="modal" data-target="#igv-app-share-modal">Share</button>
             </div>
 
         </div>
@@ -212,14 +212,14 @@
     </div>
 
     <!-- Share URL Modal -->
-    <div id="hic-share-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="hic-share-input-modal-label" aria-hidden="true">
+    <div id="igv-app-share-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-share-input-modal-label" aria-hidden="true">
 
         <div class="modal-dialog" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="hic-share-input-modal-close-button" class="modal-title">Share</h4>
+                    <h4  id="igv-app-share-input-modal-close-button" class="modal-title">Share</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -234,7 +234,7 @@
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="form-group">
-                                    <input id="hic-share-input" type="text" class="form-control" placeholder="">
+                                    <input id="igv-app-share-input" type="text" class="form-control" placeholder="">
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -243,29 +243,29 @@
                         </div>
 
                         <!-- social buttons -->
-                        <div class="hic-social-button-container">
+                        <div class="igv-app-social-button-container">
 
-                            <div id="hic-tweet-button-container">
+                            <div id="igv-app-tweet-button-container">
                                 <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">TWEET</a>
                             </div>
 
                             <div>
-                                <a id="hic-email-button" href="mailto:?body=https://aidenlab.org/juicebox">EMAIL</a>
+                                <a id="igv-app-email-button" href="mailto:?body=https://aidenlab.org/juicebox">EMAIL</a>
                             </div>
 
-                            <div id="hic-embed-button">EMBED</div>
+                            <div id="igv-app-embed-button">EMBED</div>
 
-                            <div id="hic-qrcode-button">QR CODE</div>
+                            <div id="igv-app-qrcode-button">QR CODE</div>
 
                         </div>
 
                         <!-- qr code image -->
                         <div class="row justify-content-center">
-                            <div id="hic-qrcode-image" class="col-4"></div>
+                            <div id="igv-app-qrcode-image" class="col-4"></div>
                         </div>
 
                         <!-- embed widget -->
-                        <div id="hic-embed-container" class="row">
+                        <div id="igv-app-embed-container" class="row">
                             <div class="col-sm-9 form-group">
                                 <textarea class="form-control" rows="4"></textarea>
                             </div>

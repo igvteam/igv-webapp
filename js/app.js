@@ -70,21 +70,21 @@ var app = (function (app) {
 
                     shareConfig =
                         {
-                            $modal: $('#hic-share-modal'),
-                            $share_input: $('#hic-share-input'),
+                            $modal: $('#igv-app-share-modal'),
+                            $share_input: $('#igv-app-share-input'),
                             $copy_link_button: $('#hic-copy-link-button'),
-                            $tweet_button_container: $('#hic-tweet-button-container'),
-                            $email_button: $('#hic-email-button'),
-                            $embed_button: $('#hic-embed-button'),
-                            $qrcode_button: $('#hic-qrcode-button'),
-                            $embed_container: $('#hic-embed-container'),
-                            $qrcode_image: $('#hic-qrcode-image')
+                            $tweet_button_container: $('#igv-app-tweet-button-container'),
+                            $email_button: $('#igv-app-email-button'),
+                            $embed_button: $('#igv-app-embed-button'),
+                            $qrcode_button: $('#igv-app-qrcode-button'),
+                            $embed_container: $('#igv-app-embed-container'),
+                            $qrcode_image: $('#igv-app-qrcode-image')
                         };
 
                     app.shareController = new app.ShareController($container, browser, shareConfig);
 
                 } else {
-                    $("#hic-share-button").hide();
+                    $("#igv-app-share-button").hide();
                 }
 
             });

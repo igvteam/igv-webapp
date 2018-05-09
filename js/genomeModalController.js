@@ -101,13 +101,25 @@ var app = (function (app) {
             self.browser
                 .loadGenome(config)
                 .then(function (genome) {
-                    app.trackLoadController.createEncodeTable(genome.id);
+                    app.trackLoadController.createEncodeTable(genomeAssembly(genome));
                     self.dismiss();
                 });
         }
 
         // this.dismiss();
     };
+
+    function genomeAssembly (genome) {
+        var parts,
+            assembly;
+
+        /*
+        https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/mm10/mm10.fa
+        */
+
+        assembly = genome.config.fastaURL.split('/').pop().split('.').shift();
+        return assembly;
+    }
 
     app.GenomeModalController.prototype.presentErrorMessage = function(message) {
         this.$error_message.find('.igv-flw-error-message').text(message);

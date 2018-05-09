@@ -114,7 +114,7 @@ var igv = (function (igv) {
 
     igv.ModalTable.prototype.hidePresentationButton = function () {
         this.config.$modalPresentationButton.addClass('igv-app-disabled');
-        this.config.$modalPresentationButton.text('Configuring ENCODE table...');
+        this.config.$modalPresentationButton.text('Genome not supported by ENCODE');
     };
 
     igv.ModalTable.prototype.willRetrieveData = function () {

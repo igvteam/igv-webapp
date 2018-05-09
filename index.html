@@ -56,6 +56,7 @@
     <script src="js/shareHelper.js"></script>
     <script src="js/genomeController.js"></script>
     <script src="js/genomeModalController.js"></script>
+    <script src="js/sessionModalController.js"></script>
     <script src="js/trackLoadController.js"></script>
     <script src="js/shareController.js"></script>
 
@@ -104,6 +105,19 @@
 
             </div>
 
+            <!-- Session -->
+            <div class="dropdown igv-app-site-widget">
+
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="igv-app-session-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Session
+                </button>
+
+                <div class="dropdown-menu" aria-labelledby="igv-app-session-dropdown-button">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-session-from-file-or-url-modal">Load Session from File or URL...</a>
+                </div>
+
+            </div>
+
             <!-- Share (generate URL) -->
             <div class="igv-app-site-widget">
                 <button id="igv-app-share-button" class="btn btn-sm btn-outline-secondary" type="button" data-toggle="modal" data-target="#igv-app-share-modal">Share</button>
@@ -121,7 +135,7 @@
         </div>
     </div>
 
-    <!-- genome from file or url -->
+    <!-- Genome from file or url -->
     <div id="igv-app-genome-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-file-or-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
@@ -151,7 +165,7 @@
 
     </div>
 
-    <!-- track from ENCODE Table -->
+    <!-- Track from ENCODE Table -->
     <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
@@ -181,7 +195,7 @@
 
     </div>
 
-    <!-- track from file or url -->
+    <!-- Track from file or url -->
     <div id="igv-app-track-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-or-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
@@ -190,6 +204,36 @@
 
                 <div class="modal-header">
                     <h4  id="igv-app-track-from-file-or-url-modal-label" class="modal-title">Load Track File or URL</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Load session -->
+    <div id="igv-app-session-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-from-file-or-url-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-session-from-file-or-url-modal-label" class="modal-title">Load Session File or URL</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

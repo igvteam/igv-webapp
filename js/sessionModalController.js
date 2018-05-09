@@ -29,7 +29,7 @@
  */
 var app = (function (app) {
 
-    app.GenomeModalController = function (browser, $modal) {
+    app.SessionModalController = function (browser, $modal) {
         var self = this,
             obj,
             classes,
@@ -37,7 +37,7 @@ var app = (function (app) {
             $ok;
 
         this.browser = browser;
-        this.genomeLoadManager = new app.GenomeLoadManager(this);
+        this.sessionLoadManager = new app.SessionLoadManager(this);
 
         classes = 'igv-file-load-widget-container' + ' ' + 'igv-app-modal-position';
         this.$container = $('<div>', { class: classes });
@@ -91,73 +91,48 @@ var app = (function (app) {
 
     };
 
-    app.GenomeModalController.prototype.okHandler = function () {
+    app.SessionModalController.prototype.okHandler = function () {
 
         var self = this,
             config;
 
-        config = this.genomeLoadManager.getConfiguration();
+        config = this.sessionLoadManager.getConfiguration();
         if (config) {
-            self.browser
-                .loadGenome(config)
-                .then(function (genome) {
-
-                    if (genome.id) {
-                        app.trackLoadController.createEncodeTable(genome.id);
-                    } else {
-                        app.trackLoadController.encodeTable.hidePresentationButton();
-                    }
-
-                    self.dismiss();
-                });
+            // do stuff
         }
 
-        // this.dismiss();
+        this.dismiss();
     };
 
-    // function genomeAssembly (genome) {
-    //     var parts,
-    //         assembly;
-    //
-    //     /*
-    //     https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/mm10/mm10.fa
-    //     */
-    //
-    //     assembly = genome.config.fastaURL.split('/').pop().split('.').shift();
-    //     return assembly;
-    // }
-
-    app.GenomeModalController.prototype.presentErrorMessage = function(message) {
+    app.SessionModalController.prototype.presentErrorMessage = function(message) {
         this.$error_message.find('.igv-flw-error-message').text(message);
         this.$error_message.show();
     };
 
-    app.GenomeModalController.prototype.dismissErrorMessage = function() {
+    app.SessionModalController.prototype.dismissErrorMessage = function() {
         this.$error_message.hide();
         this.$error_message.find('.igv-flw-error-message').text('');
     };
 
-    app.GenomeModalController.prototype.present = function () {
+    app.SessionModalController.prototype.present = function () {
         this.$container.show();
     };
 
-    app.GenomeModalController.prototype.dismiss = function () {
+    app.SessionModalController.prototype.dismiss = function () {
         this.dismissErrorMessage();
         this.$container.find('input').val(undefined);
         this.$container.find('.igv-flw-local-file-name-container').hide();
-        this.genomeLoadManager.reset();
+        this.sessionLoadManager.reset();
     };
 
     function createInputContainer($parent, config) {
         var $container,
             $input_data_row,
-            $input_index_row,
             $label;
 
         // container
         $container = $("<div>", { class:"igv-flw-input-container" });
         $parent.append($container);
-
 
         // data
         $input_data_row = $("<div>", { class:"igv-flw-input-row" });
@@ -168,33 +143,19 @@ var app = (function (app) {
         $label.text(config.dataTitle);
 
         if (true === config.doURL) {
-            createURLContainer.call(this, $input_data_row, 'igv-app-genome-modal-url', false);
+            createURLContainer.call(this, $input_data_row);
         } else {
-            createLocalFileContainer.call(this, $input_data_row, 'igv-app-genome-modal-data-file', false);
-        }
-
-        // index
-        $input_index_row = $("<div>", { class:"igv-flw-input-row" });
-        $container.append($input_index_row);
-        // label
-        $label = $("<div>", { class:"igv-flw-input-label" });
-        $input_index_row.append($label);
-        $label.text(config.indexTitle);
-
-        if (true === config.doURL) {
-            createURLContainer.call(this, $input_index_row, 'igv-app-genome-modal-index-url', true);
-        } else {
-            createLocalFileContainer.call(this, $input_index_row, 'igv-app-genome-modal-index-file', true);
+            createLocalFileContainer.call(this, $input_data_row, 'igv-app-session-modal-data-file');
         }
 
     }
 
-    function createURLContainer($parent, id, isIndexFile) {
+    function createURLContainer($parent) {
         var self = this,
             $data_drop_target,
             $input;
 
-        $input = $('<input>', { type:'text', placeholder:(true === isIndexFile ? 'Enter index URL' : 'Enter data URL') });
+        $input = $('<input>', { type:'text', placeholder:'Enter data URL' });
         $parent.append($input);
 
         $input.on('focus', function () {
@@ -202,7 +163,7 @@ var app = (function (app) {
         });
 
         $input.on('change', function (e) {
-            self.genomeLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = $(this).val();
+            self.sessionLoadManager.dictionary[ 'data' ] = $(this).val();
         });
 
         $data_drop_target = $("<div>", { class:"igv-flw-drag-drop-target" });
@@ -223,15 +184,15 @@ var app = (function (app) {
                 $(this).removeClass('igv-flw-input-row-hover-state');
             })
             .on('drop', function (e) {
-                if (false === self.genomeLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
-                    $input.val(isIndexFile ? self.genomeLoadManager.indexName() : self.genomeLoadManager.dataName());
+                if (false === self.sessionLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
+                    self.sessionLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    $input.val(self.sessionLoadManager.dataName());
                 }
             });
 
     }
 
-    function createLocalFileContainer($parent, id, isIndexFile) {
+    function createLocalFileContainer($parent, id) {
         var self = this,
             $file_chooser_container,
             $data_drop_target,
@@ -262,7 +223,7 @@ var app = (function (app) {
 
             self.dismissErrorMessage();
 
-            self.genomeLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = e.target.files[ 0 ];
+            self.sessionLoadManager.dictionary[ 'data' ] = e.target.files[ 0 ];
             $file_name.text(e.target.files[ 0 ].name);
             $file_name.attr('title', e.target.files[ 0 ].name);
             $file_name.show();
@@ -282,9 +243,9 @@ var app = (function (app) {
             })
             .on('drop', function (e) {
                 var str;
-                if (true === self.genomeLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.genomeLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
-                    str = isIndexFile ? self.genomeLoadManager.indexName() : self.genomeLoadManager.dataName();
+                if (true === self.sessionLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
+                    self.sessionLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer);
+                    str = self.sessionLoadManager.dataName();
                     $file_name.text(str);
                     $file_name.attr('title', str);
                     $file_name.show();
@@ -294,23 +255,12 @@ var app = (function (app) {
 
     }
 
-    app.GenomeLoadManager = function (genomeModalController) {
-
-        this.genomeModalController = genomeModalController;
-
+    app.SessionLoadManager = function (sessionModalController) {
+        this.sessionLoadManager = sessionModalController;
         this.dictionary = {};
-
-        this.keyToIndexExtension =
-            {
-                fa: { extension: 'fai', optional: true }
-            };
-
-        this.indexExtensionToKey = _.invert(_.mapObject(this.keyToIndexExtension, function (val) {
-            return val.extension;
-        }));
     };
 
-    app.GenomeLoadManager.prototype.didDragFile = function (dataTransfer) {
+    app.SessionLoadManager.prototype.didDragFile = function (dataTransfer) {
         var files;
 
         files = dataTransfer.files;
@@ -318,7 +268,7 @@ var app = (function (app) {
         return (files && files.length > 0);
     };
 
-    app.GenomeLoadManager.prototype.ingestDataTransfer = function (dataTransfer, isIndexFile) {
+    app.SessionLoadManager.prototype.ingestDataTransfer = function (dataTransfer) {
         var url,
             files;
 
@@ -326,54 +276,34 @@ var app = (function (app) {
         files = dataTransfer.files;
 
         if (files && files.length > 0) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = files[ 0 ];
+            this.dictionary[ 'data' ] = files[ 0 ];
         } else if (url && '' !== url) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = url;
+            this.dictionary[ 'data' ] = url;
         }
 
     };
 
-    app.GenomeLoadManager.prototype.indexName = function () {
-        return itemName(this.dictionary.index);
-    };
-
-    app.GenomeLoadManager.prototype.dataName = function () {
+    app.SessionLoadManager.prototype.dataName = function () {
         return itemName(this.dictionary.data);
     };
 
-    app.GenomeLoadManager.prototype.reset = function () {
+    app.SessionLoadManager.prototype.reset = function () {
         this.dictionary = {};
     };
 
-    app.GenomeLoadManager.prototype.getConfiguration = function () {
-        var _isIndexFile;
-
+    app.SessionLoadManager.prototype.getConfiguration = function () {
 
         if (undefined === this.dictionary.data) {
 
-            this.genomeModalController.presentErrorMessage('Error: No data file');
+            this.sessionLoadManager.presentErrorMessage('Error: No data file');
             return undefined;
         } else if (false === isValidDataFileOrURL.call(this, this.dictionary.data)) {
 
-            this.genomeModalController.presentErrorMessage('Error: data file is invalid.');
+            this.sessionLoadManager.presentErrorMessage('Error: data file is invalid.');
             return undefined;
         } else {
 
-            if (true === isValidIndexFileORURL.call(this, this.dictionary.data)) {
-
-                this.genomeModalController.presentErrorMessage('Error: index file submitted as data file.');
-                return undefined;
-            } else {
-
-                if (this.dictionary.index && false === isValidIndexFileORURL.call(this, this.dictionary.index)) {
-
-                    this.genomeModalController.presentErrorMessage('Error: index file is not valid.');
-                    return undefined;
-                }
-
-                return { fastaURL: this.dictionary.data, indexURL: (this.dictionary.index || undefined) };
-            }
-
+            return { session: this.dictionary.data };
         }
 
     };
@@ -387,17 +317,8 @@ var app = (function (app) {
             success;
 
         extension = igv.getExtension({ url: fileOrURL });
-        success = ('fasta' === extension || 'fa' === extension);
-        return success;
+        success = ('json' === extension);
 
-    }
-
-    function isValidIndexFileORURL(fileOrURL) {
-        var extension,
-            success;
-
-        extension = igv.getExtension({ url: fileOrURL });
-        success = ('fai' === extension);
         return success;
     }
 

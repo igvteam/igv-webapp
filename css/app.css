@@ -52,7 +52,7 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
-.igv-app-genome-modal-position {
+.igv-app-modal-position {
   position: relative;
   height: 200px;
   border-color: transparent; }

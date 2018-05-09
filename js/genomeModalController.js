@@ -94,19 +94,16 @@ var app = (function (app) {
     app.GenomeModalController.prototype.okHandler = function () {
 
         var self = this,
-            obj;
+            config;
 
-        obj = this.genomeLoadManager.genomeLoadConfiguration();
-        if (obj) {
-
-            app.genomeController
-                .getGenomes(obj.url)
+        config = this.genomeLoadManager.getConfiguration();
+        if (config) {
+            self.browser
+                .loadGenome(config)
                 .then(function (genome) {
-                    self.browser.loadGenome(genome);
                     app.trackLoadController.createEncodeTable(genome.id);
                     self.dismiss();
                 });
-
         }
 
         // this.dismiss();
@@ -121,7 +118,7 @@ var app = (function (app) {
         this.$error_message.hide();
         this.$error_message.find('.igv-flw-error-message').text('');
     };
-    
+
     app.GenomeModalController.prototype.present = function () {
         this.$container.show();
     };
@@ -287,15 +284,12 @@ var app = (function (app) {
 
         this.keyToIndexExtension =
             {
-                bam: { extension: 'bai', optional: false },
-                any: { extension: 'idx', optional: true  },
-                gz: { extension: 'tbi', optional: true  }
+                fa: { extension: 'fai', optional: true }
             };
 
         this.indexExtensionToKey = _.invert(_.mapObject(this.keyToIndexExtension, function (val) {
             return val.extension;
         }));
-
     };
 
     app.GenomeLoadManager.prototype.didDragFile = function (dataTransfer) {
@@ -333,67 +327,33 @@ var app = (function (app) {
         this.dictionary = {};
     };
 
-    app.GenomeLoadManager.prototype.genomeLoadConfiguration = function () {
-        var extension,
-            key,
-            config,
-            _isIndexFile,
-            _isIndexable,
-            indexFileStatus;
+    app.GenomeLoadManager.prototype.getConfiguration = function () {
+        var _isIndexFile;
 
 
         if (undefined === this.dictionary.data) {
+
             this.genomeModalController.presentErrorMessage('Error: No data file');
+            return undefined;
+        } else if (false === isValidDataFileOrURL.call(this, this.dictionary.data)) {
+
+            this.genomeModalController.presentErrorMessage('Error: data file is invalid.');
             return undefined;
         } else {
 
-            _isIndexFile = isAnIndexFile.call(this, this.dictionary.data);
-            if (true === _isIndexFile) {
+            if (true === isValidIndexFileORURL.call(this, this.dictionary.data)) {
+
                 this.genomeModalController.presentErrorMessage('Error: index file submitted as data file.');
                 return undefined;
             } else {
 
-                if (this.dictionary.index) {
-                    _isIndexFile = isAnIndexFile.call(this, this.dictionary.index);
-                    if (false === _isIndexFile) {
-                        this.genomeModalController.presentErrorMessage('Error: index file is not valid.');
-                        return undefined;
-                    }
+                if (this.dictionary.index && false === isValidIndexFileORURL.call(this, this.dictionary.index)) {
+
+                    this.genomeModalController.presentErrorMessage('Error: index file is not valid.');
+                    return undefined;
                 }
 
-                _isIndexable = isIndexable.call(this, this.dictionary.data);
-
-                extension = igv.getExtension({ url: this.dictionary.data });
-
-                key = (this.keyToIndexExtension[ extension ]) ? extension : 'any';
-
-                indexFileStatus = this.keyToIndexExtension[ key ];
-
-                if (true === _isIndexable && false === indexFileStatus.optional) {
-
-                    if (undefined === this.dictionary.index) {
-                        this.genomeModalController.presentErrorMessage('Error: index file must be provided.');
-                        return undefined;
-
-                    } else {
-                        return { url: this.dictionary.data, indexURL: this.dictionary.index }
-                    }
-
-                } else {
-
-                    config =
-                        {
-                            url: this.dictionary.data,
-                            indexURL: this.dictionary.index || undefined
-                        };
-
-                    if (undefined === this.dictionary.index) {
-                        config.indexed = false;
-                    }
-
-                    return config;
-                }
-
+                return { fastaURL: this.dictionary.data, indexURL: (this.dictionary.index || undefined) };
             }
 
         }
@@ -404,24 +364,23 @@ var app = (function (app) {
         return igv.isFilePath(item) ? item.name : item;
     }
 
-    function isAnIndexFile(fileOrURL) {
-        var extension;
+    function isValidDataFileOrURL (fileOrURL) {
+        var extension,
+            success;
 
         extension = igv.getExtension({ url: fileOrURL });
-        return _.contains(_.keys(this.indexExtensionToKey), extension);
+        success = ('fasta' === extension || 'fa' === extension);
+        return success;
+
     }
 
-    function isIndexable(fileOrURL) {
+    function isValidIndexFileORURL(fileOrURL) {
+        var extension,
+            success;
 
-        var extension;
-
-        if (true === isAnIndexFile(fileOrURL)) {
-            return false;
-        } else {
-            extension = igv.getExtension({ url: fileOrURL });
-            return (extension !== 'wig' && extension !== 'seg');
-        }
-
+        extension = igv.getExtension({ url: fileOrURL });
+        success = ('fai' === extension);
+        return success;
     }
 
     return app;

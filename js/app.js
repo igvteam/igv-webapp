@@ -187,34 +187,7 @@ var app = (function (app) {
                                 }
                             ]
                     }
-                // flanking: 75000,
-                // search: {
-                //     url: "https://dev.gtexportal.org/rest/v1/reference/features/$FEATURE$",
-                //     resultsField: "features"
-                // },
-                // apiKey: 'AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0',
-                // palette:
-                //     [
-                //         "#00A0B0",
-                //         "#6A4A3C",
-                //         "#CC333F",
-                //         "#EB6841"
-                //     ],
-                // tracks:
-                //     [
-                //         {
-                //             name: "Genes",
-                //             searchable: false,
-                //             type: "annotation",
-                //             format: "gtf",
-                //             sourceType: "file",
-                //             url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
-                //             indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
-                //             visibilityWindow: 10000000,
-                //             order: Number.MAX_VALUE,
-                //             displayMode: "EXPANDED"
-                //         }
-                //     ]
+
             };
 
         return configuration;

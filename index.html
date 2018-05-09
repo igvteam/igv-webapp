@@ -288,33 +288,69 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var config;
+        var urlShortenerConfig,
+            igvConfig;
 
-        config =
+        urlShortenerConfig =
             {
                 queryParametersSupported: true,
                 urlShortener:
                     [
                         {
                             provider: "google",
-                            apiKey: "ABCD",        // TODO -- replace with your Google API Key
+                            apiKey: "ABCD",
                             hostname: "goo.gl"
                         }
-                        // ,
-                        // {
-                        //     provider: "bitly",
-                        //     apiKey: "ABCD",        // TODO -- replace with your Bitly access token
-                        //     hostname: 'bit.ly'
-                        // }
                     ],
-
-                apiKey: "ABCD",   // TODO -- replace with your Google API Key
-
+                apiKey: "ABCD",
                 embedTarget: "https://igv.org/web/jb/release/1.0.0/site/embed.html"
+            };
+
+        igvConfig =
+            {
+                queryParametersSupported: true,
+                fileLoadWidget:
+                    {
+                        hidden: false,
+                        embed: true,
+                        $widgetParent: $('#igv-app-track-from-file-or-url-modal').find('.modal-body')
+                    },
+                showChromosomeWidget:true,
+                promisified:true,
+                minimumBases: 6,
+                showIdeogram: true,
+                showRuler: true,
+                // locus: 'myc',
+                // // locus: 'brca1',
+                // // locus: 'SLC25A3',
+                // // locus: 'rs28372744',
+                // // locus: ['egfr', 'myc', 'pten'],
+                // // locus: ['2', '4', '8'],
+                reference:
+                    {
+                        id: "hg19",
+                        fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/1kg_v37/human_g1k_v37_decoy.fasta",
+                        cytobandURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/b37/b37_cytoband.txt",
+                        tracks:
+                            [
+                                {
+                                    name: "Genes",
+                                    searchable: false,
+                                    type: "annotation",
+                                    format: "gtf",
+                                    sourceType: "file",
+                                    url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
+                                    indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
+                                    visibilityWindow: 10000000,
+                                    order: Number.MAX_VALUE,
+                                    displayMode: "EXPANDED"
+                                }
+                            ]
+                    }
 
             };
 
-        app.init($('#igv-app-container'), config);
+        app.init($('#igv-app-container'), urlShortenerConfig, igvConfig);
     });
 
 </script>

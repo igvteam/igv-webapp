@@ -22,10 +22,10 @@
  */
 var app = (function (app) {
 
-    app.init = function ($container, appConfig) {
+    app.init = function ($container, urlShortenerConfig, igvConfig) {
 
         igv
-            .createBrowser($container.get(0), igvConfigurator())
+            .createBrowser($container.get(0), igvConfig)
             .then(function (browser) {
                 var trackLoadConfig,
                     shareConfig;
@@ -64,9 +64,9 @@ var app = (function (app) {
                     });
 
                 // URL Shortener Configuration
-                if (appConfig.urlShortener) {
+                if (urlShortenerConfig.urlShortener) {
 
-                    app.setURLShortener(appConfig.urlShortener);
+                    app.setURLShortener(urlShortenerConfig.urlShortener);
 
                     shareConfig =
                         {
@@ -88,7 +88,6 @@ var app = (function (app) {
                 }
 
             });
-
 
     };
 
@@ -142,57 +141,6 @@ var app = (function (app) {
 
         return $button;
     }
-
-    function igvConfigurator() {
-        var configuration;
-
-        configuration =
-            {
-                queryParametersSupported: true,
-                fileLoadWidget:
-                    {
-                        hidden: false,
-                        embed: true,
-                        $widgetParent: $('#igv-app-track-from-file-or-url-modal').find('.modal-body')
-                    },
-                showChromosomeWidget:true,
-                promisified:true,
-                minimumBases: 6,
-                showIdeogram: true,
-                showRuler: true,
-                // locus: 'myc',
-                // // locus: 'brca1',
-                // // locus: 'SLC25A3',
-                // // locus: 'rs28372744',
-                // // locus: ['egfr', 'myc', 'pten'],
-                // // locus: ['2', '4', '8'],
-                reference:
-                    {
-                        id: "hg19",
-                        fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/1kg_v37/human_g1k_v37_decoy.fasta",
-                        cytobandURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/b37/b37_cytoband.txt",
-                        tracks:
-                            [
-                                {
-                                    name: "Genes",
-                                    searchable: false,
-                                    type: "annotation",
-                                    format: "gtf",
-                                    sourceType: "file",
-                                    url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
-                                    indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
-                                    visibilityWindow: 10000000,
-                                    order: Number.MAX_VALUE,
-                                    displayMode: "EXPANDED"
-                                }
-                            ]
-                    }
-
-            };
-
-        return configuration;
-    }
-
 
     return app;
 

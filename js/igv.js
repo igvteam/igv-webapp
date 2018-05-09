@@ -29945,7 +29945,7 @@ var igv = (function (igv) {
 
             .then(function (ignore) {
 
-                if (genomeChange && config.tracks) {
+                if (genomeChange) {
                     self.loadTrackList(config.tracks);
                 }
 

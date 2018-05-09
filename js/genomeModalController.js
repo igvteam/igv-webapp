@@ -101,11 +101,18 @@ var app = (function (app) {
             self.browser
                 .loadGenome(config)
                 .then(function (genome) {
+
+                    if (genome.id) {
+                        app.trackLoadController.createEncodeTable(genome.id);
+                    } else {
+                        app.trackLoadController.encodeTable.hidePresentationButton();
+                    }
+
                     self.dismiss();
                 });
         }
 
-        this.dismiss();
+        // this.dismiss();
     };
 
     // function genomeAssembly (genome) {

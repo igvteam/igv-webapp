@@ -86,6 +86,7 @@ var app = (function (app) {
                 $modalTopCloseButton: this.config.$encodeModal.find('.modal-header button:nth-child(1)'),
                 $modalBottomCloseButton: this.config.$encodeModal.find('.modal-footer button:nth-child(1)'),
                 $modalGoButton: this.config.$encodeModal.find('.modal-footer button:nth-child(2)'),
+                $modalPresentationButton : this.config.$encodeModalPresentationButton,
                 datasource: encodeDatasource,
                 browserHandler: loadTracks,
                 willRetrieveData: function () {

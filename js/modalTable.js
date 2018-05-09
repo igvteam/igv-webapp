@@ -112,6 +112,10 @@ var igv = (function (igv) {
         this.$faSpinner.addClass("fa5-spin");
     };
 
+    igv.ModalTable.prototype.hidePresentationButton = function () {
+        this.config.$modalPresentationButton.addClass('igv-app-disabled');
+        this.config.$modalPresentationButton.text('Configuring ENCODE table...');
+    };
 
     igv.ModalTable.prototype.willRetrieveData = function () {
         this.startSpinner();

@@ -93,39 +93,35 @@ var app = (function (app) {
 
     app.GenomeModalController.prototype.okHandler = function () {
 
-        var self = this,
-            config;
+        var self = this;
 
-        config = this.genomeLoadManager.getConfiguration();
-        if (config) {
-            self.browser
-                .loadGenome(config)
-                .then(function (genome) {
+        this.genomeLoadManager
+            .getGenomeObject()
+            .then(function (dictionary) {
+                var genome;
 
-                    if (genome.id) {
-                        app.trackLoadController.createEncodeTable(genome.id);
-                    } else {
-                        app.trackLoadController.encodeTable.hidePresentationButton();
-                    }
+                if (dictionary) {
 
+                    genome = Object.values(dictionary).pop();
+                    self.browser
+                        .loadGenome(genome)
+                        .then(function (genome) {
+
+                            if (genome.id) {
+                                app.trackLoadController.createEncodeTable(genome.id);
+                            } else {
+                                app.trackLoadController.encodeTable.hidePresentationButton();
+                            }
+
+                            self.dismiss();
+                        });
+                } else {
                     self.dismiss();
-                });
-        }
+                }
 
-        // this.dismiss();
+            });
+
     };
-
-    // function genomeAssembly (genome) {
-    //     var parts,
-    //         assembly;
-    //
-    //     /*
-    //     https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/mm10/mm10.fa
-    //     */
-    //
-    //     assembly = genome.config.fastaURL.split('/').pop().split('.').shift();
-    //     return assembly;
-    // }
 
     app.GenomeModalController.prototype.presentErrorMessage = function(message) {
         this.$error_message.find('.igv-flw-error-message').text(message);
@@ -345,33 +341,39 @@ var app = (function (app) {
         this.dictionary = {};
     };
 
-    app.GenomeLoadManager.prototype.getConfiguration = function () {
-        var _isIndexFile;
-
+    app.GenomeLoadManager.prototype.getGenomeObject = function () {
+        var obj;
 
         if (undefined === this.dictionary.data) {
 
             this.genomeModalController.presentErrorMessage('Error: No data file');
-            return undefined;
+            return Promise.resolve(undefined);
         } else if (false === isValidDataFileOrURL.call(this, this.dictionary.data)) {
 
             this.genomeModalController.presentErrorMessage('Error: data file is invalid.');
-            return undefined;
+            return Promise.resolve(undefined);
         } else {
 
             if (true === isValidIndexFileORURL.call(this, this.dictionary.data)) {
 
                 this.genomeModalController.presentErrorMessage('Error: index file submitted as data file.');
-                return undefined;
+                return Promise.resolve(undefined);
             } else {
 
                 if (this.dictionary.index && false === isValidIndexFileORURL.call(this, this.dictionary.index)) {
 
                     this.genomeModalController.presentErrorMessage('Error: index file is not valid.');
-                    return undefined;
+                    return Promise.resolve(undefined);
                 }
 
-                return { fastaURL: this.dictionary.data, indexURL: (this.dictionary.index || undefined) };
+                if ('json' === igv.getExtension({ url: this.dictionary.data })) {
+                    return app.genomeController.getGenomes(this.dictionary.data)
+                } else {
+                    obj = {};
+                    obj[ 'noname' ] = { fastaURL: this.dictionary.data, indexURL: (this.dictionary.index || undefined) };
+                    return Promise.resolve(obj);
+                }
+
             }
 
         }
@@ -387,7 +389,7 @@ var app = (function (app) {
             success;
 
         extension = igv.getExtension({ url: fileOrURL });
-        success = ('fasta' === extension || 'fa' === extension);
+        success = ('fasta' === extension || 'fa' === extension || 'json');
         return success;
 
     }

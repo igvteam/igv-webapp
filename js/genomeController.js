@@ -29,19 +29,25 @@ var app = (function (app) {
 
     app.GenomeController.prototype.getGenomes = function (url) {
 
+        var dictionary;
+
         if (url instanceof File) {
 
             return this.fileReader
                 .readAsTextAsync(url)
                 .then(function (result) {
-                    return JSON.parse(result);
+                    var json;
+
+                    json = JSON.parse(result);
+                    dictionary = {};
+                    dictionary[ json.id ] = json;
+                    return dictionary;
                 });
 
         } else {
             return igv.xhr
                 .loadJson(url, {})
                 .then(function (result) {
-                    var dictionary;
 
                     dictionary = {};
                     if (true === Array.isArray(result)) {

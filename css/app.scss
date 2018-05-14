@@ -41,14 +41,6 @@ $igv-app-genome-load-widget-height: 200px;
   opacity:0.6;         // This grays it out to look disabled
 }
 
-.igv-app-medium-backgrop {
-  background-color: $igv-app-medium-color;
-}
-
-.igv-app-dark-backgrop {
-  background-color: $igv-app-dark-color;
-}
-
 .btn-default.app-button {
   color: $igv-app-dark-color;
   border-color: $igv-app-medium-color;

@@ -94,11 +94,16 @@ var app = (function (app) {
     app.SessionModalController.prototype.okHandler = function () {
 
         var self = this,
-            config;
+            sesson;
 
-        config = this.sessionLoadManager.getConfiguration();
-        if (config) {
+        sesson = this.sessionLoadManager.getConfiguration();
+        if (sesson) {
             // do stuff
+            this.browser
+                .loadSession(sesson)
+                .catch(function () {
+                    console.log('Error loading session');
+                });
         }
 
         this.dismiss();
@@ -303,7 +308,7 @@ var app = (function (app) {
             return undefined;
         } else {
 
-            return { session: this.dictionary.data };
+            return this.dictionary.data;
         }
 
     };

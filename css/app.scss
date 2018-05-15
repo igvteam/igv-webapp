@@ -10,14 +10,26 @@ $igv-app-padding-width: 8px;
 $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 60px;
 
+.igv-app-html {
+  position: relative;
+  min-height: 100%;
+}
+
 .igv-app-body-footerized {
   margin-bottom: $igv-app-footer-height;
 }
 
 .igv-app-footer {
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
   height: $igv-app-footer-height;
+
+  color: white;
+
   line-height: $igv-app-footer-height;
-  background-color: $igv-app-dark-color;
+  background-color: $igv-app-medium-color;
 }
 
 .igv-app-modal-position {
@@ -54,4 +66,16 @@ $igv-app-footer-height: 60px;
 .btn-default.app-button {
   color: $igv-app-dark-color;
   border-color: $igv-app-medium-color;
+}
+
+.igv-app-background-medium {
+  background-color: $igv-app-medium-color;
+}
+
+.igv-app-background-dark {
+  background-color: $igv-app-dark-color;
+}
+
+.igv-app-background-blue-green {
+  background-color: mediumaquamarine;
 }

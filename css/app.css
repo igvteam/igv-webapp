@@ -52,6 +52,14 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
+.igv-app-body-footerized {
+  margin-bottom: 60px; }
+
+.igv-app-footer {
+  height: 60px;
+  line-height: 60px;
+  background-color: #5f5f5f; }
+
 .igv-app-modal-position {
   position: relative;
   height: 200px;

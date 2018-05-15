@@ -93,17 +93,11 @@ var app = (function (app) {
 
     app.SessionModalController.prototype.okHandler = function () {
 
-        var self = this,
-            sesson;
+        var sesson;
 
         sesson = this.sessionLoadManager.getConfiguration();
         if (sesson) {
-            // do stuff
-            this.browser
-                .loadSession(sesson)
-                .catch(function () {
-                    console.log('Error loading session');
-                });
+            this.browser.loadSession(sesson);
         }
 
         this.dismiss();

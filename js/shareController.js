@@ -27,7 +27,7 @@ var app = (function (app) {
         var qrcode;
 
         qrcode = undefined;
-  
+
         shareConfig.$modal.on('show.bs.modal', function (e) {
 
             var href,
@@ -40,7 +40,8 @@ var app = (function (app) {
                 href = href.substring(0, idx);
             }
 
-            app.shortJuiceboxURL(href)
+            app
+                .shortJuiceboxURL(href)
                 .then(function (jbUrl) {
                     return getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl);
                 })
@@ -148,8 +149,8 @@ var app = (function (app) {
             height = $appContainer.height();
             obj =
                 {
-                  snippet: '<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>',
-                  url: jbUrl
+                    snippet: '<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>',
+                    url: jbUrl
                 };
             fulfill(obj);
         });

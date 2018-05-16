@@ -72,10 +72,27 @@ var app = (function (app) {
         }
     }
 
+    app.sessionURL = function () {
+
+        let surl,
+            path,
+            idx;
+
+        path = window.location.href.slice();
+        idx = path.indexOf("?");
+
+        if (idx > 0) {
+            path = path.substring(0, idx);
+        }
+
+        surl = path + "?sessionURL=blob:" + igv.browser.compressedSession();
+
+        return surl;
+    };
 
     app.shortJuiceboxURL = function (base) {
 
-        var url, queryString,
+        var url,
             self = this;
 
         // TODO: HACK - dat

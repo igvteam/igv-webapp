@@ -81,11 +81,7 @@ var app = (function (app) {
         path = window.location.href.slice();
         idx = path.indexOf("?");
 
-        if (idx > 0) {
-            path = path.substring(0, idx);
-        }
-
-        surl = path + "?sessionURL=blob:" + igv.browser.compressedSession();
+        surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + igv.browser.compressedSession();
 
         return surl;
     };

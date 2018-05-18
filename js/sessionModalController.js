@@ -316,7 +316,7 @@ var app = (function (app) {
             success;
 
         extension = igv.getExtension({ url: fileOrURL });
-        success = ('json' === extension);
+        success = ('json' === extension || 'xml' === extension);
 
         return success;
     }

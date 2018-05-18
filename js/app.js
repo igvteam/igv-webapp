@@ -33,10 +33,8 @@ var app = (function (app) {
                 $('#igv-app-bookmark-button').on('click', function (e) {
                     let location,
                         session;
-
-                    location = window.location;
                     session = app.sessionURL();
-                    location.assign(session);
+                    window.history.pushState({}, "IGV", session);
                 });
 
                 // Track load controller configuration

@@ -31,8 +31,14 @@ var app = (function (app) {
                     shareConfig;
 
                 $('#igv-app-bookmark-button').on('click', function (e) {
-                    let location,
+                    let str,
                         session;
+
+                    str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+                    console.log(str);
+
+                    alert('Press ' + str + '+D to bookmark this page.');
+
                     session = app.sessionURL();
                     window.history.pushState({}, "IGV", session);
                 });

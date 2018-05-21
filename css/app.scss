@@ -9,6 +9,7 @@ $igv-app-hover-color: #0f0f0f;
 $igv-app-padding-width: 8px;
 $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 60px;
+$igv-app-logo-container-width: 20%;
 
 .igv-app-html {
   position: relative;
@@ -32,34 +33,30 @@ $igv-app-footer-height: 60px;
   background-color: $igv-app-medium-color;
 
   .col {
-    width: 25%;
-    max-width: 25%;
+    width: $igv-app-logo-container-width;
+    max-width: $igv-app-logo-container-width;
   }
 
   .col:nth-child(1) {
     background-color: transparent;
+    //background-color: #00bfff;
   }
 
   .col:nth-child(2) {
     background-color: transparent;
+    //background-color: #ff6759;
   }
 
   .col:nth-child(3) {
     color: rgba(255, 255, 255, 0.51);
     font-size: 10px;
-    width: 75%;
-    max-width: 75%;
+    width: calc(100% - #{$igv-app-logo-container-width});
+    max-width: calc(100% - #{$igv-app-logo-container-width});
+
     background-color: transparent;
+    //background-color: #34c5a7;
   }
 
-  //.flex-row:first-child {
-  //  height: 80%;
-  //  background-color: aqua;
-  //}
-
-  //.flex-row:last-child {
-  //  height: 20%;
-  //}
 }
 
 .igv-app-modal-position {

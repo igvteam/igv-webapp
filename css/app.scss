@@ -39,12 +39,10 @@ $igv-app-logo-container-width: 20%;
 
   .col:nth-child(1) {
     background-color: transparent;
-    //background-color: #00bfff;
   }
 
   .col:nth-child(2) {
     background-color: transparent;
-    //background-color: #ff6759;
   }
 
   .col:nth-child(3) {
@@ -54,7 +52,7 @@ $igv-app-logo-container-width: 20%;
     max-width: calc(100% - #{$igv-app-logo-container-width});
 
     background-color: transparent;
-    //background-color: #34c5a7;
+
   }
 
 }

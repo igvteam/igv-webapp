@@ -27,8 +27,15 @@ var app = (function (app) {
         igv
             .createBrowser($container.get(0), igvConfig)
             .then(function (browser) {
-                var trackLoadConfig,
+                let trackLoadConfig,
                     shareConfig;
+
+                $('a').find('img').hover(function () {
+                        $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
+                    },
+                    function () {
+                        $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
+                    });
 
                 $('#igv-app-bookmark-button').on('click', function (e) {
                     let str,

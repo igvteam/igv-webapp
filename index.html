@@ -43,7 +43,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.0/underscore-min.js"></script>
 
     <!-- IGV JS -->
-     <script src="https://igv.org/web/test/dist/igv.js"></script>
+    <script src="https://igv.org/web/test/dist/igv.js"></script>
     <!--<script src="js/igv.js"></script>-->
 
     <!-- Twitter -->
@@ -344,23 +344,37 @@
 
 </main>
 
-<footer class="igv-app-footer d-flex flex-row igv-app-background-dark">
-    <div class="ml-4">
-        <a href="https://www.broadinstitute.org" title="Broad Institute home page">
-            <img src="img/broad-institute-logo-white-32-alpha-50.png" width="127" height="32"  alt="Broad Institute logo">
-        </a>
+<footer class="igv-app-footer igv-app-background-dark">
+
+    <div class="d-flex justify-content-start">
+
+        <div class="col">
+            <a class="ml-4" href="https://www.broadinstitute.org" title="Broad Institute home page">
+                <img src="img/broad-institute-logo-white-32-alpha-50.png" width="127" height="32"  alt="Broad Institute logo">
+            </a>
+
+        </div>
+
+        <div class="col">
+            <a class="ml-4" href="https://ucsd.edu/" title="University of California at San Diego">
+                <img src="img/ucsd-logo-white-32-alpha-50.png" width="164" height="32"  alt="University of California at San Diego">
+            </a>
+        </div>
+
+        <div class="col">
+            © 2013-2018 Broad Institute, and the Regents of the University of California
+        </div>
     </div>
-    <div class="ml-4">
-        <a href="https://ucsd.edu/" title="University of California at San Diego">
-            <img src="img/ucsd-logo-white-32-alpha-50.png" width="164" height="32"  alt="University of California at San Diego">
-        </a>
-    </div>
+
+    <!--<div class="d-flex flex-row">-->
+    <!--<div class="col igv-app-background-medium">Column</div>-->
+    <!--</div>-->
 </footer>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var urlShortenerConfig,
+        let urlShortenerConfig,
             igvConfig;
 
         urlShortenerConfig =
@@ -395,9 +409,9 @@
                 // locus: 'myc',
                 locus: 'brca1',
                 // locus: 'SLC25A3',
-                // // locus: 'rs28372744',
-                // // locus: ['egfr', 'myc', 'pten'],
-                // // locus: ['2', '4', '8'],
+                // locus: 'rs28372744',
+                // locus: ['egfr', 'myc', 'pten'],
+                // locus: ['2', '4', '8'],
                 reference:
                     {
                         id: "hg19",

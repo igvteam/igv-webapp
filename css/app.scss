@@ -30,6 +30,36 @@ $igv-app-footer-height: 60px;
 
   line-height: $igv-app-footer-height;
   background-color: $igv-app-medium-color;
+
+  .col {
+    width: 25%;
+    max-width: 25%;
+  }
+
+  .col:nth-child(1) {
+    background-color: transparent;
+  }
+
+  .col:nth-child(2) {
+    background-color: transparent;
+  }
+
+  .col:nth-child(3) {
+    color: rgba(255, 255, 255, 0.51);
+    font-size: 10px;
+    width: 75%;
+    max-width: 75%;
+    background-color: transparent;
+  }
+
+  //.flex-row:first-child {
+  //  height: 80%;
+  //  background-color: aqua;
+  //}
+
+  //.flex-row:last-child {
+  //  height: 20%;
+  //}
 }
 
 .igv-app-modal-position {

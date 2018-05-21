@@ -67,6 +67,19 @@ a#igv-app-email-button:active {
   color: white;
   line-height: 60px;
   background-color: #a6a6a6; }
+  .igv-app-footer .col {
+    width: 25%;
+    max-width: 25%; }
+  .igv-app-footer .col:nth-child(1) {
+    background-color: transparent; }
+  .igv-app-footer .col:nth-child(2) {
+    background-color: transparent; }
+  .igv-app-footer .col:nth-child(3) {
+    color: rgba(255, 255, 255, 0.51);
+    font-size: 10px;
+    width: 75%;
+    max-width: 75%;
+    background-color: transparent; }
 
 .igv-app-modal-position {
   position: relative;

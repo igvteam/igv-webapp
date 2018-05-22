@@ -109,6 +109,8 @@ var app = (function (app) {
                     $("#igv-app-share-button").hide();
                 }
 
+                browser.updateViews();
+
             });
 
     };

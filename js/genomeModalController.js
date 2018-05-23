@@ -103,24 +103,28 @@ var app = (function (app) {
                 if (dictionary) {
 
                     genome = Object.values(dictionary).pop();
-                    self.browser
-                        .loadGenome(genome)
-                        .then(function (genome) {
+                    return self.browser.loadGenome(genome);
 
-                            if (genome.id) {
-                                app.trackLoadController.createEncodeTable(genome.id);
-                            } else {
-                                app.trackLoadController.encodeTable.hidePresentationButton();
-                            }
-
-                            self.dismiss();
-                        });
                 } else {
-                    self.dismiss();
+                    return Promise.reject(new Error('Error: no genome data file.'));
                 }
 
+            })
+            .then(function (genome) {
+
+                if (genome.id) {
+                    app.trackLoadController.createEncodeTable(genome.id);
+                } else {
+                    app.trackLoadController.encodeTable.hidePresentationButton();
+                }
+
+            })
+            .catch(function (error) {
+                igv.presentAlert(error);
+                console.log(error.message);
             });
 
+        this.dismiss();
     };
 
     app.GenomeModalController.prototype.presentErrorMessage = function(message) {
@@ -345,25 +349,21 @@ var app = (function (app) {
         var obj;
 
         if (undefined === this.dictionary.data) {
-
-            this.genomeModalController.presentErrorMessage('Error: No data file');
-            return Promise.resolve(undefined);
+            // this.genomeModalController.presentErrorMessage('Error: No data file');
+            return Promise.reject(new Error('Error: No data file'));
         } else if (false === isValidDataFileOrURL.call(this, this.dictionary.data)) {
-
-            this.genomeModalController.presentErrorMessage('Error: data file is invalid.');
-            return Promise.resolve(undefined);
+            // this.genomeModalController.presentErrorMessage('Error: data file is invalid.');
+            return Promise.reject(new Error('Error: data file is invalid.'));
         } else {
 
             if (true === isValidIndexFileORURL.call(this, this.dictionary.data)) {
-
-                this.genomeModalController.presentErrorMessage('Error: index file submitted as data file.');
-                return Promise.resolve(undefined);
+                // this.genomeModalController.presentErrorMessage('Error: index file submitted as data file.');
+                return Promise.reject(new Error('Error: index file submitted as data file.'));
             } else {
 
                 if (this.dictionary.index && false === isValidIndexFileORURL.call(this, this.dictionary.index)) {
-
-                    this.genomeModalController.presentErrorMessage('Error: index file is not valid.');
-                    return Promise.resolve(undefined);
+                    // this.genomeModalController.presentErrorMessage('Error: index file is not valid.');
+                    return Promise.reject(new Error('Error: index file is not valid.'));
                 }
 
                 if ('json' === igv.getExtension({ url: this.dictionary.data })) {

@@ -293,15 +293,9 @@ var app = (function (app) {
     app.SessionLoadManager.prototype.getConfiguration = function () {
 
         if (undefined === this.dictionary.data) {
-
             this.sessionLoadManager.presentErrorMessage('Error: No data file');
             return undefined;
-        } else if (false === isValidDataFileOrURL.call(this, this.dictionary.data)) {
-
-            this.sessionLoadManager.presentErrorMessage('Error: data file is invalid.');
-            return undefined;
         } else {
-
             return this.dictionary.data;
         }
 

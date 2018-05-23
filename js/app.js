@@ -30,7 +30,7 @@ var app = (function (app) {
                 let trackLoadConfig,
                     shareConfig;
 
-                $('a').find('img').hover(function () {
+                $('.igv-app-footer').find('a img').hover(function () {
                         $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
                     },
                     function () {

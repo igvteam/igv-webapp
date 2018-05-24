@@ -70,6 +70,16 @@ $igv-app-logo-container-width: 20%;
   background-color: $igv-app-dark-color;
 }
 
+.monospace {
+  font-family: Lucida Console, Courier, monospace;
+}
+
+#igv-app-beta-label {
+  cursor: default;
+  color: $igv-app-medium-color;
+  font-size: 18px;
+}
+
 .igv-app-site-widget {
   float: left;
   margin-left: 4px;

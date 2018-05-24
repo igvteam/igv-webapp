@@ -89,7 +89,7 @@ a#igv-app-email-button:active {
 .igv-app-navbar-backdrop {
   background-color: #5f5f5f; }
 
-.monospace {
+.igv-app-monospace {
   font-family: Lucida Console, Courier, monospace; }
 
 #igv-app-beta-label {

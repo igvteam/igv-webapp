@@ -50,6 +50,8 @@ var app = (function (app) {
                     window.history.pushState({}, "IGV", session);
                 });
 
+                app.dropboxController = new app.DropboxController($('#igv-app-modal-button-container'), {});
+
                 // Track load controller configuration
                 trackLoadConfig =
                     {

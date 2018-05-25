@@ -25,7 +25,8 @@
     <!-- APP CSS -->
     <link rel="stylesheet" href="css/app.css">
 
-
+    <!-- Dropbox Chooser API-->
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="fxrshx1n7a62q06"></script>
 
     <!-- Bootstrap 4 and dependancies JS: jQuery | Popper -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -62,6 +63,7 @@
     <script src="js/sessionModalController.js"></script>
     <script src="js/trackLoadController.js"></script>
     <script src="js/shareController.js"></script>
+    <script src="js/dropboxController.js"></script>
 
     <script src="js/app.js"></script>
 </head>
@@ -115,6 +117,10 @@
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
                 </div>
 
+            </div>
+
+            <!-- Dropbox -->
+            <div id="igv-app-modal-button-container" class="igv-app-site-widget">
             </div>
 
             <!-- Session -->

@@ -89,13 +89,9 @@ a#igv-app-email-button:active {
 .igv-app-navbar-backdrop {
   background-color: #5f5f5f; }
 
-.igv-app-monospace {
-  font-family: Lucida Console, Courier, monospace; }
-
-#igv-app-beta-label {
-  cursor: default;
+.igv-app-navbar-text {
   color: #a6a6a6;
-  font-size: 18px; }
+  font-size: 16px; }
 
 .igv-app-site-widget {
   float: left;

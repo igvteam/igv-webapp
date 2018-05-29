@@ -70,14 +70,9 @@ $igv-app-logo-container-width: 20%;
   background-color: $igv-app-dark-color;
 }
 
-.igv-app-monospace {
-  font-family: Lucida Console, Courier, monospace;
-}
-
-#igv-app-beta-label {
-  cursor: default;
+.igv-app-navbar-text {
   color: $igv-app-medium-color;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .igv-app-site-widget {

@@ -34,11 +34,9 @@ var app = (function (app) {
 
                 objs = [];
                 dbFiles.forEach(function (dbFile) {
-                    let obj,
-                        format;
+                    let obj;
 
-                    format = igv.getFormat(dbFile.name);
-                    if (/*format*/ true) {
+                    if (igv.hasKnownFileExtension({ url:dbFile.name })) {
 
                         obj =
                             {

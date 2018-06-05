@@ -29918,13 +29918,13 @@ var igv = (function (igv) {
         }
     }
 
-    igv.Browser.hasKnownFileExtension = function (config) {
+    igv.hasKnownFileExtension = function (config) {
         var extension = igv.getExtension(config);
 
         if (undefined === extension) {
             return false;
         }
-        return igv.Browser.knownFileExtensions.has(extension);
+        return igv.knownFileExtensions.has(extension);
     };
 
     //
@@ -50003,10 +50003,36 @@ var igv = (function (igv) {
 // Generic functions applicable to all track types
 
 var igv = (function (igv) {
+    var list;
 
-    var knownFileExtensions = new Set(["narrowpeak", "broadpeak", "peaks", "bedgraph", "wig", "gff3", "gff",
-        "gtf", "aneu", "fusionjuncspan", "refflat", "seg", "bed", "vcf", "bb", "bigbed", "bw", "bigwig", "bam", "tdf",
-        "refgene", "genepred", "genepredext"]);
+    list =
+        [
+            "narrowpeak",
+            "broadpeak",
+            "peaks",
+            "bedgraph",
+            "wig",
+            "gff3",
+            "gff",
+            "gtf",
+            "aneu",
+            "fusionjuncspan",
+            "refflat",
+            "seg",
+            "bed",
+            "vcf",
+            "bb",
+            "bigbed",
+            "bw",
+            "bigwig",
+            "bam",
+            "tdf",
+            "refgene",
+            "genepred",
+            "genepredext"
+        ];
+
+    igv.knownFileExtensions = new Set(list);
 
     igv.getFormat = function (name) {
 
@@ -50207,7 +50233,7 @@ var igv = (function (igv) {
                 return "bigbed";
 
             default:
-                if (knownFileExtensions.has(ext)) {
+                if (igv.knownFileExtensions.has(ext)) {
                     return ext;
                 }
                 else {

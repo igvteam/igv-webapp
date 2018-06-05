@@ -50,12 +50,12 @@ var app = (function (app) {
                     window.history.pushState({}, "IGV", session);
                 });
 
-                app.dropboxController = new app.DropboxController($('#igv-app-modal-button-container'), {});
+                app.dropboxController = new app.DropboxController($('#igv-app-dropbox-button-container'), {});
 
                 // Track load controller configuration
                 trackLoadConfig =
                     {
-                        $fileModal: $('#igv-app-track-from-file-modal'),
+                        $fileModal: $('#igv-app-track-from-local-file-modal'),
                         $encodeModal: $('#igv-app-encode-modal'),
                         $encodeModalPresentationButton: $('#igv-encode-list-item-button')
                     };

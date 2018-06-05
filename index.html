@@ -105,13 +105,16 @@
 
             </div>
 
+            <!-- Tracks -->
             <div class="dropdown igv-app-site-widget">
                 <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Load Tracks
                 </button>
                 <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-file-modal">File</button>
-                    <button class="dropdown-item" type="button" id="igv-app-modal-button-container"></button>
+                    <!-- local file -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-local-file-modal">Local File</button>
+                    <!-- Dropbox -->
+                    <button class="dropdown-item" type="button" id="igv-app-dropbox-button-container"></button>
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">ENCODE</button>
                 </div>
             </div>
@@ -213,15 +216,15 @@
 
     </div>
 
-    <!-- Track from file -->
-    <div id="igv-app-track-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-modal-label" aria-hidden="true">
+    <!-- Track from local file -->
+    <div id="igv-app-track-from-local-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-local-file-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-from-file-modal-label" class="modal-title">Load Track File or URL</h4>
+                    <h4  id="igv-app-track-from-local-file-modal-label" class="modal-title">Load Track File or URL</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -403,7 +406,7 @@
                     {
                         hidden: false,
                         embed: true,
-                        $widgetParent: $('#igv-app-track-from-file-modal').find('.modal-body')
+                        $widgetParent: $('#igv-app-track-from-local-file-modal').find('.modal-body')
                     },
                 showChromosomeWidget:true,
                 promisified:true,

@@ -26,28 +26,41 @@ var app = (function (app) {
 
         var self = this,
             $file_ok,
-            $file_dismiss;
+            $file_dismiss,
+            locaFileLoaderConfig;
 
         this.browser = browser;
         this.config = config;
         this.createEncodeTable(browser.genome.id);
 
+        // local file load modal
+        locaFileLoaderConfig =
+            {
+                hidden: false,
+                embed: true,
+                $widgetParent: config.$fileModal.find('.modal-body'),
+                // mode: 'url',
+                mode: 'localFile'
+            };
+
+        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig);
+
         // upper dismiss - x - button
         $file_dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
         $file_dismiss.on('click', function () {
-            browser.trackFileLoad.dismiss();
+            self.localFileLoader.dismiss();
         });
 
         // lower dismiss - close - button
         $file_dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
         $file_dismiss.on('click', function () {
-            browser.trackFileLoad.dismiss();
+            self.localFileLoader.dismiss();
         });
 
         // ok - button
         $file_ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
         $file_ok.on('click', function () {
-            browser.trackFileLoad.okHandler();
+            self.localFileLoader.okHandler();
         });
 
     };

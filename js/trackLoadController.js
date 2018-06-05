@@ -27,7 +27,8 @@ var app = (function (app) {
         var self = this,
             $file_ok,
             $file_dismiss,
-            locaFileLoaderConfig;
+            locaFileLoaderConfig,
+            urlLoaderConfig;
 
         this.browser = browser;
         this.config = config;
@@ -61,6 +62,43 @@ var app = (function (app) {
         $file_ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
         $file_ok.on('click', function () {
             self.localFileLoader.okHandler();
+        });
+
+
+
+
+
+
+
+
+        // url load modal
+        urlLoaderConfig =
+            {
+                hidden: false,
+                embed: true,
+                $widgetParent: config.$urlModal.find('.modal-body'),
+                mode: 'url',
+                // mode: 'localFile'
+            };
+
+        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig);
+
+        // upper dismiss - x - button
+        $file_dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
+        $file_dismiss.on('click', function () {
+            self.urlLoader.dismiss();
+        });
+
+        // lower dismiss - close - button
+        $file_dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
+        $file_dismiss.on('click', function () {
+            self.urlLoader.dismiss();
+        });
+
+        // ok - button
+        $file_ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
+        $file_ok.on('click', function () {
+            self.urlLoader.okHandler();
         });
 
     };

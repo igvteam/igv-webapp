@@ -109,11 +109,11 @@
             <div class="dropdown igv-app-site-widget">
 
                 <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Tracks
+                    Load Tracks
                 </button>
 
                 <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-or-url-modal">Load Track from File or URL...</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-track-from-file-modal">File</a>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">Tracks</a>
                 </div>
 
@@ -220,15 +220,15 @@
 
     </div>
 
-    <!-- Track from file or url -->
-    <div id="igv-app-track-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-or-url-modal-label" aria-hidden="true">
+    <!-- Track from file -->
+    <div id="igv-app-track-from-file-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-file-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-from-file-or-url-modal-label" class="modal-title">Load Track File or URL</h4>
+                    <h4  id="igv-app-track-from-file-modal-label" class="modal-title">Load Track File or URL</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -410,7 +410,7 @@
                     {
                         hidden: false,
                         embed: true,
-                        $widgetParent: $('#igv-app-track-from-file-or-url-modal').find('.modal-body')
+                        $widgetParent: $('#igv-app-track-from-file-modal').find('.modal-body')
                     },
                 showChromosomeWidget:true,
                 promisified:true,

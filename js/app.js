@@ -55,8 +55,7 @@ var app = (function (app) {
                 // Track load controller configuration
                 trackLoadConfig =
                     {
-                        $fileModal: $('#igv-app-track-from-file-or-url-modal'),
-                        $urlModal: $('#igv-app-track-from-url-modal'),
+                        $fileModal: $('#igv-app-track-from-file-modal'),
                         $encodeModal: $('#igv-app-encode-modal'),
                         $encodeModalPresentationButton: $('#igv-encode-list-item-button')
                     };

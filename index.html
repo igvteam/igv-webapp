@@ -64,6 +64,7 @@
     <script src="js/trackLoadController.js"></script>
     <script src="js/shareController.js"></script>
     <script src="js/dropboxController.js"></script>
+    <script src="js/googleDriveController.js"></script>
 
     <script src="js/app.js"></script>
 </head>
@@ -113,10 +114,14 @@
                 <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
                     <!-- local file -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-local-file-modal">Local File</button>
-                    <!-- url -->
+                    <!-- URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">URL</button>
                     <!-- Dropbox -->
-                    <button class="dropdown-item" type="button" id="igv-app-dropbox-button-container"></button>
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-dropbox-modal">Dropbox</button>
+                    <!--<button class="dropdown-item" type="button" id="igv-app-dropbox-button-container"></button>-->
+                    <!-- Google Drive -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-google-drive-modal">Google Drive</button>
+                    <!-- ENCODE -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">ENCODE</button>
                 </div>
             </div>
@@ -248,7 +253,7 @@
 
     </div>
 
-    <!-- Track from local file -->
+    <!-- Track from URL -->
     <div id="igv-app-track-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
@@ -257,6 +262,66 @@
 
                 <div class="modal-header">
                     <h4  id="igv-app-track-from-url-modal-label" class="modal-title">Load Track URL</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Track from Dropbox -->
+    <div id="igv-app-track-dropbox-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-dropbox-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-track-dropbox-modal-label" class="modal-title">Load Track from Dropbox</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Track from Google Drive -->
+    <div id="igv-app-track-google-drive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-google-drive-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-track-google-drive-modal-label" class="modal-title">Load Track from Google Drive</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

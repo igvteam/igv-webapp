@@ -22,6 +22,7 @@
  */
 var app = (function (app) {
     app.DropboxController = function ($modal) {
+        this.$modal = $modal;
         this.$modalBody = $modal.find('.modal-body');
     };
 
@@ -31,50 +32,9 @@ var app = (function (app) {
             loaderConfig,
             $dismiss,
             $ok,
-            dropboxButton,
-            dropboxButtonConfig;
+            dbConfig;
 
-        loaderConfig =
-            {
-                hidden: false,
-                embed: true,
-                $widgetParent: this.$modalBody,
-                mode: 'url',
-                // mode: 'localFile'
-            };
-
-        this.loader = config.browser.createFileLoadWidget(loaderConfig);
-
-        // upper dismiss - x - button
-        $dismiss = this.$modalBody.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = this.$modalBody.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // ok - button
-        $ok = this.$modalBody.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            self.loader.okHandler();
-        });
-
-        this.loader.customizeLayout(function () {
-            console.log('Lets customize this thing!')
-        });
-
-
-
-
-
-
-
-        // Dropbox chooser button
-        dropboxButtonConfig = {
+        dbConfig = {
 
             success: function(dbFiles) {
                 let objs;
@@ -129,9 +89,55 @@ var app = (function (app) {
             folderselect: false, // or true
         };
 
-        dropboxButton = Dropbox.createChooseButton(dropboxButtonConfig);
+        loaderConfig =
+            {
+                hidden: false,
+                embed: true,
+                $widgetParent: this.$modalBody,
+                mode: 'url',
+                // mode: 'localFile'
+            };
 
-        // this.$modal.get(0).appendChild(dropboxButton);
+        this.loader = config.browser.createFileLoadWidget(loaderConfig);
+
+        // upper dismiss - x - button
+        $dismiss = this.$modalBody.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // lower dismiss - close - button
+        $dismiss = this.$modalBody.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // ok - button
+        $ok = this.$modalBody.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
+            self.loader.okHandler();
+        });
+
+        this.loader.customizeLayout(function ($parent) {
+
+            $parent.css({ width: '100%' });
+            $parent.find('input').hide();
+            $parent.find('.igv-flw-drag-drop-target').hide();
+
+            $parent.find('.igv-flw-input-label').each(function () {
+                let $div;
+                $div = $('<div>');
+                $div.insertAfter( $(this) );
+                $div.get(0).appendChild( Dropbox.createChooseButton(dbConfig) )
+            });
+
+        });
+
+
+
+
+
+
 
     };
 

@@ -109,3 +109,24 @@ $igv-app-logo-container-width: 20%;
 .igv-app-background-blue-green {
   background-color: mediumaquamarine;
 }
+
+// ::::::::::::::::::: UNUSED :::::::::::::::::::
+.igv-app-dropbox-button {
+  cursor: pointer;
+  height: 36px;
+  width: 36px;
+
+  border-color: white;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 4px;
+
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-image: url(../img/dropbox-track-load-button.png);
+}
+
+.igv-app-dropbox-button:hover {
+  border-color: rgba(0, 0, 0, 0.07);
+  background-color: rgba(0, 0, 0, 0.07);
+}

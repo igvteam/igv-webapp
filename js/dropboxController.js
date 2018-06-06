@@ -21,14 +21,59 @@
  *
  */
 var app = (function (app) {
-    app.DropboxController = function ($container, config) {
+    app.DropboxController = function ($modal) {
+        this.$modalBody = $modal.find('.modal-body');
+    };
 
-        let dropboxButton,
+    app.DropboxController.prototype.configure = function (config) {
+
+        let self = this,
+            loaderConfig,
+            $dismiss,
+            $ok,
+            dropboxButton,
             dropboxButtonConfig;
 
+        loaderConfig =
+            {
+                hidden: false,
+                embed: true,
+                $widgetParent: this.$modalBody,
+                mode: 'url',
+                // mode: 'localFile'
+            };
+
+        this.loader = config.browser.createFileLoadWidget(loaderConfig);
+
+        // upper dismiss - x - button
+        $dismiss = this.$modalBody.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // lower dismiss - close - button
+        $dismiss = this.$modalBody.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // ok - button
+        $ok = this.$modalBody.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
+            self.loader.okHandler();
+        });
+
+
+
+
+
+
+
+
+
+        // Dropbox chooser button
         dropboxButtonConfig = {
 
-            // Required. Called when a user selects an item in the Chooser.
             success: function(dbFiles) {
                 let objs;
 
@@ -82,9 +127,9 @@ var app = (function (app) {
             folderselect: false, // or true
         };
 
-        // Dropbox chooser button
         dropboxButton = Dropbox.createChooseButton(dropboxButtonConfig);
-        $container.get(0).appendChild(dropboxButton);
+
+        // this.$modal.get(0).appendChild(dropboxButton);
 
     };
 

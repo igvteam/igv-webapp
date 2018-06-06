@@ -28,11 +28,13 @@ var app = (function (app) {
             $file_ok,
             $file_dismiss,
             locaFileLoaderConfig,
-            urlLoaderConfig;
+            urlLoaderConfig,
+            dropboxLoaderConfig,
+            googleDriveLoaderConfig;
 
         this.browser = browser;
         this.config = config;
-        this.createEncodeTable(browser.genome.id);
+
 
         // local file load modal
         locaFileLoaderConfig =
@@ -64,13 +66,6 @@ var app = (function (app) {
             self.localFileLoader.okHandler();
         });
 
-
-
-
-
-
-
-
         // url load modal
         urlLoaderConfig =
             {
@@ -101,6 +96,12 @@ var app = (function (app) {
             self.urlLoader.okHandler();
         });
 
+        // Dropbox
+        this.dropboxController = config.dropboxController;
+        this.dropboxController.configure({ browser: browser });
+
+        // ENCODE
+        this.createEncodeTable(browser.genome.id);
     };
 
     app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
@@ -146,7 +147,7 @@ var app = (function (app) {
                 },
                 didRetrieveData: function () {
                     self.config.$encodeModalPresentationButton.removeClass('igv-app-disabled');
-                    self.config.$encodeModalPresentationButton.text('Load Tracks from ENCODE...');
+                    self.config.$encodeModalPresentationButton.text('ENCODE');
                 }
             };
 

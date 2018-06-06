@@ -50,13 +50,15 @@ var app = (function (app) {
                     window.history.pushState({}, "IGV", session);
                 });
 
-                app.dropboxController = new app.DropboxController($('#igv-app-dropbox-button-container'), {});
+                // app.dropboxController = new app.DropboxController($('#igv-app-dropbox-button-container'), {});
 
                 // Track load controller configuration
                 trackLoadConfig =
                     {
                         $fileModal: $('#igv-app-track-from-local-file-modal'),
                         $urlModal: $('#igv-app-track-from-url-modal'),
+                        dropboxController: new app.DropboxController($('#igv-app-track-dropbox-modal')),
+                        googleDriveController: new app.GoogleDriveController($('#igv-app-track-google-drive-modal')),
                         $encodeModal: $('#igv-app-encode-modal'),
                         $encodeModalPresentationButton: $('#igv-encode-list-item-button')
                     };

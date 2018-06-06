@@ -63,7 +63,9 @@ var app = (function (app) {
             self.loader.okHandler();
         });
 
-
+        this.loader.customizeLayout(function () {
+            console.log('Lets customize this thing!')
+        });
 
 
 

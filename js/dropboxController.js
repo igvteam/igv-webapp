@@ -23,7 +23,6 @@
 var app = (function (app) {
     app.DropboxController = function ($modal) {
         this.$modal = $modal;
-        this.$modalBody = $modal.find('.modal-body');
     };
 
     app.DropboxController.prototype.configure = function (config) {
@@ -31,89 +30,33 @@ var app = (function (app) {
         let self = this,
             loaderConfig,
             $dismiss,
-            $ok,
-            dbConfig;
-
-        dbConfig = {
-
-            success: function(dbFiles) {
-                let objs;
-
-                objs = [];
-                dbFiles.forEach(function (dbFile) {
-                    let obj;
-
-                    if (igv.hasKnownFileExtension({ url:dbFile.name })) {
-
-                        obj =
-                            {
-                                url: dbFile.link,
-                                name: dbFile.name
-                            };
-
-                        objs.push(obj);
-
-                    }
-                });
-
-                if (objs.length > 0) {
-                    igv.browser.loadTrackList( objs );
-                }
-
-            },
-
-            // Optional. Called when the user closes the dialog without selecting a file
-            // and does not include any parameters.
-            cancel: function() {
-
-            },
-
-            // Optional. "preview" (default) is a preview link to the document for sharing,
-            // "direct" is an expiring link to download the contents of the file. For more
-            // information about link types, see Link types below.
-            linkType: "preview", // or "direct"
-
-            // Optional. A value of false (default) limits selection to a single file, while
-            // true enables multiple file selection.
-            multiselect: true,
-
-            // Optional. This is a list of file extensions. If specified, the user will
-            // only be able to select files with these extensions. You may also specify
-            // file types, such as "video" or "images" in the list. For more information,
-            // see File types below. By default, all extensions are allowed.
-            // extensions: ['.pdf', '.doc', '.docx'],
-
-            // Optional. A value of false (default) limits selection to files,
-            // while true allows the user to select both folders and files.
-            // You cannot specify `linkType: "direct"` when using `folderselect: true`.
-            folderselect: false, // or true
-        };
+            $ok;
 
         loaderConfig =
             {
                 hidden: false,
                 embed: true,
-                $widgetParent: this.$modalBody,
-                mode: 'url',
-                // mode: 'localFile'
+                $widgetParent: this.$modal.find('.modal-body'),
+                // mode: 'url',
+                mode: 'localFile'
             };
 
         this.loader = config.browser.createFileLoadWidget(loaderConfig);
 
         // upper dismiss - x - button
-        $dismiss = this.$modalBody.find('.modal-header button:nth-child(1)');
+        $dismiss = this.$modal.find('.modal-header button:nth-child(1)');
         $dismiss.on('click', function () {
             self.loader.dismiss();
         });
 
         // lower dismiss - close - button
-        $dismiss = this.$modalBody.find('.modal-footer button:nth-child(1)');
+        $dismiss = this.$modal.find('.modal-footer button:nth-child(1)');
         $dismiss.on('click', function () {
             self.loader.dismiss();
         });
 
         // ok - button
-        $ok = this.$modalBody.find('.modal-footer button:nth-child(2)');
+        $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
             self.loader.okHandler();
         });
@@ -121,25 +64,61 @@ var app = (function (app) {
         this.loader.customizeLayout(function ($parent) {
 
             $parent.css({ width: '100%' });
-            $parent.find('input').hide();
+            $parent.find('.igv-flw-file-chooser-container').hide();
             $parent.find('.igv-flw-drag-drop-target').hide();
 
-            $parent.find('.igv-flw-input-label').each(function () {
-                let $div;
+            $parent.find('.igv-flw-input-label').each(function (index) {
+                let $div,
+                    settings,
+                    lut;
+
+                // insert Dropbox button container
                 $div = $('<div>');
                 $div.insertAfter( $(this) );
-                $div.get(0).appendChild( Dropbox.createChooseButton(dbConfig) )
+
+                // create Dropbox button
+                lut =
+                    [
+                      'data',
+                      'index'
+                    ];
+
+                settings = dbButtonConfigurator.call(self, $(this).parent().find('.igv-flw-local-file-name-container'), lut[ index ]);
+                $div.get(0).appendChild( Dropbox.createChooseButton(settings) )
             });
 
         });
 
-
-
-
-
-
-
     };
 
+    function dbButtonConfigurator($trackNameLabel, key = undefined) {
+        let self = this,
+            obj;
+        obj =
+            {
+
+            success: function(dbFiles) {
+
+                dbFiles.forEach(function (dbFile) {
+
+                    if (igv.hasKnownFileExtension({ url:dbFile.name })) {
+                        $trackNameLabel.text(dbFile.name);
+                        $trackNameLabel.show();
+                        self.loader.fileLoadManager.dictionary[ key ] = dbFile.link;
+                    }
+
+                });
+
+            },
+
+            cancel: function() { },
+
+            linkType: "preview",
+            multiselect: false,
+            folderselect: false,
+        };
+
+        return obj;
+    }
     return app;
 })(app || {});

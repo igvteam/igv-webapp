@@ -68,7 +68,6 @@ var app = (function (app) {
 
     };
 
-
     app.GenomeModalController.prototype.okHandler = function () {
 
         var self = this;

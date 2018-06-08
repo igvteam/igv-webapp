@@ -59,6 +59,7 @@ var app = (function (app) {
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
             if (self.loader.okHandler()) {
+                self.loader.dismiss();
                 self.$modal.modal('hide');
             }
         });

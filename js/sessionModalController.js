@@ -91,14 +91,15 @@ var app = (function (app) {
 
     app.SessionModalController.prototype.okHandler = function () {
 
-        var sesson;
+        var session;
 
-        sesson = this.getConfiguration();
-        if (sesson) {
-            this.browser.loadSession(sesson);
+        session = this.getConfiguration();
+        session = session.split('?')[ 0 ];
+        if (session) {
+            this.browser.loadSession(session);
         }
 
-        return sesson;
+        return session;
 
     };
 

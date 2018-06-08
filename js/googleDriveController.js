@@ -22,6 +22,7 @@
  */
 var app = (function (app) {
     app.GoogleDriveController = function ($modal) {
+        this.$modal = $modal;
     };
 
     return app;

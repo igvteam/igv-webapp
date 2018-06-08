@@ -25,16 +25,13 @@ var app = (function (app) {
     app.TrackLoadController = function (browser, config) {
 
         var self = this,
-            $file_ok,
-            $file_dismiss,
+            $ok,
+            $dismiss,
             locaFileLoaderConfig,
-            urlLoaderConfig,
-            dropboxLoaderConfig,
-            googleDriveLoaderConfig;
+            urlLoaderConfig;
 
         this.browser = browser;
         this.config = config;
-
 
         // local file load modal
         locaFileLoaderConfig =
@@ -46,25 +43,26 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig);
+        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
 
         // upper dismiss - x - button
-        $file_dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
-        $file_dismiss.on('click', function () {
+        $dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
             self.localFileLoader.dismiss();
         });
 
         // lower dismiss - close - button
-        $file_dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
-        $file_dismiss.on('click', function () {
+        $dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
             self.localFileLoader.dismiss();
         });
 
         // ok - button
-        $file_ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
-        $file_ok.on('click', function () {
+        $ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
             if (self.localFileLoader.okHandler()) {
                 self.localFileLoader.dismiss();
+                config.$fileModal.modal('hide');
             }
         });
 
@@ -78,25 +76,26 @@ var app = (function (app) {
                 // mode: 'localFile'
             };
 
-        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig);
+        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
 
         // upper dismiss - x - button
-        $file_dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
-        $file_dismiss.on('click', function () {
+        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
             self.urlLoader.dismiss();
         });
 
         // lower dismiss - close - button
-        $file_dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
-        $file_dismiss.on('click', function () {
+        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
             self.urlLoader.dismiss();
         });
 
         // ok - button
-        $file_ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
-        $file_ok.on('click', function () {
+        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
             if (self.urlLoader.okHandler()) {
                 self.urlLoader.dismiss();
+                config.$urlModal.modal('hide');
             }
         });
 

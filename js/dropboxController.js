@@ -41,7 +41,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.loader = config.browser.createFileLoadWidget(loaderConfig);
+        this.loader = config.browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
 
         // upper dismiss - x - button
         $dismiss = this.$modal.find('.modal-header button:nth-child(1)');

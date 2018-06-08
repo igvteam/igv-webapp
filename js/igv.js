@@ -31528,7 +31528,7 @@ var igv = (function (igv) {
         }
     };
 
-    igv.Browser.prototype.createFileLoadWidget = function (config, $parent, $buttonParent) {
+    igv.Browser.prototype.createFileLoadWidget = function (config, fileLoadManager, $parent, $buttonParent) {
 
         var isHidden,
             isEmbedded,
@@ -31549,7 +31549,7 @@ var igv = (function (igv) {
                     $buttonParent: isEmbedded ? undefined : $buttonParent
                 };
 
-            return new igv.FileLoadWidget(fileLoadWidgetConfig)
+            return new igv.FileLoadWidget(fileLoadWidgetConfig, fileLoadManager)
         }
 
     };
@@ -43502,7 +43502,7 @@ var igv = (function (igv) {
 
             // file load widget
             if (config.fileLoadWidget) {
-                browser.trackFileLoad = browser.createFileLoadWidget(config.fileLoadWidget, browser.$root, $igv_nav_bar_left_container);
+                browser.trackFileLoad = browser.createFileLoadWidget(config.fileLoadWidget, new igv.FileLoadManager(), browser.$root, $igv_nav_bar_left_container);
             }
 
             // current genome
@@ -52024,7 +52024,7 @@ var igv = (function (igv) {
  * Created by dat on 4/8/18.
  */
 var igv = (function (igv) {
-    igv.FileLoadWidget = function (config) {
+    igv.FileLoadWidget = function (config, fileLoadManager) {
         var self = this,
             obj,
             $header,
@@ -52036,7 +52036,8 @@ var igv = (function (igv) {
         this.config = config;
         this.$parent = config.$widgetParent;
 
-        this.fileLoadManager = new igv.FileLoadManager(this);
+        this.fileLoadManager = fileLoadManager;
+        this.fileLoadManager.fileLoadWidget = this;
 
         // file load navbar button
         if (false === config.embed) {
@@ -52364,9 +52365,7 @@ var igv = (function (igv) {
 
     }
 
-    igv.FileLoadManager = function (fileLoadWidget) {
-
-        this.fileLoadWidget = fileLoadWidget;
+    igv.FileLoadManager = function () {
 
         this.dictionary = {};
 

@@ -63,7 +63,9 @@ var app = (function (app) {
         // ok - button
         $file_ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
         $file_ok.on('click', function () {
-            self.localFileLoader.okHandler();
+            if (self.localFileLoader.okHandler()) {
+                self.localFileLoader.dismiss();
+            }
         });
 
         // url load modal
@@ -93,7 +95,9 @@ var app = (function (app) {
         // ok - button
         $file_ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
         $file_ok.on('click', function () {
-            self.urlLoader.okHandler();
+            if (self.urlLoader.okHandler()) {
+                self.urlLoader.dismiss();
+            }
         });
 
         // Dropbox

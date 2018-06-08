@@ -100,17 +100,10 @@ var app = (function (app) {
             {
 
             success: function(dbFiles) {
-
-                dbFiles.forEach(function (dbFile) {
-
-                    // if (igv.hasKnownFileExtension({ url:dbFile.name })) {
-                        $trackNameLabel.text(dbFile.name);
-                        $trackNameLabel.show();
-                        self.loader.fileLoadManager.dictionary[ key ] = dbFile.link;
-                    // }
-
-                });
-
+                // Single file selection
+                $trackNameLabel.text(dbFiles[ 0 ].name);
+                $trackNameLabel.show();
+                self.loader.fileLoadManager.dictionary[ key ] = dbFiles[ 0 ].link;
             },
 
             cancel: function() { },

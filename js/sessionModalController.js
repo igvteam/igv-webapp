@@ -46,6 +46,23 @@ var app = (function (app) {
             };
 
         this.loader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+        this.loader.customizeLayout(function ($parent) {
+
+            $parent.css({ width: '100%' });
+
+            $parent.find('.igv-flw-input-container').each(function () {
+
+                $(this).find('.igv-flw-input-row').each(function (index) {
+
+                    if (1 === index) {
+                        $(this).hide();
+                    }
+
+                });
+
+            });
+
+        });
 
         // upper dismiss - x - button
         $dismiss = $modal.find('.modal-header button:nth-child(1)');
@@ -70,21 +87,6 @@ var app = (function (app) {
 
         });
 
-        this.loader.customizeLayout(function ($parent) {
-
-            $parent.find('.igv-flw-input-container').each(function () {
-
-                $(this).find('.igv-flw-input-row').each(function (index) {
-
-                    if (1 === index) {
-                        $(this).hide();
-                    }
-
-                });
-
-            });
-
-        });
 
 
     };

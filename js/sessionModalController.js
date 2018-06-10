@@ -48,8 +48,6 @@ var app = (function (app) {
         this.loader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
         this.loader.customizeLayout(function ($parent) {
 
-            $parent.css({ width: '100%' });
-
             $parent.find('.igv-flw-input-container').each(function () {
 
                 $(this).find('.igv-flw-input-row').each(function (index) {

@@ -66,7 +66,6 @@ var app = (function (app) {
 
         this.loader.customizeLayout(function ($parent) {
 
-            $parent.css({ width: '100%' });
             $parent.find('.igv-flw-file-chooser-container').hide();
             $parent.find('.igv-flw-drag-drop-target').hide();
 

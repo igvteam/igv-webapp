@@ -43,9 +43,6 @@ var app = (function (app) {
             };
 
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
-        this.localFileLoader.customizeLayout(function ($parent) {
-            $parent.css({ width: '100%' });
-        });
 
         // upper dismiss - x - button
         $dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
@@ -78,9 +75,6 @@ var app = (function (app) {
             };
 
         this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
-        this.urlLoader.customizeLayout(function ($parent) {
-            $parent.css({ width: '100%' });
-        });
 
         // upper dismiss - x - button
         $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');

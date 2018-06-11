@@ -112,15 +112,19 @@
                     Load Track
                 </button>
                 <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
+
                     <!-- local file -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-local-file-modal">Local File</button>
+
                     <!-- URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">URL</button>
+
                     <!-- Dropbox -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-dropbox-modal">Dropbox</button>
-                    <!--<button class="dropdown-item" type="button" id="igv-app-dropbox-button-container"></button>-->
+
                     <!-- Google Drive -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-google-drive-modal">Google Drive</button>
+
                     <!-- ENCODE -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">ENCODE</button>
                 </div>
@@ -134,7 +138,16 @@
                 </button>
 
                 <div class="dropdown-menu" aria-labelledby="igv-app-session-dropdown-button">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-session-from-file-or-url-modal">Load Session from File or URL...</a>
+
+                    <!-- local file -->
+                    <button id="igv-app-session-file-button" class="dropdown-item" type="button">
+                        <label for="igv-app-session-file-input">Local File</label>
+                        <input id="igv-app-session-file-input" name="igv-app-session-file-input" type="file">
+                    </button>
+
+                    <!-- URL -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-url-modal">URL</button>
+
                 </div>
 
             </div>
@@ -343,15 +356,15 @@
 
     </div>
 
-    <!-- Load Session -->
-    <div id="igv-app-session-from-file-or-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-from-file-or-url-modal-label" aria-hidden="true">
+    <!-- Load Session URL -->
+    <div id="igv-app-session-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-session-from-file-or-url-modal-label" class="modal-title">Load Session File or URL</h4>
+                    <h4  id="igv-app-session-url-modal-label" class="modal-title">Load Session URL</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

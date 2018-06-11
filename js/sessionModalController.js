@@ -103,7 +103,6 @@ var app = (function (app) {
         var session;
 
         session = this.getConfiguration();
-        session = session.split('?')[ 0 ];
         if (session) {
             this.browser.loadSession(session);
         }

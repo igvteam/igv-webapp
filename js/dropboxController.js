@@ -100,12 +100,10 @@ var app = (function (app) {
             {
 
             success: function(dbFiles) {
-                var url;
                 // Single file selection
                 $trackNameLabel.text(dbFiles[ 0 ].name);
                 $trackNameLabel.show();
-                url = dbFiles[ 0 ].link;
-                self.loader.fileLoadManager.dictionary[ key ] = url.split('?')[ 0 ];
+                self.loader.fileLoadManager.dictionary[ key ] = dbFiles[ 0 ].link;
             },
 
             cancel: function() { },

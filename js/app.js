@@ -27,7 +27,8 @@ var app = (function (app) {
         igv
             .createBrowser($container.get(0), igvConfig)
             .then(function (browser) {
-                let trackLoadConfig,
+                let sessionConfig,
+                    trackLoadConfig,
                     genomeConfig,
                     shareConfig;
 
@@ -67,7 +68,13 @@ var app = (function (app) {
                 app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
 
                 // Session Modal Controller
-                app.sessionModalController = new app.SessionModalController(browser, $('#igv-app-session-url-modal'));
+                sessionConfig =
+                    {
+                        $urlModal: $('#igv-app-session-url-modal'),
+                        dropboxController: new app.DropboxController($('#igv-app-session-dropbox-modal')),
+                        googleDriveController: new app.GoogleDriveController($('#igv-app-session-google-drive-modal')),
+                    };
+                app.sessionModalController = new app.SessionModalController(browser, sessionConfig);
 
                 $('#igv-app-session-file-input').on('change', function (e) {
                     let file;
@@ -79,7 +86,9 @@ var app = (function (app) {
                 genomeConfig =
                     {
                         $urlModal: $('#igv-app-genome-from-url-modal'),
-                        $fileModal: $('#igv-app-genome-from-file-modal')
+                        $fileModal: $('#igv-app-genome-from-file-modal'),
+                        dropboxController: new app.DropboxController($('#igv-app-genome-dropbox-modal')),
+                        googleDriveController: new app.GoogleDriveController($('#igv-app-genome-google-drive-modal')),
                     };
                 app.genomeModalController = new app.GenomeModalController(browser, genomeConfig);
 
@@ -95,6 +104,8 @@ var app = (function (app) {
                                 browser: browser,
                                 $urlModal: $('#igv-app-genome-from-url-modal'),
                                 $fileModal: $('#igv-app-genome-from-file-modal'),
+                                $dropboxModal: $('#igv-app-genome-dropbox-modal'),
+                                $googleDriveModal: $('#igv-app-genome-google-drive-modal'),
                                 $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
                                 genomeDictionary: genomeDictionary
                             };
@@ -165,18 +176,32 @@ var app = (function (app) {
         $divider  = $('<div>', { class:'dropdown-divider' });
         config.$dropdown_menu.append($divider);
 
-        // genome from file button
+        // genome from local file
         $button = createButton('Local File');
         config.$dropdown_menu.append($button);
         $button.on('click', function () {
             config.$fileModal.modal();
         });
 
-        // genome from url button
+        // genome from URL
         $button = createButton('URL');
         config.$dropdown_menu.append($button);
         $button.on('click', function () {
             config.$urlModal.modal();
+        });
+
+        // genome from Dropbox
+        $button = createButton('Dropbox');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$dropboxModal.modal();
+        });
+
+        // genome from Google Drive
+        $button = createButton('Google Drive');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$googleDriveModal.modal();
         });
 
     }

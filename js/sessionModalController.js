@@ -29,7 +29,7 @@
  */
 
 var app = (function (app) {
-    app.SessionModalController = function (browser, $modal) {
+    app.SessionModalController = function (browser, config) {
 
         let self = this,
             loaderConfig,
@@ -42,11 +42,11 @@ var app = (function (app) {
             {
                 hidden: false,
                 embed: true,
-                $widgetParent: $modal.find('.modal-body')
+                $widgetParent: config.$urlModal.find('.modal-body')
             };
 
-        this.loader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
-        this.loader.customizeLayout(function ($parent) {
+        this.urlLoader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+        this.urlLoader.customizeLayout(function ($parent) {
 
             $parent.find('.igv-flw-input-container').each(function (ii) {
                 var $outer;
@@ -72,24 +72,24 @@ var app = (function (app) {
         });
 
         // upper dismiss - x - button
-        $dismiss = $modal.find('.modal-header button:nth-child(1)');
+        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
         $dismiss.on('click', function () {
-            self.loader.dismiss();
+            self.urlLoader.dismiss();
         });
 
         // lower dismiss - close - button
-        $dismiss = $modal.find('.modal-footer button:nth-child(1)');
+        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
         $dismiss.on('click', function () {
-            self.loader.dismiss();
+            self.urlLoader.dismiss();
         });
 
         // ok - button
-        $ok = $modal.find('.modal-footer button:nth-child(2)');
+        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
 
             if (self.okHandler()) {
-                self.loader.dismiss();
-                $modal.modal('hide');
+                self.urlLoader.dismiss();
+                config.$urlModal.modal('hide');
             }
 
         });
@@ -114,10 +114,10 @@ var app = (function (app) {
 
     app.SessionModalController.prototype.getConfiguration = function () {
 
-        if (this.loader.fileLoadManager.dictionary.data) {
-            return this.loader.fileLoadManager.dictionary.data;
+        if (this.urlLoader.fileLoadManager.dictionary.data) {
+            return this.urlLoader.fileLoadManager.dictionary.data;
         } else {
-            this.loader.presentErrorMessage('Error: No data file');
+            this.urlLoader.presentErrorMessage('Error: No data file');
             return undefined;
         }
 

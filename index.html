@@ -148,6 +148,12 @@
                     <!-- URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-url-modal">URL</button>
 
+                    <!-- Dropbox -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-dropbox-modal">Dropbox</button>
+
+                    <!-- Google Drive -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-google-drive-modal">Google Drive</button>
+
                 </div>
 
             </div>
@@ -236,15 +242,45 @@
 
     </div>
 
-    <!-- Track from ENCODE Table -->
-    <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
+    <!-- Genome from Dropbox -->
+    <div id="igv-app-genome-dropbox-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-dropbox-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
+                    <h4  id="igv-app-genome-dropbox-modal-label" class="modal-title">Load Track from Dropbox</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Genome from Google Drive -->
+    <div id="igv-app-genome-google-drive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-google-drive-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-genome-google-drive-modal-label" class="modal-title">Load Session From Google Drive</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -356,7 +392,67 @@
 
     </div>
 
-    <!-- Load Session URL -->
+    <!-- Track from Google Drive -->
+    <div id="igv-app-track-google-drive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-google-drive-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-track-google-drive-modal-label" class="modal-title">Load Session From Google Drive</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Track from ENCODE Table -->
+    <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Session from URL -->
     <div id="igv-app-session-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
@@ -365,6 +461,66 @@
 
                 <div class="modal-header">
                     <h4  id="igv-app-session-url-modal-label" class="modal-title">Load Session URL</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Session from Dropbox -->
+    <div id="igv-app-session-dropbox-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-dropbox-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-session-dropbox-modal-label" class="modal-title">Load Session From Dropbox</h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Go</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Session from Google Drive -->
+    <div id="igv-app-session-google-drive-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-google-drive-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-session-google-drive-modal-label" class="modal-title">Load Session From Google Drive</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

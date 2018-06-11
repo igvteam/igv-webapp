@@ -28,52 +28,86 @@
  * Created by dat on 5/8/18.
  */
 var app = (function (app) {
-    app.GenomeModalController = function (browser, $modal) {
+    app.GenomeModalController = function (browser, config) {
 
         let self = this,
-            loaderConfig,
+            urlLoaderConfig,
+            locaFileLoaderConfig,
             $dismiss,
             $ok;
 
         this.browser = browser;
 
-        loaderConfig =
+        // shared by file and url modals
+
+        locaFileLoaderConfig =
             {
                 hidden: false,
                 embed: true,
-                $widgetParent: $modal.find('.modal-body')
+                $widgetParent: config.$fileModal.find('.modal-body'),
+                mode: 'localFile'
             };
 
-        this.loader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
 
         // upper dismiss - x - button
-        $dismiss = $modal.find('.modal-header button:nth-child(1)');
+        $dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
         $dismiss.on('click', function () {
-            self.loader.dismiss();
+            self.localFileLoader.dismiss();
         });
 
         // lower dismiss - close - button
-        $dismiss = $modal.find('.modal-footer button:nth-child(1)');
+        $dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
         $dismiss.on('click', function () {
-            self.loader.dismiss();
+            self.localFileLoader.dismiss();
         });
 
         // ok - button
-        $ok = $modal.find('.modal-footer button:nth-child(2)');
+        $ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            self.okHandler();
-            self.loader.dismiss();
-            $modal.modal('hide');
+            self.okHandler(self.localFileLoader.fileLoadManager);
+            self.localFileLoader.dismiss();
+            config.$fileModal.modal('hide');
+        });
+
+        urlLoaderConfig =
+            {
+                hidden: false,
+                embed: true,
+                $widgetParent: config.$urlModal.find('.modal-body'),
+                mode: 'url'
+            };
+
+        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
+
+        // upper dismiss - x - button
+        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.urlLoader.dismiss();
+        });
+
+        // lower dismiss - close - button
+        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.urlLoader.dismiss();
+        });
+
+        // ok - button
+        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
+            self.okHandler(self.urlLoader.fileLoadManager);
+            self.urlLoader.dismiss();
+            config.$urlModal.modal('hide');
         });
 
     };
 
-    app.GenomeModalController.prototype.okHandler = function () {
+    app.GenomeModalController.prototype.okHandler = function (fileLoadManager) {
 
         var self = this;
 
         this
-            .getGenomeObject()
+            .getGenomeObject(fileLoadManager)
             .then(function (dictionary) {
                 var genome;
 
@@ -102,28 +136,28 @@ var app = (function (app) {
 
     };
 
-    app.GenomeModalController.prototype.getGenomeObject = function () {
+    app.GenomeModalController.prototype.getGenomeObject = function (fileLoadManager) {
         let obj;
 
-        if (undefined === this.loader.fileLoadManager.dictionary.data) {
+        if (undefined === fileLoadManager.dictionary.data) {
             return Promise.reject(new Error('Error: No data file'));
-        } else if (false === isValidDataFileOrURL.call(this, this.loader.fileLoadManager.dictionary.data)) {
+        } else if (false === isValidDataFileOrURL.call(this, fileLoadManager.dictionary.data)) {
             return Promise.reject(new Error('Error: data file is invalid.'));
         } else {
 
-            if (true === isValidIndexFileORURL.call(this, this.loader.fileLoadManager.dictionary.data)) {
+            if (true === isValidIndexFileORURL.call(this, fileLoadManager.dictionary.data)) {
                 return Promise.reject(new Error('Error: index file submitted as data file.'));
             } else {
 
-                if (this.loader.fileLoadManager.dictionary.index && false === isValidIndexFileORURL.call(this, this.loader.fileLoadManager.dictionary.index)) {
+                if (fileLoadManager.dictionary.index && false === isValidIndexFileORURL.call(this, fileLoadManager.dictionary.index)) {
                     return Promise.reject(new Error('Error: index file is not valid.'));
                 }
 
-                if ('json' === igv.getExtension({ url: this.loader.fileLoadManager.dictionary.data })) {
-                    return app.genomeController.getGenomes(this.loader.fileLoadManager.dictionary.data)
+                if ('json' === igv.getExtension({ url: fileLoadManager.dictionary.data })) {
+                    return app.genomeController.getGenomes(fileLoadManager.dictionary.data)
                 } else {
                     obj = {};
-                    obj[ 'noname' ] = { fastaURL: this.loader.fileLoadManager.dictionary.data, indexURL: (this.loader.fileLoadManager.dictionary.index || undefined) };
+                    obj[ 'noname' ] = { fastaURL: fileLoadManager.dictionary.data, indexURL: (fileLoadManager.dictionary.index || undefined) };
                     return Promise.resolve(obj);
                 }
 

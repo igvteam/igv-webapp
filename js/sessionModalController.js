@@ -48,15 +48,24 @@ var app = (function (app) {
         this.loader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
         this.loader.customizeLayout(function ($parent) {
 
-            $parent.find('.igv-flw-input-container').each(function () {
+            $parent.find('.igv-flw-input-container').each(function (ii) {
+                var $outer;
 
-                $(this).find('.igv-flw-input-row').each(function (index) {
+                $outer = $(this);
+                if (0 === ii) {
+                    $outer.hide();
+                } else {
+                    $outer.find('.igv-flw-input-row').each(function (jj) {
+                        var $inner;
 
-                    if (1 === index) {
-                        $(this).hide();
-                    }
-
-                });
+                        $inner = $(this);
+                        if (0 === jj) {
+                            $inner.find('.igv-flw-input-label').text('Session URL');
+                        } else {
+                            $inner.hide();
+                        }
+                    });
+                }
 
             });
 

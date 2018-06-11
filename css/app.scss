@@ -110,6 +110,17 @@ $igv-app-logo-container-width: 20%;
   background-color: mediumaquamarine;
 }
 
+#igv-app-session-file-button {
+  input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+}
+
 // ::::::::::::::::::: UNUSED :::::::::::::::::::
 .igv-app-dropbox-button {
   cursor: pointer;

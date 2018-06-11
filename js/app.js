@@ -67,7 +67,13 @@ var app = (function (app) {
                 app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
 
                 // Session Modal Controller
-                app.sessionModalController = new app.SessionModalController(browser, $('#igv-app-session-from-file-or-url-modal'));
+                app.sessionModalController = new app.SessionModalController(browser, $('#igv-app-session-url-modal'));
+
+                $('#igv-app-session-file-input').on('change', function (e) {
+                    let file;
+                    file = e.target.files[ 0 ];
+                    browser.loadSession(file);
+                });
 
                 // Genome Modal Controller
                 genomeConfig =

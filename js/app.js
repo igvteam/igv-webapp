@@ -28,6 +28,7 @@ var app = (function (app) {
             .createBrowser($container.get(0), igvConfig)
             .then(function (browser) {
                 let trackLoadConfig,
+                    genomeConfig,
                     shareConfig;
 
                 $('.igv-app-footer').find('a img').hover(function () {
@@ -69,7 +70,12 @@ var app = (function (app) {
                 app.sessionModalController = new app.SessionModalController(browser, $('#igv-app-session-from-file-or-url-modal'));
 
                 // Genome Modal Controller
-                app.genomeModalController = new app.GenomeModalController(browser, $('#igv-app-genome-from-file-or-url-modal'));
+                genomeConfig =
+                    {
+                        $urlModal: $('#igv-app-genome-from-url-modal'),
+                        $fileModal: $('#igv-app-genome-from-file-modal')
+                    };
+                app.genomeModalController = new app.GenomeModalController(browser, genomeConfig);
 
                 // Genome Controller
                 app.genomeController = new app.GenomeController();
@@ -81,7 +87,8 @@ var app = (function (app) {
                         config =
                             {
                                 browser: browser,
-                                $modal: $('#igv-app-genome-from-file-or-url-modal'),
+                                $urlModal: $('#igv-app-genome-from-url-modal'),
+                                $fileModal: $('#igv-app-genome-from-file-modal'),
                                 $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
                                 genomeDictionary: genomeDictionary
                             };
@@ -152,11 +159,18 @@ var app = (function (app) {
         $divider  = $('<div>', { class:'dropdown-divider' });
         config.$dropdown_menu.append($divider);
 
-        // genome from file or url button
-        $button = createButton('file or url ...');
+        // genome from file button
+        $button = createButton('Local File');
         config.$dropdown_menu.append($button);
         $button.on('click', function () {
-            config.$modal.modal();
+            config.$fileModal.modal();
+        });
+
+        // genome from url button
+        $button = createButton('URL');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$urlModal.modal();
         });
 
     }

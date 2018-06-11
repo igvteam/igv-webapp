@@ -30291,29 +30291,35 @@ var igv = (function (igv) {
     igv.Browser.prototype.loadTrackList = function (configList) {
 
         var self = this,
-            loadedTracks = [],
-            groupAutoscaleViews;
+            groupAutoscaleViews,
+            promises;
 
+        promises = [];
         configList.forEach(function (config) {
-            var track = self.loadTrack(config);
-            if (track) {
-                loadedTracks.push(track);
-
-            }
+            promises.push(self.loadTrack(config));
         });
 
-        groupAutoscaleViews = this.trackViews.filter(function (trackView) {
-            return trackView.track.autoscaleGroup
-        })
+        return Promise.all(promises)
+            .then(function (loadedTracks) {
 
-        if (groupAutoscaleViews.length > 0) {
-            this.updateViews(this.genomicStateList[0], groupAutoscaleViews);
-        }
+                groupAutoscaleViews = self.trackViews.filter(function (trackView) {
+                    return trackView.track.autoscaleGroup
+                })
 
+                if (groupAutoscaleViews.length > 0) {
+                    this.updateViews(self.genomicStateList[0], groupAutoscaleViews);
+                }
 
-        return loadedTracks;
+                return loadedTracks;
+            })
     };
 
+    /**
+     * Return a promise to load a track
+     *
+     * @param config
+     * @returns {*}
+     */
     igv.Browser.prototype.loadTrack = function (config) {
 
         var self = this,
@@ -30321,36 +30327,75 @@ var igv = (function (igv) {
             property,
             newTrack;
 
-        igv.inferTrackTypes(config);
+        return resolveTrackProperties(config)
 
-        // Set defaults if specified
-        if (this.trackDefaults && config.type) {
-            settings = this.trackDefaults[config.type];
-            if (settings) {
-                for (property in settings) {
-                    if (settings.hasOwnProperty(property) && config[property] === undefined) {
-                        config[property] = settings[property];
+            .then(function (config) {
+                igv.inferTrackTypes(config);
+
+                // Set defaults if specified
+                if (self.trackDefaults && config.type) {
+                    settings = self.trackDefaults[config.type];
+                    if (settings) {
+                        for (property in settings) {
+                            if (settings.hasOwnProperty(property) && config[property] === undefined) {
+                                config[property] = settings[property];
+                            }
+                        }
                     }
                 }
+
+                newTrack = igv.createTrack(config);
+
+                if (undefined === newTrack) {
+                    igv.presentAlert("Unknown file type: " + config.url, undefined);
+                    return newTrack;
+                }
+
+                // Set order field of track here.  Otherwise track order might get shuffled during asynchronous load
+                if (undefined === newTrack.order) {
+                    newTrack.order = self.trackViews.length;
+                }
+
+                self.addTrack(newTrack);
+
+                return newTrack;
+            })
+
+        function resolveTrackProperties(config) {
+            if (typeof config.url === 'string' && config.url.startsWith("https://drive.google.com")) {
+
+                return igv.Google.getDriveFileInfo(config.url)
+
+                    .then(function (json) {
+                        var format;
+
+                        if (!config.name) {
+                            config.name = json.originalFileName;
+                        }
+                        if (!config.format) {
+                            config.format = igv.inferFileFormat(config.name);
+                        }
+                        if(!config.format) {
+                            igv.presentAlert("Unknown file format: " + config.format);
+                        }
+
+                        config.url = "https://www.googleapis.com/drive/v3/files/" + json.id + "?alt=media";
+
+                        if(config.indexURL) {
+                            config.indexURL = igv.Google.driveDownloadURL(config.indexURL);
+                        }
+
+                        return config;
+                    })
+
+
+            }
+            else {
+                return Promise.resolve(config);
             }
         }
-
-        newTrack = igv.createTrack(config);
-
-        if (undefined === newTrack) {
-            igv.presentAlert("Unknown file type: " + config.url, undefined);
-            return newTrack;
-        }
-
-        // Set order field of track here.  Otherwise track order might get shuffled during asynchronous load
-        if (undefined === newTrack.order) {
-            newTrack.order = this.trackViews.length;
-        }
-
-        self.addTrack(newTrack);
-
-        return newTrack;
     };
+
 
     /**
      * Add a new track.  Each track is associated with the following DOM elements
@@ -31201,7 +31246,7 @@ var igv = (function (igv) {
                     feature = self.featureDB[locus.toLowerCase()];
                     if (feature) {
                         chromosome = self.genome.getChromosome(feature.chr);
-                        if(chromosome) {
+                        if (chromosome) {
                             genomicState = {
                                 chromosome: chromosome,
                                 start: feature.start,
@@ -39674,8 +39719,30 @@ var igv = (function (igv) {
                 endPoint = "https://www.googleapis.com/drive/v2/files/" + id;
 
             return igv.xhr.loadJson(endPoint, igv.buildOptions({}));
+        },
+
+        loadGoogleProperties: function (propertiesURL) {
+
+            return igv.xhr.loadArrayBuffer(propertiesURL)
+                .then(function (arrayBuffer) {
+                    var inflate, plain, str;
+
+                    inflate = new Zlib.Gunzip(new Uint8Array(arrayBuffer));
+                    plain = inflate.decompress();
+                    str = String.fromCharCode.apply(null, plain);
+                    igv.Google.properties = JSON.parse(str);
+
+                    return igv.Google.properties;
+
+                })
         }
     }
+
+
+    igv.oauth = {
+        google: {}
+    };
+
 
     function getGoogleDriveFileID(link) {
 
@@ -39689,7 +39756,7 @@ var igv = (function (igv) {
                 return link.substring(i1, i2)
             }
             else if (i1 > 0) {
-                 return link.substring(i1);
+                return link.substring(i1);
             }
 
         }
@@ -43393,6 +43460,10 @@ var igv = (function (igv) {
         igv.oauth.google.access_token = token;
     }
 
+    igv.getGoogleOauthToken = function () {
+        return igv.oauth.google.access_token;
+    }
+
     function setTrackOrder(conf) {
 
         var trackOrder = 1;
@@ -47021,26 +47092,6 @@ var igv = (function (igv) {
 })
 (igv || {});
 
-/**
- * OAuth object provided for example pages.
- */
-
-var igv = (function (igv) {
-
-
-    igv.oauth = {
-        google: {}
-    };
-
-
-    return igv;
-})
-(igv || {});
-
-
-
-
-
 /*
  * The MIT License (MIT)
  *
@@ -50034,6 +50085,11 @@ var igv = (function (igv) {
 
     igv.knownFileExtensions = new Set(list);
 
+    /**
+     * Return a custom format object with the given name.
+     * @param name
+     * @returns {*}
+     */
     igv.getFormat = function (name) {
 
         if (undefined === igv.browser || undefined === igv.browser.formats) {
@@ -52082,7 +52138,8 @@ var igv = (function (igv) {
             obj =
                 {
                     dataTitle: 'Data file',
-                    indexTitle: 'Index file'
+                    indexTitle: 'Index file',
+                    doEmbed: config.embed || false
                 };
             createInputContainer.call(this, this.$container, obj);
         }
@@ -52225,7 +52282,7 @@ var igv = (function (igv) {
         if (true === config.doURL) {
             createURLContainer.call(this, $input_data_row, 'igv-flw-data-url', false);
         } else {
-            createLocalFileContainer.call(this, $input_data_row, 'igv-flw-local-data-file', false);
+            createLocalFileContainer.call(this, $input_data_row, 'igv-flw-local-data-file', false, config.doEmbed);
         }
 
         // index
@@ -52239,7 +52296,7 @@ var igv = (function (igv) {
         if (true === config.doURL) {
             createURLContainer.call(this, $input_index_row, 'igv-flw-index-url', true);
         } else {
-            createLocalFileContainer.call(this, $input_index_row, 'igv-flw-local-index-file', true);
+            createLocalFileContainer.call(this, $input_index_row, 'igv-flw-local-index-file', true, config.doEmbed);
         }
 
     }
@@ -52286,7 +52343,7 @@ var igv = (function (igv) {
 
     }
 
-    function createLocalFileContainer($parent, id, isIndexFile) {
+    function createLocalFileContainer($parent, id, isIndexFile, doEmbed) {
         var self = this,
             $file_chooser_container,
             $data_drop_target,
@@ -52310,6 +52367,9 @@ var igv = (function (igv) {
         $data_drop_target = $("<div>", { class:"igv-flw-drag-drop-target" });
         $parent.append($data_drop_target);
         $data_drop_target.text('or drop file');
+        if (true === doEmbed) {
+            $data_drop_target.hide();
+        }
 
         $file_name = $("<div>", { class:"igv-flw-local-file-name-container" });
         $parent.append($file_name);

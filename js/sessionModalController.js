@@ -96,7 +96,7 @@ var app = (function (app) {
             let session;
 
             if (loader.fileLoadManager.dictionary.data) {
-                session = loader.fileLoadManager.dictionary.data.split('?')[ 0 ];
+                session = loader.fileLoadManager.dictionary.data.split('?')[0];
                 self.browser.loadSession(session);
                 loader.dismiss();
                 $modal.modal('hide');
@@ -104,7 +104,7 @@ var app = (function (app) {
                 loader.presentErrorMessage('Error: No data file');
             }
 
-        });
+        }, true);
 
     };
 

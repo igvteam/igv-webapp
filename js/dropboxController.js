@@ -26,7 +26,7 @@ var app = (function (app) {
         this.$modal = $modal;
     };
 
-    app.DropboxController.prototype.configure = function (okHandler) {
+    app.DropboxController.prototype.configure = function (okHandler, dataFileOnly = false) {
 
         let self = this,
             loaderConfig,
@@ -47,16 +47,24 @@ var app = (function (app) {
         this.loader.customizeLayout(function ($parent) {
 
             $parent.find('.igv-flw-file-chooser-container').hide();
-            $parent.find('.igv-flw-drag-drop-target').hide();
 
-            $parent.find('.igv-flw-input-label').each(function (index) {
+            if (true === dataFileOnly) {
+                makeButton.call(self, $parent.find('.igv-flw-input-label').first(), 0);
+                $parent.find('.igv-flw-input-row').last().hide();
+            } else {
+                $parent.find('.igv-flw-input-label').each(function (index) {
+                    makeButton.call(self, $(this), index);
+                });
+            }
+
+            function makeButton($e, index) {
                 let $div,
-                    settings,
-                    lut;
+                    lut,
+                    settings;
 
                 // insert Dropbox button container
                 $div = $('<div>');
-                $div.insertAfter( $(this) );
+                $div.insertAfter( $e );
 
                 // create Dropbox button
                 lut =
@@ -65,10 +73,9 @@ var app = (function (app) {
                         'index'
                     ];
 
-                settings = dbButtonConfigurator.call(self, $(this).parent().find('.igv-flw-local-file-name-container'), lut[ index ]);
+                settings = dbButtonConfigurator.call(self, $e.parent().find('.igv-flw-local-file-name-container'), lut[ index ]);
                 $div.get(0).appendChild( Dropbox.createChooseButton(settings) )
-            });
-
+            }
         });
 
         // upper dismiss - x - button

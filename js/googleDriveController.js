@@ -21,9 +21,74 @@
  *
  */
 var app = (function (app) {
-    app.GoogleDriveController = function ($modal) {
+    app.GoogleDriveController = function (browser, $modal) {
+        this.browser = browser;
         this.$modal = $modal;
     };
+
+    app.GoogleDriveController.prototype.configure = function (okHandler) {
+
+        let self = this,
+            loaderConfig,
+            $dismiss,
+            $ok;
+
+        loaderConfig =
+            {
+                hidden: false,
+                embed: true,
+                $widgetParent: this.$modal.find('.modal-body'),
+                mode: 'localFile'
+            };
+
+        this.loader = this.browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+
+        this.loader.customizeLayout(function ($parent) {
+            // do stuff
+        });
+
+        // upper dismiss - x - button
+        $dismiss = this.$modal.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // lower dismiss - close - button
+        $dismiss = this.$modal.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // ok - button
+        $ok = this.$modal.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
+            okHandler(self.loader, self.$modal);
+        });
+
+    };
+
+    function gdButtonConfigurator($trackNameLabel, key) {
+        let self = this,
+            obj;
+        obj =
+            {
+
+                success: function(dbFiles) {
+                    // Single file selection only
+                    $trackNameLabel.text(dbFiles[ 0 ].name);
+                    $trackNameLabel.show();
+                    self.loader.fileLoadManager.dictionary[ key ] = dbFiles[ 0 ].link;
+                },
+
+                cancel: function() { },
+
+                linkType: "preview",
+                multiselect: false,
+                folderselect: false,
+            };
+
+        return obj;
+    }
 
     return app;
 })(app || {});

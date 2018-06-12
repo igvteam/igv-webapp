@@ -28,7 +28,8 @@ var app = (function (app) {
             $ok,
             $dismiss,
             locaFileLoaderConfig,
-            urlLoaderConfig;
+            urlLoaderConfig,
+            dropboxConfig;
 
         this.browser = browser;
         this.config = config;

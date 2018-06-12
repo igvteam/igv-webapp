@@ -37,16 +37,17 @@ var app = (function (app) {
             $ok;
 
         this.browser = browser;
+        this.$modal = config.$urlModal;
 
         loaderConfig =
             {
                 hidden: false,
                 embed: true,
-                $widgetParent: config.$urlModal.find('.modal-body')
+                $widgetParent: this.$modal.find('.modal-body')
             };
 
-        this.urlLoader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
-        this.urlLoader.customizeLayout(function ($parent) {
+        this.loader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+        this.loader.customizeLayout(function ($parent) {
 
             $parent.find('.igv-flw-input-container').each(function (ii) {
                 var $outer;
@@ -72,52 +73,47 @@ var app = (function (app) {
         });
 
         // upper dismiss - x - button
-        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
+        $dismiss = this.$modal.find('.modal-header button:nth-child(1)');
         $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
+            self.loader.dismiss();
         });
 
         // lower dismiss - close - button
-        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
+        $dismiss = this.$modal.find('.modal-footer button:nth-child(1)');
         $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
+            self.loader.dismiss();
         });
 
         // ok - button
-        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
+        $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
+            self.okHandler();
+        });
 
-            if (self.okHandler()) {
-                self.urlLoader.dismiss();
-                config.$urlModal.modal('hide');
+        // Dropbox
+        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
+        this.dropboxController.configure(function () {
+
+            if (self.dropboxController.loader.fileLoadManager.dictionary.data) {
+                self.browser.loadSession(self.dropboxController.loader.fileLoadManager.dictionary.data);
+                self.dropboxController.loader.dismiss();
+                self.dropboxController.$modal.modal('hide');
+            } else {
+                self.dropboxController.loader.presentErrorMessage('Error: No data file');
             }
 
         });
-
-
 
     };
 
     app.SessionModalController.prototype.okHandler = function () {
 
-        var session;
-
-        session = this.getConfiguration();
-        if (session) {
-            this.browser.loadSession(session);
-        }
-
-        return session;
-
-    };
-
-    app.SessionModalController.prototype.getConfiguration = function () {
-
-        if (this.urlLoader.fileLoadManager.dictionary.data) {
-            return this.urlLoader.fileLoadManager.dictionary.data;
+        if (this.loader.fileLoadManager.dictionary.data) {
+            this.browser.loadSession(this.loader.fileLoadManager.dictionary.data);
+            this.loader.dismiss();
+            this.$modal.modal('hide');
         } else {
-            this.urlLoader.presentErrorMessage('Error: No data file');
-            return undefined;
+            this.loader.presentErrorMessage('Error: No data file');
         }
 
     };

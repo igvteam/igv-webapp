@@ -21,11 +21,12 @@
  *
  */
 var app = (function (app) {
-    app.DropboxController = function ($modal) {
+    app.DropboxController = function (browser, $modal) {
+        this.browser = browser;
         this.$modal = $modal;
     };
 
-    app.DropboxController.prototype.configure = function (config) {
+    app.DropboxController.prototype.configure = function (okHandler) {
 
         let self = this,
             loaderConfig,
@@ -41,28 +42,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.loader = config.browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
-
-        // upper dismiss - x - button
-        $dismiss = this.$modal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = this.$modal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // ok - button
-        $ok = this.$modal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            if (self.loader.okHandler()) {
-                self.loader.dismiss();
-                self.$modal.modal('hide');
-            }
-        });
+        this.loader = this.browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
 
         this.loader.customizeLayout(function ($parent) {
 
@@ -81,8 +61,8 @@ var app = (function (app) {
                 // create Dropbox button
                 lut =
                     [
-                      'data',
-                      'index'
+                        'data',
+                        'index'
                     ];
 
                 settings = dbButtonConfigurator.call(self, $(this).parent().find('.igv-flw-local-file-name-container'), lut[ index ]);
@@ -91,16 +71,34 @@ var app = (function (app) {
 
         });
 
+        // upper dismiss - x - button
+        $dismiss = this.$modal.find('.modal-header button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // lower dismiss - close - button
+        $dismiss = this.$modal.find('.modal-footer button:nth-child(1)');
+        $dismiss.on('click', function () {
+            self.loader.dismiss();
+        });
+
+        // ok - button
+        $ok = this.$modal.find('.modal-footer button:nth-child(2)');
+        $ok.on('click', function () {
+            okHandler(self);
+        });
+
     };
 
-    function dbButtonConfigurator($trackNameLabel, key = undefined) {
+    function dbButtonConfigurator($trackNameLabel, key) {
         let self = this,
             obj;
         obj =
             {
 
             success: function(dbFiles) {
-                // Single file selection
+                // Single file selection only
                 $trackNameLabel.text(dbFiles[ 0 ].name);
                 $trackNameLabel.show();
                 self.loader.fileLoadManager.dictionary[ key ] = dbFiles[ 0 ].link;

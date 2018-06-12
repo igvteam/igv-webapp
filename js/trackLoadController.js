@@ -98,8 +98,15 @@ var app = (function (app) {
         });
 
         // Dropbox
-        this.dropboxController = config.dropboxController;
-        this.dropboxController.configure({ browser: browser });
+        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
+        this.dropboxController.configure(function () {
+
+            if (self.dropboxController.loader.okHandler()) {
+                self.dropboxController.loader.dismiss();
+                self.dropboxController.$modal.modal('hide');
+            }
+
+        });
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);

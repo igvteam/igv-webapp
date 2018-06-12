@@ -100,6 +100,19 @@ var app = (function (app) {
             config.$urlModal.modal('hide');
         });
 
+
+        // Dropbox
+        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
+        this.dropboxController.configure(function () {
+
+            // do stuff
+            self.okHandler(self.dropboxController.loader.fileLoadManager);
+            self.dropboxController.loader.dismiss();
+            self.dropboxController.$modal.modal('hide');
+
+        });
+
+
     };
 
     app.GenomeModalController.prototype.okHandler = function (fileLoadManager) {

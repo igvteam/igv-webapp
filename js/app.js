@@ -52,15 +52,13 @@ var app = (function (app) {
                     window.history.pushState({}, "IGV", session);
                 });
 
-                // app.dropboxController = new app.DropboxController($('#igv-app-dropbox-button-container'), {});
-
                 // Track load controller configuration
                 trackLoadConfig =
                     {
                         $fileModal: $('#igv-app-track-from-local-file-modal'),
                         $urlModal: $('#igv-app-track-from-url-modal'),
-                        dropboxController: new app.DropboxController($('#igv-app-track-dropbox-modal')),
-                        googleDriveController: new app.GoogleDriveController($('#igv-app-track-google-drive-modal')),
+                        $dropboxModal: $('#igv-app-track-dropbox-modal'),
+                        $googleDriveModal: $('#igv-app-track-google-drive-modal'),
                         $encodeModal: $('#igv-app-encode-modal'),
                         $encodeModalPresentationButton: $('#igv-encode-list-item-button')
                     };
@@ -71,8 +69,8 @@ var app = (function (app) {
                 sessionConfig =
                     {
                         $urlModal: $('#igv-app-session-url-modal'),
-                        dropboxController: new app.DropboxController($('#igv-app-session-dropbox-modal')),
-                        googleDriveController: new app.GoogleDriveController($('#igv-app-session-google-drive-modal')),
+                        $dropboxModal: $('#igv-app-session-dropbox-modal'),
+                        $googleDriveModal: $('#igv-app-session-google-drive-modal')
                     };
                 app.sessionModalController = new app.SessionModalController(browser, sessionConfig);
 
@@ -87,8 +85,8 @@ var app = (function (app) {
                     {
                         $urlModal: $('#igv-app-genome-from-url-modal'),
                         $fileModal: $('#igv-app-genome-from-file-modal'),
-                        dropboxController: new app.DropboxController($('#igv-app-genome-dropbox-modal')),
-                        googleDriveController: new app.GoogleDriveController($('#igv-app-genome-google-drive-modal')),
+                        $dropboxModal: $('#igv-app-genome-dropbox-modal'),
+                        $googleDriveModal: $('#igv-app-genome-google-drive-modal')
                     };
                 app.genomeModalController = new app.GenomeModalController(browser, genomeConfig);
 

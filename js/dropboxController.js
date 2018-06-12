@@ -86,7 +86,7 @@ var app = (function (app) {
         // ok - button
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            okHandler(self);
+            okHandler(self.loader, self.$modal);
         });
 
     };

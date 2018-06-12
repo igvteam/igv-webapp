@@ -103,15 +103,11 @@ var app = (function (app) {
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-        this.dropboxController.configure(function () {
-
-            // do stuff
-            self.okHandler(self.dropboxController.loader.fileLoadManager);
-            self.dropboxController.loader.dismiss();
-            self.dropboxController.$modal.modal('hide');
-
+        this.dropboxController.configure(function (loader, $modal) {
+            self.okHandler(loader.fileLoadManager);
+            loader.dismiss();
+            $modal.modal('hide');
         });
-
 
     };
 

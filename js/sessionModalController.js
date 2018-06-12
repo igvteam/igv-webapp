@@ -92,14 +92,16 @@ var app = (function (app) {
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-        this.dropboxController.configure(function () {
+        this.dropboxController.configure(function (loader, $modal) {
+            let session;
 
-            if (self.dropboxController.loader.fileLoadManager.dictionary.data) {
-                self.browser.loadSession(self.dropboxController.loader.fileLoadManager.dictionary.data);
-                self.dropboxController.loader.dismiss();
-                self.dropboxController.$modal.modal('hide');
+            if (loader.fileLoadManager.dictionary.data) {
+                session = loader.fileLoadManager.dictionary.data.split('?')[ 0 ];
+                self.browser.loadSession(session);
+                loader.dismiss();
+                $modal.modal('hide');
             } else {
-                self.dropboxController.loader.presentErrorMessage('Error: No data file');
+                loader.presentErrorMessage('Error: No data file');
             }
 
         });

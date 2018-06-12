@@ -99,11 +99,11 @@ var app = (function (app) {
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-        this.dropboxController.configure(function () {
+        this.dropboxController.configure(function (loader, $modal) {
 
-            if (self.dropboxController.loader.okHandler()) {
-                self.dropboxController.loader.dismiss();
-                self.dropboxController.$modal.modal('hide');
+            if (loader.okHandler()) {
+                loader.dismiss();
+                $modal.modal('hide');
             }
 
         });

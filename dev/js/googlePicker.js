@@ -5,21 +5,31 @@
 
 function initClient() {
 
-    var scope = "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/genomics https://www.googleapis.com/auth/devstorage.read_only https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.readonly";
-
     igv.Google.loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
 
         .then(function (properties) {
+            let scope;
+
+            scope =
+                [
+                    'https://www.googleapis.com/auth/cloud-platform',
+                    'https://www.googleapis.com/auth/genomics',
+                    'https://www.googleapis.com/auth/devstorage.read_only',
+                    'https://www.googleapis.com/auth/userinfo.profile',
+                    'https://www.googleapis.com/auth/drive.readonly'
+                ];
 
             return gapi.client.init({
                 'clientId': properties["client_id"],
-                'scope': scope
+                'scope': scope.join(' ')
             });
         })
 
         .then(function () {
 
-            var div, options, browser;
+            let div,
+                options,
+                browser;
 
             div = $("#myDiv")[0];
             options = {
@@ -31,22 +41,20 @@ function initClient() {
             browser = igv.createBrowser(div, options);
 
             gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-        })
-
-    //
-    // function handleSignInClick(event) {
-    //     // Nothing to do
-    // }
+        });
 
     function updateSigninStatus(isSignedIn) {
 
         if (isSignedIn) {
-            //$("#signInButton").hide();
+            let user,
+                profile,
+                username;
 
-            var user = gapi.auth2.getAuthInstance().currentUser.get();
-            var profile = user.getBasicProfile();
-            var username = profile.getName();
-            $("#switchUserLink").html("Logged in as: " + username);
+            user = gapi.auth2.getAuthInstance().currentUser.get();
+            profile = user.getBasicProfile();
+            username = profile.getName();
+
+            // $("#switchUserLink").html("Logged in as: " + username);
 
         }
 
@@ -85,7 +93,7 @@ function createPicker() {
         })
         .catch(function (error) {
             console.log(error)
-        })
+        });
 
 
     function getAccessToken() {
@@ -100,20 +108,25 @@ function createPicker() {
 
     function signIn() {
 
-        var scope, options;
+        var scope,
+            options;
 
-        scope = "https://www.googleapis.com/auth/devstorage.read_only https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.readonly";
+        scope =
+            [
+              'https://www.googleapis.com/auth/devstorage.read_only',
+              'https://www.googleapis.com/auth/userinfo.profile',
+              'https://www.googleapis.com/auth/drive.readonly'
+            ];
 
         options = new gapi.auth2.SigninOptionsBuilder();
-        //options.setAppPackageName('com.example.app');
         options.setPrompt('select_account');
-        options.setScope(scope);
+        options.setScope(scope.join(' '));
 
         return gapi.auth2.getAuthInstance().signIn(options)
 
             .then(function (user) {
 
-                var authResponse = user.getAuthResponse();
+                let authResponse = user.getAuthResponse();
 
                 igv.setGoogleOauthToken(authResponse["access_token"]);
 
@@ -122,7 +135,7 @@ function createPicker() {
     }
 
     function pickerCallback(data) {
-        var url, doc, name, format, id, downloadURL;
+        let url, doc, name, format, id, downloadURL;
 
         if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
             doc = data[google.picker.Response.DOCUMENTS][0];
@@ -149,19 +162,3 @@ function createPicker() {
 
     }
 }
-
-function bookmark() {
-
-    var surl,
-        path,
-        idx;
-
-    path = window.location.href.slice();
-    idx = path.indexOf("?");
-
-    surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + igv.browser.compressedSession();
-
-    window.history.pushState({}, "IGV", surl);
-}
-
-

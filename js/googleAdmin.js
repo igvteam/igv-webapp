@@ -23,14 +23,11 @@
 
 function appGoogleInit($container, igvConfig) {
 
-    let self = this;
-
     igv.Google
         .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
         .then(function (properties) {
             let scope,
-                config,
-                reject;
+                config;
 
             scope =
                 [
@@ -47,33 +44,30 @@ function appGoogleInit($container, igvConfig) {
                     'scope': scope.join(' ')
                 };
 
-            reject = function (reason) {
-                console.log(reason);
-            };
+            return gapi.client.init(config)
 
-            gapi.client
-                .init(config)
-                .then(function () {
+        })
+        .then(function (something) {
+            let value;
+            value = something;
 
-                        let browser;
+            igvConfig['apiKey'] = igv.Google.properties['api_key'];
+            return igv.createBrowser($container.get(0), igvConfig);
+            
+        })
+        .then(function (browser) {
 
-                        igvConfig['apiKey'] = igv.Google.properties['api_key'];
-                        browser = igv.createBrowser($container.get(0), igvConfig);
+            gapi.auth2
+                .getAuthInstance()
+                .isSignedIn
+                .listen(updateSigninStatus);
 
-                        gapi.auth2
-                            .getAuthInstance()
-                            .isSignedIn
-                            .listen(updateSigninStatus);
+            gapi.load('picker', function () {
 
-                        gapi.load('picker', function () {
+                // enable button
+                $('#googlePickerButton').prop('disabled', false);
 
-                            // enable button
-                            $('#googlePickerButton').prop('disabled', false);
-
-                        });
-
-                    },
-                    reject);
+            });
 
         });
 

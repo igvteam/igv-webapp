@@ -2,13 +2,18 @@
  * Created by jrobinso on 6/2/18.
  */
 
+function googleDoNothing () {
+    console.log('google do nothing');
+}
 
 function initClient() {
 
-    igv.Google.loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
-
+    igv.Google
+        .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
         .then(function (properties) {
-            let scope;
+            let scope,
+                config,
+                reject;
 
             scope =
                 [
@@ -19,28 +24,45 @@ function initClient() {
                     'https://www.googleapis.com/auth/drive.readonly'
                 ];
 
-            return gapi.client.init({
-                'clientId': properties["client_id"],
-                'scope': scope.join(' ')
-            });
-        })
+            config =
+                {
+                    'clientId': properties["client_id"],
+                    'scope': scope.join(' ')
+                };
 
-        .then(function () {
-
-            let div,
-                options,
-                browser;
-
-            div = $("#myDiv")[0];
-            options = {
-                genome: "hg19",
-                apiKey: igv.Google.properties["api_key"],
-                queryParametersSupported: true
+            reject = function (reason) {
+                console.log(reason);
             };
 
-            browser = igv.createBrowser(div, options);
+            gapi.client
+                .init(config)
+                .then(function () {
 
-            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                        let div,
+                            options,
+                            browser;
+
+                        div = $("#myDiv")[0];
+                        options = {
+                            genome: "hg19",
+                            apiKey: igv.Google.properties["api_key"],
+                            queryParametersSupported: true
+                        };
+
+                        browser = igv.createBrowser(div, options);
+
+                        gapi.auth2
+                            .getAuthInstance()
+                            .isSignedIn
+                            .listen(updateSigninStatus);
+
+                        gapi.load('picker', function () {
+                            document.getElementById("googlePickerButton").disabled = false;
+                        });
+
+                    },
+                    reject);
+
         });
 
     function updateSigninStatus(isSignedIn) {
@@ -61,8 +83,6 @@ function initClient() {
     }
 
 }
-
-
 
 // Create and render a Picker object for picking files.
 function createPicker() {
@@ -113,9 +133,9 @@ function createPicker() {
 
         scope =
             [
-              'https://www.googleapis.com/auth/devstorage.read_only',
-              'https://www.googleapis.com/auth/userinfo.profile',
-              'https://www.googleapis.com/auth/drive.readonly'
+                'https://www.googleapis.com/auth/devstorage.read_only',
+                'https://www.googleapis.com/auth/userinfo.profile',
+                'https://www.googleapis.com/auth/drive.readonly'
             ];
 
         options = new gapi.auth2.SigninOptionsBuilder();

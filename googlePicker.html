@@ -15,26 +15,41 @@
     <script src="https://igv.org/web/test/dist/igv.js"></script>
 
     <!-- Google Picker JS -->
-    <script src="js/googlePicker.js"></script>
+    <!--<script src="js/googlePicker.js"></script>-->
+    <script src="js/googleAdmin.js"></script>
 
 </head>
 <body>
 
 <div id="myDiv">
     <div>
-        <button id="googlePickerButton" disabled onclick="createPicker()">Google Drive</button>
+        <button id="googlePickerButton" disabled onclick="appGooglePicker()">Google Drive</button>
     </div>
 </div>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
+        let igvConfig,
+            gapiConfig;
 
-        gapi.load('client:auth2', initClient);
+        igvConfig = {
+            genome: "hg19",
+            queryParametersSupported: true
+        };
 
-        gapi.load('picker', function () {
-            document.getElementById("googlePickerButton").disabled = false;
-        });
+        gapiConfig =
+            {
+                callback: function () {
+                    appGoogleInit($('#myDiv'), igvConfig);
+                },
+                onerror: function () {
+                    console.log('gapi.client:auth2 - failed to load!');
+                }
+            };
+
+        gapi.load('client:auth2', gapiConfig);
+
 
     });
 

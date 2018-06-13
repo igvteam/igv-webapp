@@ -22,122 +22,119 @@
  */
 var app = (function (app) {
 
-    app.init = function ($container, urlShortenerConfig, igvConfig) {
+    app.init = function (browser, $container, urlShortenerConfig) {
 
-        igv
-            .createBrowser($container.get(0), igvConfig)
-            .then(function (browser) {
-                let sessionConfig,
-                    trackLoadConfig,
-                    genomeConfig,
-                    shareConfig;
+        let sessionConfig,
+            trackLoadConfig,
+            genomeConfig,
+            shareConfig;
 
-                $('.igv-app-footer').find('a img').hover(function () {
-                        $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
-                    },
-                    function () {
-                        $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
-                    });
+        appGoogleInitCleanup();
 
-                $('#igv-app-bookmark-button').on('click', function (e) {
-                    let str,
-                        session;
+        $('.igv-app-footer').find('a img').hover(function () {
+                $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
+            },
+            function () {
+                $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
+            });
 
-                    str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
-                    console.log(str);
+        $('#igv-app-bookmark-button').on('click', function (e) {
+            let str,
+                session;
 
-                    alert('Press ' + str + '+D to bookmark this page.');
+            str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+            console.log(str);
 
-                    session = app.sessionURL();
-                    window.history.pushState({}, "IGV", session);
-                });
+            alert('Press ' + str + '+D to bookmark this page.');
 
-                // Track load controller configuration
-                trackLoadConfig =
+            session = app.sessionURL();
+            window.history.pushState({}, "IGV", session);
+        });
+
+        // Track load controller configuration
+        trackLoadConfig =
+            {
+                $fileModal: $('#igv-app-track-from-local-file-modal'),
+                $urlModal: $('#igv-app-track-from-url-modal'),
+                $dropboxModal: $('#igv-app-track-dropbox-modal'),
+                $googleDriveModal: $('#igv-app-track-google-drive-modal'),
+                $encodeModal: $('#igv-app-encode-modal'),
+                $encodeModalPresentationButton: $('#igv-encode-list-item-button')
+            };
+
+        app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
+
+        // Session Modal Controller
+        sessionConfig =
+            {
+                $urlModal: $('#igv-app-session-url-modal'),
+                $dropboxModal: $('#igv-app-session-dropbox-modal'),
+                $googleDriveModal: $('#igv-app-session-google-drive-modal')
+            };
+        app.sessionModalController = new app.SessionModalController(browser, sessionConfig);
+
+        $('#igv-app-session-file-input').on('change', function (e) {
+            let file;
+            file = e.target.files[ 0 ];
+            browser.loadSession(file);
+        });
+
+        // Genome Modal Controller
+        genomeConfig =
+            {
+                $urlModal: $('#igv-app-genome-from-url-modal'),
+                $fileModal: $('#igv-app-genome-from-file-modal'),
+                $dropboxModal: $('#igv-app-genome-dropbox-modal'),
+                $googleDriveModal: $('#igv-app-genome-google-drive-modal')
+            };
+        app.genomeModalController = new app.GenomeModalController(browser, genomeConfig);
+
+        // Genome Controller
+        app.genomeController = new app.GenomeController();
+
+        app.genomeController.getGenomes(app.GenomeController.defaultGenomeURL)
+            .then(function (genomeDictionary) {
+                var config;
+
+                config =
                     {
-                        $fileModal: $('#igv-app-track-from-local-file-modal'),
-                        $urlModal: $('#igv-app-track-from-url-modal'),
-                        $dropboxModal: $('#igv-app-track-dropbox-modal'),
-                        $googleDriveModal: $('#igv-app-track-google-drive-modal'),
-                        $encodeModal: $('#igv-app-encode-modal'),
-                        $encodeModalPresentationButton: $('#igv-encode-list-item-button')
-                    };
-
-                app.trackLoadController = new app.TrackLoadController(browser, trackLoadConfig);
-
-                // Session Modal Controller
-                sessionConfig =
-                    {
-                        $urlModal: $('#igv-app-session-url-modal'),
-                        $dropboxModal: $('#igv-app-session-dropbox-modal'),
-                        $googleDriveModal: $('#igv-app-session-google-drive-modal')
-                    };
-                app.sessionModalController = new app.SessionModalController(browser, sessionConfig);
-
-                $('#igv-app-session-file-input').on('change', function (e) {
-                    let file;
-                    file = e.target.files[ 0 ];
-                    browser.loadSession(file);
-                });
-
-                // Genome Modal Controller
-                genomeConfig =
-                    {
+                        browser: browser,
                         $urlModal: $('#igv-app-genome-from-url-modal'),
                         $fileModal: $('#igv-app-genome-from-file-modal'),
                         $dropboxModal: $('#igv-app-genome-dropbox-modal'),
-                        $googleDriveModal: $('#igv-app-genome-google-drive-modal')
+                        $googleDriveModal: $('#igv-app-genome-google-drive-modal'),
+                        $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
+                        genomeDictionary: genomeDictionary
                     };
-                app.genomeModalController = new app.GenomeModalController(browser, genomeConfig);
 
-                // Genome Controller
-                app.genomeController = new app.GenomeController();
-
-                app.genomeController.getGenomes(app.GenomeController.defaultGenomeURL)
-                    .then(function (genomeDictionary) {
-                        var config;
-
-                        config =
-                            {
-                                browser: browser,
-                                $urlModal: $('#igv-app-genome-from-url-modal'),
-                                $fileModal: $('#igv-app-genome-from-file-modal'),
-                                $dropboxModal: $('#igv-app-genome-dropbox-modal'),
-                                $googleDriveModal: $('#igv-app-genome-google-drive-modal'),
-                                $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
-                                genomeDictionary: genomeDictionary
-                            };
-
-                        genomeDropdownLayout(config);
-                    });
-
-                // URL Shortener Configuration
-                if (urlShortenerConfig.urlShortener) {
-
-                    app.setURLShortener(urlShortenerConfig.urlShortener);
-
-                    shareConfig =
-                        {
-                            $modal: $('#igv-app-share-modal'),
-                            $share_input: $('#igv-app-share-input'),
-                            $copy_link_button: $('#hic-copy-link-button'),
-                            $tweet_button_container: $('#igv-app-tweet-button-container'),
-                            $email_button: $('#igv-app-email-button'),
-                            $embed_button: $('#igv-app-embed-button'),
-                            $qrcode_button: $('#igv-app-qrcode-button'),
-                            $embed_container: $('#igv-app-embed-container'),
-                            $qrcode_image: $('#igv-app-qrcode-image')
-                        };
-
-                    app.shareController = new app.ShareController($container, browser, shareConfig);
-
-                } else {
-                    $("#igv-app-share-button").hide();
-                }
-
-                browser.updateViews();
-
+                genomeDropdownLayout(config);
             });
+
+        // URL Shortener Configuration
+        if (urlShortenerConfig.urlShortener) {
+
+            app.setURLShortener(urlShortenerConfig.urlShortener);
+
+            shareConfig =
+                {
+                    $modal: $('#igv-app-share-modal'),
+                    $share_input: $('#igv-app-share-input'),
+                    $copy_link_button: $('#hic-copy-link-button'),
+                    $tweet_button_container: $('#igv-app-tweet-button-container'),
+                    $email_button: $('#igv-app-email-button'),
+                    $embed_button: $('#igv-app-embed-button'),
+                    $qrcode_button: $('#igv-app-qrcode-button'),
+                    $embed_container: $('#igv-app-embed-container'),
+                    $qrcode_image: $('#igv-app-qrcode-image')
+                };
+
+            app.shareController = new app.ShareController($container, browser, shareConfig);
+
+        } else {
+            $("#igv-app-share-button").hide();
+        }
+
+        browser.updateViews();
 
     };
 

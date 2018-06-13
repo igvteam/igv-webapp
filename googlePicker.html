@@ -42,7 +42,11 @@
         gapiConfig =
             {
                 callback: function () {
-                    appGoogleInit($('#myDiv'), igvConfig);
+                    appGoogleInit($('#myDiv'), igvConfig)
+                        .then(function (browser) {
+                            console.log('browser');
+                            appGoogleInitCleanup();
+                        });
                 },
                 onerror: function () {
                     console.log('gapi.client:auth2 - failed to load!');

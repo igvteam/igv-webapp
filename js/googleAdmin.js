@@ -23,7 +23,7 @@
 
 function appGoogleInit($container, igvConfig) {
 
-    igv.Google
+    return igv.Google
         .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
         .then(function (properties) {
             let scope,
@@ -53,23 +53,24 @@ function appGoogleInit($container, igvConfig) {
 
             igvConfig['apiKey'] = igv.Google.properties['api_key'];
             return igv.createBrowser($container.get(0), igvConfig);
-            
-        })
-        .then(function (browser) {
-
-            gapi.auth2
-                .getAuthInstance()
-                .isSignedIn
-                .listen(updateSigninStatus);
-
-            gapi.load('picker', function () {
-
-                // enable button
-                $('#googlePickerButton').prop('disabled', false);
-
-            });
 
         });
+
+}
+
+function appGoogleInitCleanup() {
+
+    gapi.auth2
+        .getAuthInstance()
+        .isSignedIn
+        .listen(updateSigninStatus);
+
+    gapi.load('picker', function () {
+
+        // enable button
+        $('#googlePickerButton').prop('disabled', false);
+
+    });
 
     function updateSigninStatus(isSignedIn) {
 
@@ -87,7 +88,6 @@ function appGoogleInit($container, igvConfig) {
         }
 
     }
-
 
 }
 

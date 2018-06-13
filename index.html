@@ -46,6 +46,9 @@
     <!-- Underscore -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.0/underscore-min.js"></script>
 
+    <!-- Google Platform JS -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+
     <!-- IGV JS -->
     <script src="https://igv.org/web/test/dist/igv.js"></script>
     <!--<script src="js/igv.js"></script>-->
@@ -66,7 +69,7 @@
     <script src="js/shareController.js"></script>
     <script src="js/dropboxController.js"></script>
     <script src="js/googleDriveController.js"></script>
-
+    <script src="js/googleAdmin.js"></script>
     <script src="js/app.js"></script>
 </head>
 
@@ -649,7 +652,8 @@
 
     $(document).ready(function () {
         let urlShortenerConfig,
-            igvConfig;
+            igvConfig,
+            gapiConfig;
 
         urlShortenerConfig =
             {
@@ -698,7 +702,24 @@
 
             };
 
-        app.init($('#igv-app-container'), urlShortenerConfig, igvConfig);
+
+        gapiConfig =
+            {
+                callback: function () {
+                    appGoogleInit($('#myDiv'), igvConfig)
+                        .then(function (browser) {
+                            app.init(browser, $('#igv-app-container'), urlShortenerConfig);
+                        });
+                },
+                onerror: function () {
+                    console.log('gapi.client:auth2 - failed to load!');
+                }
+            };
+
+        gapi.load('client:auth2', gapiConfig);
+
+
+        // app.init($('#igv-app-container'), urlShortenerConfig, igvConfig);
     });
 
 </script>

@@ -29,8 +29,6 @@ var app = (function (app) {
             genomeConfig,
             shareConfig;
 
-        appGoogleInitCleanup();
-
         $('.igv-app-footer').find('a img').hover(function () {
                 $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
             },

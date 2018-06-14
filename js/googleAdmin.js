@@ -47,9 +47,7 @@ function appGoogleInit($container, igvConfig) {
             return gapi.client.init(config)
 
         })
-        .then(function (something) {
-            let value;
-            value = something;
+        .then(function () {
 
             igvConfig['apiKey'] = igv.Google.properties['api_key'];
             return igv.createBrowser($container.get(0), igvConfig);

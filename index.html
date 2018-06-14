@@ -672,9 +672,9 @@
 
         igvConfig =
             {
+                promisified:true,
                 queryParametersSupported: true,
                 showChromosomeWidget:true,
-                promisified:true,
                 minimumBases: 6,
                 showIdeogram: true,
                 showRuler: true,
@@ -706,8 +706,9 @@
         gapiConfig =
             {
                 callback: function () {
-                    appGoogleInit($('#myDiv'), igvConfig)
+                    appGoogleInit($('#igv-app-container'), igvConfig)
                         .then(function (browser) {
+                            appGoogleInitCleanup();
                             app.init(browser, $('#igv-app-container'), urlShortenerConfig);
                         });
                 },

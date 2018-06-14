@@ -22,6 +22,8 @@
  */
 var app = (function (app) {
 
+    let picker;
+
     app.GoogleDriveController = function (browser, $modal) {
         this.browser = browser;
         this.$modal = $modal;
@@ -121,6 +123,175 @@ var app = (function (app) {
 
         return obj;
     }
+
+    app.Google =
+        {
+            init: function () {
+                return igv.Google
+                    .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
+                    .then(function (properties) {
+                        let scope,
+                            config;
+
+                        scope =
+                            [
+                                'https://www.googleapis.com/auth/cloud-platform',
+                                'https://www.googleapis.com/auth/genomics',
+                                'https://www.googleapis.com/auth/devstorage.read_only',
+                                'https://www.googleapis.com/auth/userinfo.profile',
+                                'https://www.googleapis.com/auth/drive.readonly'
+                            ];
+
+                        config =
+                            {
+                                'clientId': properties["client_id"],
+                                'scope': scope.join(' ')
+                            };
+
+                        return gapi.client.init(config)
+
+                    });
+            },
+
+            postInit: function () {
+
+                gapi.auth2
+                    .getAuthInstance()
+                    .isSignedIn
+                    .listen(updateSigninStatus);
+
+                gapi.load('picker', function () {
+
+                    // enable button
+                    $('#googlePickerButton').prop('disabled', false);
+
+                });
+
+                function updateSigninStatus(isSignedIn) {
+
+                    if (isSignedIn) {
+                        let user,
+                            profile,
+                            username;
+
+                        user = gapi.auth2.getAuthInstance().currentUser.get();
+                        profile = user.getBasicProfile();
+                        username = profile.getName();
+
+                        // $("#switchUserLink").html("Logged in as: " + username);
+
+                    }
+
+                }
+
+            },
+
+            createPicker: function () {
+
+                getAccessToken()
+                    .then(function (accessToken) {
+                        let view;
+
+                        if (accessToken) {
+
+                            view = new google.picker.View(google.picker.ViewId.DOCS);
+                            picker = new google.picker
+                                .PickerBuilder()
+                                .setAppId(igv.Google.properties["project_number"])
+                                .setOAuthToken(igv.oauth.google.access_token)
+                                .addView(view)
+                                .setDeveloperKey(igv.Google.properties["developer_key"])
+                                .setCallback(pickerCallback)
+                                .build();
+
+                            picker.setVisible(true);
+                        }
+                        else {
+                            igv.presentAlert("Sign into Google before using picker");
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+
+                function getAccessToken() {
+
+                    if (igv.oauth.google.access_token) {
+                        return Promise.resolve(igv.oauth.google.access_token);
+                    } else {
+                        return signIn();
+                    }
+                }
+
+                function signIn() {
+
+                    var scope,
+                        options;
+
+                    scope =
+                        [
+                            'https://www.googleapis.com/auth/devstorage.read_only',
+                            'https://www.googleapis.com/auth/userinfo.profile',
+                            'https://www.googleapis.com/auth/drive.readonly'
+                        ];
+
+                    options = new gapi.auth2.SigninOptionsBuilder();
+                    options.setPrompt('select_account');
+                    options.setScope(scope.join(' '));
+
+                    return gapi.auth2.getAuthInstance().signIn(options)
+
+                        .then(function (user) {
+
+                            let authResponse = user.getAuthResponse();
+
+                            igv.setGoogleOauthToken(authResponse["access_token"]);
+
+                            return authResponse["access_token"];
+                        })
+                }
+
+                function pickerCallback(data) {
+
+                    if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                        let doc,
+                            url,
+                            name,
+                            id,
+                            format;
+
+                        doc = data[google.picker.Response.DOCUMENTS][0];
+
+                        url = doc[google.picker.Document.URL];
+
+                        name = doc[google.picker.Document.NAME];
+
+                        id = doc[google.picker.Document.ID];
+
+                        format = igv.inferFileFormat(name);
+
+                        if (!format) {
+                            alert("Unrecognized file format: " + name);
+                        } else {
+                            let config;
+
+                            config =
+                                {
+                                    url: "https://www.googleapis.com/drive/v3/files/" + id + "?alt=media",
+                                    filename: name,
+                                    name: name,
+                                    format: format
+                                };
+
+                            igv.browser.loadTrack(config);
+
+                        }
+                    }
+
+                }
+
+            }
+        };
 
     return app;
 })(app || {});

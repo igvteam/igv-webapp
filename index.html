@@ -69,7 +69,6 @@
     <script src="js/shareController.js"></script>
     <script src="js/dropboxController.js"></script>
     <script src="js/googleDriveController.js"></script>
-    <script src="js/googleAdmin.js"></script>
     <script src="js/app.js"></script>
 </head>
 
@@ -706,9 +705,13 @@
         gapiConfig =
             {
                 callback: function () {
-                    appGoogleInit($('#igv-app-container'), igvConfig)
+                    app.Google.init($('#igv-app-container'), igvConfig)
+                        .then(function () {
+                            igvConfig['apiKey'] = igv.Google.properties['api_key'];
+                            return igv.createBrowser($('#igv-app-container').get(0), igvConfig);
+                        })
                         .then(function (browser) {
-                            appGoogleInitCleanup();
+                            app.Google.postInit();
                             app.init(browser, $('#igv-app-container'), urlShortenerConfig);
                         });
                 },
@@ -719,8 +722,6 @@
 
         gapi.load('client:auth2', gapiConfig);
 
-
-        // app.init($('#igv-app-container'), urlShortenerConfig, igvConfig);
     });
 
 </script>

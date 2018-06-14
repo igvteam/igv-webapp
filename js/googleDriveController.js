@@ -127,30 +127,7 @@ var app = (function (app) {
     app.Google =
         {
             init: function () {
-                return igv.Google
-                    .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
-                    .then(function (properties) {
-                        let scope,
-                            config;
-
-                        scope =
-                            [
-                                'https://www.googleapis.com/auth/cloud-platform',
-                                'https://www.googleapis.com/auth/genomics',
-                                'https://www.googleapis.com/auth/devstorage.read_only',
-                                'https://www.googleapis.com/auth/userinfo.profile',
-                                'https://www.googleapis.com/auth/drive.readonly'
-                            ];
-
-                        config =
-                            {
-                                'clientId': properties["client_id"],
-                                'scope': scope.join(' ')
-                            };
-
-                        return gapi.client.init(config)
-
-                    });
+                return igv.Google.loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google");
             },
 
             postInit: function () {

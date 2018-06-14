@@ -705,7 +705,31 @@
         gapiConfig =
             {
                 callback: function () {
-                    app.Google.init($('#igv-app-container'), igvConfig)
+                    let promise;
+
+                   app.Google.init($('#igv-app-container'), igvConfig)
+                       .then(function (properties) {
+                           let scope,
+                               config;
+
+                           scope =
+                               [
+                                   'https://www.googleapis.com/auth/cloud-platform',
+                                   'https://www.googleapis.com/auth/genomics',
+                                   'https://www.googleapis.com/auth/devstorage.read_only',
+                                   'https://www.googleapis.com/auth/userinfo.profile',
+                                   'https://www.googleapis.com/auth/drive.readonly'
+                               ];
+
+                           config =
+                               {
+                                   'clientId': properties["client_id"],
+                                   'scope': scope.join(' ')
+                               };
+
+                           return gapi.client.init(config)
+
+                       })
                         .then(function () {
                             igvConfig['apiKey'] = igv.Google.properties['api_key'];
                             return igv.createBrowser($('#igv-app-container').get(0), igvConfig);

@@ -191,11 +191,11 @@ var app = (function (app) {
         });
 
         // genome from Google Drive
-        $button = createButton('Google Drive ...');
-        config.$dropdown_menu.append($button);
-        $button.on('click', function () {
-            config.$googleDriveModal.modal();
-        });
+        // $button = createButton('Google Drive ...');
+        // config.$dropdown_menu.append($button);
+        // $button.on('click', function () {
+        //     config.$googleDriveModal.modal();
+        // });
 
     }
 

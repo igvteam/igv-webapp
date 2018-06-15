@@ -156,7 +156,7 @@ var app = (function (app) {
                 },
                 didRetrieveData: function () {
                     self.config.$encodeModalPresentationButton.removeClass('igv-app-disabled');
-                    self.config.$encodeModalPresentationButton.text('ENCODE');
+                    self.config.$encodeModalPresentationButton.text('ENCODE ...');
                 }
             };
 

@@ -170,28 +170,28 @@ var app = (function (app) {
         config.$dropdown_menu.append($divider);
 
         // genome from local file
-        $button = createButton('Local File');
+        $button = createButton('Local File ...');
         config.$dropdown_menu.append($button);
         $button.on('click', function () {
             config.$fileModal.modal();
         });
 
         // genome from URL
-        $button = createButton('URL');
+        $button = createButton('URL ...');
         config.$dropdown_menu.append($button);
         $button.on('click', function () {
             config.$urlModal.modal();
         });
 
         // genome from Dropbox
-        $button = createButton('Dropbox');
+        $button = createButton('Dropbox ...');
         config.$dropdown_menu.append($button);
         $button.on('click', function () {
             config.$dropboxModal.modal();
         });
 
         // genome from Google Drive
-        $button = createButton('Google Drive');
+        $button = createButton('Google Drive ...');
         config.$dropdown_menu.append($button);
         $button.on('click', function () {
             config.$googleDriveModal.modal();

@@ -184,11 +184,7 @@ var app = (function (app) {
         });
 
         // genome from Dropbox
-        $button = createButton('Dropbox ...');
-        config.$dropdown_menu.append($button);
-        $button.on('click', function () {
-            config.$dropboxModal.modal();
-        });
+        $button = createDropboxButton(config.$dropdown_menu, 'Dropbox ...');
 
         // genome from Google Drive
         // $button = createButton('Google Drive ...');
@@ -197,16 +193,52 @@ var app = (function (app) {
         //     config.$googleDriveModal.modal();
         // });
 
+        function createButton (title) {
+            var $button;
+
+            $button = $('<button>', { class:'dropdown-item', type:'button' });
+            $button.text(title);
+
+            return $button;
+        }
+
+        function createDropboxButton($parent, title) {
+            var $button,
+                $container,
+                $div,
+                $img;
+
+            $button = $('<button>', { class:'dropdown-item', type:'button' });
+            $parent.append($button);
+
+            $button.on('click', function () {
+                $parent.modal();
+            });
+
+            // container for text | logo | text
+            $container = $('<div>', { class:'igv-app-dropdown-item-dropbox' });
+            $button.append($container);
+
+            // text
+            $div = $('<div>');
+            $container.append($div);
+            $div.text('Dropbox');
+
+            // logo
+            $div = $('<div>');
+            $container.append($div);
+            $img = $('<img>', { src :'img/dropbox-dropdown-menu-item.png', width :18, height :18 });
+            $div.append($img);
+
+            // text
+            $div = $('<div>');
+            $container.append($div);
+            $div.text('...');
+
+        }
     }
 
-    function createButton (title) {
-        var $button;
 
-        $button = $('<button>', { class:'dropdown-item', type:'button' });
-        $button.text(title);
-
-        return $button;
-    }
 
     return app;
 

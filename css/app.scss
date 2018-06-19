@@ -110,6 +110,25 @@ $igv-app-logo-container-width: 20%;
   background-color: mediumaquamarine;
 }
 
+.igv-app-dropdown-item-dropbox {
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  height: 18px;
+
+  div:first-child {
+    margin-right: 4px;
+  }
+  div:last-child {
+    margin-left: 4px;
+  }
+
+}
+
 #igv-app-session-file-button {
   input {
     width: 0.1px;
@@ -120,6 +139,8 @@ $igv-app-logo-container-width: 20%;
     z-index: -1;
   }
 }
+
+
 
 // ::::::::::::::::::: UNUSED :::::::::::::::::::
 .igv-app-dropbox-button {

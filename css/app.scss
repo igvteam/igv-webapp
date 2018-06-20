@@ -140,7 +140,10 @@ $igv-app-logo-container-width: 20%;
   }
 }
 
-
+// Bootstrap modal backdrop
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.25);
+}
 
 // ::::::::::::::::::: UNUSED :::::::::::::::::::
 .igv-app-dropbox-button {

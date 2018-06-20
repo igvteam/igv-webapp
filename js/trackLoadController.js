@@ -109,6 +109,17 @@ var app = (function (app) {
 
         });
 
+        // Google Drive
+        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
+        this.googleDriveController.configure(function (loader, $modal) {
+
+            if (loader.okHandler()) {
+                loader.dismiss();
+                $modal.modal('hide');
+            }
+
+        });
+
         // ENCODE
         this.createEncodeTable(browser.genome.id);
     };

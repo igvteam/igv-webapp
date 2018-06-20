@@ -187,11 +187,11 @@ var app = (function (app) {
         $button = createDropboxButton(config.$dropdown_menu, 'Dropbox ...');
 
         // genome from Google Drive
-        // $button = createButton('Google Drive ...');
-        // config.$dropdown_menu.append($button);
-        // $button.on('click', function () {
-        //     config.$googleDriveModal.modal();
-        // });
+        $button = createButton('Google Drive ...');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$googleDriveModal.modal();
+        });
 
         function createButton (title) {
             var $button;
@@ -237,8 +237,6 @@ var app = (function (app) {
 
         }
     }
-
-
 
     return app;
 

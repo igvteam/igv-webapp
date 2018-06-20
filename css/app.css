@@ -144,6 +144,16 @@ a#igv-app-email-button:active {
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25); }
 
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container .igv-app-google-drive-button-container {
+  height: calc(36px - 8px);
+  width: 100%;
+  color: #a6a6a6;
+  line-height: calc(36px - 8px);
+  text-align: center; }
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container .igv-app-google-drive-button-container:hover {
+  cursor: pointer;
+  color: #5f5f5f; }
+
 .igv-app-dropbox-button {
   cursor: pointer;
   height: 36px;

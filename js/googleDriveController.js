@@ -29,7 +29,7 @@ var app = (function (app) {
         this.$modal = $modal;
     };
 
-    app.GoogleDriveController.prototype.configure = function (okHandler, dataFileOnly = false) {
+    app.GoogleDriveController.prototype.configure = function (pickerCallback) {
 
         let self = this,
             loaderConfig,
@@ -50,7 +50,7 @@ var app = (function (app) {
             let $file_chooser_container;
 
             $file_chooser_container = $parent.find('.igv-flw-file-chooser-container');
-            $file_chooser_container.each(function () {
+            $file_chooser_container.each(function (index) {
                 let $div,
                     $filenameContainer;
 
@@ -63,7 +63,7 @@ var app = (function (app) {
 
                 $(this).on('click', function (e) {
                     self.$modal.modal('hide');
-                    app.Google.createPicker(self, $filenameContainer);
+                    app.Google.createPicker($filenameContainer, index, pickerCallback);
                 });
             });
 
@@ -86,9 +86,21 @@ var app = (function (app) {
         // ok - button
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            okHandler(self.loader, self.$modal);
+            let obj;
+
+            obj = self.trackLoadConfiguration(self.loader.fileLoadManager);
+
+            if (obj) {
+                igv.browser.loadTrack( obj );
+                self.loader.dismiss();
+                self.$modal.modal('hide');
+            }
         });
 
+    };
+
+    app.GoogleDriveController.prototype.trackLoadConfiguration = function (fileLoadManager) {
+        return fileLoadManager.dictionary.data;
     };
 
     app.Google =
@@ -153,7 +165,23 @@ var app = (function (app) {
 
             },
 
-            createPicker: function (controller, $filenameContainer) {
+            pickerCallback: function (data) {
+
+                let doc,
+                    obj;
+
+                doc = data[google.picker.Response.DOCUMENTS][0];
+
+                obj =
+                    {
+                        name: doc[ google.picker.Document.NAME ],
+                        path: 'https://www.googleapis.com/drive/v3/files/' + doc[ google.picker.Document.ID ] + '?alt=media'
+                    };
+
+                return obj;
+            },
+
+            createPicker: function ($filenameContainer, index, controllerPickerCallback) {
 
                 getAccessToken()
                     .then(function (accessToken) {
@@ -168,8 +196,11 @@ var app = (function (app) {
                                 .setDeveloperKey(igv.Google.properties["developer_key"])
                                 .setCallback(function (data) {
                                     if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-                                        pickerCallback(data);
-                                        controller.$modal.modal('show');
+                                        let obj;
+
+                                        obj = app.Google.pickerCallback(data);
+                                        controllerPickerCallback(obj, $filenameContainer, index);
+
                                     }
                                 })
                                 .build();
@@ -183,36 +214,6 @@ var app = (function (app) {
                     .catch(function (error) {
                         console.log(error)
                     });
-
-                function pickerCallback(data) {
-
-                    let doc,
-                        name;
-
-                    doc = data[google.picker.Response.DOCUMENTS][0];
-
-                    name = doc[google.picker.Document.NAME];
-
-                    if (!igv.inferFileFormat(name)) {
-                        alert("Unrecognized file format: " + name);
-                    } else {
-                        let config;
-
-                        $filenameContainer.text(name);
-                        $filenameContainer.show();
-
-                        config =
-                            {
-                                url: "https://www.googleapis.com/drive/v3/files/" + doc[google.picker.Document.ID] + "?alt=media",
-                                filename: name,
-                                name: name,
-                                format: igv.inferFileFormat(name)
-                            };
-
-                        igv.browser.loadTrack(config);
-                    }
-
-                }
 
                 function getAccessToken() {
 

@@ -121,16 +121,16 @@ a#igv-app-email-button:active {
 .igv-app-background-blue-green {
   background-color: mediumaquamarine; }
 
-.igv-app-dropdown-item-dropbox {
+.igv-app-dropdown-item-cloud-storage {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
   height: 18px; }
-  .igv-app-dropdown-item-dropbox div:first-child {
+  .igv-app-dropdown-item-cloud-storage div:first-child {
     margin-right: 4px; }
-  .igv-app-dropdown-item-dropbox div:last-child {
+  .igv-app-dropdown-item-cloud-storage div:last-child {
     margin-left: 4px; }
 
 #igv-app-session-file-button input {

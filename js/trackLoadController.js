@@ -112,10 +112,11 @@ var app = (function (app) {
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
         this.googleDriveController.configure(function (obj, $filenameContainer, index) {
-            let config,
-                lut,
-                key,
-                str;
+            let lut,
+                key;
+
+            $filenameContainer.text(obj.name);
+            $filenameContainer.show();
 
             lut =
                 [
@@ -125,24 +126,11 @@ var app = (function (app) {
 
             key = lut[ index ];
 
-            if (igv.inferFileFormat(obj.name)) {
-
-                $filenameContainer.text(obj.name);
-                $filenameContainer.show();
-
-                config =
-                    {
-                        url: obj.path,
-                        filename: obj.name,
-                        name: obj.name,
-                        format: igv.inferFileFormat(obj.name)
-                    };
-
-                self.googleDriveController.loader.fileLoadManager.dictionary[ key ] = config;
-            } else {
-                str = 'Error: ' + obj.name + ' is invalid ' + key + ' file.';
-                self.googleDriveController.loader.presentErrorMessage(str);
+            if ('data' === key) {
+                self.googleDriveController.loader.fileLoadManager.name = obj.name;
             }
+
+            self.googleDriveController.loader.fileLoadManager.dictionary[ key ] = obj.path;
 
             self.googleDriveController.$modal.modal('show');
 

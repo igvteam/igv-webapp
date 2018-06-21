@@ -86,21 +86,39 @@ var app = (function (app) {
         // ok - button
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            let obj;
-
-            obj = self.trackLoadConfiguration(self.loader.fileLoadManager);
-
-            if (obj) {
-                igv.browser.loadTrack( obj );
-                self.loader.dismiss();
-                self.$modal.modal('hide');
-            }
+            self.okHandler();
+            self.loader.dismiss();
+            self.$modal.modal('hide');
         });
 
     };
 
+    app.GoogleDriveController.prototype.okHandler = function () {
+
+        let obj;
+
+        obj = this.trackLoadConfiguration(this.loader.fileLoadManager);
+        if (obj) {
+            igv.browser.loadTrackList( [ obj ] );
+        }
+
+    };
+
     app.GoogleDriveController.prototype.trackLoadConfiguration = function (fileLoadManager) {
-        return fileLoadManager.dictionary.data;
+        let config;
+
+        config =
+            {
+                name: fileLoadManager.name,
+                fileName:fileLoadManager.name,
+
+                format: igv.inferFileFormat(fileLoadManager.name),
+
+                url: fileLoadManager.dictionary.data,
+                indexURL: fileLoadManager.dictionary.index
+            };
+
+        return config;
     };
 
     app.Google =

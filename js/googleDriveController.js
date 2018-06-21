@@ -29,7 +29,7 @@ var app = (function (app) {
         this.$modal = $modal;
     };
 
-    app.GoogleDriveController.prototype.configure = function (pickerCallback) {
+    app.GoogleDriveController.prototype.configure = function (filePickerHandler) {
 
         let self = this,
             loaderConfig,
@@ -63,7 +63,7 @@ var app = (function (app) {
 
                 $(this).on('click', function (e) {
                     self.$modal.modal('hide');
-                    app.Google.createPicker($filenameContainer, index, pickerCallback);
+                    app.Google.createPicker($filenameContainer, index, filePickerHandler);
                 });
             });
 
@@ -97,28 +97,30 @@ var app = (function (app) {
 
         let obj;
 
-        obj = this.trackLoadConfiguration(this.loader.fileLoadManager);
+        obj = trackLoadConfiguration(this.loader.fileLoadManager);
+
         if (obj) {
             igv.browser.loadTrackList( [ obj ] );
         }
 
-    };
 
-    app.GoogleDriveController.prototype.trackLoadConfiguration = function (fileLoadManager) {
-        let config;
+        function trackLoadConfiguration(fileLoadManager) {
+            let config;
 
-        config =
-            {
-                name: fileLoadManager.name,
-                fileName:fileLoadManager.name,
+            config =
+                {
+                    name: fileLoadManager.name,
+                    filename:fileLoadManager.name,
 
-                format: igv.inferFileFormat(fileLoadManager.name),
+                    format: igv.inferFileFormat(fileLoadManager.name),
 
-                url: fileLoadManager.dictionary.data,
-                indexURL: fileLoadManager.dictionary.index
-            };
+                    url: fileLoadManager.dictionary.data,
+                    indexURL: fileLoadManager.dictionary.index
+                };
 
-        return config;
+            return config;
+        }
+
     };
 
     app.Google =
@@ -183,23 +185,7 @@ var app = (function (app) {
 
             },
 
-            pickerCallback: function (data) {
-
-                let doc,
-                    obj;
-
-                doc = data[google.picker.Response.DOCUMENTS][0];
-
-                obj =
-                    {
-                        name: doc[ google.picker.Document.NAME ],
-                        path: 'https://www.googleapis.com/drive/v3/files/' + doc[ google.picker.Document.ID ] + '?alt=media'
-                    };
-
-                return obj;
-            },
-
-            createPicker: function ($filenameContainer, index, controllerPickerCallback) {
+            createPicker: function ($filenameContainer, index, controllerFilePickerHandler) {
 
                 getAccessToken()
                     .then(function (accessToken) {
@@ -217,7 +203,8 @@ var app = (function (app) {
                                         let obj;
 
                                         obj = app.Google.pickerCallback(data);
-                                        controllerPickerCallback(obj, $filenameContainer, index);
+
+                                        controllerFilePickerHandler(obj, $filenameContainer, index);
 
                                     }
                                 })
@@ -270,7 +257,24 @@ var app = (function (app) {
                         })
                 }
 
+            },
+
+            pickerCallback: function (data) {
+
+                let doc,
+                    obj;
+
+                doc = data[google.picker.Response.DOCUMENTS][0];
+
+                obj =
+                    {
+                        name: doc[ google.picker.Document.NAME ],
+                        path: 'https://www.googleapis.com/drive/v3/files/' + doc[ google.picker.Document.ID ] + '?alt=media'
+                    };
+
+                return obj;
             }
+
         };
 
     return app;

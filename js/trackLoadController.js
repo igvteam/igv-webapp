@@ -115,6 +115,7 @@ var app = (function (app) {
             let lut,
                 key;
 
+            // update file name label
             $filenameContainer.text(obj.name);
             $filenameContainer.show();
 
@@ -124,13 +125,14 @@ var app = (function (app) {
                     'index'
                 ];
 
-            key = lut[ index ];
+            // fileLoadManager dictionary key
+            key = lut[index];
 
             if ('data' === key) {
                 self.googleDriveController.loader.fileLoadManager.name = obj.name;
             }
 
-            self.googleDriveController.loader.fileLoadManager.dictionary[ key ] = obj.path;
+            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
 
             self.googleDriveController.$modal.modal('show');
 

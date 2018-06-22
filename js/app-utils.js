@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  */
-let app = (function (app) {
+var app = (function (app) {
 
     app.utils =
         {
@@ -63,4 +63,4 @@ let app = (function (app) {
         };
 
     return app;
-})({});
+})(app || {});

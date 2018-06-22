@@ -32,7 +32,7 @@ var app = (function (app) {
         this.browser = browser;
         this.config = config;
 
-        // local file load modal
+        // Local File
         locaFileLoaderConfig =
             {
                 hidden: false,
@@ -44,7 +44,7 @@ var app = (function (app) {
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
         app.utils.configureModal(this.localFileLoader, config.$fileModal);
 
-        // url load modal
+        // URL
         urlLoaderConfig =
             {
                 hidden: false,

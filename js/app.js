@@ -26,7 +26,7 @@ var app = (function (app) {
 
         let sessionConfig,
             trackLoadConfig,
-            genomeConfig,
+            genomeLoadConfig,
             shareConfig;
 
         $('.igv-app-footer').find('a img').hover(function () {
@@ -78,14 +78,14 @@ var app = (function (app) {
         });
 
         // Genome Modal Controller
-        genomeConfig =
+        genomeLoadConfig =
             {
                 $urlModal: $('#igv-app-genome-from-url-modal'),
                 $fileModal: $('#igv-app-genome-from-file-modal'),
                 $dropboxModal: $('#igv-app-genome-dropbox-modal'),
                 $googleDriveModal: $('#igv-app-genome-google-drive-modal')
             };
-        app.genomeModalController = new app.GenomeModalController(browser, genomeConfig);
+        app.genomeLoadController = new app.GenomeLoadController(browser, genomeLoadConfig);
 
         // Genome Controller
         app.genomeController = new app.GenomeController();

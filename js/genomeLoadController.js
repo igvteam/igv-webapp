@@ -28,18 +28,19 @@
  * Created by dat on 5/8/18.
  */
 var app = (function (app) {
-    app.GenomeModalController = function (browser, config) {
+    app.GenomeLoadController = function (browser, config) {
 
         let self = this,
             urlLoaderConfig,
             locaFileLoaderConfig,
             $dismiss,
-            $ok;
+            $ok,
+            doOK;
 
         this.browser = browser;
 
-        // shared by file and url modals
 
+        // Local File
         locaFileLoaderConfig =
             {
                 hidden: false,
@@ -50,26 +51,16 @@ var app = (function (app) {
 
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
 
-        // upper dismiss - x - button
-        $dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
+        doOK = function () {
             self.okHandler(self.localFileLoader.fileLoadManager);
             self.localFileLoader.dismiss();
             config.$fileModal.modal('hide');
-        });
+        };
 
+        app.utils.configureModal(this.localFileLoader, config.$fileModal, doOK);
+
+
+        // URL
         urlLoaderConfig =
             {
                 hidden: false,
@@ -80,38 +71,29 @@ var app = (function (app) {
 
         this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
 
-        // upper dismiss - x - button
-        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
+        doOK = function () {
             self.okHandler(self.urlLoader.fileLoadManager);
             self.urlLoader.dismiss();
             config.$urlModal.modal('hide');
-        });
+        };
+
+        app.utils.configureModal(this.urlLoader, config.$urlModal, doOK);
 
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-        this.dropboxController.configure(function (loader, $modal) {
+
+        doOK = function (loader, $modal) {
             self.okHandler(loader.fileLoadManager);
             loader.dismiss();
             $modal.modal('hide');
-        });
+        };
+
+        this.dropboxController.configure(doOK);
 
     };
 
-    app.GenomeModalController.prototype.okHandler = function (fileLoadManager) {
+    app.GenomeLoadController.prototype.okHandler = function (fileLoadManager) {
 
         var self = this;
 
@@ -145,7 +127,7 @@ var app = (function (app) {
 
     };
 
-    app.GenomeModalController.prototype.getGenomeObject = function (fileLoadManager) {
+    app.GenomeLoadController.prototype.getGenomeObject = function (fileLoadManager) {
         let obj;
 
         if (undefined === fileLoadManager.dictionary.data) {

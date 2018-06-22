@@ -30,8 +30,7 @@ var app = (function (app) {
 
         let self = this,
             loaderConfig,
-            $dismiss,
-            $ok;
+            doOK;
 
         loaderConfig =
             {
@@ -77,23 +76,11 @@ var app = (function (app) {
             }
         });
 
-        // upper dismiss - x - button
-        $dismiss = this.$modal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = this.$modal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // ok - button
-        $ok = this.$modal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
+        doOK = function () {
             okHandler(self.loader, self.$modal);
-        });
+        };
+
+        app.utils.configureModal(this.loader, this.$modal, doOK);
 
     };
 

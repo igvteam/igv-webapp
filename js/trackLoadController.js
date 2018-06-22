@@ -60,6 +60,7 @@ var app = (function (app) {
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
+
         okHandler = function (loader, $modal) {
 
             if (loader.okHandler()) {

@@ -25,11 +25,9 @@ var app = (function (app) {
     app.TrackLoadController = function (browser, config) {
 
         var self = this,
-            $ok,
-            $dismiss,
             locaFileLoaderConfig,
             urlLoaderConfig,
-            dropboxConfig;
+            okHandler;
 
         this.browser = browser;
         this.config = config;
@@ -44,27 +42,7 @@ var app = (function (app) {
             };
 
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
-
-        // upper dismiss - x - button
-        $dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            if (self.localFileLoader.okHandler()) {
-                self.localFileLoader.dismiss();
-                config.$fileModal.modal('hide');
-            }
-        });
+        app.utils.configureModal(this.localFileLoader, config.$fileModal);
 
         // url load modal
         urlLoaderConfig =
@@ -76,38 +54,24 @@ var app = (function (app) {
             };
 
         this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
+        app.utils.configureModal(this.urlLoader, config.$urlModal);
 
-        // upper dismiss - x - button
-        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
 
-        // lower dismiss - close - button
-        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            if (self.urlLoader.okHandler()) {
-                self.urlLoader.dismiss();
-                config.$urlModal.modal('hide');
-            }
-        });
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-        this.dropboxController.configure(function (loader, $modal) {
+        okHandler = function (loader, $modal) {
 
             if (loader.okHandler()) {
                 loader.dismiss();
                 $modal.modal('hide');
             }
 
-        });
+        };
+
+        this.dropboxController.configure(okHandler, false);
+
+
 
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
@@ -137,6 +101,8 @@ var app = (function (app) {
             self.googleDriveController.$modal.modal('show');
 
         });
+
+
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);

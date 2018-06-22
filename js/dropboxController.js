@@ -38,7 +38,6 @@ var app = (function (app) {
                 hidden: false,
                 embed: true,
                 $widgetParent: this.$modal.find('.modal-body'),
-                // mode: 'url',
                 mode: 'localFile'
             };
 

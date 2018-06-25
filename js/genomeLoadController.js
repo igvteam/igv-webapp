@@ -91,11 +91,71 @@ var app = (function (app) {
 
         this.dropboxController.configure(doOK);
 
+
+        // Google Drive
+        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
+        this.googleDriveController.configure(function (obj, $filenameContainer, index) {
+            let lut,
+                key;
+
+            // update file name label
+            $filenameContainer.text(obj.name);
+            $filenameContainer.show();
+
+            lut =
+                [
+                    'data',
+                    'index'
+                ];
+
+            // fileLoadManager dictionary key
+            key = lut[index];
+
+            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
+
+            self.googleDriveController.$modal.modal('show');
+
+        }, okHandler);
+
     };
 
-    app.GenomeLoadController.prototype.okHandler = function (fileLoadManager) {
+    function okHandler (fileLoadManager) {
+        let genomeObject,
+            genome;
 
-        var self = this;
+        genomeObject = getGenomeObject(fileLoadManager);
+        genome = Object.values(genomeObject).pop();
+        igv.browser
+            .loadGenome(genome)
+            .then(function (genome) {
+
+                if (genome.id) {
+                    app.trackLoadController.createEncodeTable(genome.id);
+                } else {
+                    app.trackLoadController.encodeTable.hidePresentationButton();
+                }
+
+            })
+            .catch(function (error) {
+                igv.presentAlert(error);
+            });
+
+    }
+
+    function getGenomeObject (fileLoadManager) {
+        let obj;
+
+        obj = {};
+        obj[ 'noname' ] =
+            {
+                fastaURL: fileLoadManager.dictionary.data,
+                indexURL: (fileLoadManager.dictionary.index || undefined)
+            };
+
+        return obj;
+    }
+
+    app.GenomeLoadController.prototype.DEPRICATED_okHandler = function (fileLoadManager) {
 
         this
             .getGenomeObject(fileLoadManager)
@@ -105,7 +165,7 @@ var app = (function (app) {
                 if (dictionary) {
 
                     genome = Object.values(dictionary).pop();
-                    return self.browser.loadGenome(genome);
+                    return igv.browser.loadGenome(genome);
 
                 } else {
                     return Promise.reject(new Error('Error: no genome data file.'));
@@ -127,7 +187,7 @@ var app = (function (app) {
 
     };
 
-    app.GenomeLoadController.prototype.getGenomeObject = function (fileLoadManager) {
+    app.GenomeLoadController.prototype.DEPRICATED_getGenomeObject = function (fileLoadManager) {
         let obj;
 
         if (undefined === fileLoadManager.dictionary.data) {

@@ -73,7 +73,6 @@ var app = (function (app) {
         this.dropboxController.configure(okHandler, false);
 
 
-
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
         this.googleDriveController.configure(function (obj, $filenameContainer, index) {
@@ -101,13 +100,42 @@ var app = (function (app) {
 
             self.googleDriveController.$modal.modal('show');
 
-        });
+        }, googlDriveTrackOKHandler);
 
 
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);
     };
+
+    function googlDriveTrackOKHandler(fileLoadManager) {
+
+        let obj;
+
+        obj = configurator(fileLoadManager);
+
+        if (obj) {
+            igv.browser.loadTrackList( [ obj ] );
+        }
+
+        function configurator(fileLoadManager) {
+            let config;
+
+            config =
+                {
+                    name: fileLoadManager.name,
+                    filename:fileLoadManager.name,
+
+                    format: igv.inferFileFormat(fileLoadManager.name),
+
+                    url: fileLoadManager.dictionary.data,
+                    indexURL: fileLoadManager.dictionary.index
+                };
+
+            return config;
+        }
+
+    }
 
     app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
 

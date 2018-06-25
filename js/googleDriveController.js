@@ -29,7 +29,7 @@ var app = (function (app) {
         this.$modal = $modal;
     };
 
-    app.GoogleDriveController.prototype.configure = function (filePickerHandler) {
+    app.GoogleDriveController.prototype.configure = function (filePickerHandler, okHandler) {
 
         let self = this,
             loaderConfig,
@@ -86,40 +86,10 @@ var app = (function (app) {
         // ok - button
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            self.okHandler();
+            okHandler(self.loader.fileLoadManager);
             self.loader.dismiss();
             self.$modal.modal('hide');
         });
-
-    };
-
-    app.GoogleDriveController.prototype.okHandler = function () {
-
-        let obj;
-
-        obj = trackLoadConfiguration(this.loader.fileLoadManager);
-
-        if (obj) {
-            igv.browser.loadTrackList( [ obj ] );
-        }
-
-
-        function trackLoadConfiguration(fileLoadManager) {
-            let config;
-
-            config =
-                {
-                    name: fileLoadManager.name,
-                    filename:fileLoadManager.name,
-
-                    format: igv.inferFileFormat(fileLoadManager.name),
-
-                    url: fileLoadManager.dictionary.data,
-                    indexURL: fileLoadManager.dictionary.index
-                };
-
-            return config;
-        }
 
     };
 

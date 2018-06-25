@@ -33,8 +33,6 @@ var app = (function (app) {
         let self = this,
             urlLoaderConfig,
             locaFileLoaderConfig,
-            $dismiss,
-            $ok,
             doOK;
 
         this.browser = browser;
@@ -43,6 +41,7 @@ var app = (function (app) {
         // Local File
         locaFileLoaderConfig =
             {
+                dataTitle: 'Genome',
                 hidden: false,
                 embed: true,
                 $widgetParent: config.$fileModal.find('.modal-body'),
@@ -63,6 +62,7 @@ var app = (function (app) {
         // URL
         urlLoaderConfig =
             {
+                dataTitle: 'Genome',
                 hidden: false,
                 embed: true,
                 $widgetParent: config.$urlModal.find('.modal-body'),
@@ -81,7 +81,7 @@ var app = (function (app) {
 
 
         // Dropbox
-        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
+        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
 
         doOK = function (loader, $modal) {
             self.okHandler(loader.fileLoadManager);
@@ -93,7 +93,7 @@ var app = (function (app) {
 
 
         // Google Drive
-        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
+        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Genome');
         this.googleDriveController.configure(function (obj, $filenameContainer, index) {
             let lut,
                 key;

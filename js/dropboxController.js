@@ -21,9 +21,10 @@
  *
  */
 var app = (function (app) {
-    app.DropboxController = function (browser, $modal) {
+    app.DropboxController = function (browser, $modal, dataTitle = 'Data') {
         this.browser = browser;
         this.$modal = $modal;
+        this.dataTitle = dataTitle;
     };
 
     app.DropboxController.prototype.configure = function (okHandler, dataFileOnly = false) {
@@ -34,6 +35,7 @@ var app = (function (app) {
 
         loaderConfig =
             {
+                dataTitle: this.dataTitle,
                 hidden: false,
                 embed: true,
                 $widgetParent: this.$modal.find('.modal-body'),

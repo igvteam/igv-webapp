@@ -24,9 +24,10 @@ var app = (function (app) {
 
     let picker;
 
-    app.GoogleDriveController = function (browser, $modal) {
+    app.GoogleDriveController = function (browser, $modal, dataTitle = 'Data') {
         this.browser = browser;
         this.$modal = $modal;
+        this.dataTitle = dataTitle;
     };
 
     app.GoogleDriveController.prototype.configure = function (filePickerHandler, okHandler) {
@@ -38,6 +39,7 @@ var app = (function (app) {
 
         loaderConfig =
             {
+                dataTitle: this.dataTitle,
                 hidden: false,
                 embed: true,
                 $widgetParent: this.$modal.find('.modal-body'),

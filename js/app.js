@@ -26,7 +26,7 @@ var app = (function (app) {
 
         let sessionConfig,
             trackLoadConfig,
-            genomeConfig,
+            genomeLoadConfig,
             shareConfig;
 
         $('.igv-app-footer').find('a img').hover(function () {
@@ -78,14 +78,14 @@ var app = (function (app) {
         });
 
         // Genome Modal Controller
-        genomeConfig =
+        genomeLoadConfig =
             {
                 $urlModal: $('#igv-app-genome-from-url-modal'),
                 $fileModal: $('#igv-app-genome-from-file-modal'),
                 $dropboxModal: $('#igv-app-genome-dropbox-modal'),
                 $googleDriveModal: $('#igv-app-genome-google-drive-modal')
             };
-        app.genomeModalController = new app.GenomeModalController(browser, genomeConfig);
+        app.genomeLoadController = new app.GenomeLoadController(browser, genomeLoadConfig);
 
         // Genome Controller
         app.genomeController = new app.GenomeController();
@@ -184,14 +184,11 @@ var app = (function (app) {
         });
 
         // genome from Dropbox
-        $button = createDropboxButton(config.$dropdown_menu, 'Dropbox ...');
+        $button = createCloudStorageButton(config.$dropdown_menu, config.$dropboxModal, 'Dropbox', 'img/dropbox-dropdown-menu-item.png');
 
         // genome from Google Drive
-        // $button = createButton('Google Drive ...');
-        // config.$dropdown_menu.append($button);
-        // $button.on('click', function () {
-        //     config.$googleDriveModal.modal();
-        // });
+        $button = createCloudStorageButton(config.$dropdown_menu, config.$googleDriveModal, 'Google Drive', 'img/googledrive-dropdown-menu-item.png');
+
 
         function createButton (title) {
             var $button;
@@ -202,7 +199,7 @@ var app = (function (app) {
             return $button;
         }
 
-        function createDropboxButton($parent, title) {
+        function createCloudStorageButton($parent, $modal, title, logo) {
             var $button,
                 $container,
                 $div,
@@ -212,22 +209,22 @@ var app = (function (app) {
             $parent.append($button);
 
             $button.on('click', function () {
-                $parent.modal();
+                $modal.modal('show');
             });
 
             // container for text | logo | text
-            $container = $('<div>', { class:'igv-app-dropdown-item-dropbox' });
+            $container = $('<div>', { class:'igv-app-dropdown-item-cloud-storage' });
             $button.append($container);
 
             // text
             $div = $('<div>');
             $container.append($div);
-            $div.text('Dropbox');
+            $div.text(title);
 
             // logo
             $div = $('<div>');
             $container.append($div);
-            $img = $('<img>', { src :'img/dropbox-dropdown-menu-item.png', width :18, height :18 });
+            $img = $('<img>', { src :logo, width :18, height :18 });
             $div.append($img);
 
             // text
@@ -237,8 +234,6 @@ var app = (function (app) {
 
         }
     }
-
-
 
     return app;
 

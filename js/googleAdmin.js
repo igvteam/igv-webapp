@@ -91,20 +91,16 @@ function appGoogleInitCleanup() {
 
 function appGooglePicker() {
 
-    let view;
-
     getAccessToken()
         .then(function (accessToken) {
 
             if (accessToken) {
 
-                view = new google.picker.View(google.picker.ViewId.DOCS);
-
                 picker = new google.picker
                     .PickerBuilder()
                     .setAppId(igv.Google.properties["project_number"])
                     .setOAuthToken(igv.oauth.google.access_token)
-                    .addView(view)
+                    .addView( new google.picker.View(google.picker.ViewId.DOCS) )
                     .setDeveloperKey(igv.Google.properties["developer_key"])
                     .setCallback(pickerCallback)
                     .build();

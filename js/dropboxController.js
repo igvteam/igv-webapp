@@ -21,24 +21,24 @@
  *
  */
 var app = (function (app) {
-    app.DropboxController = function (browser, $modal) {
+    app.DropboxController = function (browser, $modal, dataTitle = 'Data') {
         this.browser = browser;
         this.$modal = $modal;
+        this.dataTitle = dataTitle;
     };
 
     app.DropboxController.prototype.configure = function (okHandler, dataFileOnly = false) {
 
         let self = this,
             loaderConfig,
-            $dismiss,
-            $ok;
+            doOK;
 
         loaderConfig =
             {
+                dataTitle: this.dataTitle,
                 hidden: false,
                 embed: true,
                 $widgetParent: this.$modal.find('.modal-body'),
-                // mode: 'url',
                 mode: 'localFile'
             };
 
@@ -78,23 +78,11 @@ var app = (function (app) {
             }
         });
 
-        // upper dismiss - x - button
-        $dismiss = this.$modal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = this.$modal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.loader.dismiss();
-        });
-
-        // ok - button
-        $ok = this.$modal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
+        doOK = function () {
             okHandler(self.loader, self.$modal);
-        });
+        };
+
+        app.utils.configureModal(this.loader, this.$modal, doOK);
 
     };
 

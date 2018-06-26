@@ -28,20 +28,20 @@
  * Created by dat on 5/8/18.
  */
 var app = (function (app) {
-    app.GenomeModalController = function (browser, config) {
+    app.GenomeLoadController = function (browser, config) {
 
         let self = this,
             urlLoaderConfig,
             locaFileLoaderConfig,
-            $dismiss,
-            $ok;
+            doOK;
 
         this.browser = browser;
 
-        // shared by file and url modals
 
+        // Local File
         locaFileLoaderConfig =
             {
+                dataTitle: 'Genome',
                 hidden: false,
                 embed: true,
                 $widgetParent: config.$fileModal.find('.modal-body'),
@@ -50,28 +50,19 @@ var app = (function (app) {
 
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
 
-        // upper dismiss - x - button
-        $dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            self.okHandler(self.localFileLoader.fileLoadManager);
+        doOK = function () {
+            okHandler(self.localFileLoader.fileLoadManager);
             self.localFileLoader.dismiss();
             config.$fileModal.modal('hide');
-        });
+        };
 
+        app.utils.configureModal(this.localFileLoader, config.$fileModal, doOK);
+
+
+        // URL
         urlLoaderConfig =
             {
+                dataTitle: 'Genome',
                 hidden: false,
                 embed: true,
                 $widgetParent: config.$urlModal.find('.modal-body'),
@@ -80,40 +71,91 @@ var app = (function (app) {
 
         this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
 
-        // upper dismiss - x - button
-        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            self.okHandler(self.urlLoader.fileLoadManager);
+        doOK = function () {
+            okHandler(self.urlLoader.fileLoadManager);
             self.urlLoader.dismiss();
             config.$urlModal.modal('hide');
-        });
+        };
+
+        app.utils.configureModal(this.urlLoader, config.$urlModal, doOK);
 
 
         // Dropbox
-        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-        this.dropboxController.configure(function (loader, $modal) {
-            self.okHandler(loader.fileLoadManager);
+        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
+
+        doOK = function (loader, $modal) {
+            okHandler(loader.fileLoadManager);
             loader.dismiss();
             $modal.modal('hide');
-        });
+        };
+
+        this.dropboxController.configure(doOK);
+
+
+        // Google Drive
+        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Genome');
+        this.googleDriveController.configure(function (obj, $filenameContainer, index) {
+            let lut,
+                key;
+
+            // update file name label
+            $filenameContainer.text(obj.name);
+            $filenameContainer.show();
+
+            lut =
+                [
+                    'data',
+                    'index'
+                ];
+
+            // fileLoadManager dictionary key
+            key = lut[index];
+
+            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
+
+            self.googleDriveController.$modal.modal('show');
+
+        }, okHandler);
 
     };
 
-    app.GenomeModalController.prototype.okHandler = function (fileLoadManager) {
+    function okHandler (fileLoadManager) {
+        let genomeObject,
+            genome;
 
-        var self = this;
+        genomeObject = getGenomeObject(fileLoadManager);
+        genome = Object.values(genomeObject).pop();
+        igv.browser
+            .loadGenome(genome)
+            .then(function (genome) {
+
+                if (genome.id) {
+                    app.trackLoadController.createEncodeTable(genome.id);
+                } else {
+                    app.trackLoadController.encodeTable.hidePresentationButton();
+                }
+
+            })
+            .catch(function (error) {
+                igv.presentAlert(error);
+            });
+
+    }
+
+    function getGenomeObject (fileLoadManager) {
+        let obj;
+
+        obj = {};
+        obj[ 'noname' ] =
+            {
+                fastaURL: fileLoadManager.dictionary.data,
+                indexURL: (fileLoadManager.dictionary.index || undefined)
+            };
+
+        return obj;
+    }
+
+    app.GenomeLoadController.prototype.DEPRICATED_okHandler = function (fileLoadManager) {
 
         this
             .getGenomeObject(fileLoadManager)
@@ -123,7 +165,7 @@ var app = (function (app) {
                 if (dictionary) {
 
                     genome = Object.values(dictionary).pop();
-                    return self.browser.loadGenome(genome);
+                    return igv.browser.loadGenome(genome);
 
                 } else {
                     return Promise.reject(new Error('Error: no genome data file.'));
@@ -145,7 +187,7 @@ var app = (function (app) {
 
     };
 
-    app.GenomeModalController.prototype.getGenomeObject = function (fileLoadManager) {
+    app.GenomeLoadController.prototype.DEPRICATED_getGenomeObject = function (fileLoadManager) {
         let obj;
 
         if (undefined === fileLoadManager.dictionary.data) {

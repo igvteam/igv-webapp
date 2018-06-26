@@ -25,16 +25,14 @@ var app = (function (app) {
     app.TrackLoadController = function (browser, config) {
 
         var self = this,
-            $ok,
-            $dismiss,
             locaFileLoaderConfig,
             urlLoaderConfig,
-            dropboxConfig;
+            okHandler;
 
         this.browser = browser;
         this.config = config;
 
-        // local file load modal
+        // Local File
         locaFileLoaderConfig =
             {
                 hidden: false,
@@ -44,29 +42,9 @@ var app = (function (app) {
             };
 
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
+        app.utils.configureModal(this.localFileLoader, config.$fileModal);
 
-        // upper dismiss - x - button
-        $dismiss = config.$fileModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // lower dismiss - close - button
-        $dismiss = config.$fileModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.localFileLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$fileModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            if (self.localFileLoader.okHandler()) {
-                self.localFileLoader.dismiss();
-                config.$fileModal.modal('hide');
-            }
-        });
-
-        // url load modal
+        // URL
         urlLoaderConfig =
             {
                 hidden: false,
@@ -76,42 +54,88 @@ var app = (function (app) {
             };
 
         this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
+        app.utils.configureModal(this.urlLoader, config.$urlModal);
 
-        // upper dismiss - x - button
-        $dismiss = config.$urlModal.find('.modal-header button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
 
-        // lower dismiss - close - button
-        $dismiss = config.$urlModal.find('.modal-footer button:nth-child(1)');
-        $dismiss.on('click', function () {
-            self.urlLoader.dismiss();
-        });
-
-        // ok - button
-        $ok = config.$urlModal.find('.modal-footer button:nth-child(2)');
-        $ok.on('click', function () {
-            if (self.urlLoader.okHandler()) {
-                self.urlLoader.dismiss();
-                config.$urlModal.modal('hide');
-            }
-        });
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-        this.dropboxController.configure(function (loader, $modal) {
+
+        okHandler = function (loader, $modal) {
 
             if (loader.okHandler()) {
                 loader.dismiss();
                 $modal.modal('hide');
             }
 
-        });
+        };
+
+        this.dropboxController.configure(okHandler, false);
+
+
+        // Google Drive
+        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
+        this.googleDriveController.configure(function (obj, $filenameContainer, index) {
+            let lut,
+                key;
+
+            // update file name label
+            $filenameContainer.text(obj.name);
+            $filenameContainer.show();
+
+            lut =
+                [
+                    'data',
+                    'index'
+                ];
+
+            // fileLoadManager dictionary key
+            key = lut[index];
+
+            if ('data' === key) {
+                self.googleDriveController.loader.fileLoadManager.name = obj.name;
+            }
+
+            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
+
+            self.googleDriveController.$modal.modal('show');
+
+        }, googlDriveTrackOKHandler);
+
+
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);
     };
+
+    function googlDriveTrackOKHandler(fileLoadManager) {
+
+        let obj;
+
+        obj = configurator(fileLoadManager);
+
+        if (obj) {
+            igv.browser.loadTrackList( [ obj ] );
+        }
+
+        function configurator(fileLoadManager) {
+            let config;
+
+            config =
+                {
+                    name: fileLoadManager.name,
+                    filename:fileLoadManager.name,
+
+                    format: igv.inferFileFormat(fileLoadManager.name),
+
+                    url: fileLoadManager.dictionary.data,
+                    indexURL: fileLoadManager.dictionary.index
+                };
+
+            return config;
+        }
+
+    }
 
     app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
 

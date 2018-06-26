@@ -121,16 +121,16 @@ a#igv-app-email-button:active {
 .igv-app-background-blue-green {
   background-color: mediumaquamarine; }
 
-.igv-app-dropdown-item-dropbox {
+.igv-app-dropdown-item-cloud-storage {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
   height: 18px; }
-  .igv-app-dropdown-item-dropbox div:first-child {
+  .igv-app-dropdown-item-cloud-storage div:first-child {
     margin-right: 4px; }
-  .igv-app-dropdown-item-dropbox div:last-child {
+  .igv-app-dropdown-item-cloud-storage div:last-child {
     margin-left: 4px; }
 
 #igv-app-session-file-button input {
@@ -143,6 +143,16 @@ a#igv-app-email-button:active {
 
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25); }
+
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container .igv-app-google-drive-button-container {
+  height: calc(36px - 8px);
+  width: 100%;
+  color: #a6a6a6;
+  line-height: calc(36px - 8px);
+  text-align: center; }
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container .igv-app-google-drive-button-container:hover {
+  cursor: pointer;
+  color: #5f5f5f; }
 
 .igv-app-dropbox-button {
   cursor: pointer;

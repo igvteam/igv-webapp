@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="css/app.css">
 
     <!-- Dropbox Chooser API-->
-    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8glijwyao9fq8we"></script>
+    <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8glijwyao9fq8we"></script>
 
 
     <!-- Bootstrap 4 and dependancies JS: jQuery | Popper -->
@@ -50,7 +50,8 @@
     <script src="https://apis.google.com/js/platform.js"></script>
 
     <!-- IGV JS -->
-    <script src="https://igv.org/web/release/2.0.0-beta7/dist/igv.js"></script>
+    <!--<script src="https://igv.org/web/release/2.0.0-beta7/dist/igv.js"></script>-->
+    <script src="https://igv.org/web/test/dist/igv.js"></script>
     <!--<script src="js/igv.js"></script>-->
 
     <!-- Twitter -->
@@ -63,12 +64,13 @@
     <script src="js/qrcode.js"></script>
     <script src="js/shareHelper.js"></script>
     <script src="js/genomeController.js"></script>
-    <script src="js/genomeModalController.js"></script>
+    <script src="js/genomeLoadController.js"></script>
     <script src="js/sessionModalController.js"></script>
     <script src="js/trackLoadController.js"></script>
     <script src="js/shareController.js"></script>
     <script src="js/dropboxController.js"></script>
     <script src="js/googleDriveController.js"></script>
+    <script src="js/app-utils.js"></script>
     <script src="js/app.js"></script>
 </head>
 
@@ -124,16 +126,21 @@
 
                     <!-- Dropbox -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-dropbox-modal">
-                        <div class=" igv-app-dropdown-item-dropbox">
+                        <div class=" igv-app-dropdown-item-cloud-storage">
                             <div>Dropbox</div>
                             <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
-
                         </div>
                     </button>
 
                     <!-- Google Drive -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-google-drive-modal" style="display: none">Google Drive ...</button>
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-google-drive-modal">
+                        <div class="igv-app-dropdown-item-cloud-storage">
+                            <div>Google Drive</div>
+                            <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                            <div>...</div>
+                        </div>
+                    </button>
 
                     <!-- ENCODE -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">ENCODE ...</button>
@@ -679,26 +686,10 @@
                         id: "hg19",
                         fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/1kg_v37/human_g1k_v37_decoy.fasta",
                         cytobandURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/b37/b37_cytoband.txt",
-                        tracks:
-                            [
-                                {
-                                    name: "Genes",
-                                    searchable: false,
-                                    type: "annotation",
-                                    format: "gtf",
-                                    sourceType: "file",
-                                    url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
-                                    indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
-                                    visibilityWindow: 10000000,
-                                    order: Number.MAX_VALUE,
-                                    displayMode: "EXPANDED"
-                                }
-                            ]
                     }
 
             };
 
-        /*
         gapiConfig =
             {
                 callback: function () {
@@ -720,13 +711,12 @@
             };
 
         gapi.load('client:auth2', gapiConfig);
-        */
 
-        igv
-            .createBrowser($('#igv-app-container').get(0), igvConfig)
-            .then(function (browser) {
-                app.init(browser, $('#igv-app-container'), urlShortenerConfig);
-            });
+        // igv
+        //     .createBrowser($('#igv-app-container').get(0), igvConfig)
+        //     .then(function (browser) {
+        //         app.init(browser, $('#igv-app-container'), urlShortenerConfig);
+        //     });
 
     });
 

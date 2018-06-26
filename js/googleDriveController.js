@@ -24,12 +24,13 @@ var app = (function (app) {
 
     let picker;
 
-    app.GoogleDriveController = function (browser, $modal) {
+    app.GoogleDriveController = function (browser, $modal, dataTitle = 'Data') {
         this.browser = browser;
         this.$modal = $modal;
+        this.dataTitle = dataTitle;
     };
 
-    app.GoogleDriveController.prototype.configure = function (okHandler, dataFileOnly = false) {
+    app.GoogleDriveController.prototype.configure = function (filePickerHandler, okHandler) {
 
         let self = this,
             loaderConfig,
@@ -38,47 +39,38 @@ var app = (function (app) {
 
         loaderConfig =
             {
+                dataTitle: this.dataTitle,
                 hidden: false,
                 embed: true,
                 $widgetParent: this.$modal.find('.modal-body'),
-                // mode: 'url',
                 mode: 'localFile'
             };
 
         this.loader = this.browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
 
         this.loader.customizeLayout(function ($parent) {
+            let $file_chooser_container;
 
-            $parent.find('.igv-flw-file-chooser-container').hide();
-
-            if (true === dataFileOnly) {
-                makeButton.call(self, $parent.find('.igv-flw-input-label').first(), 0);
-                $parent.find('.igv-flw-input-row').last().hide();
-            } else {
-                $parent.find('.igv-flw-input-label').each(function (index) {
-                    makeButton.call(self, $(this), index);
-                });
-            }
-
-            function makeButton($e, index) {
+            $file_chooser_container = $parent.find('.igv-flw-file-chooser-container');
+            $file_chooser_container.each(function (index) {
                 let $div,
-                    lut,
-                    settings;
+                    $filenameContainer;
 
-                // insert Dropbox button container
-                $div = $('<div>');
-                $div.insertAfter( $e );
+                $(this).empty();
+                $div = $('<div>', { class: 'igv-app-google-drive-button-container' });
+                $(this).append($div);
+                $div.text('Google Drive');
 
-                // create Dropbox button
-                lut =
-                    [
-                        'data',
-                        'index'
-                    ];
+                $filenameContainer = $(this).parent().find('.igv-flw-local-file-name-container');
 
-                settings = dbButtonConfigurator.call(self, $e.parent().find('.igv-flw-local-file-name-container'), lut[ index ]);
-                $div.get(0).appendChild( Dropbox.createChooseButton(settings) )
-            }
+                $(this).on('click', function (e) {
+                    self.$modal.modal('hide');
+                    app.Google.createPicker($filenameContainer, index, filePickerHandler);
+                });
+            });
+
+            $parent.find('.igv-flw-drag-drop-target').remove();
+
         });
 
         // upper dismiss - x - button
@@ -96,33 +88,12 @@ var app = (function (app) {
         // ok - button
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            okHandler(self.loader, self.$modal);
+            okHandler(self.loader.fileLoadManager);
+            self.loader.dismiss();
+            self.$modal.modal('hide');
         });
 
     };
-
-    function dbButtonConfigurator($trackNameLabel, key) {
-        let self = this,
-            obj;
-        obj =
-            {
-
-                success: function(dbFiles) {
-                    // Single file selection only
-                    $trackNameLabel.text(dbFiles[ 0 ].name);
-                    $trackNameLabel.show();
-                    self.loader.fileLoadManager.dictionary[ key ] = dbFiles[ 0 ].link;
-                },
-
-                cancel: function() { },
-
-                linkType: "preview",
-                multiselect: false,
-                folderselect: false,
-            };
-
-        return obj;
-    }
 
     app.Google =
         {
@@ -186,22 +157,29 @@ var app = (function (app) {
 
             },
 
-            createPicker: function () {
+            createPicker: function ($filenameContainer, index, controllerFilePickerHandler) {
 
                 getAccessToken()
                     .then(function (accessToken) {
-                        let view;
 
                         if (accessToken) {
 
-                            view = new google.picker.View(google.picker.ViewId.DOCS);
                             picker = new google.picker
                                 .PickerBuilder()
                                 .setAppId(igv.Google.properties["project_number"])
                                 .setOAuthToken(igv.oauth.google.access_token)
-                                .addView(view)
+                                .addView( new google.picker.View(google.picker.ViewId.DOCS) )
                                 .setDeveloperKey(igv.Google.properties["developer_key"])
-                                .setCallback(pickerCallback)
+                                .setCallback(function (data) {
+                                    if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                                        let obj;
+
+                                        obj = app.Google.pickerCallback(data);
+
+                                        controllerFilePickerHandler(obj, $filenameContainer, index);
+
+                                    }
+                                })
                                 .build();
 
                             picker.setVisible(true);
@@ -251,46 +229,24 @@ var app = (function (app) {
                         })
                 }
 
-                function pickerCallback(data) {
+            },
 
-                    if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-                        let doc,
-                            url,
-                            name,
-                            id,
-                            format;
+            pickerCallback: function (data) {
 
-                        doc = data[google.picker.Response.DOCUMENTS][0];
+                let doc,
+                    obj;
 
-                        url = doc[google.picker.Document.URL];
+                doc = data[google.picker.Response.DOCUMENTS][0];
 
-                        name = doc[google.picker.Document.NAME];
+                obj =
+                    {
+                        name: doc[ google.picker.Document.NAME ],
+                        path: 'https://www.googleapis.com/drive/v3/files/' + doc[ google.picker.Document.ID ] + '?alt=media'
+                    };
 
-                        id = doc[google.picker.Document.ID];
-
-                        format = igv.inferFileFormat(name);
-
-                        if (!format) {
-                            alert("Unrecognized file format: " + name);
-                        } else {
-                            let config;
-
-                            config =
-                                {
-                                    url: "https://www.googleapis.com/drive/v3/files/" + id + "?alt=media",
-                                    filename: name,
-                                    name: name,
-                                    format: format
-                                };
-
-                            igv.browser.loadTrack(config);
-
-                        }
-                    }
-
-                }
-
+                return obj;
             }
+
         };
 
     return app;

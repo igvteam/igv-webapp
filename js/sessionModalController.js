@@ -104,7 +104,7 @@ var app = (function (app) {
                 loader.presentErrorMessage('Error: No data file');
             }
 
-        }, true);
+        });
 
     };
 

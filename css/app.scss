@@ -140,7 +140,7 @@ $igv-app-logo-container-width: 20%;
   }
 }
 
-// Bootstrap modal backdrop
+// Bootstrap modal backdrop color tweak
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25);
 }
@@ -149,7 +149,10 @@ $igv-app-logo-container-width: 20%;
 // Override igvjs classes
 .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container {
 
-  border-color: transparent;
+  cursor: pointer;
+
+  border-color: #e4e4e4;
+
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
@@ -158,6 +161,5 @@ $igv-app-logo-container-width: 20%;
 }
 
 .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container:hover {
-  cursor: pointer;
-  border-color: #a6a6a6;
+  background-color: #e4e4e4;;
 }

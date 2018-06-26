@@ -51,7 +51,7 @@ var app = (function (app) {
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
 
         doOK = function () {
-            self.okHandler(self.localFileLoader.fileLoadManager);
+            okHandler(self.localFileLoader.fileLoadManager);
             self.localFileLoader.dismiss();
             config.$fileModal.modal('hide');
         };
@@ -72,7 +72,7 @@ var app = (function (app) {
         this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
 
         doOK = function () {
-            self.okHandler(self.urlLoader.fileLoadManager);
+            okHandler(self.urlLoader.fileLoadManager);
             self.urlLoader.dismiss();
             config.$urlModal.modal('hide');
         };
@@ -84,7 +84,7 @@ var app = (function (app) {
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
 
         doOK = function (loader, $modal) {
-            self.okHandler(loader.fileLoadManager);
+            okHandler(loader.fileLoadManager);
             loader.dismiss();
             $modal.modal('hide');
         };

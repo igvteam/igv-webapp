@@ -148,21 +148,18 @@ $igv-app-logo-container-width: 20%;
 
 // Override igvjs classes
 .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container {
-  .igv-app-google-drive-button-container {
 
-    height: calc(36px - 8px);
-    width: 100%;
+  border-color: transparent;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(../img/googledrive-modal-button.png);
 
-    color: $igv-app-medium-color;
-    line-height: calc(36px - 8px);
-    text-align: center;
+}
 
-  }
-
-  .igv-app-google-drive-button-container:hover {
-    cursor: pointer;
-    color: $igv-app-dark-color;
-  }
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container:hover {
+  cursor: pointer;
+  border-color: #a6a6a6;
 }
 
 // ::::::::::::::::::: UNUSED :::::::::::::::::::

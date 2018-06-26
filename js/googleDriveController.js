@@ -53,13 +53,9 @@ var app = (function (app) {
 
             $file_chooser_container = $parent.find('.igv-flw-file-chooser-container');
             $file_chooser_container.each(function (index) {
-                let $div,
-                    $filenameContainer;
+                let $filenameContainer;
 
                 $(this).empty();
-                $div = $('<div>', { class: 'igv-app-google-drive-button-container' });
-                $(this).append($div);
-                $div.text('Google Drive');
 
                 $filenameContainer = $(this).parent().find('.igv-flw-local-file-name-container');
 

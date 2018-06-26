@@ -144,15 +144,17 @@ a#igv-app-email-button:active {
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25); }
 
-.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container {
-  cursor: pointer;
-  border-color: #e4e4e4;
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container .igv-app-google-drive-button-container {
+  width: 100%;
+  height: 100%;
+  border-color: transparent;
+  border-radius: 4px;
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(../img/googledrive-modal-button.png); }
-
-.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container:hover {
-  background-color: #e4e4e4; }
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container .igv-app-google-drive-button-container:hover {
+  cursor: pointer;
+  background-color: #dfdfdf; }
 
 /*# sourceMappingURL=app.css.map */

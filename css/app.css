@@ -154,7 +154,6 @@ a#igv-app-email-button:active {
   background-position: center;
   background-image: url(../img/googledrive-modal-button.png); }
 .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container .igv-app-google-drive-button-container:hover {
-  cursor: pointer;
-  background-color: #dfdfdf; }
+  cursor: pointer; }
 
 /*# sourceMappingURL=app.css.map */

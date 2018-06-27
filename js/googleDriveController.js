@@ -162,11 +162,13 @@ var app = (function (app) {
                         var view, teamView;
 
                         view = new google.picker.DocsView(google.picker.ViewId.DOCS);
-                        view.setIncludeFolders(true)
+                        view.setIncludeFolders(true);
+                        view.setMimeTypes("application/octect-stream,text/plain,text/v-card,text/json");
 
                         teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         teamView.setEnableTeamDrives(true);
                         teamView.setIncludeFolders(true)
+                        view.setMimeTypes("application/octect-stream,text/plain,text/v-card,text/json");
 
                         if (accessToken) {
 

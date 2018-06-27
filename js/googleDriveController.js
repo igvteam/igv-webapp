@@ -168,7 +168,7 @@ var app = (function (app) {
                         teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         teamView.setEnableTeamDrives(true);
                         teamView.setIncludeFolders(true)
-                        view.setMimeTypes("application/octect-stream,text/plain,text/v-card,text/json");
+                        view.setMimeTypes("application/octet-stream,text/plain,text/v-card,application/json,application/xml,application/x-gzip");
 
                         if (accessToken) {
 

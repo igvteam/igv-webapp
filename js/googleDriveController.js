@@ -156,7 +156,17 @@ var app = (function (app) {
             createPicker: function ($filenameContainer, index, controllerFilePickerHandler) {
 
                 getAccessToken()
+
                     .then(function (accessToken) {
+
+                        var view, teamView;
+
+                        view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+                        view.setIncludeFolders(true)
+
+                        teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
+                        teamView.setEnableTeamDrives(true);
+                        teamView.setIncludeFolders(true)
 
                         if (accessToken) {
 
@@ -164,7 +174,9 @@ var app = (function (app) {
                                 .PickerBuilder()
                                 .setAppId(igv.Google.properties["project_number"])
                                 .setOAuthToken(igv.oauth.google.access_token)
-                                .addView( new google.picker.View(google.picker.ViewId.DOCS) )
+                                .addView(view)
+                                .addView(teamView)
+                                .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
                                 .setDeveloperKey(igv.Google.properties["developer_key"])
                                 .setCallback(function (data) {
                                     if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {

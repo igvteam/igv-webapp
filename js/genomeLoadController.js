@@ -125,21 +125,7 @@ var app = (function (app) {
 
         genomeObject = getGenomeObject(fileLoadManager);
         genome = Object.values(genomeObject).pop();
-        igv.browser
-            .loadGenome(genome)
-            .then(function (genome) {
-
-                if (genome.id && igv.ModalTable.getAssembly(genome.id)) {
-                    app.trackLoadController.createEncodeTable(genome.id);
-                } else {
-                    app.trackLoadController.encodeTable.hidePresentationButton();
-                }
-
-            })
-            .catch(function (error) {
-                igv.presentAlert(error);
-            });
-
+        app.utils.loadGenome(genome);
     }
 
     function getGenomeObject (fileLoadManager) {

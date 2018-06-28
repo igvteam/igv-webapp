@@ -129,7 +129,7 @@ var app = (function (app) {
             .loadGenome(genome)
             .then(function (genome) {
 
-                if (genome.id) {
+                if (genome.id && igv.ModalTable.getAssembly(genome.id)) {
                     app.trackLoadController.createEncodeTable(genome.id);
                 } else {
                     app.trackLoadController.encodeTable.hidePresentationButton();

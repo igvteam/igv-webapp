@@ -8,8 +8,8 @@
       {
         "name": "Refseq Genes",
         "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/refGene.txt.gz",
-        "order": "1000000",
-        "indexed": "false"
+        "order": 1000000,
+        "indexed": false
       }
     ]
   }

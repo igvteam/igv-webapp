@@ -159,8 +159,21 @@ var app = (function (app) {
 
                 genome = config.genomeDictionary[ key ];
 
-                config.browser.loadGenome(genome);
-                app.trackLoadController.createEncodeTable(genome.id);
+                igv.browser
+                    .loadGenome(genome)
+                    .then(function (genome) {
+
+                        if (genome.id) {
+                            app.trackLoadController.createEncodeTable(genome.id);
+                        } else {
+                            app.trackLoadController.encodeTable.hidePresentationButton();
+                        }
+
+                    })
+                    .catch(function (error) {
+                        igv.presentAlert(error);
+                    });
+
             });
 
         });

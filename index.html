@@ -673,37 +673,25 @@
                 embedTarget: "https://igv.org/web/jb/release/1.0.0/site/embed.html"
             };
 
-        igvConfig =
-            {
-                promisified:true,
-                queryParametersSupported: true,
-                showChromosomeWidget:true,
-                minimumBases: 6,
-                showIdeogram: true,
-                showRuler: true,
-                reference:
-                    {
-                        id: "hg19",
-                        fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/1kg_v37/human_g1k_v37_decoy.fasta",
-                        cytobandURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/b37/b37_cytoband.txt",
-                    },
-                // tracks:
-                //     [
-                //         {
-                //             name: "Genes",
-                //             searchable: false,
-                //             type: "annotation",
-                //             format: "gtf",
-                //             sourceType: "file",
-                //             url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz",
-                //             indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.annotation.sorted.gtf.gz.tbi",
-                //             visibilityWindow: 10000000,
-                //             order: Number.MAX_VALUE,
-                //             displayMode: "EXPANDED"
-                //         }
-                //     ]
+        igvConfig = {
 
-            };
+            promisified:true,
+
+            queryParametersSupported: true,
+            showChromosomeWidget:true,
+            showIdeogram: true,
+            showRuler: true,
+
+            reference:
+                {
+                    id: "hg19"
+                },
+
+            tracks:
+                [
+
+                ]
+        };
 
         gapiConfig =
             {

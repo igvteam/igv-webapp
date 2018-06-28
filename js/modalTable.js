@@ -30,20 +30,6 @@
 
 var igv = (function (igv) {
 
-
-    var genomeIdLUT = function (string) {
-
-        var lut =
-        {
-            dm3: 'dm3',
-            mm10: 'mm10',
-            hg19: 'hg19',
-            hg38: 'GRCh38'
-        };
-
-        return lut[string];
-    };
-    
     igv.ModalTable = function (config) {
 
         this.config = config;
@@ -139,19 +125,24 @@ var igv = (function (igv) {
 
         this.willRetrieveData();
 
-        assembly = genomeIdLUT( genomeId);
-        this.datasource
-            .retrieveData(assembly)
-            .then(function (data) {
-                console.log('modaltable. then. received data ' + _.size(data));
-                self.datasource.data = data;
-                self.doRetrieveData = false;
+        assembly = igv.ModalTable.getAssembly( genomeId);
 
-                self.didRetrieveData();
-            })
-            .catch(function (e) {
-                self.didFailToRetrieveData();
-            });
+        if (assembly) {
+
+            this.datasource
+                .retrieveData(assembly)
+                .then(function (data) {
+                    console.log('modaltable. then. received data ' + _.size(data));
+                    self.datasource.data = data;
+                    self.doRetrieveData = false;
+
+                    self.didRetrieveData();
+                })
+                .catch(function (e) {
+                    self.didFailToRetrieveData();
+                });
+        }
+
     };
 
     igv.ModalTable.prototype.buildTable = function (success) {
@@ -228,6 +219,23 @@ var igv = (function (igv) {
 
         });
 
+    };
+
+    igv.ModalTable.getAssembly = function (genomeID) {
+        let lut,
+            assembly;
+
+        lut =
+            {
+                dm3: 'dm3',
+                mm10: 'mm10',
+                hg19: 'hg19',
+                hg38: 'GRCh38'
+            };
+
+        assembly = lut[ genomeID ];
+
+        return assembly;
     };
 
     return igv;

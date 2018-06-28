@@ -145,11 +145,10 @@ $igv-app-logo-container-width: 20%;
   background-color: rgba(0, 0, 0, 0.25);
 }
 
-
 // Override igvjs classes
 .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container {
 
-  .igv-app-google-drive-button-container {
+  .igv-app-modal-google-drive-logo {
     width: 100%;
     height: 100%;
 
@@ -159,12 +158,16 @@ $igv-app-logo-container-width: 20%;
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url(../img/googledrive-modal-button.png);
+    background-image: url(../img/googledrive-modal-logo-text-button.png);
   }
 
-  .igv-app-google-drive-button-container:hover {
+  .igv-app-modal-google-drive-logo:hover {
     cursor: pointer;
-    //background-color: #dfdfdf;
   }
+}
+
+.igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container:hover {
+  cursor: pointer;
+  background-color: white;
 }
 

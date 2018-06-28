@@ -57,7 +57,10 @@ var app = (function (app) {
                     $filenameContainer;
 
                 $(this).empty();
-                $div = $('<div>', { class: 'igv-app-google-drive-button-container' });
+
+                // widen button
+                $(this).css({ width:'200px' });
+                $div = $('<div>', { class: 'igv-app-modal-google-drive-logo' });
                 $(this).append($div);
 
                 $filenameContainer = $(this).parent().find('.igv-flw-local-file-name-container');

@@ -133,41 +133,39 @@ var app = (function (app) {
 
         var idx,
             embedUrl,
-            params,
             width,
-            height,
-            obj;
+            height;
 
-        idx = jbUrl.indexOf("?");
         embedUrl = (embedTarget || getEmbedTarget()) + "?shortURL=" + jbUrl;
         width = $appContainer.width() + 50;
-        height = $appContainer.height();
-        return '<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>';
+        height = $appContainer.height() + 50;
+        return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 
     }
 
 
-    /**
-     * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
-     */
-    function getEmbedTarget() {
 
-        var href,
-            idx;
+/**
+ * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
+ */
+function getEmbedTarget() {
 
-        href = window.location.href.slice();
+    var href,
+        idx;
 
-        idx = href.indexOf("?");
-        if (idx > 0) {
-            href = href.substring(0, idx);
-        }
+    href = window.location.href.slice();
 
-        idx = href.lastIndexOf("/");
-        return href.substring(0, idx) + "/embed.html"
-
+    idx = href.indexOf("?");
+    if (idx > 0) {
+        href = href.substring(0, idx);
     }
 
-    return app;
+    idx = href.lastIndexOf("/");
+    return href.substring(0, idx) + "/embed.html"
+
+}
+
+return app;
 
 })
 (app || {});

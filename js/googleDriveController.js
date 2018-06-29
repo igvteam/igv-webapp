@@ -126,6 +126,51 @@ var app = (function (app) {
                     });
             },
 
+            signIn: function () {
+
+                let scope,
+                    options;
+
+                scope =
+                    [
+                        'https://www.googleapis.com/auth/devstorage.read_only',
+                        'https://www.googleapis.com/auth/userinfo.profile',
+                        'https://www.googleapis.com/auth/drive.readonly'
+                    ];
+
+                options = new gapi.auth2.SigninOptionsBuilder();
+                options.setPrompt('select_account');
+                options.setScope(scope.join(' '));
+
+                return gapi.auth2
+                    .getAuthInstance()
+                    .signIn(options)
+                    .then(function (user) {
+
+                        let authResponse;
+
+                        authResponse = user.getAuthResponse();
+
+                        igv.setGoogleOauthToken(authResponse["access_token"]);
+
+                        return authResponse["access_token"];
+                    })
+            },
+
+            getAccessToken: function getAccessToken() {
+
+                if (igv.oauth.google.access_token) {
+                    return Promise.resolve(igv.oauth.google.access_token);
+                } else {
+                    return app.Google.signIn();
+                }
+            },
+
+            switchUser: function () {
+                // bookmark();
+                app.Google.signIn();
+            },
+
             postInit: function () {
 
                 gapi.auth2
@@ -161,11 +206,11 @@ var app = (function (app) {
 
             createPicker: function ($filenameContainer, index, controllerFilePickerHandler) {
 
-                getAccessToken()
-
+                app.Google.getAccessToken()
                     .then(function (accessToken) {
 
-                        var view, teamView;
+                        let view,
+                            teamView;
 
                         view = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         view.setIncludeFolders(true);
@@ -173,7 +218,7 @@ var app = (function (app) {
 
                         teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         teamView.setEnableTeamDrives(true);
-                        teamView.setIncludeFolders(true)
+                        teamView.setIncludeFolders(true);
                         view.setMimeTypes("application/octet-stream,text/plain,text/v-card,application/json,application/xml,application/x-gzip");
 
                         if (accessToken) {
@@ -199,8 +244,7 @@ var app = (function (app) {
                                 .build();
 
                             picker.setVisible(true);
-                        }
-                        else {
+                        } else {
                             igv.presentAlert("Sign into Google before using picker");
                         }
                     })
@@ -208,42 +252,7 @@ var app = (function (app) {
                         console.log(error)
                     });
 
-                function getAccessToken() {
 
-                    if (igv.oauth.google.access_token) {
-                        return Promise.resolve(igv.oauth.google.access_token);
-                    } else {
-                        return signIn();
-                    }
-                }
-
-                function signIn() {
-
-                    var scope,
-                        options;
-
-                    scope =
-                        [
-                            'https://www.googleapis.com/auth/devstorage.read_only',
-                            'https://www.googleapis.com/auth/userinfo.profile',
-                            'https://www.googleapis.com/auth/drive.readonly'
-                        ];
-
-                    options = new gapi.auth2.SigninOptionsBuilder();
-                    options.setPrompt('select_account');
-                    options.setScope(scope.join(' '));
-
-                    return gapi.auth2.getAuthInstance().signIn(options)
-
-                        .then(function (user) {
-
-                            let authResponse = user.getAuthResponse();
-
-                            igv.setGoogleOauthToken(authResponse["access_token"]);
-
-                            return authResponse["access_token"];
-                        })
-                }
 
             },
 

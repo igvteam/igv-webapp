@@ -35,6 +35,10 @@ var app = (function (app) {
             locaFileLoaderConfig,
             doOK;
 
+        this.fileReader = new FileReader();
+        app.utils.promisifyFileReader(this.fileReader);
+
+
         this.browser = browser;
 
 
@@ -119,6 +123,50 @@ var app = (function (app) {
 
     };
 
+    app.GenomeLoadController.prototype.getAppLaunchGenomes = function () {
+        let path;
+
+        path = 'https://s3.amazonaws.com/igv.org.genomes/genomes.json';
+        return this.getGenomes(path);
+    };
+
+    app.GenomeLoadController.prototype.getGenomes = function (url) {
+
+        var dictionary;
+
+        if (url instanceof File) {
+
+            return this.fileReader
+                .readAsTextAsync(url)
+                .then(function (result) {
+                    var json;
+
+                    json = JSON.parse(result);
+                    dictionary = {};
+                    dictionary[ json.id ] = json;
+                    return dictionary;
+                });
+
+        } else {
+            return igv.xhr
+                .loadJson(url, {})
+                .then(function (result) {
+
+                    dictionary = {};
+                    if (true === Array.isArray(result)) {
+                        result.forEach(function (json) {
+                            dictionary[ json.id ] = json;
+                        });
+                    } else {
+                        dictionary[ result.id ] = result;
+                    }
+
+                    return dictionary;
+                })
+        }
+
+    };
+
     function okHandler (fileLoadManager) {
         let genomeObject,
             genome;
@@ -139,88 +187,6 @@ var app = (function (app) {
             };
 
         return obj;
-    }
-
-    app.GenomeLoadController.prototype.DEPRICATED_okHandler = function (fileLoadManager) {
-
-        this
-            .getGenomeObject(fileLoadManager)
-            .then(function (dictionary) {
-                var genome;
-
-                if (dictionary) {
-
-                    genome = Object.values(dictionary).pop();
-                    return igv.browser.loadGenome(genome);
-
-                } else {
-                    return Promise.reject(new Error('Error: no genome data file.'));
-                }
-
-            })
-            .then(function (genome) {
-
-                if (genome.id) {
-                    app.trackLoadController.createEncodeTable(genome.id);
-                } else {
-                    app.trackLoadController.encodeTable.hidePresentationButton();
-                }
-
-            })
-            .catch(function (error) {
-                igv.presentAlert(error);
-            });
-
-    };
-
-    app.GenomeLoadController.prototype.DEPRICATED_getGenomeObject = function (fileLoadManager) {
-        let obj;
-
-        if (undefined === fileLoadManager.dictionary.data) {
-            return Promise.reject(new Error('Error: No data file'));
-        } else if (false === isValidDataFileOrURL.call(this, fileLoadManager.dictionary.data)) {
-            return Promise.reject(new Error('Error: data file is invalid.'));
-        } else {
-
-            if (true === isValidIndexFileORURL.call(this, fileLoadManager.dictionary.data)) {
-                return Promise.reject(new Error('Error: index file submitted as data file.'));
-            } else {
-
-                if (fileLoadManager.dictionary.index && false === isValidIndexFileORURL.call(this, fileLoadManager.dictionary.index)) {
-                    return Promise.reject(new Error('Error: index file is not valid.'));
-                }
-
-                if ('json' === igv.getExtension({ url: fileLoadManager.dictionary.data })) {
-                    return app.genomeController.getGenomes(fileLoadManager.dictionary.data)
-                } else {
-                    obj = {};
-                    obj[ 'noname' ] = { fastaURL: fileLoadManager.dictionary.data, indexURL: (fileLoadManager.dictionary.index || undefined) };
-                    return Promise.resolve(obj);
-                }
-
-            }
-
-        }
-
-    };
-
-    function isValidDataFileOrURL (fileOrURL) {
-        var extension,
-            success;
-
-        extension = igv.getExtension({ url: fileOrURL });
-        success = ('fasta' === extension || 'fa' === extension || 'json');
-        return success;
-
-    }
-
-    function isValidIndexFileORURL(fileOrURL) {
-        var extension,
-            success;
-
-        extension = igv.getExtension({ url: fileOrURL });
-        success = ('fai' === extension);
-        return success;
     }
 
     return app;

@@ -87,10 +87,7 @@ var app = (function (app) {
             };
         app.genomeLoadController = new app.GenomeLoadController(browser, genomeLoadConfig);
 
-        // Genome Controller
-        app.genomeController = new app.GenomeController();
-
-        app.genomeController.getGenomes(app.GenomeController.defaultGenomeURL)
+        app.genomeLoadController.getAppLaunchGenomes()
             .then(function (genomeDictionary) {
                 var config;
 

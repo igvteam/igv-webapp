@@ -10,27 +10,19 @@
 
     <!-- IGV JS -->
     <script src="https://igv.org/web/test/dist/igv.js"></script>
+    <script src="js/shareHelper.js"></script>
+    <script src="js/embed.js"></script>
 
 </head>
 
 
 <body>
 
-<div id="myDiv" style="padding-top: 50px;padding-bottom: 20px; height: auto">
-</div>
+<div id="igvDiv"/>
 
 <script type="text/javascript">
 
-    document.addEventListener("DOMContentLoaded", function () {
-
-        var div = document.getElementById("myDiv");
-
-        igv.createBrowser(div, {
-            queryParametersSupported: true
-        });
-
-
-    })
+    document.addEventListener("DOMContentLoaded", embedJS);
 
 
 </script>

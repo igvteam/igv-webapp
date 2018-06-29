@@ -43,16 +43,13 @@ var app = (function (app) {
             app
                 .shortJuiceboxURL(href)
                 .then(function (jbUrl) {
-                    return getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl);
-                })
-                .then(function (config) {
+                    var snippet;
 
-                    shareConfig.$embed_container.find('textarea').val(config.snippet);
+                    snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl);
+                    shareConfig.$embed_container.find('textarea').val(snippet);
                     shareConfig.$embed_container.find('textarea').get(0).select();
 
-                    // TODO: HACK - dat
-                    // return app.shortenURL(jbUrl);
-                    return config.url;
+                    return jbUrl;
                 })
                 .then(function (shortURL) {
 
@@ -66,11 +63,11 @@ var app = (function (app) {
                     // QR code generation
                     shareConfig.$qrcode_image.empty();
                     obj =
-                        {
-                            width: 128,
-                            height: 128,
-                            correctLevel: QRCode.CorrectLevel.H
-                        };
+                    {
+                        width: 128,
+                        height: 128,
+                        correctLevel: QRCode.CorrectLevel.H
+                    };
 
                     qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
 
@@ -78,9 +75,9 @@ var app = (function (app) {
 
                     shareConfig.$tweet_button_container.empty();
                     obj =
-                        {
-                            text: 'Contact map: '
-                        };
+                    {
+                        text: 'Contact map: '
+                    };
 
                     return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
                 })
@@ -134,28 +131,21 @@ var app = (function (app) {
 
     function getEmbeddableSnippet($appContainer, embedTarget, jbUrl) {
 
-        return new Promise(function (fulfill, reject) {
-            var idx,
-                embedUrl,
-                params,
-                width,
-                height,
-                obj;
+        var idx,
+            embedUrl,
+            params,
+            width,
+            height,
+            obj;
 
-            idx = jbUrl.indexOf("?");
-            params = jbUrl.substring(idx);
-            embedUrl = (embedTarget || getEmbedTarget()) + params;
-            width = $appContainer.width() + 50;
-            height = $appContainer.height();
-            obj =
-                {
-                    snippet: '<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>',
-                    url: jbUrl
-                };
-            fulfill(obj);
-        });
+        idx = jbUrl.indexOf("?");
+        embedUrl = (embedTarget || getEmbedTarget()) + "?shortURL=" + jbUrl;
+        width = $appContainer.width() + 50;
+        height = $appContainer.height();
+        return '<iframe src="' + embedUrl + '" width="100%" height="' + height + '" frameborder="0" style="border:0" allowfullscreen></iframe>';
 
     }
+
 
     /**
      * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
@@ -173,10 +163,11 @@ var app = (function (app) {
         }
 
         idx = href.lastIndexOf("/");
-        return href.substring(0, idx) + "/embed/embed.html"
+        return href.substring(0, idx) + "/embed.html"
 
     }
 
     return app;
 
-})(app || {});
+})
+(app || {});

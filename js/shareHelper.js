@@ -100,12 +100,18 @@ var app = (function (app) {
 
     };
 
+    app.expandURL = function (shortURL) {
 
+        var expander = (shortURL.startsWith("https://goo.gl")) ? new GoogleURL({}) : new BitlyURL({});
+
+        return expander.expandURL(shortURL);
+
+    }
 
     var BitlyURL = function (config) {
         this.api = "https://api-ssl.bitly.com";
-        this.apiKey = (!config.apiKey || "ABCD" === config.apiKey) ? fetchBitlyApiKey : config.apiKey;
-        this.hostname = config.hostname ? config.hostname : "bit.ly";
+        this.apiKey = config.key || fetchBitlyApiKey;
+        this.hostname = config.hostname || "bit.ly";
         this.devIP = "192.168.1.11";   // For development, replace with your IP address. Bitly will not shorten localhost !
     }
 
@@ -130,10 +136,35 @@ var app = (function (app) {
     };
 
 
+    BitlyURL.prototype.expandURL = function (url) {
+
+        var self = this;
+
+        return getApiKey.call(this)
+
+            .then(function (key) {
+
+                var endpoint = self.api + "/v3/expand?access_token=" + key + "&shortUrl=" + encodeURIComponent(url);
+
+                return igv.xhr.loadJson(endpoint, {})
+            })
+
+            .then(function (json) {
+
+                var longUrl = json.data.expand[0].long_url;
+
+                // Fix some Bitly "normalization"
+                longUrl = longUrl.replace("{", "%7B").replace("}", "%7D");
+
+                return longUrl;
+
+            })
+    }
+
 
     var GoogleURL = function (config) {
         this.api = "https://www.googleapis.com/urlshortener/v1/url";
-        this.apiKey = (!config.apiKey || "ABCD" === config.apiKey) ? fetchGoogleApiKey : config.apiKey;
+        this.apiKey = config.apiKey || fetchGoogleApiKey;
         this.hostname = config.hostname || "goo.gl";
     }
 
@@ -158,6 +189,30 @@ var app = (function (app) {
             })
     }
 
+    GoogleURL.prototype.expandURL = function (url) {
+
+        var self = this;
+        return getApiKey.call(this)
+
+            .then(function (apiKey) {
+
+                var endpoint;
+
+                if (url.includes("goo.gl")) {
+
+                    endpoint = self.api + "?shortUrl=" + url + "&key=" + apiKey;
+
+                    return igv.xhr.loadJson(endpoint, {contentType: "application/json"})
+                        .then(function (json) {
+                            return json.longUrl;
+                        })
+                }
+                else {
+                    // Not a google url or no api key
+                    return Promise.resolve(url);
+                }
+            })
+    }
 
     function getApiKey() {
 

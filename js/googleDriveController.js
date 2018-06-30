@@ -126,7 +126,7 @@ var app = (function (app) {
                     });
             },
 
-            signIn: function () {
+            signInHandler: function () {
 
                 let scope,
                     options;
@@ -157,18 +157,18 @@ var app = (function (app) {
                     })
             },
 
-            getAccessToken: function getAccessToken() {
+            getAccessToken: function () {
 
                 if (igv.oauth.google.access_token) {
                     return Promise.resolve(igv.oauth.google.access_token);
                 } else {
-                    return app.Google.signIn();
+                    return app.Google.signInHandler();
                 }
             },
 
             switchUser: function () {
-                app.Google.signIn()
-                    .then(function (unused) {
+                app.Google.signInHandler()
+                    .then(function (accessToken) {
                         app.Google.updateSignInStatus(true);
                     });
             },
@@ -178,6 +178,11 @@ var app = (function (app) {
                     .getAuthInstance()
                     .isSignedIn
                     .listen(app.Google.updateSignInStatus);
+
+                gapi.load('picker', function () {
+                    // enable button
+                });
+
             },
 
             updateSignInStatus: function (signInStatus) {
@@ -204,18 +209,20 @@ var app = (function (app) {
 
                 app.Google.getAccessToken()
                     .then(function (accessToken) {
+                        app.Google.updateSignInStatus(true);
+                        return Promise.resolve(accessToken);
+                    })
+                    .then(function (accessToken) {
 
                         let view,
                             teamView;
 
                         view = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         view.setIncludeFolders(true);
-                        view.setMimeTypes("application/octect-stream,text/plain,text/v-card,text/json");
 
                         teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         teamView.setEnableTeamDrives(true);
                         teamView.setIncludeFolders(true);
-                        view.setMimeTypes("application/octet-stream,text/plain,text/v-card,application/json,application/xml,application/x-gzip");
 
                         if (accessToken) {
 

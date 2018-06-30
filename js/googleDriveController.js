@@ -167,39 +167,35 @@ var app = (function (app) {
             },
 
             switchUser: function () {
-                // bookmark();
-                app.Google.signIn();
+                app.Google.signIn()
+                    .then(function (unused) {
+                        app.Google.updateSignInStatus(true);
+                    });
             },
 
             postInit: function () {
-
                 gapi.auth2
                     .getAuthInstance()
                     .isSignedIn
-                    .listen(updateSigninStatus);
+                    .listen(app.Google.updateSignInStatus);
+            },
 
-                gapi.load('picker', function () {
+            updateSignInStatus: function (signInStatus) {
 
-                    // enable button
-                    $('#googlePickerButton').prop('disabled', false);
+                if (signInStatus) {
+                    let username,
+                        $e;
 
-                });
+                    username = gapi.auth2
+                        .getAuthInstance()
+                        .currentUser
+                        .get()
+                        .getBasicProfile()
+                        .getName();
 
-                function updateSigninStatus(isSignedIn) {
-
-                    if (isSignedIn) {
-                        let user,
-                            profile,
-                            username;
-
-                        user = gapi.auth2.getAuthInstance().currentUser.get();
-                        profile = user.getBasicProfile();
-                        username = profile.getName();
-
-                        // $("#switchUserLink").html("Logged in as: " + username);
-
-                    }
-
+                    $e = $("#switchUserLink");
+                    $e.text("Logged in as: " + username);
+                    $e.show();
                 }
 
             },

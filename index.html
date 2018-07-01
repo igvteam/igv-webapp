@@ -80,11 +80,6 @@
         <img src="img/igv-logo-cooked-40x40.png" width="40" height="40" class="d-inline-block align-center" alt="">
         <span class="igv-app-navbar-text">beta</span>
     </div>
-
-        <form class="form-inline">
-            <button type="button" id="igv-app-google-account-switch-button" class="btn btn-outline-success my-2 my-sm-0" style="display: none" onclick=app.Google.switchUser()>FOO BAR</button>
-        </form>
-
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link igv-app-navbar-text" href="http://www.igv.org" target="_blank">
@@ -429,6 +424,18 @@
                 </div>
 
                 <div class="modal-body">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 align-self-end">
+                                <button style="display: none" id="igv-app-google-account-switch-button" class="btn btn-sm btn-light" type="button" onclick=app.Google.switchUser()>
+                                    <img src="img/google__g__logo_16x16.png" width="16" height="16">
+                                    <span>Some User</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">

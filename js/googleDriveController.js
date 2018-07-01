@@ -292,7 +292,7 @@ var app = (function (app) {
                     // $e.text("Logged in as: " + username);
                     // $e.show();
 
-                    this.$googleAccountSwitchButton.text('Switch Google Account');
+                    this.$googleAccountSwitchButton.find('span').text(username);
                     this.$googleAccountSwitchButton.show();
                 }
 

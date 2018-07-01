@@ -76,7 +76,8 @@ var app = (function (app) {
                     shareConfig.$tweet_button_container.empty();
                     obj =
                     {
-                        text: 'Contact map: '
+                        // text: 'Contact map: ',
+                        text: ' '
                     };
 
                     return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);

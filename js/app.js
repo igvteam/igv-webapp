@@ -37,16 +37,12 @@ var app = (function (app) {
             });
 
         $('#igv-app-bookmark-button').on('click', function (e) {
-            let str,
-                session;
+            let str;
+
+            window.history.pushState({}, "IGV", app.sessionURL());
 
             str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
-            console.log(str);
-
             alert('Press ' + str + '+D to bookmark this page.');
-
-            session = app.sessionURL();
-            window.history.pushState({}, "IGV", session);
         });
 
         // Track load controller configuration

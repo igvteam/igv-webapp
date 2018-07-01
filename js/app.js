@@ -102,7 +102,7 @@ var app = (function (app) {
                         genomeDictionary: genomeDictionary
                     };
 
-                genomeDropdownLayout(config);
+                app.genomeDropdownLayout(browser, config);
             });
 
         // URL Shortener Configuration
@@ -132,104 +132,6 @@ var app = (function (app) {
         browser.updateViews();
 
     };
-
-    function genomeDropdownLayout(config) {
-
-        var $divider,
-            $button,
-            keys;
-
-        config.$dropdown_menu.empty();
-
-        keys = Object.keys(config.genomeDictionary);
-
-        keys.forEach(function (jsonID) {
-
-            $button = createButton(jsonID);
-            config.$dropdown_menu.append($button);
-
-            $button.on('click', function () {
-                var key,
-                    genome;
-
-                key = $(this).text();
-
-                genome = config.genomeDictionary[ key ];
-                app.utils.loadGenome(genome);
-
-            });
-
-        });
-
-        // menu divider
-        $divider  = $('<div>', { class:'dropdown-divider' });
-        config.$dropdown_menu.append($divider);
-
-        // genome from local file
-        $button = createButton('Local File ...');
-        config.$dropdown_menu.append($button);
-        $button.on('click', function () {
-            config.$fileModal.modal();
-        });
-
-        // genome from URL
-        $button = createButton('URL ...');
-        config.$dropdown_menu.append($button);
-        $button.on('click', function () {
-            config.$urlModal.modal();
-        });
-
-        // genome from Dropbox
-        $button = createCloudStorageButton(config.$dropdown_menu, config.$dropboxModal, 'Dropbox', 'img/dropbox-dropdown-menu-item.png');
-
-        // genome from Google Drive
-        $button = createCloudStorageButton(config.$dropdown_menu, config.$googleDriveModal, 'Google Drive', 'img/googledrive-dropdown-menu-item.png');
-
-
-        function createButton (title) {
-            var $button;
-
-            $button = $('<button>', { class:'dropdown-item', type:'button' });
-            $button.text(title);
-
-            return $button;
-        }
-
-        function createCloudStorageButton($parent, $modal, title, logo) {
-            var $button,
-                $container,
-                $div,
-                $img;
-
-            $button = $('<button>', { class:'dropdown-item', type:'button' });
-            $parent.append($button);
-
-            $button.on('click', function () {
-                $modal.modal('show');
-            });
-
-            // container for text | logo | text
-            $container = $('<div>', { class:'igv-app-dropdown-item-cloud-storage' });
-            $button.append($container);
-
-            // text
-            $div = $('<div>');
-            $container.append($div);
-            $div.text(title);
-
-            // logo
-            $div = $('<div>');
-            $container.append($div);
-            $img = $('<img>', { src :logo, width :18, height :18 });
-            $div.append($img);
-
-            // text
-            $div = $('<div>');
-            $container.append($div);
-            $div.text('...');
-
-        }
-    }
 
     return app;
 

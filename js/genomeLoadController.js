@@ -164,12 +164,21 @@ var app = (function (app) {
     };
 
     function okHandler (fileLoadManager) {
-        let genomeObject,
+        let config,
             genome;
 
-        genomeObject = getGenomeObject(fileLoadManager);
-        genome = Object.values(genomeObject).pop();
-        app.utils.loadGenome(genome);
+        if (undefined === fileLoadManager.dictionary) {
+            config = undefined;
+        } else if (undefined === fileLoadManager.dictionary.data) {
+            config = undefined;
+        } else {
+            config = getGenomeObject(fileLoadManager);
+            genome = Object.values(config).pop();
+            app.utils.loadGenome(genome);
+        }
+
+        return config;
+
     }
 
     function getGenomeObject (fileLoadManager) {

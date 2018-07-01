@@ -99,7 +99,10 @@ var app = (function (app) {
 
     app.Google =
         {
-            init: function () {
+            init: function ($googleAccountSwitchButton) {
+
+                this.$googleAccountSwitchButton = $googleAccountSwitchButton;
+
                 return igv.Google
                     .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
                     .then(function (properties) {
@@ -174,34 +177,31 @@ var app = (function (app) {
             },
 
             postInit: function () {
+                let callback,
+                    onerror,
+                    config;
+
                 gapi.auth2
                     .getAuthInstance()
                     .isSignedIn
                     .listen(app.Google.updateSignInStatus);
 
-                gapi.load('picker', function () {
-                    // enable button
-                });
+                callback = function () {
+                    console.log('Google Picker library loaded successfully');
+                };
 
-            },
+                onerror = function () {
+                    console.log('Error loading Google Picker library');
+                    alert('Error loading Google Picker library');
+                };
 
-            updateSignInStatus: function (signInStatus) {
+                config =
+                    {
+                        callback: callback,
+                        onerror: onerror
+                    };
 
-                if (signInStatus) {
-                    let username,
-                        $e;
-
-                    username = gapi.auth2
-                        .getAuthInstance()
-                        .currentUser
-                        .get()
-                        .getBasicProfile()
-                        .getName();
-
-                    $e = $("#switchUserLink");
-                    $e.text("Logged in as: " + username);
-                    $e.show();
-                }
+                gapi.load('picker', config);
 
             },
 
@@ -273,6 +273,29 @@ var app = (function (app) {
                     };
 
                 return obj;
+            },
+
+            updateSignInStatus: function (signInStatus) {
+
+                if (signInStatus) {
+                    let username,
+                        $e;
+
+                    username = gapi.auth2
+                        .getAuthInstance()
+                        .currentUser
+                        .get()
+                        .getBasicProfile()
+                        .getName();
+
+                    // $e = $("#igv-app-google-account-switch-button");
+                    // $e.text("Logged in as: " + username);
+                    // $e.show();
+
+                    this.$googleAccountSwitchButton.text('Switch Google Account');
+                    this.$googleAccountSwitchButton.show();
+                }
+
             }
 
         };

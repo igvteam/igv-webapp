@@ -82,7 +82,7 @@
     </div>
 
         <form class="form-inline">
-            <button type="button" id="switchUserLink" class="btn btn-outline-success my-2 my-sm-0" style="display: none" onclick=app.Google.switchUser()>FOO BAR</button>
+            <button type="button" id="igv-app-google-account-switch-button" class="btn btn-outline-success my-2 my-sm-0" style="display: none" onclick=app.Google.switchUser()>FOO BAR</button>
         </form>
 
     <ul class="navbar-nav">
@@ -699,7 +699,7 @@
                 callback: function () {
                     let promise;
 
-                   app.Google.init($('#igv-app-container'), igvConfig)
+                   app.Google.init($('#igv-app-google-account-switch-button'))
                         .then(function () {
                             igvConfig['apiKey'] = igv.Google.properties['api_key'];
                             return igv.createBrowser($('#igv-app-container').get(0), igvConfig);

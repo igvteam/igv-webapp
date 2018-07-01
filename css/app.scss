@@ -150,6 +150,11 @@ $igv-app-logo-container-width: 20%;
 }
 
 // Override igvjs classes
+
+.igv-file-load-widget-container .igv-flw-input-container {
+  margin-top: unset;
+}
+
 .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container {
 
   .igv-app-modal-google-drive-logo {

@@ -80,7 +80,6 @@
         <img src="img/igv-logo-cooked-40x40.png" width="40" height="40" class="d-inline-block align-center" alt="">
         <span class="igv-app-navbar-text">beta</span>
     </div>
-
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link igv-app-navbar-text" href="http://www.igv.org" target="_blank">
@@ -206,7 +205,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-genome-from-file-modal-label" class="modal-title">Load Local Genome File</h4>
+                    <h4  id="igv-app-genome-from-file-modal-label" class="modal-title">Load Genome: Local File</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -236,7 +235,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-genome-from-url-modal-label" class="modal-title">Load Genome URL</h4>
+                    <h4  id="igv-app-genome-from-url-modal-label" class="modal-title">Load Genome: URL</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -266,7 +265,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-genome-dropbox-modal-label" class="modal-title">Load Genome from Dropbox</h4>
+                    <h4  id="igv-app-genome-dropbox-modal-label" class="modal-title">Load Genome: Dropbox</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -296,7 +295,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-genome-google-drive-modal-label" class="modal-title">Load Session From Google Drive</h4>
+                    <h4  id="igv-app-genome-google-drive-modal-label" class="modal-title">Load Genome: Google Drive</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -305,6 +304,12 @@
                 </div>
 
                 <div class="modal-body">
+                    <p>
+                        <button style="display: none" class="igv-app-google-account-switch-button btn btn-sm btn-default" type="button" onclick=app.Google.switchUser()>
+                            <img src="img/google__g__logo_16x16.png" width="16" height="16">
+                            <span>Some User</span>
+                        </button>
+                    </p>
                 </div>
 
                 <div class="modal-footer">
@@ -326,7 +331,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-from-local-file-modal-label" class="modal-title">Load Local Track File</h4>
+                    <h4  id="igv-app-track-from-local-file-modal-label" class="modal-title">Load Track: Local File</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -356,7 +361,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-from-url-modal-label" class="modal-title">Load Track URL</h4>
+                    <h4  id="igv-app-track-from-url-modal-label" class="modal-title">Load Track: URL</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -386,7 +391,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-dropbox-modal-label" class="modal-title">Load Track from Dropbox</h4>
+                    <h4  id="igv-app-track-dropbox-modal-label" class="modal-title">Load Track: Dropbox</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -416,7 +421,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-google-drive-modal-label" class="modal-title">Load Track From Google Drive</h4>
+                    <h4  id="igv-app-track-google-drive-modal-label" class="modal-title">Load Track: Google Drive</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -425,6 +430,12 @@
                 </div>
 
                 <div class="modal-body">
+                    <p>
+                        <button style="display: none" class="igv-app-google-account-switch-button btn btn-sm btn-default" type="button" onclick=app.Google.switchUser()>
+                            <img src="img/google__g__logo_16x16.png" width="16" height="16">
+                            <span>Some User</span>
+                        </button>
+                    </p>
                 </div>
 
                 <div class="modal-footer">
@@ -446,7 +457,7 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-encode-modal-label" class="modal-title">ENCODE</h4>
+                    <h4  id="igv-app-encode-modal-label" class="modal-title">Load Track: ENCODE</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -695,7 +706,7 @@
                 callback: function () {
                     let promise;
 
-                   app.Google.init($('#igv-app-container'), igvConfig)
+                    app.Google.init($('.igv-app-google-account-switch-button'))
                         .then(function () {
                             igvConfig['apiKey'] = igv.Google.properties['api_key'];
                             return igv.createBrowser($('#igv-app-container').get(0), igvConfig);

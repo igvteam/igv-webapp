@@ -63,11 +63,11 @@ var app = (function (app) {
                     // QR code generation
                     shareConfig.$qrcode_image.empty();
                     obj =
-                    {
-                        width: 128,
-                        height: 128,
-                        correctLevel: QRCode.CorrectLevel.H
-                    };
+                        {
+                            width: 128,
+                            height: 128,
+                            correctLevel: QRCode.CorrectLevel.H
+                        };
 
                     qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
 
@@ -75,9 +75,9 @@ var app = (function (app) {
 
                     shareConfig.$tweet_button_container.empty();
                     obj =
-                    {
-                        text: 'Contact map: '
-                    };
+                        {
+                            text: ''
+                        };
 
                     return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
                 })
@@ -145,27 +145,27 @@ var app = (function (app) {
 
 
 
-/**
- * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
- */
-function getEmbedTarget() {
+    /**
+     * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
+     */
+    function getEmbedTarget() {
 
-    var href,
-        idx;
+        var href,
+            idx;
 
-    href = window.location.href.slice();
+        href = window.location.href.slice();
 
-    idx = href.indexOf("?");
-    if (idx > 0) {
-        href = href.substring(0, idx);
+        idx = href.indexOf("?");
+        if (idx > 0) {
+            href = href.substring(0, idx);
+        }
+
+        idx = href.lastIndexOf("/");
+        return href.substring(0, idx) + "/embed.html"
+
     }
 
-    idx = href.lastIndexOf("/");
-    return href.substring(0, idx) + "/embed.html"
-
-}
-
-return app;
+    return app;
 
 })
 (app || {});

@@ -38,10 +38,6 @@ var app = (function (app) {
         this.fileReader = new FileReader();
         app.utils.promisifyFileReader(this.fileReader);
 
-
-        this.browser = browser;
-
-
         // Local File
         locaFileLoaderConfig =
             {
@@ -168,12 +164,21 @@ var app = (function (app) {
     };
 
     function okHandler (fileLoadManager) {
-        let genomeObject,
+        let config,
             genome;
 
-        genomeObject = getGenomeObject(fileLoadManager);
-        genome = Object.values(genomeObject).pop();
-        app.utils.loadGenome(genome);
+        if (undefined === fileLoadManager.dictionary) {
+            config = undefined;
+        } else if (undefined === fileLoadManager.dictionary.data) {
+            config = undefined;
+        } else {
+            config = getGenomeObject(fileLoadManager);
+            genome = Object.values(config).pop();
+            app.utils.loadGenome(genome);
+        }
+
+        return config;
+
     }
 
     function getGenomeObject (fileLoadManager) {
@@ -188,6 +193,104 @@ var app = (function (app) {
 
         return obj;
     }
+
+    app.genomeDropdownLayout = function (browser, config) {
+
+        var $divider,
+            $button,
+            keys;
+
+        config.$dropdown_menu.empty();
+
+        keys = Object.keys(config.genomeDictionary);
+
+        keys.forEach(function (jsonID) {
+
+            $button = createButton(jsonID);
+            config.$dropdown_menu.append($button);
+
+            $button.on('click', function () {
+                var key;
+
+                key = $(this).text();
+
+                if (key !== browser.genome.id) {
+                    app.utils.loadGenome(config.genomeDictionary[ key ]);
+                }
+
+            });
+
+        });
+
+        // menu divider
+        $divider  = $('<div>', { class:'dropdown-divider' });
+        config.$dropdown_menu.append($divider);
+
+        // genome from local file
+        $button = createButton('Local File ...');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$fileModal.modal();
+        });
+
+        // genome from URL
+        $button = createButton('URL ...');
+        config.$dropdown_menu.append($button);
+        $button.on('click', function () {
+            config.$urlModal.modal();
+        });
+
+        // genome from Dropbox
+        $button = createCloudStorageButton(config.$dropdown_menu, config.$dropboxModal, 'Dropbox', 'img/dropbox-dropdown-menu-item.png');
+
+        // genome from Google Drive
+        $button = createCloudStorageButton(config.$dropdown_menu, config.$googleDriveModal, 'Google Drive', 'img/googledrive-dropdown-menu-item.png');
+
+
+        function createButton (title) {
+            var $button;
+
+            $button = $('<button>', { class:'dropdown-item', type:'button' });
+            $button.text(title);
+
+            return $button;
+        }
+
+        function createCloudStorageButton($parent, $modal, title, logo) {
+            var $button,
+                $container,
+                $div,
+                $img;
+
+            $button = $('<button>', { class:'dropdown-item', type:'button' });
+            $parent.append($button);
+
+            $button.on('click', function () {
+                $modal.modal('show');
+            });
+
+            // container for text | logo | text
+            $container = $('<div>', { class:'igv-app-dropdown-item-cloud-storage' });
+            $button.append($container);
+
+            // text
+            $div = $('<div>');
+            $container.append($div);
+            $div.text(title);
+
+            // logo
+            $div = $('<div>');
+            $container.append($div);
+            $img = $('<img>', { src :logo, width :18, height :18 });
+            $div.append($img);
+
+            // text
+            $div = $('<div>');
+            $container.append($div);
+            $div.text('...');
+
+        }
+    };
 
     return app;
 })(app || {});

@@ -81,7 +81,7 @@ function appGoogleInitCleanup() {
             profile = user.getBasicProfile();
             username = profile.getName();
 
-            // $("#switchUserLink").html("Logged in as: " + username);
+            // $("#igv-app-google-account-switch-button").html("Logged in as: " + username);
 
         }
 

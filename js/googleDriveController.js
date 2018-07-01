@@ -99,7 +99,10 @@ var app = (function (app) {
 
     app.Google =
         {
-            init: function () {
+            init: function ($googleAccountSwitchButtons) {
+
+                this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
+
                 return igv.Google
                     .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
                     .then(function (properties) {
@@ -126,55 +129,100 @@ var app = (function (app) {
                     });
             },
 
+            signInHandler: function () {
+
+                let scope,
+                    options;
+
+                scope =
+                    [
+                        'https://www.googleapis.com/auth/devstorage.read_only',
+                        'https://www.googleapis.com/auth/userinfo.profile',
+                        'https://www.googleapis.com/auth/drive.readonly'
+                    ];
+
+                options = new gapi.auth2.SigninOptionsBuilder();
+                options.setPrompt('select_account');
+                options.setScope(scope.join(' '));
+
+                return gapi.auth2
+                    .getAuthInstance()
+                    .signIn(options)
+                    .then(function (user) {
+
+                        let authResponse;
+
+                        authResponse = user.getAuthResponse();
+
+                        igv.setGoogleOauthToken(authResponse["access_token"]);
+
+                        return authResponse["access_token"];
+                    })
+            },
+
+            getAccessToken: function () {
+
+                if (igv.oauth.google.access_token) {
+                    return Promise.resolve(igv.oauth.google.access_token);
+                } else {
+                    return app.Google.signInHandler();
+                }
+            },
+
+            switchUser: function () {
+                app.Google.signInHandler()
+                    .then(function (accessToken) {
+                        app.Google.updateSignInStatus(true);
+                    });
+            },
+
             postInit: function () {
+                let callback,
+                    onerror,
+                    config;
 
                 gapi.auth2
                     .getAuthInstance()
                     .isSignedIn
-                    .listen(updateSigninStatus);
+                    .listen(app.Google.updateSignInStatus);
 
-                gapi.load('picker', function () {
+                callback = function () {
+                    console.log('Google Picker library loaded successfully');
+                };
 
-                    // enable button
-                    $('#googlePickerButton').prop('disabled', false);
+                onerror = function () {
+                    console.log('Error loading Google Picker library');
+                    alert('Error loading Google Picker library');
+                };
 
-                });
+                config =
+                    {
+                        callback: callback,
+                        onerror: onerror
+                    };
 
-                function updateSigninStatus(isSignedIn) {
-
-                    if (isSignedIn) {
-                        let user,
-                            profile,
-                            username;
-
-                        user = gapi.auth2.getAuthInstance().currentUser.get();
-                        profile = user.getBasicProfile();
-                        username = profile.getName();
-
-                        // $("#switchUserLink").html("Logged in as: " + username);
-
-                    }
-
-                }
+                gapi.load('picker', config);
 
             },
 
             createPicker: function ($filenameContainer, index, controllerFilePickerHandler) {
 
-                getAccessToken()
-
+                app.Google.getAccessToken()
+                    .then(function (accessToken) {
+                        app.Google.updateSignInStatus(true);
+                        return Promise.resolve(accessToken);
+                    })
                     .then(function (accessToken) {
 
-                        var view, teamView;
+                        let view,
+                            teamView;
 
                         view = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         view.setIncludeFolders(true);
-                        view.setMimeTypes("application/octect-stream,text/plain,text/v-card,text/json");
 
                         teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
                         teamView.setEnableTeamDrives(true);
-                        teamView.setIncludeFolders(true)
-                        view.setMimeTypes("application/octet-stream,text/plain,text/v-card,application/json,application/xml,application/x-gzip");
+                        teamView.setIncludeFolders(true);
 
                         if (accessToken) {
 
@@ -199,8 +247,7 @@ var app = (function (app) {
                                 .build();
 
                             picker.setVisible(true);
-                        }
-                        else {
+                        } else {
                             igv.presentAlert("Sign into Google before using picker");
                         }
                     })
@@ -208,42 +255,7 @@ var app = (function (app) {
                         console.log(error)
                     });
 
-                function getAccessToken() {
 
-                    if (igv.oauth.google.access_token) {
-                        return Promise.resolve(igv.oauth.google.access_token);
-                    } else {
-                        return signIn();
-                    }
-                }
-
-                function signIn() {
-
-                    var scope,
-                        options;
-
-                    scope =
-                        [
-                            'https://www.googleapis.com/auth/devstorage.read_only',
-                            'https://www.googleapis.com/auth/userinfo.profile',
-                            'https://www.googleapis.com/auth/drive.readonly'
-                        ];
-
-                    options = new gapi.auth2.SigninOptionsBuilder();
-                    options.setPrompt('select_account');
-                    options.setScope(scope.join(' '));
-
-                    return gapi.auth2.getAuthInstance().signIn(options)
-
-                        .then(function (user) {
-
-                            let authResponse = user.getAuthResponse();
-
-                            igv.setGoogleOauthToken(authResponse["access_token"]);
-
-                            return authResponse["access_token"];
-                        })
-                }
 
             },
 
@@ -261,6 +273,29 @@ var app = (function (app) {
                     };
 
                 return obj;
+            },
+
+            updateSignInStatus: function (signInStatus) {
+
+                if (signInStatus) {
+                    let username,
+                        $e;
+
+                    username = gapi.auth2
+                        .getAuthInstance()
+                        .currentUser
+                        .get()
+                        .getBasicProfile()
+                        .getName();
+
+                    // $e = $("#igv-app-google-account-switch-button");
+                    // $e.text("Logged in as: " + username);
+                    // $e.show();
+
+                    this.$googleAccountSwitchButtons.find('span').text(username);
+                    this.$googleAccountSwitchButtons.show();
+                }
+
             }
 
         };

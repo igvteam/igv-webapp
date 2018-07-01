@@ -121,16 +121,24 @@ var app = (function (app) {
         function configurator(fileLoadManager) {
             let config;
 
-            config =
-                {
-                    name: fileLoadManager.name,
-                    filename:fileLoadManager.name,
+            if (undefined === fileLoadManager.name) {
+                config = undefined;
+            } else if (undefined === fileLoadManager.dictionary) {
+                config = undefined;
+            } else {
 
-                    format: igv.inferFileFormat(fileLoadManager.name),
+                config =
+                    {
+                        name: fileLoadManager.name,
+                        filename:fileLoadManager.name,
 
-                    url: fileLoadManager.dictionary.data,
-                    indexURL: fileLoadManager.dictionary.index
-                };
+                        format: igv.inferFileFormat(fileLoadManager.name),
+
+                        url: fileLoadManager.dictionary.data,
+                        indexURL: fileLoadManager.dictionary.index
+                    };
+
+            }
 
             return config;
         }

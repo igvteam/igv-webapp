@@ -304,6 +304,16 @@
                 </div>
 
                 <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-4 align-self-end">
+                                <button style="display: none" class="igv-app-google-account-switch-button btn btn-sm btn-light" type="button" onclick=app.Google.switchUser()>
+                                    <img src="img/google__g__logo_16x16.png" width="16" height="16">
+                                    <span>Some User</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
@@ -424,18 +434,16 @@
                 </div>
 
                 <div class="modal-body">
-
                     <div class="container">
                         <div class="row">
                             <div class="col-4 align-self-end">
-                                <button style="display: none" id="igv-app-google-account-switch-button" class="btn btn-sm btn-light" type="button" onclick=app.Google.switchUser()>
+                                <button style="display: none" class="igv-app-google-account-switch-button btn btn-sm btn-light" type="button" onclick=app.Google.switchUser()>
                                     <img src="img/google__g__logo_16x16.png" width="16" height="16">
                                     <span>Some User</span>
                                 </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="modal-footer">
@@ -706,7 +714,7 @@
                 callback: function () {
                     let promise;
 
-                   app.Google.init($('#igv-app-google-account-switch-button'))
+                   app.Google.init($('.igv-app-google-account-switch-button'))
                         .then(function () {
                             igvConfig['apiKey'] = igv.Google.properties['api_key'];
                             return igv.createBrowser($('#igv-app-container').get(0), igvConfig);

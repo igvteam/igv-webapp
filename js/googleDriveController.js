@@ -99,9 +99,9 @@ var app = (function (app) {
 
     app.Google =
         {
-            init: function ($googleAccountSwitchButton) {
+            init: function ($googleAccountSwitchButtons) {
 
-                this.$googleAccountSwitchButton = $googleAccountSwitchButton;
+                this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
 
                 return igv.Google
                     .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
@@ -292,8 +292,8 @@ var app = (function (app) {
                     // $e.text("Logged in as: " + username);
                     // $e.show();
 
-                    this.$googleAccountSwitchButton.find('span').text(username);
-                    this.$googleAccountSwitchButton.show();
+                    this.$googleAccountSwitchButtons.find('span').text(username);
+                    this.$googleAccountSwitchButtons.show();
                 }
 
             }

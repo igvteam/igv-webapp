@@ -51,7 +51,7 @@ var app = (function (app) {
         this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
 
         doOK = function () {
-            okHandler(self.localFileLoader.fileLoadManager);
+            okHandler.call(self, self.localFileLoader.fileLoadManager);
             self.localFileLoader.dismiss();
             config.$fileModal.modal('hide');
         };
@@ -72,7 +72,7 @@ var app = (function (app) {
         this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
 
         doOK = function () {
-            okHandler(self.urlLoader.fileLoadManager);
+            okHandler.call(self, self.urlLoader.fileLoadManager);
             self.urlLoader.dismiss();
             config.$urlModal.modal('hide');
         };
@@ -84,7 +84,7 @@ var app = (function (app) {
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
 
         doOK = function (loader, $modal) {
-            okHandler(loader.fileLoadManager);
+            okHandler.call(self, loader.fileLoadManager);
             loader.dismiss();
             $modal.modal('hide');
         };
@@ -111,6 +111,10 @@ var app = (function (app) {
             // fileLoadManager dictionary key
             key = lut[index];
 
+            if (0 === index) {
+                self.googleDriveController.loader.fileLoadManager.googlePickerFilename = obj.name;
+            }
+
             self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
 
             self.googleDriveController.$modal.modal('show');
@@ -124,6 +128,31 @@ var app = (function (app) {
 
         path = 'https://s3.amazonaws.com/igv.org.genomes/genomes.json';
         return this.getGenomes(path);
+    };
+
+    app.GenomeLoadController.prototype.getGenomeObject = function (fileLoadManager) {
+
+        let self = this,
+            obj;
+
+        if ('json' === igv.getExtension({ url: fileLoadManager.dictionary.data })) {
+
+            return self.getGenomes(fileLoadManager.dictionary.data);
+        } else if ( igv.Google.isGoogleURL(fileLoadManager.dictionary.data) && fileLoadManager.googlePickerFilename && ('json' === igv.getExtension({ url: fileLoadManager.googlePickerFilename })) ) {
+
+            return self.getGenomes(fileLoadManager.dictionary.data);
+        } else {
+
+            obj = {};
+            obj[ 'noname' ] =
+                {
+                    fastaURL: fileLoadManager.dictionary.data,
+                    indexURL: fileLoadManager.dictionary.index
+                };
+
+            return Promise.resolve(obj);
+        }
+
     };
 
     app.GenomeLoadController.prototype.getGenomes = function (url) {
@@ -164,34 +193,43 @@ var app = (function (app) {
     };
 
     function okHandler (fileLoadManager) {
-        let config,
-            genome;
+        let self = this,
+            config;
 
-        if (undefined === fileLoadManager.dictionary) {
-            config = undefined;
-        } else if (undefined === fileLoadManager.dictionary.data) {
-            config = undefined;
+        if (isValidFileLoadManagerDictionary(fileLoadManager)) {
+
+            app.genomeLoadController.getGenomeObject(fileLoadManager)
+                .then(function (obj) {
+                    let genome;
+                    genome = Object.values(obj).pop();
+                    app.utils.loadGenome(genome);
+                });
+
         } else {
-            config = getGenomeObject(fileLoadManager);
-            genome = Object.values(config).pop();
-            app.utils.loadGenome(genome);
+            config = undefined;
         }
 
         return config;
 
     }
 
-    function getGenomeObject (fileLoadManager) {
-        let obj;
+    function isValidFileLoadManagerDictionary(fileLoadManager) {
 
-        obj = {};
-        obj[ 'noname' ] =
-            {
-                fastaURL: fileLoadManager.dictionary.data,
-                indexURL: (fileLoadManager.dictionary.index || undefined)
-            };
+        let success = true;
 
-        return obj;
+        if (undefined === fileLoadManager.dictionary) {
+
+            success = false;
+        } else if (undefined === fileLoadManager.dictionary.data) {
+
+            success = false;
+        } else if (undefined === fileLoadManager.dictionary.data && undefined === fileLoadManager.dictionary.index) {
+
+            success = false;
+        }
+
+        return success;
+
     }
 
     app.genomeDropdownLayout = function (browser, config) {

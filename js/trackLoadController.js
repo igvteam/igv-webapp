@@ -157,11 +157,12 @@ var app = (function (app) {
 
         columnFormat =
             [
-                {    'Assembly': '10%' },
                 {   'Cell Type': '10%' },
                 {      'Target': '10%' },
-                {  'Assay Type': '20%' },
+                {  'Assay Type': '10%' },
                 { 'Output Type': '20%' },
+                {     'Bio Rep': '5%' },
+                {    'Tech Rep': '5%'  },
                 {         'Lab': '20%' }
 
             ];

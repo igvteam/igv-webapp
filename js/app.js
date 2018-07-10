@@ -29,23 +29,9 @@ var app = (function (app) {
             genomeLoadConfig,
             shareConfig;
 
-        $('.igv-app-footer').find('a img').hover(function () {
-                $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
-            },
-            function () {
-                $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
-            });
+        appFooterImageHoverBehavior($('.igv-app-footer').find('a img'));
 
-        $('#igv-app-bookmark-button').on('click', function (e) {
-            let blurb,
-                str;
-
-            window.history.pushState({}, "IGV", app.sessionURL());
-
-            str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
-            blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
-            alert(blurb);
-        });
+        createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
 
         // Track load controller configuration
         trackLoadConfig =
@@ -130,6 +116,32 @@ var app = (function (app) {
         browser.updateViews();
 
     };
+
+    function appFooterImageHoverBehavior ($img) {
+
+        $img.hover(function () {
+                $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
+            },
+            function () {
+                $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
+            });
+
+    }
+
+    function createAppBookmarkHandler (app, $bookmark_button) {
+
+        $bookmark_button.on('click', function (e) {
+            let blurb,
+                str;
+
+            window.history.pushState({}, "IGV", app.sessionURL());
+
+            str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+            blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
+            alert(blurb);
+        });
+
+    }
 
     return app;
 

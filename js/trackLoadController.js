@@ -102,48 +102,12 @@ var app = (function (app) {
 
         }, googlDriveTrackOKHandler);
 
-
+        // Annotations
+        this.configureAnnotationsSelectList('http://igv.org/web/test/testTracks.json');
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);
     };
-
-    function googlDriveTrackOKHandler(fileLoadManager) {
-
-        let obj;
-
-        obj = configurator(fileLoadManager);
-
-        if (obj) {
-            igv.browser.loadTrackList( [ obj ] );
-        }
-
-        function configurator(fileLoadManager) {
-            let config;
-
-            if (undefined === fileLoadManager.name) {
-                config = undefined;
-            } else if (undefined === fileLoadManager.dictionary) {
-                config = undefined;
-            } else {
-
-                config =
-                    {
-                        name: fileLoadManager.name,
-                        filename:fileLoadManager.name,
-
-                        format: igv.inferFileFormat(fileLoadManager.name),
-
-                        url: fileLoadManager.dictionary.data,
-                        indexURL: fileLoadManager.dictionary.index
-                    };
-
-            }
-
-            return config;
-        }
-
-    }
 
     app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
 
@@ -198,6 +162,70 @@ var app = (function (app) {
         this.encodeTable.loadData(genomeID);
 
     };
+
+    app.TrackLoadController.prototype.configureAnnotationsSelectList = function(tracks_json_file) {
+
+        let self = this;
+
+        // discard current annotations
+        this.config.$annotationsSelect.empty();
+
+        igv.xhr
+            .loadJson(/*"testTracks.json"*/tracks_json_file)
+            .then(function (tracks) {
+
+                tracks.forEach(function (track) {
+                    let $option;
+
+                    $option = $('<option>', { text: track.name });
+                    $option.on('click', function (e) {
+                        igv.browser.loadTrack( JSON.stringify(track) );
+                    });
+
+                    self.config.$annotationsSelect.append($option);
+
+                });
+
+            });
+
+    };
+
+    function googlDriveTrackOKHandler(fileLoadManager) {
+
+        let obj;
+
+        obj = configurator(fileLoadManager);
+
+        if (obj) {
+            igv.browser.loadTrackList( [ obj ] );
+        }
+
+        function configurator(fileLoadManager) {
+            let config;
+
+            if (undefined === fileLoadManager.name) {
+                config = undefined;
+            } else if (undefined === fileLoadManager.dictionary) {
+                config = undefined;
+            } else {
+
+                config =
+                    {
+                        name: fileLoadManager.name,
+                        filename:fileLoadManager.name,
+
+                        format: igv.inferFileFormat(fileLoadManager.name),
+
+                        url: fileLoadManager.dictionary.data,
+                        indexURL: fileLoadManager.dictionary.index
+                    };
+
+            }
+
+            return config;
+        }
+
+    }
 
     return app;
 

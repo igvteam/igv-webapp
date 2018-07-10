@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Gencode v28 Basic",
+    "type": "annotation",
+    "format": "gtf",
+    "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
+    "visibilityWindow": 10000
+  }
+]

@@ -107,6 +107,7 @@ var app = (function (app) {
 
                         if (genome.id && igv.ModalTable.getAssembly(genome.id)) {
                             app.trackLoadController.createEncodeTable(genome.id);
+                            app.trackLoadController.updateAnnotationsSelectList(genome.id);
                         } else {
                             app.trackLoadController.encodeTable.hidePresentationButton();
                         }

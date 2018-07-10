@@ -103,7 +103,8 @@ var app = (function (app) {
         }, googlDriveTrackOKHandler);
 
         // Annotations
-        this.configureAnnotationsSelectList('http://igv.org/web/test/testTracks.json');
+        configureAnnotationsSelectList(config.$annotationsModal);
+        this.updateAnnotationsSelectList(browser.genome.id);
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);
@@ -163,31 +164,63 @@ var app = (function (app) {
 
     };
 
-    app.TrackLoadController.prototype.configureAnnotationsSelectList = function(tracks_json_file) {
+    function configureAnnotationsSelectList($modal) {
 
-        let self = this;
+        let $select,
+            path_template,
+            joint,
+            path;
 
-        // discard current annotations
-        this.config.$annotationsSelect.empty();
+        $select = $modal.find('select');
+
+        $select.on('change', function (e) {
+            let $option,
+                json;
+
+            $option = $(this).find('option:selected');
+            json = $option.data('track');
+            $option.removeAttr("selected");
+
+            igv.browser.loadTrack( json );
+
+            $modal.modal('hide');
+
+        });
+
+    }
+
+    app.TrackLoadController.prototype.updateAnnotationsSelectList = function (genome_id) {
+
+        let $select,
+            path_template,
+            joint,
+            path;
+
+        $select = this.config.$annotationsModal.find('select');
+
+        path_template = 'resources/tracks.json';
+        joint = '/' + genome_id + '_';
+        path = path_template.split('/').join(joint);
 
         igv.xhr
-            .loadJson(/*"testTracks.json"*/tracks_json_file)
+            .loadJson(path)
             .then(function (tracks) {
+                let $option;
+
+                // discard current annotations
+                $select.empty();
+
+                $option = $('<option>', { value:'-', text:'-' });
+                $select.append($option);
 
                 tracks.forEach(function (track) {
-                    let $option;
-
-                    $option = $('<option>', { text: track.name });
-                    $option.on('click', function (e) {
-                        igv.browser.loadTrack( JSON.stringify(track) );
-                    });
-
-                    self.config.$annotationsSelect.append($option);
-
+                    $option = $('<option>', { value:track.name, text:track.name });
+                    $option.data('track', track);
+                    $select.append($option);
                 });
 
             });
-
+        
     };
 
     function googlDriveTrackOKHandler(fileLoadManager) {

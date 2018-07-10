@@ -36,7 +36,7 @@ var app = (function (app) {
         // Track load controller configuration
         trackLoadConfig =
             {
-                $annotationsSelect: $('#igv-app-annotation-selector'),
+                $annotationsModal: $('#igv-app-track-from-annotations-modal'),
                 $fileModal: $('#igv-app-track-from-local-file-modal'),
                 $urlModal: $('#igv-app-track-from-url-modal'),
                 $dropboxModal: $('#igv-app-track-dropbox-modal'),

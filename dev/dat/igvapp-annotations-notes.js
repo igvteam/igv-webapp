@@ -26,6 +26,25 @@ genomeChangeListener =
     }
 };
 
+$('#annotation-selector').on('change', function (e) {
+    var path,
+        name;
+
+    if (undefined === hic.Browser.getCurrentBrowser()) {
+        igv.presentAlert('ERROR: you must select a map panel.');
+    } else {
+
+        path = $(this).val();
+        name = $(this).find('option:selected').text();
+
+        hic.Browser.getCurrentBrowser().loadTracks([{url: path, name: name}]);
+    }
+
+    $('#hic-annotation-select-modal').modal('hide');
+    $(this).find('option').removeAttr("selected");
+
+});
+
 
 function loadAnnotationSelector($container, url, type) {
 

@@ -95,27 +95,6 @@ var app = (function (app) {
 
     };
 
-    app.FileLoadWidget.prototype.okHandler = function () {
-
-        var obj;
-        obj = this.fileLoadManager.trackLoadConfiguration();
-        if (obj) {
-            // this.dismiss();
-            extractName(obj)
-                .then(function (name) {
-                    obj.filename = obj.name = name;
-                    igv.browser.loadTrackList( [ obj ] );
-                })
-                .catch(function (error) {
-                    // Ignore errors extracting the name
-                    console.error(error);
-                    igv.browser.loadTrackList( [ obj ] );
-                })
-        }
-
-        return obj;
-    };
-
     app.FileLoadWidget.prototype.presentErrorMessage = function(message) {
         this.$error_message.find('.igv-flw-error-message').text(message);
         this.$error_message.show();
@@ -199,7 +178,10 @@ var app = (function (app) {
         });
 
         $input.on('change', function (e) {
-            self.fileLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = $(this).val();
+
+            self.dismissErrorMessage();
+
+            self.fileLoadManager.inputHandler($(this).val(), isIndexFile);
         });
 
         $data_drop_target = $("<div>", { class:"igv-flw-drag-drop-target" });
@@ -223,8 +205,8 @@ var app = (function (app) {
                 $(this).removeClass('igv-flw-input-row-hover-state');
             })
             .on('drop', function (e) {
-                if (false === self.fileLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
+                if (false === self.fileLoadManager.didDragDrop(e.originalEvent.dataTransfer)) {
+                    self.fileLoadManager.dragDropHandler(e.originalEvent.dataTransfer, isIndexFile);
                     $input.val(isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName());
                 }
             });
@@ -280,7 +262,8 @@ var app = (function (app) {
 
             self.dismissErrorMessage();
 
-            self.fileLoadManager.dictionary[ true === isIndexFile ? 'index' : 'data' ] = e.target.files[ 0 ];
+            self.fileLoadManager.inputHandler(e.target.files[ 0 ], isIndexFile);
+
             $file_name.text(e.target.files[ 0 ].name);
             $file_name.attr('title', e.target.files[ 0 ].name);
             $file_name.show();
@@ -300,8 +283,8 @@ var app = (function (app) {
             })
             .on('drop', function (e) {
                 var str;
-                if (true === self.fileLoadManager.didDragFile(e.originalEvent.dataTransfer)) {
-                    self.fileLoadManager.ingestDataTransfer(e.originalEvent.dataTransfer, isIndexFile);
+                if (true === self.fileLoadManager.didDragDrop(e.originalEvent.dataTransfer)) {
+                    self.fileLoadManager.dragDropHandler(e.originalEvent.dataTransfer, isIndexFile);
                     str = isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName();
                     $file_name.text(str);
                     $file_name.attr('title', str);
@@ -310,76 +293,6 @@ var app = (function (app) {
                 }
             });
 
-    }
-
-    /**
-     * Return a promise to extract the name of the dataset.  The promise is neccessacary because
-     * google drive urls require a call to the API
-     *
-     * @returns Promise for the name
-     */
-    function extractName(config) {
-
-        var tmp, id, endPoint;
-
-        if (config.name === undefined && igv.isString(config.url) && config.url.includes("drive.google.com")) {
-            tmp = extractQuery(config.url);
-            id = tmp["id"];
-            
-            return igv.Google.getDriveFileInfo(config.url)
-                .then(function (json) {
-                    return json.originalFilename || json.name;
-                })
-        } else {
-            if (config.name === undefined) {
-                return Promise.resolve(extractFilename(config.url));
-            } else {
-                return Promise.resolve(config.name);
-            }
-        }
-    }
-
-    function extractFilename (urlOrFile) {
-        var idx,
-            str;
-
-        if (igv.isFilePath(urlOrFile)) {
-            return urlOrFile.name;
-        }
-        else {
-
-            str = urlOrFile.split('?').shift();
-            idx = urlOrFile.lastIndexOf("/");
-
-            return idx > 0 ? str.substring(idx + 1) : str;
-        }
-    }
-
-    function extractQuery (uri) {
-        var i1, i2, i, j, s, query, tokens;
-
-        query = {};
-        i1 = uri.indexOf("?");
-        i2 = uri.lastIndexOf("#");
-
-        if (i1 >= 0) {
-            if (i2 < 0) i2 = uri.length;
-
-            for (i = i1 + 1; i < i2;) {
-
-                j = uri.indexOf("&", i);
-                if (j < 0) j = i2;
-
-                s = uri.substring(i, j);
-                tokens = s.split("=", 2);
-                if (tokens.length === 2) {
-                    query[tokens[0]] = tokens[1];
-                }
-
-                i = j + 1;
-            }
-        }
-        return query;
     }
 
     return app;

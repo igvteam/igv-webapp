@@ -66,7 +66,7 @@ var app = (function (app) {
 
         okHandler = function (loader, $modal) {
 
-            if (loader.okHandler()) {
+            if (loader.fileLoadManager.okHandler()) {
                 loader.dismiss();
                 $modal.modal('hide');
             }

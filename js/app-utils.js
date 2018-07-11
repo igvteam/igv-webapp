@@ -88,7 +88,7 @@ var app = (function (app) {
                     doOk = okHandler;
                 } else {
                     doOk = function () {
-                        if (loader.okHandler()) {
+                        if (loader.fileLoadManager.okHandler()) {
                             loader.dismiss();
                             $modal.modal('hide');
                         }

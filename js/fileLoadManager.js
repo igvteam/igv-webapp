@@ -47,7 +47,32 @@ var app = (function (app) {
 
     };
 
-    app.FileLoadManager.prototype.didDragFile = function (dataTransfer) {
+    app.FileLoadManager.prototype.okHandler = function () {
+
+        var obj;
+        obj = this.trackLoadConfiguration();
+        if (obj) {
+
+            extractName(obj)
+                .then(function (name) {
+                    obj.filename = obj.name = name;
+                    igv.browser.loadTrackList( [ obj ] );
+                })
+                .catch(function (error) {
+                    // Ignore errors extracting the name
+                    console.error(error);
+                    igv.browser.loadTrackList( [ obj ] );
+                })
+        }
+
+        return obj;
+    };
+
+    app.FileLoadManager.prototype.inputHandler = function (path, isIndexFile) {
+        ingestPath.call(this, path, isIndexFile);
+    };
+
+    app.FileLoadManager.prototype.didDragDrop = function (dataTransfer) {
         var files;
 
         files = dataTransfer.files;
@@ -55,20 +80,39 @@ var app = (function (app) {
         return (files && files.length > 0);
     };
 
-    app.FileLoadManager.prototype.ingestDataTransfer = function (dataTransfer, isIndexFile) {
+    app.FileLoadManager.prototype.dragDropHandler = function (dataTransfer, isIndexFile) {
         var url,
-            files;
+            files,
+            isValid;
 
         url = dataTransfer.getData('text/uri-list');
         files = dataTransfer.files;
 
         if (files && files.length > 0) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = files[ 0 ];
+            ingestPath.call(this, files[ 0 ], isIndexFile);
         } else if (url && '' !== url) {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = url;
+            ingestPath.call(this, url, isIndexFile);
         }
 
     };
+
+    function ingestPath (path, isIndexFile) {
+        let self = this,
+            extension;
+
+        extension = igv.getExtension({ url: path });
+
+        if ('json' === extension) {
+            app.trackLoadController
+                .getJSON(path)
+                .then(function (json) {
+                    self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
+                });
+        } else {
+            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;
+        }
+
+    }
 
     app.FileLoadManager.prototype.indexName = function () {
         return itemName(this.dictionary.index);
@@ -90,64 +134,69 @@ var app = (function (app) {
             _isIndexable,
             indexFileStatus;
 
-
         if (undefined === this.dictionary.data) {
             this.fileLoadWidget.presentErrorMessage('Error: No data file');
             return undefined;
         } else {
 
-            _isIndexFile = isAnIndexFile.call(this, this.dictionary.data);
-            if (true === _isIndexFile) {
-                this.fileLoadWidget.presentErrorMessage('Error: index file submitted as data file.');
-                return undefined;
-            } else {
+            if (true === isJSON(this.dictionary.data)) {
+                return this.dictionary.data;
+            }
 
-                if (this.dictionary.index) {
-                    _isIndexFile = isAnIndexFile.call(this, this.dictionary.index);
-                    if (false === _isIndexFile) {
-                        this.fileLoadWidget.presentErrorMessage('Error: index file is not valid.');
-                        return undefined;
-                    }
+            if (this.dictionary.index) {
+                _isIndexFile = isAnIndexFile.call(this, this.dictionary.index);
+                if (false === _isIndexFile) {
+                    this.fileLoadWidget.presentErrorMessage('Error: index file is not valid.');
+                    return undefined;
                 }
+            }
 
-                _isIndexable = isIndexable.call(this, this.dictionary.data);
+            _isIndexable = isIndexable.call(this, this.dictionary.data);
 
-                extension = igv.getExtension({ url: this.dictionary.data });
+            extension = igv.getExtension({ url: this.dictionary.data });
 
-                key = (this.keyToIndexExtension[ extension ]) ? extension : 'any';
+            key = (this.keyToIndexExtension[ extension ]) ? extension : 'any';
 
-                indexFileStatus = this.keyToIndexExtension[ key ];
+            indexFileStatus = this.keyToIndexExtension[ key ];
 
-                if (true === _isIndexable && false === indexFileStatus.optional) {
+            if (true === _isIndexable && false === indexFileStatus.optional) {
 
-                    if (undefined === this.dictionary.index) {
-                        this.fileLoadWidget.presentErrorMessage('Error: index file must be provided.');
-                        return undefined;
-
-                    } else {
-                        return { url: this.dictionary.data, indexURL: this.dictionary.index }
-                    }
+                if (undefined === this.dictionary.index) {
+                    this.fileLoadWidget.presentErrorMessage('Error: index file must be provided.');
+                    return undefined;
 
                 } else {
-
-                    config =
-                        {
-                            url: this.dictionary.data,
-                            indexURL: this.dictionary.index || undefined
-                        };
-
-                    if (undefined === this.dictionary.index) {
-                        config.indexed = false;
-                    }
-
-                    return config;
+                    return { url: this.dictionary.data, indexURL: this.dictionary.index }
                 }
 
+            } else {
+
+                config =
+                    {
+                        url: this.dictionary.data,
+                        indexURL: this.dictionary.index || undefined
+                    };
+
+                if (undefined === this.dictionary.index) {
+                    config.indexed = false;
+                }
+
+                return config;
             }
 
         }
 
     };
+
+    function isJSON(thang) {
+
+        try {
+            jQuery.parseJSON(JSON.stringify(thang));
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
 
     function isAnIndexFile(fileOrURL) {
         var extension;
@@ -169,6 +218,77 @@ var app = (function (app) {
         } else {
             extension = igv.getExtension({ url: fileOrURL });
             return (extension !== 'wig' && extension !== 'seg');
+        }
+
+    }
+
+    function extractName(config) {
+
+        var tmp,
+            id;
+
+        if (config.name === undefined && igv.isString(config.url) && config.url.includes("drive.google.com")) {
+            tmp = extractQuery(config.url);
+            id = tmp["id"];
+
+            return igv.Google.getDriveFileInfo(config.url)
+                .then(function (json) {
+                    return json.originalFilename || json.name;
+                })
+        } else {
+            if (config.name === undefined) {
+                return Promise.resolve(extractFilename(config.url));
+            } else {
+                return Promise.resolve(config.name);
+            }
+        }
+
+        function extractFilename (urlOrFile) {
+            var idx,
+                str;
+
+            if (igv.isFilePath(urlOrFile)) {
+                return urlOrFile.name;
+            } else {
+
+                str = urlOrFile.split('?').shift();
+                idx = urlOrFile.lastIndexOf("/");
+
+                return idx > 0 ? str.substring(idx + 1) : str;
+            }
+        }
+
+        function extractQuery (uri) {
+            var i1,
+                i2,
+                i,
+                j,
+                s,
+                query,
+                tokens;
+
+            query = {};
+            i1 = uri.indexOf("?");
+            i2 = uri.lastIndexOf("#");
+
+            if (i1 >= 0) {
+                if (i2 < 0) i2 = uri.length;
+
+                for (i = i1 + 1; i < i2;) {
+
+                    j = uri.indexOf("&", i);
+                    if (j < 0) j = i2;
+
+                    s = uri.substring(i, j);
+                    tokens = s.split("=", 2);
+                    if (tokens.length === 2) {
+                        query[tokens[0]] = tokens[1];
+                    }
+
+                    i = j + 1;
+                }
+            }
+            return query;
         }
 
     }

@@ -48,7 +48,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
+        this.localFileLoader = app.utils.createFileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
 
         doOK = function () {
             okHandler.call(self, self.localFileLoader.fileLoadManager);
@@ -69,7 +69,7 @@ var app = (function (app) {
                 mode: 'url'
             };
 
-        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
+        this.urlLoader = app.utils.createFileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
 
         doOK = function () {
             okHandler.call(self, self.urlLoader.fileLoadManager);

@@ -46,7 +46,7 @@ var app = (function (app) {
                 $widgetParent: this.$modal.find('.modal-body')
             };
 
-        this.loader = browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+        this.loader = app.utils.createFileLoadWidget(loaderConfig, new app.FileLoadManager());
         this.loader.customizeLayout(function ($parent) {
 
             $parent.find('.igv-flw-input-container').each(function (ii) {

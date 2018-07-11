@@ -117,7 +117,12 @@ var app = (function (app) {
                         igv.presentAlert(error);
                     });
 
+            },
+
+            createFileLoadWidget: function (config, fileLoadManager) {
+                return new app.FileLoadWidget(config, fileLoadManager);
             }
+
         };
 
     return app;

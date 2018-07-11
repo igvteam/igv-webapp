@@ -42,7 +42,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.loader = this.browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+        this.loader = app.utils.createFileLoadWidget(loaderConfig, new app.FileLoadManager());
 
         this.loader.customizeLayout(function ($parent) {
 

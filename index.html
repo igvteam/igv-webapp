@@ -50,8 +50,8 @@
     <script src="https://apis.google.com/js/platform.js"></script>
 
     <!-- IGV JS -->
-    <!--<script src="http://localhost/igv-web/dist/igv.js"></script>-->
-    <script src="https://igv.org/web/test/dist/igv.js"></script>
+    <!--<script src="https://igv.org/web/test/dist/igv.js"></script>-->
+    <script src="js/igv.js"></script>
 
     <!-- Twitter -->
     <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -68,6 +68,8 @@
     <script src="js/shareController.js"></script>
     <script src="js/dropboxController.js"></script>
     <script src="js/googleDriveController.js"></script>
+    <script src="js/fileLoadManager.js"></script>
+    <script src="js/fileLoadWidget.js"></script>
     <script src="js/app-utils.js"></script>
     <script src="js/app.js"></script>
 </head>
@@ -754,8 +756,10 @@
                 }
             };
 
+        // Note: Run app WITH Google authentication. Debug Chrome Dev Tools ONLY
         gapi.load('client:auth2', gapiConfig);
 
+        // Note: Run app WITHOUT Google authentication. Debug in IntelliJ IDE or Chrome Dev Tools
         // igv
         //     .createBrowser($('#igv-app-container').get(0), igvConfig)
         //     .then(function (browser) {

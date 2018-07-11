@@ -29,6 +29,9 @@ var app = (function (app) {
             urlLoaderConfig,
             okHandler;
 
+        this.fileReader = new FileReader();
+        app.utils.promisifyFileReader(this.fileReader);
+
         this.browser = browser;
         this.config = config;
 
@@ -41,7 +44,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
+        this.localFileLoader = app.utils.createFileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
         app.utils.configureModal(this.localFileLoader, config.$fileModal);
 
         // URL
@@ -53,7 +56,7 @@ var app = (function (app) {
                 mode: 'url',
             };
 
-        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
+        this.urlLoader = app.utils.createFileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
         app.utils.configureModal(this.urlLoader, config.$urlModal);
 
 
@@ -259,6 +262,26 @@ var app = (function (app) {
         }
 
     }
+
+    app.TrackLoadController.prototype.getJSON = function (path) {
+
+        if (path instanceof File) {
+
+            return this.fileReader
+                .readAsTextAsync(path)
+                .then(function (result) {
+                    return JSON.parse(result);
+                });
+
+        } else {
+            return igv.xhr
+                .loadJson(path)
+                .then(function (result) {
+                    return result;
+                })
+        }
+
+    };
 
     return app;
 

@@ -42,8 +42,6 @@ var app = (function (app) {
         locaFileLoaderConfig =
             {
                 dataTitle: 'Genome',
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$fileModal.find('.modal-body'),
                 mode: 'localFile'
             };
@@ -63,8 +61,6 @@ var app = (function (app) {
         urlLoaderConfig =
             {
                 dataTitle: 'Genome',
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$urlModal.find('.modal-body'),
                 mode: 'url'
             };
@@ -94,28 +90,17 @@ var app = (function (app) {
 
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Genome');
-        this.googleDriveController.configure(function (obj, $filenameContainer, index) {
-            let lut,
-                key;
+        this.googleDriveController.configure(function (obj, $filenameContainer, isIndexFile) {
 
             // update file name label
             $filenameContainer.text(obj.name);
             $filenameContainer.show();
 
-            lut =
-                [
-                    'data',
-                    'index'
-                ];
-
-            // fileLoadManager dictionary key
-            key = lut[index];
-
-            if (0 === index) {
+            if (false === isIndexFile) {
                 self.googleDriveController.loader.fileLoadManager.googlePickerFilename = obj.name;
             }
 
-            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
+            self.googleDriveController.loader.fileLoadManager.inputHandler(obj.path, isIndexFile);
 
             self.googleDriveController.$modal.modal('show');
 
@@ -130,17 +115,17 @@ var app = (function (app) {
         return this.getGenomes(path);
     };
 
-    app.GenomeLoadController.prototype.getGenomeObject = function (fileLoadManager) {
+    app.GenomeLoadController.prototype.genomeConfiguration = function (fileLoadManager) {
 
         let self = this,
             obj;
 
-        if ('json' === igv.getExtension({ url: fileLoadManager.dictionary.data })) {
+        if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
+            obj = {};
+            obj[ 'noname' ] = fileLoadManager.dictionary.data;
 
-            return self.getGenomes(fileLoadManager.dictionary.data);
-        } else if ( igv.Google.isGoogleURL(fileLoadManager.dictionary.data) && fileLoadManager.googlePickerFilename && ('json' === igv.getExtension({ url: fileLoadManager.googlePickerFilename })) ) {
+            return Promise.resolve(obj);
 
-            return self.getGenomes(fileLoadManager.dictionary.data);
         } else {
 
             obj = {};
@@ -198,7 +183,7 @@ var app = (function (app) {
 
         if (isValidFileLoadManagerDictionary(fileLoadManager)) {
 
-            app.genomeLoadController.getGenomeObject(fileLoadManager)
+            app.genomeLoadController.genomeConfiguration(fileLoadManager)
                 .then(function (obj) {
                     let genome;
                     genome = Object.values(obj).pop();

@@ -24,6 +24,17 @@ var app = (function (app) {
 
     app.utils =
         {
+
+            isJSON: function (thang) {
+
+                try {
+                    jQuery.parseJSON(JSON.stringify(thang));
+                } catch (e) {
+                    return false;
+                }
+                return true;
+            },
+
             promisifyFileReader: function (filereader) {
 
                 function composeAsync (key) {

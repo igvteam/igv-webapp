@@ -36,8 +36,6 @@ var app = (function (app) {
         loaderConfig =
             {
                 dataTitle: this.dataTitle,
-                hidden: false,
-                embed: true,
                 $widgetParent: this.$modal.find('.modal-body'),
                 mode: 'localFile'
             };
@@ -49,17 +47,16 @@ var app = (function (app) {
             $parent.find('.igv-flw-file-chooser-container').hide();
 
             if (true === dataFileOnly) {
-                makeButton.call(self, $parent.find('.igv-flw-input-label').first(), 0);
+                makeButton.call(self, $parent.find('.igv-flw-input-label').first(), false);
                 $parent.find('.igv-flw-input-row').last().hide();
             } else {
                 $parent.find('.igv-flw-input-label').each(function (index) {
-                    makeButton.call(self, $(this), index);
+                    makeButton.call(self, $(this), (1 === index));
                 });
             }
 
-            function makeButton($e, index) {
+            function makeButton($e, isIndexFile) {
                 let $div,
-                    lut,
                     settings;
 
                 // insert Dropbox button container
@@ -67,13 +64,7 @@ var app = (function (app) {
                 $div.insertAfter( $e );
 
                 // create Dropbox button
-                lut =
-                    [
-                        'data',
-                        'index'
-                    ];
-
-                settings = dbButtonConfigurator.call(self, $e.parent().find('.igv-flw-local-file-name-container'), lut[ index ]);
+                settings = dbButtonConfigurator.call(self, $e.parent().find('.igv-flw-local-file-name-container'), isIndexFile);
                 $div.get(0).appendChild( Dropbox.createChooseButton(settings) )
             }
         });
@@ -86,7 +77,7 @@ var app = (function (app) {
 
     };
 
-    function dbButtonConfigurator($trackNameLabel, key) {
+    function dbButtonConfigurator($trackNameLabel, isIndexFile) {
         let self = this,
             obj;
         obj =
@@ -96,7 +87,7 @@ var app = (function (app) {
                 // Single file selection only
                 $trackNameLabel.text(dbFiles[ 0 ].name);
                 $trackNameLabel.show();
-                self.loader.fileLoadManager.dictionary[ key ] = dbFiles[ 0 ].link;
+                self.loader.fileLoadManager.inputHandler(dbFiles[ 0 ].link, isIndexFile);
             },
 
             cancel: function() { },

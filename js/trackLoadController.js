@@ -38,8 +38,6 @@ var app = (function (app) {
         // Local File
         locaFileLoaderConfig =
             {
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$fileModal.find('.modal-body'),
                 mode: 'localFile'
             };
@@ -50,8 +48,6 @@ var app = (function (app) {
         // URL
         urlLoaderConfig =
             {
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$urlModal.find('.modal-body'),
                 mode: 'url',
             };
@@ -78,28 +74,17 @@ var app = (function (app) {
 
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
-        this.googleDriveController.configure(function (obj, $filenameContainer, index) {
-            let lut,
-                key;
+        this.googleDriveController.configure(function (obj, $filenameContainer, isIndexFile) {
 
             // update file name label
             $filenameContainer.text(obj.name);
             $filenameContainer.show();
 
-            lut =
-                [
-                    'data',
-                    'index'
-                ];
-
-            // fileLoadManager dictionary key
-            key = lut[index];
-
-            if ('data' === key) {
-                self.googleDriveController.loader.fileLoadManager.name = obj.name;
+            if (false === isIndexFile) {
+                self.googleDriveController.loader.fileLoadManager.googlePickerFilename = obj.name;
             }
 
-            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
+            self.googleDriveController.loader.fileLoadManager.inputHandler(obj.path, isIndexFile);
 
             self.googleDriveController.$modal.modal('show');
 
@@ -241,18 +226,23 @@ var app = (function (app) {
         function configurator(fileLoadManager) {
             let config;
 
-            if (undefined === fileLoadManager.name) {
+            if (undefined === fileLoadManager.googlePickerFilename) {
+
                 config = undefined;
             } else if (undefined === fileLoadManager.dictionary) {
+
                 config = undefined;
+            } else if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
+
+                return fileLoadManager.dictionary.data;
             } else {
 
                 config =
                     {
-                        name: fileLoadManager.name,
-                        filename:fileLoadManager.name,
+                        name: fileLoadManager.googlePickerFilename,
+                        filename:fileLoadManager.googlePickerFilename,
 
-                        format: igv.inferFileFormat(fileLoadManager.name),
+                        format: igv.inferFileFormat(fileLoadManager.googlePickerFilename),
 
                         url: fileLoadManager.dictionary.data,
                         indexURL: fileLoadManager.dictionary.index

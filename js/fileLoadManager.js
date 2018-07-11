@@ -69,7 +69,7 @@ var app = (function (app) {
     };
 
     app.FileLoadManager.prototype.inputHandler = function (path, isIndexFile) {
-        ingestPath.call(this, path, isIndexFile);
+        this.ingestPath(path, isIndexFile);
     };
 
     app.FileLoadManager.prototype.didDragDrop = function (dataTransfer) {
@@ -89,30 +89,12 @@ var app = (function (app) {
         files = dataTransfer.files;
 
         if (files && files.length > 0) {
-            ingestPath.call(this, files[ 0 ], isIndexFile);
+            this.ingestPath(files[ 0 ], isIndexFile);
         } else if (url && '' !== url) {
-            ingestPath.call(this, url, isIndexFile);
+            this.ingestPath(url, isIndexFile);
         }
 
     };
-
-    function ingestPath (path, isIndexFile) {
-        let self = this,
-            extension;
-
-        extension = igv.getExtension({ url: path });
-
-        if ('json' === extension) {
-            app.trackLoadController
-                .getJSON(path)
-                .then(function (json) {
-                    self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
-                });
-        } else {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;
-        }
-
-    }
 
     app.FileLoadManager.prototype.indexName = function () {
         return itemName(this.dictionary.index);
@@ -139,7 +121,7 @@ var app = (function (app) {
             return undefined;
         } else {
 
-            if (true === isJSON(this.dictionary.data)) {
+            if (true === app.utils.isJSON(this.dictionary.data)) {
                 return this.dictionary.data;
             }
 
@@ -188,15 +170,23 @@ var app = (function (app) {
 
     };
 
-    function isJSON(thang) {
+    app.FileLoadManager.prototype.ingestPath = function (path, isIndexFile) {
+        let self = this,
+            extension;
 
-        try {
-            jQuery.parseJSON(JSON.stringify(thang));
-        } catch (e) {
-            return false;
+        extension = igv.getExtension({ url: path });
+
+        if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
+            app.trackLoadController
+                .getJSON(path)
+                .then(function (json) {
+                    self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
+                });
+        } else {
+            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;
         }
-        return true;
-    }
+
+    };
 
     function isAnIndexFile(fileOrURL) {
         var extension;

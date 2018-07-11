@@ -197,13 +197,15 @@ var app = (function (app) {
         let $select,
             path_template,
             joint,
+            a,
+            b,
             path;
 
         $select = this.config.$annotationsModal.find('select');
 
-        path_template = 'resources/tracks.json';
-        joint = '/' + genome_id + '_';
-        path = path_template.split('/').join(joint);
+        a = 'resources/tracks/';
+        b = genome_id + '_tracks.json';
+        path = a + b;
 
         igv.xhr
             .loadJson(path)

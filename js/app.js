@@ -29,27 +29,14 @@ var app = (function (app) {
             genomeLoadConfig,
             shareConfig;
 
-        $('.igv-app-footer').find('a img').hover(function () {
-                $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
-            },
-            function () {
-                $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
-            });
+        appFooterImageHoverBehavior($('.igv-app-footer').find('a img'));
 
-        $('#igv-app-bookmark-button').on('click', function (e) {
-            let blurb,
-                str;
-
-            window.history.pushState({}, "IGV", app.sessionURL());
-
-            str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
-            blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
-            alert(blurb);
-        });
+        createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
 
         // Track load controller configuration
         trackLoadConfig =
             {
+                $annotationsModal: $('#igv-app-track-from-annotations-modal'),
                 $fileModal: $('#igv-app-track-from-local-file-modal'),
                 $urlModal: $('#igv-app-track-from-url-modal'),
                 $dropboxModal: $('#igv-app-track-dropbox-modal'),
@@ -87,20 +74,16 @@ var app = (function (app) {
 
         app.genomeLoadController.getAppLaunchGenomes()
             .then(function (genomeDictionary) {
-                var config;
+                var genomeDropdownConfig;
 
-                config =
+                genomeDropdownConfig =
                     {
                         browser: browser,
-                        $urlModal: $('#igv-app-genome-from-url-modal'),
-                        $fileModal: $('#igv-app-genome-from-file-modal'),
-                        $dropboxModal: $('#igv-app-genome-dropbox-modal'),
-                        $googleDriveModal: $('#igv-app-genome-google-drive-modal'),
                         $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
                         genomeDictionary: genomeDictionary
                     };
 
-                app.genomeDropdownLayout(browser, config);
+                app.genomeDropdownLayout(genomeDropdownConfig);
             });
 
         // URL Shortener Configuration
@@ -130,6 +113,32 @@ var app = (function (app) {
         browser.updateViews();
 
     };
+
+    function appFooterImageHoverBehavior ($img) {
+
+        $img.hover(function () {
+                $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
+            },
+            function () {
+                $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
+            });
+
+    }
+
+    function createAppBookmarkHandler (app, $bookmark_button) {
+
+        $bookmark_button.on('click', function (e) {
+            let blurb,
+                str;
+
+            window.history.pushState({}, "IGV", app.sessionURL());
+
+            str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+            blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
+            alert(blurb);
+        });
+
+    }
 
     return app;
 

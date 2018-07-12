@@ -35,25 +35,21 @@ var app = (function (app) {
         // Local File
         locaFileLoaderConfig =
             {
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$fileModal.find('.modal-body'),
                 mode: 'localFile'
             };
 
-        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
+        this.localFileLoader = new app.FileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
         app.utils.configureModal(this.localFileLoader, config.$fileModal);
 
         // URL
         urlLoaderConfig =
             {
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$urlModal.find('.modal-body'),
                 mode: 'url',
             };
 
-        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
+        this.urlLoader = new app.FileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
         app.utils.configureModal(this.urlLoader, config.$urlModal);
 
 
@@ -63,7 +59,7 @@ var app = (function (app) {
 
         okHandler = function (loader, $modal) {
 
-            if (loader.okHandler()) {
+            if (loader.fileLoadManager.okHandler()) {
                 loader.dismiss();
                 $modal.modal('hide');
             }
@@ -75,75 +71,29 @@ var app = (function (app) {
 
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
-        this.googleDriveController.configure(function (obj, $filenameContainer, index) {
-            let lut,
-                key;
+        this.googleDriveController.configure(function (obj, $filenameContainer, isIndexFile) {
 
             // update file name label
             $filenameContainer.text(obj.name);
             $filenameContainer.show();
 
-            lut =
-                [
-                    'data',
-                    'index'
-                ];
-
-            // fileLoadManager dictionary key
-            key = lut[index];
-
-            if ('data' === key) {
-                self.googleDriveController.loader.fileLoadManager.name = obj.name;
+            if (false === isIndexFile) {
+                self.googleDriveController.loader.fileLoadManager.googlePickerFilename = obj.name;
             }
 
-            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
+            self.googleDriveController.loader.fileLoadManager.inputHandler(obj.path, isIndexFile);
 
             self.googleDriveController.$modal.modal('show');
 
-        }, googlDriveTrackOKHandler);
+        }, okHandlerGoogleDrive);
 
-
+        // Annotations
+        configureAnnotationsSelectList(config.$annotationsModal);
+        this.updateAnnotationsSelectList(browser.genome.id);
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);
     };
-
-    function googlDriveTrackOKHandler(fileLoadManager) {
-
-        let obj;
-
-        obj = configurator(fileLoadManager);
-
-        if (obj) {
-            igv.browser.loadTrackList( [ obj ] );
-        }
-
-        function configurator(fileLoadManager) {
-            let config;
-
-            if (undefined === fileLoadManager.name) {
-                config = undefined;
-            } else if (undefined === fileLoadManager.dictionary) {
-                config = undefined;
-            } else {
-
-                config =
-                    {
-                        name: fileLoadManager.name,
-                        filename:fileLoadManager.name,
-
-                        format: igv.inferFileFormat(fileLoadManager.name),
-
-                        url: fileLoadManager.dictionary.data,
-                        indexURL: fileLoadManager.dictionary.index
-                    };
-
-            }
-
-            return config;
-        }
-
-    }
 
     app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
 
@@ -198,6 +148,110 @@ var app = (function (app) {
         this.encodeTable.loadData(genomeID);
 
     };
+
+    app.TrackLoadController.prototype.updateAnnotationsSelectList = function (genome_id) {
+
+        let $select,
+            a,
+            b,
+            path;
+
+        $select = this.config.$annotationsModal.find('select');
+
+        a = 'resources/tracks/';
+        b = genome_id + '_tracks.json';
+        path = a + b;
+
+        igv.xhr
+            .loadJson(path)
+            .then(function (tracks) {
+                let $option;
+
+                // discard current annotations
+                $select.empty();
+
+                $option = $('<option>', { value:'-', text:'-' });
+                $select.append($option);
+
+                tracks.forEach(function (track) {
+                    $option = $('<option>', { value:track.name, text:track.name });
+                    $option.data('track', track);
+                    $select.append($option);
+                });
+
+            })
+            .catch(function (error) {
+                igv.presentAlert(error);
+            });
+        
+    };
+
+    function configureAnnotationsSelectList($modal) {
+
+        let $select;
+
+        $select = $modal.find('select');
+
+        $select.on('change', function (e) {
+            let $option,
+                json;
+
+            $option = $(this).find('option:selected');
+            json = $option.data('track');
+            $option.removeAttr("selected");
+
+            igv.browser.loadTrack( json );
+
+            $modal.modal('hide');
+
+        });
+
+    }
+
+    function okHandlerGoogleDrive(fileLoadWidget, $modal) {
+
+        let obj;
+
+        obj = trackConfigurationGoogleDrive(fileLoadWidget.fileLoadManager);
+
+        if (obj) {
+            igv.browser.loadTrackList( [ obj ] );
+        }
+
+        fileLoadWidget.dismiss();
+        $modal.modal('hide');
+
+    }
+
+    function trackConfigurationGoogleDrive(fileLoadManager) {
+        let config;
+
+        if (undefined === fileLoadManager.googlePickerFilename) {
+
+            config = undefined;
+        } else if (undefined === fileLoadManager.dictionary) {
+
+            config = undefined;
+        } else if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
+
+            return fileLoadManager.dictionary.data;
+        } else {
+
+            config =
+                {
+                    name: fileLoadManager.googlePickerFilename,
+                    filename:fileLoadManager.googlePickerFilename,
+
+                    format: igv.inferFileFormat(fileLoadManager.googlePickerFilename),
+
+                    url: fileLoadManager.dictionary.data,
+                    indexURL: fileLoadManager.dictionary.index
+                };
+
+        }
+
+        return config;
+    }
 
     return app;
 

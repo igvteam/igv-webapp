@@ -35,25 +35,18 @@ var app = (function (app) {
             locaFileLoaderConfig,
             doOK;
 
-        this.fileReader = new FileReader();
-        app.utils.promisifyFileReader(this.fileReader);
-
         // Local File
         locaFileLoaderConfig =
             {
                 dataTitle: 'Genome',
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$fileModal.find('.modal-body'),
                 mode: 'localFile'
             };
 
-        this.localFileLoader = browser.createFileLoadWidget(locaFileLoaderConfig, new igv.FileLoadManager());
+        this.localFileLoader = new app.FileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
 
         doOK = function () {
-            okHandler.call(self, self.localFileLoader.fileLoadManager);
-            self.localFileLoader.dismiss();
-            config.$fileModal.modal('hide');
+            okHandler(self, self.localFileLoader, config.$fileModal);
         };
 
         app.utils.configureModal(this.localFileLoader, config.$fileModal, doOK);
@@ -63,18 +56,14 @@ var app = (function (app) {
         urlLoaderConfig =
             {
                 dataTitle: 'Genome',
-                hidden: false,
-                embed: true,
                 $widgetParent: config.$urlModal.find('.modal-body'),
                 mode: 'url'
             };
 
-        this.urlLoader = browser.createFileLoadWidget(urlLoaderConfig, new igv.FileLoadManager());
+        this.urlLoader = new app.FileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
 
         doOK = function () {
-            okHandler.call(self, self.urlLoader.fileLoadManager);
-            self.urlLoader.dismiss();
-            config.$urlModal.modal('hide');
+            okHandler(self, self.urlLoader, config.$urlModal);
         };
 
         app.utils.configureModal(this.urlLoader, config.$urlModal, doOK);
@@ -84,9 +73,7 @@ var app = (function (app) {
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
 
         doOK = function (loader, $modal) {
-            okHandler.call(self, loader.fileLoadManager);
-            loader.dismiss();
-            $modal.modal('hide');
+            okHandler(self, loader, $modal);
         };
 
         this.dropboxController.configure(doOK);
@@ -94,32 +81,27 @@ var app = (function (app) {
 
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Genome');
-        this.googleDriveController.configure(function (obj, $filenameContainer, index) {
-            let lut,
-                key;
+
+
+        doOK = function (loader, $modal) {
+            okHandler(self, loader, $modal);
+        };
+
+        this.googleDriveController.configure(function (obj, $filenameContainer, isIndexFile) {
 
             // update file name label
             $filenameContainer.text(obj.name);
             $filenameContainer.show();
 
-            lut =
-                [
-                    'data',
-                    'index'
-                ];
-
-            // fileLoadManager dictionary key
-            key = lut[index];
-
-            if (0 === index) {
+            if (false === isIndexFile) {
                 self.googleDriveController.loader.fileLoadManager.googlePickerFilename = obj.name;
             }
 
-            self.googleDriveController.loader.fileLoadManager.dictionary[key] = obj.path;
+            self.googleDriveController.loader.fileLoadManager.inputHandler(obj.path, isIndexFile);
 
             self.googleDriveController.$modal.modal('show');
 
-        }, okHandler);
+        }, doOK);
 
     };
 
@@ -130,17 +112,17 @@ var app = (function (app) {
         return this.getGenomes(path);
     };
 
-    app.GenomeLoadController.prototype.getGenomeObject = function (fileLoadManager) {
+    app.GenomeLoadController.prototype.genomeConfiguration = function (fileLoadManager) {
 
         let self = this,
             obj;
 
-        if ('json' === igv.getExtension({ url: fileLoadManager.dictionary.data })) {
+        if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
+            obj = {};
+            obj[ 'noname' ] = fileLoadManager.dictionary.data;
 
-            return self.getGenomes(fileLoadManager.dictionary.data);
-        } else if ( igv.Google.isGoogleURL(fileLoadManager.dictionary.data) && fileLoadManager.googlePickerFilename && ('json' === igv.getExtension({ url: fileLoadManager.googlePickerFilename })) ) {
+            return Promise.resolve(obj);
 
-            return self.getGenomes(fileLoadManager.dictionary.data);
         } else {
 
             obj = {};
@@ -157,59 +139,41 @@ var app = (function (app) {
 
     app.GenomeLoadController.prototype.getGenomes = function (url) {
 
-        var dictionary;
+        return igv.xhr
+            .loadJson(url, {})
+            .then(function (result) {
+                let dictionary;
 
-        if (url instanceof File) {
+                dictionary = {};
+                if (true === Array.isArray(result)) {
+                    result.forEach(function (json) {
+                        dictionary[ json.id ] = json;
+                    });
+                } else {
+                    dictionary[ result.id ] = result;
+                }
 
-            return this.fileReader
-                .readAsTextAsync(url)
-                .then(function (result) {
-                    var json;
-
-                    json = JSON.parse(result);
-                    dictionary = {};
-                    dictionary[ json.id ] = json;
-                    return dictionary;
-                });
-
-        } else {
-            return igv.xhr
-                .loadJson(url, {})
-                .then(function (result) {
-
-                    dictionary = {};
-                    if (true === Array.isArray(result)) {
-                        result.forEach(function (json) {
-                            dictionary[ json.id ] = json;
-                        });
-                    } else {
-                        dictionary[ result.id ] = result;
-                    }
-
-                    return dictionary;
-                })
-        }
+                return dictionary;
+            });
 
     };
 
-    function okHandler (fileLoadManager) {
-        let self = this,
-            config;
+    function okHandler(genomeLoadController, fileLoadWidget, $modal) {
 
-        if (isValidFileLoadManagerDictionary(fileLoadManager)) {
+        if (isValidFileLoadManagerDictionary(fileLoadWidget.fileLoadManager)) {
 
-            app.genomeLoadController.getGenomeObject(fileLoadManager)
+            genomeLoadController
+                .genomeConfiguration(fileLoadWidget.fileLoadManager)
                 .then(function (obj) {
                     let genome;
                     genome = Object.values(obj).pop();
                     app.utils.loadGenome(genome);
                 });
 
-        } else {
-            config = undefined;
         }
 
-        return config;
+        fileLoadWidget.dismiss();
+        $modal.modal('hide');
 
     }
 
@@ -232,7 +196,7 @@ var app = (function (app) {
 
     }
 
-    app.genomeDropdownLayout = function (browser, config) {
+    app.genomeDropdownLayout = function (config) {
 
         var $divider,
             $button,
@@ -252,7 +216,7 @@ var app = (function (app) {
 
                 key = $(this).text();
 
-                if (key !== browser.genome.id) {
+                if (key !== config.browser.genome.id) {
                     app.utils.loadGenome(config.genomeDictionary[ key ]);
                 }
 
@@ -331,4 +295,5 @@ var app = (function (app) {
     };
 
     return app;
+
 })(app || {});

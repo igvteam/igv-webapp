@@ -24,50 +24,15 @@ var app = (function (app) {
 
     app.utils =
         {
-            promisifyFileReader: function (filereader) {
 
-                function composeAsync (key) {
-                    return function () {
-                        var args = arguments;
-
-                        return new Promise (function (resolve, reject) {
-                            //
-                            function resolveHandler () {
-                                cleanHandlers();
-                                resolve(filereader.result)
-                            }
-                            function rejectHandler () {
-                                cleanHandlers();
-                                reject(filereader.error)
-                            }
-                            function cleanHandlers () {
-                                filereader.removeEventListener('load', resolveHandler);
-                                filereader.removeEventListener('abort', rejectHandler);
-                                filereader.removeEventListener('error', rejectHandler);
-                            }
-
-                            // :: ehhhhh
-                            filereader.addEventListener('load', resolveHandler);
-                            filereader.addEventListener('abort', rejectHandler);
-                            filereader.addEventListener('error', rejectHandler);
-
-                            // :: go!
-                            filereader[key].apply(filereader, args);
-                        })
-                    }
-                }
-                for (var key in filereader) {
-                    if (!key.match(/^read/) || typeof filereader[key] !== 'function') {
-                        continue;
-                    }
-                    filereader[key + 'Async'] = composeAsync(key);
-                }
+            isJSON: function (thang) {
+                // Better JSON test. JSON.parse gives false positives.
+                return (true === (thang instanceof Object) && false === (thang instanceof File));
             },
 
             configureModal: function (loader, $modal, okHandler = undefined) {
                 let $dismiss,
-                    $ok,
-                    doOk;
+                    $ok;
 
                 // upper dismiss - x - button
                 $dismiss = $modal.find('.modal-header button:nth-child(1)');
@@ -84,18 +49,20 @@ var app = (function (app) {
                 // ok - button
                 $ok = $modal.find('.modal-footer button:nth-child(2)');
 
-                if (okHandler) {
-                    doOk = okHandler;
-                } else {
-                    doOk = function () {
-                        if (loader.okHandler()) {
+                $ok.on('click', function () {
+
+                    if (okHandler) {
+
+                        okHandler();
+                    } else {
+
+                        if (loader.fileLoadManager.okHandler()) {
                             loader.dismiss();
                             $modal.modal('hide');
                         }
-                    };
-                }
+                    }
 
-                $ok.on('click', doOk);
+                });
 
             },
 
@@ -107,6 +74,7 @@ var app = (function (app) {
 
                         if (genome.id && igv.ModalTable.getAssembly(genome.id)) {
                             app.trackLoadController.createEncodeTable(genome.id);
+                            app.trackLoadController.updateAnnotationsSelectList(genome.id);
                         } else {
                             app.trackLoadController.encodeTable.hidePresentationButton();
                         }

@@ -40,13 +40,11 @@ var app = (function (app) {
         loaderConfig =
             {
                 dataTitle: this.dataTitle,
-                hidden: false,
-                embed: true,
                 $widgetParent: this.$modal.find('.modal-body'),
                 mode: 'localFile'
             };
 
-        this.loader = this.browser.createFileLoadWidget(loaderConfig, new igv.FileLoadManager());
+        this.loader = new app.FileLoadWidget(loaderConfig, new app.FileLoadManager());
 
         this.loader.customizeLayout(function ($parent) {
             let $file_chooser_container;
@@ -67,7 +65,7 @@ var app = (function (app) {
 
                 $(this).on('click', function (e) {
                     self.$modal.modal('hide');
-                    app.Google.createPicker($filenameContainer, index, filePickerHandler);
+                    app.Google.createPicker($filenameContainer, (1 === index), filePickerHandler);
                 });
             });
 
@@ -90,9 +88,7 @@ var app = (function (app) {
         // ok - button
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            okHandler(self.loader.fileLoadManager);
-            self.loader.dismiss();
-            self.$modal.modal('hide');
+            okHandler(self.loader, self.$modal);
         });
 
     };
@@ -205,7 +201,7 @@ var app = (function (app) {
 
             },
 
-            createPicker: function ($filenameContainer, index, controllerFilePickerHandler) {
+            createPicker: function ($filenameContainer, isIndexFile, controllerFilePickerHandler) {
 
                 app.Google.getAccessToken()
                     .then(function (accessToken) {
@@ -240,7 +236,7 @@ var app = (function (app) {
 
                                         obj = app.Google.pickerCallback(data);
 
-                                        controllerFilePickerHandler(obj, $filenameContainer, index);
+                                        controllerFilePickerHandler(obj, $filenameContainer, isIndexFile);
 
                                     }
                                 })

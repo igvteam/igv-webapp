@@ -27,12 +27,9 @@ var app = (function (app) {
 
             isJSON: function (thang) {
 
-                try {
-                    jQuery.parseJSON(JSON.stringify(thang));
-                } catch (e) {
-                    return false;
-                }
-                return true;
+                // Pragmatic test for JSON. Using JSON.parse gives false positives.
+                return (true === (thang instanceof Object) && false === (thang instanceof File));
+
             },
 
             promisifyFileReader: function (filereader) {
@@ -95,18 +92,20 @@ var app = (function (app) {
                 // ok - button
                 $ok = $modal.find('.modal-footer button:nth-child(2)');
 
-                if (okHandler) {
-                    doOk = okHandler;
-                } else {
-                    doOk = function () {
+                $ok.on('click', function () {
+
+                    if (okHandler) {
+
+                        okHandler();
+                    } else {
+
                         if (loader.fileLoadManager.okHandler()) {
                             loader.dismiss();
                             $modal.modal('hide');
                         }
-                    };
-                }
+                    }
 
-                $ok.on('click', doOk);
+                });
 
             },
 

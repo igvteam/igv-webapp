@@ -88,9 +88,7 @@ var app = (function (app) {
         // ok - button
         $ok = this.$modal.find('.modal-footer button:nth-child(2)');
         $ok.on('click', function () {
-            okHandler(self.loader.fileLoadManager);
-            self.loader.dismiss();
-            self.$modal.modal('hide');
+            okHandler(self.loader, self.$modal);
         });
 
     };

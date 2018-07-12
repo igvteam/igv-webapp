@@ -49,9 +49,7 @@ var app = (function (app) {
         this.localFileLoader = app.utils.createFileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
 
         doOK = function () {
-            okHandler.call(self, self.localFileLoader.fileLoadManager);
-            self.localFileLoader.dismiss();
-            config.$fileModal.modal('hide');
+            okHandler(self, self.localFileLoader.fileLoadManager, self.localFileLoader, config.$fileModal);
         };
 
         app.utils.configureModal(this.localFileLoader, config.$fileModal, doOK);
@@ -68,9 +66,7 @@ var app = (function (app) {
         this.urlLoader = app.utils.createFileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
 
         doOK = function () {
-            okHandler.call(self, self.urlLoader.fileLoadManager);
-            self.urlLoader.dismiss();
-            config.$urlModal.modal('hide');
+            okHandler(self, self.urlLoader.fileLoadManager, self.urlLoader, config.$urlModal);
         };
 
         app.utils.configureModal(this.urlLoader, config.$urlModal, doOK);
@@ -80,9 +76,7 @@ var app = (function (app) {
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
 
         doOK = function (loader, $modal) {
-            okHandler.call(self, loader.fileLoadManager);
-            loader.dismiss();
-            $modal.modal('hide');
+            okHandler(self, loader.fileLoadManager, loader, $modal);
         };
 
         this.dropboxController.configure(doOK);
@@ -90,6 +84,12 @@ var app = (function (app) {
 
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Genome');
+
+
+        doOK = function (loader, $modal) {
+            okHandler(self, loader.fileLoadManager, loader, $modal);
+        };
+
         this.googleDriveController.configure(function (obj, $filenameContainer, isIndexFile) {
 
             // update file name label
@@ -104,7 +104,7 @@ var app = (function (app) {
 
             self.googleDriveController.$modal.modal('show');
 
-        }, okHandler);
+        }, doOK);
 
     };
 
@@ -177,24 +177,22 @@ var app = (function (app) {
 
     };
 
-    function okHandler (fileLoadManager) {
-        let self = this,
-            config;
+    function okHandler(genomeLoadController, fileLoadManager, fileLoadWidget, $modal) {
 
-        if (isValidFileLoadManagerDictionary(fileLoadManager)) {
+        if (isValidFileLoadManagerDictionary(fileLoadWidget.fileLoadManager)) {
 
-            app.genomeLoadController.genomeConfiguration(fileLoadManager)
+            genomeLoadController
+                .genomeConfiguration(fileLoadWidget.fileLoadManager)
                 .then(function (obj) {
                     let genome;
                     genome = Object.values(obj).pop();
                     app.utils.loadGenome(genome);
                 });
 
-        } else {
-            config = undefined;
         }
 
-        return config;
+        fileLoadWidget.dismiss();
+        $modal.modal('hide');
 
     }
 
@@ -316,4 +314,5 @@ var app = (function (app) {
     };
 
     return app;
+
 })(app || {});

@@ -121,6 +121,7 @@ var app = (function (app) {
             return undefined;
         } else {
 
+
             if (true === app.utils.isJSON(this.dictionary.data)) {
                 return this.dictionary.data;
             }
@@ -177,11 +178,17 @@ var app = (function (app) {
         extension = igv.getExtension({ url: path });
 
         if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
-            app.trackLoadController
-                .getJSON(path)
+
+            igv.xhr
+                .loadJson(path)
                 .then(function (json) {
                     self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
+
+                })
+                .catch(function (e) {
+                    console.log('ERROR. FileLoadManager.ingestPath - Invalid JSON');
                 });
+
         } else {
             this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;
         }

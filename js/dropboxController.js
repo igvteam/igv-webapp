@@ -40,7 +40,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.loader = app.utils.createFileLoadWidget(loaderConfig, new app.FileLoadManager());
+        this.loader = new app.FileLoadWidget(loaderConfig, new app.FileLoadManager());
 
         this.loader.customizeLayout(function ($parent) {
 

@@ -1,17 +1,7 @@
-.igv-file-load-widget-container-igvjs-position {
-  position: absolute;
-  top: 64px;
-  left: 0;
-  border-color: #7F7F7F;
-  width: 720px;
-  z-index: 2048; }
-
-.igv-file-load-widget-container-embed-position {
+.igv-file-load-widget-container {
   position: relative;
   border-color: transparent;
-  width: 720px; }
-
-.igv-file-load-widget-container {
+  width: 100%;
   padding-bottom: 20px;
   color: #7F7F7F;
   font-family: "Open Sans", sans-serif;

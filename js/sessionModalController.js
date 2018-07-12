@@ -41,12 +41,10 @@ var app = (function (app) {
 
         loaderConfig =
             {
-                hidden: false,
-                embed: true,
                 $widgetParent: this.$modal.find('.modal-body')
             };
 
-        this.loader = app.utils.createFileLoadWidget(loaderConfig, new app.FileLoadManager());
+        this.loader = new app.FileLoadWidget(loaderConfig, new app.FileLoadManager());
         this.loader.customizeLayout(function ($parent) {
 
             $parent.find('.igv-flw-input-container').each(function (ii) {

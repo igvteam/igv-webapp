@@ -50,7 +50,7 @@ var app = (function (app) {
         this.fileLoadManager.fileLoadWidget = this;
 
         // file load widget
-        this.$container = $('<div>', { class: 'igv-file-load-widget-container igv-file-load-widget-container-embed-position' });
+        this.$container = $('<div>', { class: 'igv-file-load-widget-container' });
         this.$parent.append(this.$container);
 
         hasLocalFileContainer = config.mode ? 'localFile' === config.mode : true;

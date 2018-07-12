@@ -26,56 +26,13 @@ var app = (function (app) {
         {
 
             isJSON: function (thang) {
-
-                // Pragmatic test for JSON. Using JSON.parse gives false positives.
+                // Better JSON test. JSON.parse gives false positives.
                 return (true === (thang instanceof Object) && false === (thang instanceof File));
-
-            },
-
-            promisifyFileReader: function (filereader) {
-
-                function composeAsync (key) {
-                    return function () {
-                        var args = arguments;
-
-                        return new Promise (function (resolve, reject) {
-                            //
-                            function resolveHandler () {
-                                cleanHandlers();
-                                resolve(filereader.result)
-                            }
-                            function rejectHandler () {
-                                cleanHandlers();
-                                reject(filereader.error)
-                            }
-                            function cleanHandlers () {
-                                filereader.removeEventListener('load', resolveHandler);
-                                filereader.removeEventListener('abort', rejectHandler);
-                                filereader.removeEventListener('error', rejectHandler);
-                            }
-
-                            // :: ehhhhh
-                            filereader.addEventListener('load', resolveHandler);
-                            filereader.addEventListener('abort', rejectHandler);
-                            filereader.addEventListener('error', rejectHandler);
-
-                            // :: go!
-                            filereader[key].apply(filereader, args);
-                        })
-                    }
-                }
-                for (var key in filereader) {
-                    if (!key.match(/^read/) || typeof filereader[key] !== 'function') {
-                        continue;
-                    }
-                    filereader[key + 'Async'] = composeAsync(key);
-                }
             },
 
             configureModal: function (loader, $modal, okHandler = undefined) {
                 let $dismiss,
-                    $ok,
-                    doOk;
+                    $ok;
 
                 // upper dismiss - x - button
                 $dismiss = $modal.find('.modal-header button:nth-child(1)');
@@ -127,12 +84,7 @@ var app = (function (app) {
                         igv.presentAlert(error);
                     });
 
-            },
-
-            createFileLoadWidget: function (config, fileLoadManager) {
-                return new app.FileLoadWidget(config, fileLoadManager);
             }
-
         };
 
     return app;

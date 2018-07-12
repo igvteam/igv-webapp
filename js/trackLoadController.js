@@ -39,7 +39,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.localFileLoader = app.utils.createFileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
+        this.localFileLoader = new app.FileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
         app.utils.configureModal(this.localFileLoader, config.$fileModal);
 
         // URL
@@ -49,7 +49,7 @@ var app = (function (app) {
                 mode: 'url',
             };
 
-        this.urlLoader = app.utils.createFileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
+        this.urlLoader = new app.FileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
         app.utils.configureModal(this.urlLoader, config.$urlModal);
 
 

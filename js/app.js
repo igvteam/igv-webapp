@@ -74,20 +74,16 @@ var app = (function (app) {
 
         app.genomeLoadController.getAppLaunchGenomes()
             .then(function (genomeDictionary) {
-                var config;
+                var genomeDropdownConfig;
 
-                config =
+                genomeDropdownConfig =
                     {
                         browser: browser,
-                        $urlModal: $('#igv-app-genome-from-url-modal'),
-                        $fileModal: $('#igv-app-genome-from-file-modal'),
-                        $dropboxModal: $('#igv-app-genome-dropbox-modal'),
-                        $googleDriveModal: $('#igv-app-genome-google-drive-modal'),
                         $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
                         genomeDictionary: genomeDictionary
                     };
 
-                app.genomeDropdownLayout(browser, config);
+                app.genomeDropdownLayout(genomeDropdownConfig);
             });
 
         // URL Shortener Configuration

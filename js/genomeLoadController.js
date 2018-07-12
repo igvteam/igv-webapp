@@ -35,9 +35,6 @@ var app = (function (app) {
             locaFileLoaderConfig,
             doOK;
 
-        this.fileReader = new FileReader();
-        app.utils.promisifyFileReader(this.fileReader);
-
         // Local File
         locaFileLoaderConfig =
             {
@@ -142,38 +139,22 @@ var app = (function (app) {
 
     app.GenomeLoadController.prototype.getGenomes = function (url) {
 
-        var dictionary;
+        return igv.xhr
+            .loadJson(url, {})
+            .then(function (result) {
+                let dictionary;
 
-        if (url instanceof File) {
+                dictionary = {};
+                if (true === Array.isArray(result)) {
+                    result.forEach(function (json) {
+                        dictionary[ json.id ] = json;
+                    });
+                } else {
+                    dictionary[ result.id ] = result;
+                }
 
-            return this.fileReader
-                .readAsTextAsync(url)
-                .then(function (result) {
-                    var json;
-
-                    json = JSON.parse(result);
-                    dictionary = {};
-                    dictionary[ json.id ] = json;
-                    return dictionary;
-                });
-
-        } else {
-            return igv.xhr
-                .loadJson(url, {})
-                .then(function (result) {
-
-                    dictionary = {};
-                    if (true === Array.isArray(result)) {
-                        result.forEach(function (json) {
-                            dictionary[ json.id ] = json;
-                        });
-                    } else {
-                        dictionary[ result.id ] = result;
-                    }
-
-                    return dictionary;
-                })
-        }
+                return dictionary;
+            });
 
     };
 
@@ -215,7 +196,7 @@ var app = (function (app) {
 
     }
 
-    app.genomeDropdownLayout = function (browser, config) {
+    app.genomeDropdownLayout = function (config) {
 
         var $divider,
             $button,
@@ -235,7 +216,7 @@ var app = (function (app) {
 
                 key = $(this).text();
 
-                if (key !== browser.genome.id) {
+                if (key !== config.browser.genome.id) {
                     app.utils.loadGenome(config.genomeDictionary[ key ]);
                 }
 

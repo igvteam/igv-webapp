@@ -29,9 +29,6 @@ var app = (function (app) {
             urlLoaderConfig,
             okHandler;
 
-        this.fileReader = new FileReader();
-        app.utils.promisifyFileReader(this.fileReader);
-
         this.browser = browser;
         this.config = config;
 
@@ -155,8 +152,6 @@ var app = (function (app) {
     app.TrackLoadController.prototype.updateAnnotationsSelectList = function (genome_id) {
 
         let $select,
-            path_template,
-            joint,
             a,
             b,
             path;
@@ -184,16 +179,16 @@ var app = (function (app) {
                     $select.append($option);
                 });
 
+            })
+            .catch(function (error) {
+                igv.presentAlert(error);
             });
         
     };
 
     function configureAnnotationsSelectList($modal) {
 
-        let $select,
-            path_template,
-            joint,
-            path;
+        let $select;
 
         $select = $modal.find('select');
 

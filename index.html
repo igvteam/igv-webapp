@@ -50,7 +50,7 @@
     <script src="https://apis.google.com/js/platform.js"></script>
 
     <!-- IGV JS -->
-    <script src="https://igv.org/web/test/dist/igv.js">
+    <script src="https://igv.org/web/test/dist/igv.js"></script>
 
     <!-- Twitter -->
     <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -122,9 +122,6 @@
                     <!-- URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">URL ...</button>
 
-                    <!-- Annotations -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-annotations-modal">Annotations ...</button>
-
                     <!-- Dropbox -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-dropbox-modal">
                         <div class=" igv-app-dropdown-item-cloud-storage">
@@ -142,6 +139,11 @@
                             <div>...</div>
                         </div>
                     </button>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Annotations -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-annotations-modal">Annotations ...</button>
 
                     <!-- ENCODE -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">ENCODE ...</button>

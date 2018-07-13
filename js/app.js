@@ -78,9 +78,11 @@ var app = (function (app) {
 
                 genomeDropdownConfig =
                     {
+                        genomeDictionary: genomeDictionary,
                         browser: browser,
                         $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
-                        genomeDictionary: genomeDictionary
+                        $urlModal: $('#igv-app-genome-from-url-modal'),
+                        $fileModal: $('#igv-app-genome-from-file-modal'),
                     };
 
                 app.genomeDropdownLayout(genomeDropdownConfig);

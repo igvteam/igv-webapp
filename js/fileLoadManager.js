@@ -65,7 +65,6 @@ var app = (function (app) {
                 })
         }
 
-        return obj;
     };
 
     app.FileLoadManager.prototype.inputHandler = function (path, isIndexFile) {

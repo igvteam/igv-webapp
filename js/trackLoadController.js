@@ -24,68 +24,41 @@ var app = (function (app) {
 
     app.TrackLoadController = function (browser, config) {
 
-        var self = this,
-            locaFileLoaderConfig,
-            urlLoaderConfig,
-            okHandler;
+        var localFileConfig,
+            urlConfig;
 
         this.browser = browser;
         this.config = config;
 
         // Local File
-        locaFileLoaderConfig =
+        localFileConfig =
             {
                 $widgetParent: config.$fileModal.find('.modal-body'),
                 mode: 'localFile'
             };
 
-        this.localFileLoader = new app.FileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
-        app.utils.configureModal(this.localFileLoader, config.$fileModal);
+        this.localFileWidget = new app.FileLoadWidget(localFileConfig, new app.FileLoadManager());
+        app.utils.configureModal(this.localFileWidget, config.$fileModal);
 
         // URL
-        urlLoaderConfig =
+        urlConfig =
             {
                 $widgetParent: config.$urlModal.find('.modal-body'),
                 mode: 'url',
             };
 
-        this.urlLoader = new app.FileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
-        app.utils.configureModal(this.urlLoader, config.$urlModal);
+        this.urlWidget = new app.FileLoadWidget(urlConfig, new app.FileLoadManager());
+        app.utils.configureModal(this.urlWidget, config.$urlModal);
 
 
 
         // Dropbox
-        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
-
-        okHandler = function (loader, $modal) {
-
-            if (loader.fileLoadManager.okHandler()) {
-                loader.dismiss();
-                $modal.modal('hide');
-            }
-
-        };
-
-        this.dropboxController.configure(okHandler, false);
-
+        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Data');
+        this.dropboxController.configure({ dataFileOnly: false });
 
         // Google Drive
-        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal);
-        this.googleDriveController.configure(function (obj, $filenameContainer, isIndexFile) {
-
-            // update file name label
-            $filenameContainer.text(obj.name);
-            $filenameContainer.show();
-
-            if (false === isIndexFile) {
-                self.googleDriveController.loader.fileLoadManager.googlePickerFilename = obj.name;
-            }
-
-            self.googleDriveController.loader.fileLoadManager.inputHandler(obj.path, isIndexFile);
-
-            self.googleDriveController.$modal.modal('show');
-
-        }, okHandlerGoogleDrive);
+        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Data');
+        this.googleDriveController.configure(okHandlerGoogleDrive);
 
         // Annotations
         configureAnnotationsSelectList(config.$annotationsModal);
@@ -158,6 +131,9 @@ var app = (function (app) {
 
         $select = this.config.$annotationsModal.find('select');
 
+        // discard current annotations
+        $select.empty();
+
         a = 'resources/tracks/';
         b = genome_id + '_tracks.json';
         path = a + b;
@@ -166,9 +142,6 @@ var app = (function (app) {
             .loadJson(path)
             .then(function (tracks) {
                 let $option;
-
-                // discard current annotations
-                $select.empty();
 
                 $option = $('<option>', { value:'-', text:'-' });
                 $select.append($option);
@@ -208,18 +181,15 @@ var app = (function (app) {
 
     }
 
-    function okHandlerGoogleDrive(fileLoadWidget, $modal) {
+    function okHandlerGoogleDrive(fileLoadManager) {
 
         let obj;
 
-        obj = trackConfigurationGoogleDrive(fileLoadWidget.fileLoadManager);
+        obj = trackConfigurationGoogleDrive(fileLoadManager);
 
         if (obj) {
             igv.browser.loadTrackList( [ obj ] );
         }
-
-        fileLoadWidget.dismiss();
-        $modal.modal('hide');
 
     }
 
@@ -230,6 +200,9 @@ var app = (function (app) {
 
             config = undefined;
         } else if (undefined === fileLoadManager.dictionary) {
+
+            config = undefined;
+        } else if (undefined === fileLoadManager.dictionary.data) {
 
             config = undefined;
         } else if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {

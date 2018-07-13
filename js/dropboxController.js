@@ -21,32 +21,31 @@
  *
  */
 var app = (function (app) {
-    app.DropboxController = function (browser, $modal, dataTitle = 'Data') {
+    app.DropboxController = function (browser, $modal, dataTitle) {
         this.browser = browser;
         this.$modal = $modal;
         this.dataTitle = dataTitle;
     };
 
-    app.DropboxController.prototype.configure = function (okHandler, dataFileOnly = false) {
+    app.DropboxController.prototype.configure = function (config) {
 
         let self = this,
-            loaderConfig,
-            doOK;
+            widgetConfig;
 
-        loaderConfig =
+        widgetConfig =
             {
                 dataTitle: this.dataTitle,
                 $widgetParent: this.$modal.find('.modal-body'),
                 mode: 'localFile'
             };
 
-        this.loader = new app.FileLoadWidget(loaderConfig, new app.FileLoadManager());
+        this.fileLoadWidget = new app.FileLoadWidget(widgetConfig, new app.FileLoadManager());
 
-        this.loader.customizeLayout(function ($parent) {
+        this.fileLoadWidget.customizeLayout(function ($parent) {
 
             $parent.find('.igv-flw-file-chooser-container').hide();
 
-            if (true === dataFileOnly) {
+            if (true === config.dataFileOnly) {
                 makeButton.call(self, $parent.find('.igv-flw-input-label').first(), false);
                 $parent.find('.igv-flw-input-row').last().hide();
             } else {
@@ -64,22 +63,18 @@ var app = (function (app) {
                 $div.insertAfter( $e );
 
                 // create Dropbox button
-                settings = dbButtonConfigurator.call(self, $e.parent().find('.igv-flw-local-file-name-container'), isIndexFile);
+                settings = dbButtonConfigurator(self.fileLoadWidget.fileLoadManager, $e.parent().find('.igv-flw-local-file-name-container'), isIndexFile);
                 $div.get(0).appendChild( Dropbox.createChooseButton(settings) )
             }
         });
 
-        doOK = function () {
-            okHandler(self.loader, self.$modal);
-        };
-
-        app.utils.configureModal(this.loader, this.$modal, doOK);
+        app.utils.configureModal(this.fileLoadWidget, this.$modal, config.okHandler);
 
     };
 
-    function dbButtonConfigurator($trackNameLabel, isIndexFile) {
-        let self = this,
-            obj;
+    function dbButtonConfigurator(fileLoadManager, $trackNameLabel, isIndexFile) {
+        let obj;
+
         obj =
             {
 
@@ -87,7 +82,7 @@ var app = (function (app) {
                 // Single file selection only
                 $trackNameLabel.text(dbFiles[ 0 ].name);
                 $trackNameLabel.show();
-                self.loader.fileLoadManager.inputHandler(dbFiles[ 0 ].link, isIndexFile);
+                fileLoadManager.inputHandler(dbFiles[ 0 ].link, isIndexFile);
             },
 
             cancel: function() { },

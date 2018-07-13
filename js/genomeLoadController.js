@@ -31,77 +31,60 @@ var app = (function (app) {
     app.GenomeLoadController = function (browser, config) {
 
         let self = this,
-            urlLoaderConfig,
-            locaFileLoaderConfig,
+            urlConfig,
+            localFileConfig,
             doOK;
 
         // Local File
-        locaFileLoaderConfig =
+        localFileConfig =
             {
                 dataTitle: 'Genome',
                 $widgetParent: config.$fileModal.find('.modal-body'),
                 mode: 'localFile'
             };
 
-        this.localFileLoader = new app.FileLoadWidget(locaFileLoaderConfig, new app.FileLoadManager());
+        this.localFileWidget = new app.FileLoadWidget(localFileConfig, new app.FileLoadManager());
 
-        doOK = function () {
-            okHandler(self, self.localFileLoader, config.$fileModal);
+        doOK = function (fileLoadManager) {
+            okHandler(self, fileLoadManager);
         };
 
-        app.utils.configureModal(this.localFileLoader, config.$fileModal, doOK);
+        app.utils.configureModal(this.localFileWidget, config.$fileModal, doOK);
 
 
         // URL
-        urlLoaderConfig =
+        urlConfig =
             {
                 dataTitle: 'Genome',
                 $widgetParent: config.$urlModal.find('.modal-body'),
                 mode: 'url'
             };
 
-        this.urlLoader = new app.FileLoadWidget(urlLoaderConfig, new app.FileLoadManager());
+        this.urlWidget = new app.FileLoadWidget(urlConfig, new app.FileLoadManager());
 
-        doOK = function () {
-            okHandler(self, self.urlLoader, config.$urlModal);
+        doOK = function (fileLoadManager) {
+            okHandler(self, fileLoadManager);
         };
 
-        app.utils.configureModal(this.urlLoader, config.$urlModal, doOK);
+        app.utils.configureModal(this.urlWidget, config.$urlModal, doOK);
 
 
         // Dropbox
         this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
 
-        doOK = function (loader, $modal) {
-            okHandler(self, loader, $modal);
+        doOK = function (fileLoadManager) {
+            okHandler(self, fileLoadManager);
         };
 
-        this.dropboxController.configure(doOK);
+        this.dropboxController.configure({ okHandler: doOK, dataFileOnly: false });
 
 
         // Google Drive
         this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Genome');
 
-
-        doOK = function (loader, $modal) {
-            okHandler(self, loader, $modal);
-        };
-
-        this.googleDriveController.configure(function (obj, $filenameContainer, isIndexFile) {
-
-            // update file name label
-            $filenameContainer.text(obj.name);
-            $filenameContainer.show();
-
-            if (false === isIndexFile) {
-                self.googleDriveController.loader.fileLoadManager.googlePickerFilename = obj.name;
-            }
-
-            self.googleDriveController.loader.fileLoadManager.inputHandler(obj.path, isIndexFile);
-
-            self.googleDriveController.$modal.modal('show');
-
-        }, doOK);
+        this.googleDriveController.configure(function (fileLoadManager) {
+            okHandler(self, fileLoadManager);
+        });
 
     };
 
@@ -158,12 +141,12 @@ var app = (function (app) {
 
     };
 
-    function okHandler(genomeLoadController, fileLoadWidget, $modal) {
+    function okHandler(genomeLoadController, fileLoadManager) {
 
-        if (isValidFileLoadManagerDictionary(fileLoadWidget.fileLoadManager)) {
+        if (isValidGenomeConfiguration(fileLoadManager)) {
 
             genomeLoadController
-                .genomeConfiguration(fileLoadWidget.fileLoadManager)
+                .genomeConfiguration(fileLoadManager)
                 .then(function (obj) {
                     let genome;
                     genome = Object.values(obj).pop();
@@ -172,12 +155,9 @@ var app = (function (app) {
 
         }
 
-        fileLoadWidget.dismiss();
-        $modal.modal('hide');
-
     }
 
-    function isValidFileLoadManagerDictionary(fileLoadManager) {
+    function isValidGenomeConfiguration(fileLoadManager) {
 
         let success = true;
 

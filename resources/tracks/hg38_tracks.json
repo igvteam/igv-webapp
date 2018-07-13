@@ -2,9 +2,23 @@
   {
     "name": "Gencode v28 Basic",
     "type": "annotation",
-    "format": "gtf",
-    "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
-    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
-    "visibilityWindow": 10000
-  }
+    "displayMode": "EXPANDED",
+    "sourceType": "ucscservice",
+    "source": {
+      "url": "https://data.broadinstitute.org/igv/projects/php/ucsc.php?db=hg38",
+      "method": "GET",
+      "tableName": "wgEncodeGencodeBasicV28"
+    },
+    "visibilityWindow": 1000000
+  },
+  {
+    "name": "Common SNPS (150)",
+    "type": "snp",
+    "sourceType": "ucscservice",
+    "visibilityWindow": 10000,
+    "source": {
+      "url": "https://data.broadinstitute.org/igv/projects/php/ucsc.php?db=hg38",
+      "method": "GET",
+      "tableName": "snp150"
+    }
 ]

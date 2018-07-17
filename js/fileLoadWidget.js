@@ -30,19 +30,12 @@
 var app = (function (app) {
     app.FileLoadWidget = function (config, fileLoadManager) {
         var self = this,
-            obj,
-            hasURLContainer,
-            hasLocalFileContainer;
+            obj;
 
         this.config = config;
 
-        if (undefined === config.dataTitle) {
-            this.config.dataTitle = 'Data';
-        }
-
-        if (undefined === config.indexTitle) {
-            this.config.indexTitle = 'Index';
-        }
+        this.config.dataTitle = config.dataTitle || 'Data';
+        this.config.indexTitle = config.indexTitle || 'Index';
 
         this.$parent = config.$widgetParent;
 
@@ -53,9 +46,7 @@ var app = (function (app) {
         this.$container = $('<div>', { class: 'igv-file-load-widget-container' });
         this.$parent.append(this.$container);
 
-        hasLocalFileContainer = config.mode ? 'localFile' === config.mode : true;
-
-        if (hasLocalFileContainer) {
+        if ('localFile' === config.mode) {
             // local data/index
             obj =
                 {
@@ -64,11 +55,8 @@ var app = (function (app) {
                     indexTitle: config.indexTitle + ' file'
                 };
             createInputContainer.call(this, this.$container, obj);
-        }
+        } else {
 
-        hasURLContainer = config.mode ? 'url' === config.mode : true;
-
-        if (hasURLContainer) {
             // url data/index
             obj =
                 {
@@ -167,7 +155,6 @@ var app = (function (app) {
 
     function createURLContainer($parent, id, isIndexFile) {
         var self = this,
-            $data_drop_target,
             $input;
 
         $input = $('<input>', { type:'text', placeholder:(true === isIndexFile ? 'Enter index URL' : 'Enter data URL') });
@@ -178,22 +165,12 @@ var app = (function (app) {
         });
 
         $input.on('change', function (e) {
-
             self.dismissErrorMessage();
-
             self.fileLoadManager.inputHandler($(this).val(), isIndexFile);
         });
 
-        $data_drop_target = $("<div>", { class:"igv-flw-drag-drop-target" });
-        $parent.append($data_drop_target);
-        $data_drop_target.text('or drop URL');
-
-        // TODO: Eventually discard this?
-        $data_drop_target.hide();
-
         $parent
             .on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-                var data;
                 e.preventDefault();
                 e.stopPropagation();
                 self.dismissErrorMessage();
@@ -216,7 +193,6 @@ var app = (function (app) {
     function createLocalFileContainer($parent, id, isIndexFile) {
         var self = this,
             $file_chooser_container,
-            $data_drop_target,
             $label,
             $input,
             $file_name,
@@ -235,10 +211,6 @@ var app = (function (app) {
         $input = $('<input>', { class:"igv-flw-file-chooser-input", id:str, name:str, type:'file' });
         $file_chooser_container.append($input);
 
-        $data_drop_target = $("<div>", { class:"igv-flw-drag-drop-target" });
-        $parent.append($data_drop_target);
-        $data_drop_target.text('or drop file');
-
         $file_chooser_container.hover(
             function() {
                 $label.removeClass('igv-flw-label-color');
@@ -248,10 +220,6 @@ var app = (function (app) {
                 $label.addClass('igv-flw-label-color');
             }
         );
-
-
-        // TODO: Eventually discard this?
-        $data_drop_target.hide();
 
         $file_name = $("<div>", { class:"igv-flw-local-file-name-container" });
         $parent.append($file_name);

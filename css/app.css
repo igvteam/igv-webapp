@@ -344,6 +344,25 @@ a#igv-app-email-button:active {
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25); }
 
+.btn-file {
+  position: relative;
+  overflow: hidden; }
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block; }
+
 .igv-file-load-widget-container .igv-flw-input-container {
   margin-top: unset; }
 

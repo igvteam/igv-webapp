@@ -116,7 +116,13 @@
                 <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
 
                     <!-- local file -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-local-file-modal">Local File ...</button>
+                    <label class="dropdown-item btn btn-default btn-file">
+                        Local File ...
+                        <input id="igv-app-dropdown-local-file-input" type="file" name="file" multiple style="display: none;">
+                    </label>
+
+                    <!-- local file (legacy) -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-local-file-modal"> (LEGACY) Local File ...</button>
 
                     <!-- URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">URL ...</button>

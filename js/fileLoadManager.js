@@ -188,7 +188,6 @@ var app = (function (app) {
 
                 })
                 .catch(function (e) {
-                    // console.log('ERROR. FileLoadManager.ingestPath - Invalid JSON');
                     self.fileLoadWidget.presentErrorMessage('Error: Invalid JSON.');
                 });
 

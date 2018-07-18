@@ -33,6 +33,12 @@ var app = (function (app) {
 
         createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
 
+        app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser);
+
+        $('#igv-app-dropdown-local-file-input').on('change', function () {
+            app.multiSelectTrackLoadController.ingestLocalFiles($(this));
+        });
+
         // Track load controller configuration
         trackLoadConfig =
             {

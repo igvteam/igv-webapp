@@ -111,9 +111,7 @@ var app = (function (app) {
         } else {
             $("#igv-app-share-button").hide();
         }
-
-        browser.updateViews();
-
+        
     };
 
     function appFooterImageHoverBehavior ($img) {

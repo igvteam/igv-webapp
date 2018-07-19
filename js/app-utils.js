@@ -24,6 +24,94 @@ var app = (function (app) {
 
     let picker;
 
+    app.fileutils =
+        {
+
+            indexLookup: function (dataSuffix) {
+                let bam,
+                    gz,
+                    any,
+                    lut;
+
+                bam =
+                    {
+                        index: 'bai',
+                        isOptional: false
+                    };
+
+                gz =
+                    {
+                        index: 'tbi',
+                        isOptional: true
+                    };
+
+                any =
+                    {
+                        index: 'idx',
+                        isOptional: true
+                    };
+
+                lut =
+                    {
+                        bam: bam,
+                        gz: gz
+                    };
+
+                if (lut[ dataSuffix ]) {
+                    return lut[ dataSuffix ];
+                } else {
+                    return any;
+                }
+
+            },
+
+            getIndexObject: function (dataFile) {
+                let extension,
+                    dataName,
+                    dataSuffix,
+                    lookup,
+                    indexObject,
+                    aa;
+
+                extension = igv.getExtension({ url: dataFile });
+                if (false === igv.knownFileExtensions.has( extension )) {
+                    return undefined;
+                }
+
+                dataName = igv.getFilename(dataFile);
+
+                dataSuffix = dataName.split('.').pop();
+
+                lookup = this.indexLookup(dataSuffix);
+
+                indexObject = {};
+
+                // aa
+                aa = dataName + '.' + lookup.index;
+
+                indexObject[ aa ] = {};
+                indexObject[ aa ].data = dataName;
+                indexObject[ aa ].isOptional = lookup.isOptional;
+
+
+                if ('bam' === extension) {
+                    let bb,
+                        parts;
+
+                    // bb
+                    parts = dataName.split('.');
+                    parts.pop();
+                    bb = parts.join('.') + '.' + lookup.index;
+
+                    indexObject[ bb ] = {};
+                    indexObject[ bb ].data = dataName;
+                    indexObject[ bb ].isOptional = lookup.isOptional;
+                }
+
+                return indexObject;
+            }
+        };
+
     app.utils =
         {
 

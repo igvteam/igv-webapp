@@ -23,20 +23,63 @@
 
 var app = (function (app) {
 
-    app.MultiSelectTrackLoadController = function (browser) {
+    app.MultiSelectTrackLoadController = function (browser, $modal) {
+
         this.browser = browser;
+        this.$modal = $modal;
+        this.$modal_body = $modal.find('.modal-body');
+
+        this.dataExtensions =
+            {
+                bam: { index: 'bai', optional: false },
+                any: { index: 'idx', optional: true  },
+                 gz: { index: 'tbi', optional: true  }
+            };
+
+        this.indexExtensions =
+            {
+                bai: 'bam',
+                idx: 'any',
+                tbi: 'gz'
+            }
     };
 
     app.MultiSelectTrackLoadController.prototype.ingestLocalFiles = function ($input) {
-        let input;
+        let self = this,
+            input;
 
         input = $input.get(0);
         if (input.files && input.files.length > 0) {
 
+            // discard current contents of modal body
+            this.$modal_body.empty();
+
             Array.from(input.files).forEach(function (file) {
-                console.log('ingest local files ' + file.name);
+                let name,
+                    extension,
+                    str,
+                    blurb,
+                    $p;
+
+                name = igv.getFilename(file);
+                extension = igv.getExtension({ url: file });
+                if (self.indexExtensions[ extension ]) {
+                    str = '';
+                } else {
+                    str = igv.knownFileExtensions.has(extension) ? 'known format' : 'unknown format';
+                }
+
+                blurb = 'ingest files ' + name + ' ext ' + extension + ' ' + str;
+                console.log(blurb);
+
+                $p = $('<p>');
+                $p.text(blurb);
+                self.$modal_body.append($p);
+
+
             });
 
+            this.$modal.modal('show');
         }
     };
 

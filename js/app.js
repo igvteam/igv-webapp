@@ -36,7 +36,11 @@ var app = (function (app) {
         app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, $('#igv-app-multi-select-track-modal'));
 
         $('#igv-app-dropdown-local-file-input').on('change', function () {
-            app.multiSelectTrackLoadController.ingestLocalFiles($(this));
+
+            if (true === app.multiSelectTrackLoadController.isValidLocalInput( $(this) )) {
+                app.multiSelectTrackLoadController.ingestLocalFiles( $(this).get(0) )
+            }
+
         });
 
         // Track load controller configuration

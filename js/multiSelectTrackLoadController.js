@@ -29,73 +29,67 @@ var app = (function (app) {
         this.$modal_body = $modal.find('.modal-body');
     };
 
-    app.MultiSelectTrackLoadController.prototype.ingestLocalFiles = function ($input) {
+    app.MultiSelectTrackLoadController.prototype.ingestLocalFiles = function (input) {
 
-        let self = this,
-            input;
+        let files,
+            dataFiles,
+            indexFileCandidates,
+            indexFileAssessments,
+            indexFileFinalists,
+            indexLUT,
+            strings,
+            dev_null;
 
-        input = $input.get(0);
+        // discard current contents of modal body
+        this.$modal_body.empty();
 
-        if (input.files && input.files.length > 0) {
-            let files,
-                jsons,
-                dataFiles,
-                indexCandidates,
-                indexObjects,
-                indexObjectFinalists,
-                indexLUT,
-                strings,
-                key,
-                truth;
+        // Array-ify FileList object
+        files = Array.from(input.files);
 
-            // discard current contents of modal body
-            this.$modal_body.empty();
+        // data files (non-JSON)
+        dataFiles = files.filter(function (file) {
+            let extension;
+            extension = igv.getExtension({ url: file });
+            return igv.knownFileExtensions.has(extension);
+        });
 
-            // Array-ify FileList object
-            files = Array.from(input.files);
-
-            // data files
-            dataFiles = files.filter(function (file) {
-                let extension;
-                extension = igv.getExtension({ url: file });
-                return igv.knownFileExtensions.has(extension);
-            });
-
-            // bail of no data files
-            if (undefined === dataFiles || 0 === dataFiles.length) {
-                appendNoFilesFoundMarkup(this.$modal_body);
-                return;
+        // index files (potentials)
+        indexFileCandidates = {};
+        files.forEach(function (file) {
+            let extension;
+            extension = igv.getExtension({ url: file });
+            if(false === igv.knownFileExtensions.has(extension)) {
+                indexFileCandidates[ file.name ] = file;
             }
+        });
 
-            // prepare for index file assessment
-            indexObjects = dataFiles.map(function (file) {
+        // bail if no data files are selected
+        if (undefined === dataFiles || 0 === dataFiles.length) {
+            appendNoFilesFoundMarkup(this.$modal_body);
+            return;
+        }
+
+        // add info about presence and requirement (or not) of an index file
+        indexFileFinalists = dataFiles
+            .map(function (file) {
+
+                // assess the data files need/requirement for index files
                 return app.fileutils.getIndexObject(file);
-            });
+            })
+            .map(function (io) {
 
-            key = Object.keys( indexObjects[ 0 ] ).pop();
-
-            // index file candidates
-            indexCandidates = {};
-            files.forEach(function (file) {
-                let extension;
-                extension = igv.getExtension({ url: file });
-                if(false === igv.knownFileExtensions.has(extension)) {
-                    indexCandidates[ file.name ] = file.name;
-                }
-            });
-
-            // add info about presence and requirement (or not) of an index file
-            indexObjects.forEach(function (io) {
+                // identify the presence/absence of associated index files
                 for (let value in io) {
                     if (io.hasOwnProperty(value)) {
-                        io[ value ].missing = (undefined === indexCandidates[ value ]);
+                        io[ value ].missing = (undefined === indexFileCandidates[ value ]);
                     }
                 }
-            });
+                return io;
+            })
+            .filter(function (io) {
 
-            indexObjectFinalists = indexObjects.filter(function (io) {
-
-                // prune the optional and missing index files
+                // prune the optional and missing index files for data files
+                // that don't require and index file
                 if (1 === Object.keys(io).length) {
 
                     let o;
@@ -117,56 +111,83 @@ var app = (function (app) {
 
             });
 
-            // invert indexObjectFinalists to become an index file LUT
-            indexLUT = {};
-            indexObjectFinalists.forEach(function (io) {
-                let list;
+        // invert indexFileFinalists to become an index file LUT
+        indexLUT = {};
+        indexFileFinalists.forEach(function (io) {
+            let list;
 
-                for (let ii in io) {
+            for (let ii in io) {
 
-                    if (io.hasOwnProperty(ii)) {
-                        let outer,
-                            obj;
+                if (io.hasOwnProperty(ii)) {
+                    let outer,
+                        obj;
 
-                        outer = io[ ii ];
+                    outer = io[ ii ];
 
-                        if (undefined === indexLUT[ outer.data ]) {
-                            indexLUT[ outer.data ] = [];
-                        }
-
-                        obj =
-                            {
-                                index: ii,
-                                isOptional: outer.isOptional,
-                                missing: outer.missing
-                            };
-                        indexLUT[ outer.data ].push(obj);
-
+                    if (undefined === indexLUT[ outer.data ]) {
+                        indexLUT[ outer.data ] = [];
                     }
+
+                    obj =
+                        {
+                            index: ii,
+                            indexFile: ((false === outer.missing) ? indexFileCandidates[ ii ] : undefined),
+                            isOptional: outer.isOptional,
+                            missing: outer.missing
+                        };
+
+                    indexLUT[ outer.data ].push(obj);
+
                 }
+            }
 
 
-            });
+        });
 
-            strings = [];
-            dataFiles.forEach(function (file) {
-                let name;
+        strings = [];
+        dataFiles.forEach(function (file) {
+            let name;
 
-                name = igv.getFilename(file);
-                if (indexLUT[ name ]) {
-                    indexLUT[ name ].forEach(function (obj) {
-                        strings.push('data ' + name + ' index ' + obj.index + (true === obj.missing ? ' MISSING' : ''));
-                    });
-                } else {
-                    strings.push('data ' + name);
+            name = igv.getFilename(file);
+            if (indexLUT[ name ]) {
+                let aa;
+
+                aa = indexLUT[ name ][ 0 ];
+                if (1 === indexLUT[ name ].length) {
+
+                    if (true === aa.missing) {
+                        strings.push('DATA ' + name + ' INDEX file is missing');
+                    } else {
+                        strings.push('DATA ' + name + ' INDEX ' + aa.index);
+                    }
+
+                } else /* BAM Track with two naming conventions */ {
+                    let bb;
+
+                    bb = indexLUT[ name ][ 1 ];
+                    if (true === aa.missing && true === bb.missing) {
+                        strings.push('DATA ' + name + ' INDEX file is missing');
+                    } else {
+                        let cc;
+
+                        cc = true === aa.missing ? bb : aa;
+                        strings.push('DATA ' + name + ' INDEX ' + cc.index);
+                    }
+
                 }
+            } else {
+                strings.push('DATA ' + name);
+            }
 
-            });
+        });
 
-            appendMarkup(this.$modal_body, strings);
+        appendMarkup(this.$modal_body, strings);
 
-            this.$modal.modal('show');
-        }
+        this.$modal.modal('show');
+    };
+
+    app.MultiSelectTrackLoadController.prototype.isValidLocalInput = function ($input) {
+        return ($input.get(0).files && $input.get(0).files.length > 0);
     };
 
     function reconcileIndexFiles(dataFileNames, indexLUT) {
@@ -201,7 +222,7 @@ var app = (function (app) {
             $container.append($p);
         });
     }
-    
+
     function appendNoFilesFoundMarkup($container) {
         let string;
 

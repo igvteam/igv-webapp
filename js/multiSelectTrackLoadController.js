@@ -114,30 +114,16 @@ var app = (function (app) {
         // invert indexFileFinalists to become an index file LUT
         indexLUT = {};
         indexFileFinalists.forEach(function (io) {
-            let list;
 
             for (let ii in io) {
-
                 if (io.hasOwnProperty(ii)) {
-                    let outer,
-                        obj;
+                    let outer;
 
                     outer = io[ ii ];
 
-                    if (undefined === indexLUT[ outer.data ]) {
-                        indexLUT[ outer.data ] = [];
-                    }
+                    if (undefined === indexLUT[ outer.data ]) indexLUT[ outer.data ] = [];
 
-                    obj =
-                        {
-                            index: ii,
-                            indexFile: ((false === outer.missing) ? indexFileCandidates[ ii ] : undefined),
-                            isOptional: outer.isOptional,
-                            missing: outer.missing
-                        };
-
-                    indexLUT[ outer.data ].push(obj);
-
+                    indexLUT[ outer.data ].push(((false === outer.missing) ? indexFileCandidates[ ii ] : undefined));
                 }
             }
 
@@ -154,24 +140,22 @@ var app = (function (app) {
 
                 aa = indexLUT[ name ][ 0 ];
                 if (1 === indexLUT[ name ].length) {
-
-                    if (true === aa.missing) {
+                    
+                    if (undefined === aa) {
                         strings.push('DATA ' + name + ' INDEX file is missing');
                     } else {
-                        strings.push('DATA ' + name + ' INDEX ' + aa.index);
+                        strings.push('DATA ' + name + ' INDEX ' + aa.name);
                     }
-
                 } else /* BAM Track with two naming conventions */ {
                     let bb;
 
                     bb = indexLUT[ name ][ 1 ];
-                    if (true === aa.missing && true === bb.missing) {
+                    if (undefined === aa && undefined === bb) {
                         strings.push('DATA ' + name + ' INDEX file is missing');
                     } else {
                         let cc;
-
-                        cc = true === aa.missing ? bb : aa;
-                        strings.push('DATA ' + name + ' INDEX ' + cc.index);
+                        cc = aa || bb;
+                        strings.push('DATA ' + name + ' INDEX ' + cc.name);
                     }
 
                 }

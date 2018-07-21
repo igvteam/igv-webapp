@@ -34,11 +34,8 @@ var app = (function (app) {
         let files,
             dataFiles,
             indexFileCandidates,
-            indexFileAssessments,
-            indexFileFinalists,
-            indexLUT,
-            strings,
-            dev_null;
+            indexFiles,
+            strings;
 
         // discard current contents of modal body
         this.$modal_body.empty();
@@ -69,8 +66,58 @@ var app = (function (app) {
             return;
         }
 
+        indexFiles = getIndexFiles(dataFiles, indexFileCandidates);
+
+        strings = [];
+        dataFiles.forEach(function (file) {
+            let name;
+
+            name = igv.getFilename(file);
+            if (indexFiles[ name ]) {
+                let aa;
+
+                aa = indexFiles[ name ][ 0 ];
+                if (1 === indexFiles[ name ].length) {
+
+                    if (undefined === aa) {
+                        strings.push('DATA ' + name + ' INDEX file is missing');
+                    } else {
+                        strings.push('DATA ' + name + ' INDEX ' + aa.name);
+                    }
+                } else /* BAM Track with two naming conventions */ {
+                    let bb;
+
+                    bb = indexFiles[ name ][ 1 ];
+                    if (undefined === aa && undefined === bb) {
+                        strings.push('DATA ' + name + ' INDEX file is missing');
+                    } else {
+                        let cc;
+                        cc = aa || bb;
+                        strings.push('DATA ' + name + ' INDEX ' + cc.name);
+                    }
+
+                }
+            } else {
+                strings.push('DATA ' + name);
+            }
+
+        });
+
+        appendMarkup(this.$modal_body, strings);
+
+        this.$modal.modal('show');
+    };
+
+    app.MultiSelectTrackLoadController.prototype.isValidLocalInput = function ($input) {
+        return ($input.get(0).files && $input.get(0).files.length > 0);
+    };
+
+    function getIndexFiles(dataFiles, indexFileCandidates) {
+        let indexFileAssessments,
+            indexFiles;
+
         // add info about presence and requirement (or not) of an index file
-        indexFileFinalists = dataFiles
+        indexFileAssessments = dataFiles
             .map(function (file) {
 
                 // assess the data files need/requirement for index files
@@ -111,90 +158,25 @@ var app = (function (app) {
 
             });
 
-        // invert indexFileFinalists to become an index file LUT
-        indexLUT = {};
-        indexFileFinalists.forEach(function (io) {
+        indexFiles = {};
+        indexFileAssessments.forEach(function (io) {
 
             for (let ii in io) {
+
                 if (io.hasOwnProperty(ii)) {
-                    let outer;
+                    let obj;
 
-                    outer = io[ ii ];
+                    obj = io[ ii ];
 
-                    if (undefined === indexLUT[ outer.data ]) indexLUT[ outer.data ] = [];
+                    if (undefined === indexFiles[ obj.data ]) indexFiles[ obj.data ] = [];
 
-                    indexLUT[ outer.data ].push(((false === outer.missing) ? indexFileCandidates[ ii ] : undefined));
+                    indexFiles[ obj.data ].push(((false === obj.missing) ? indexFileCandidates[ ii ] : undefined));
                 }
             }
 
-
         });
 
-        strings = [];
-        dataFiles.forEach(function (file) {
-            let name;
-
-            name = igv.getFilename(file);
-            if (indexLUT[ name ]) {
-                let aa;
-
-                aa = indexLUT[ name ][ 0 ];
-                if (1 === indexLUT[ name ].length) {
-                    
-                    if (undefined === aa) {
-                        strings.push('DATA ' + name + ' INDEX file is missing');
-                    } else {
-                        strings.push('DATA ' + name + ' INDEX ' + aa.name);
-                    }
-                } else /* BAM Track with two naming conventions */ {
-                    let bb;
-
-                    bb = indexLUT[ name ][ 1 ];
-                    if (undefined === aa && undefined === bb) {
-                        strings.push('DATA ' + name + ' INDEX file is missing');
-                    } else {
-                        let cc;
-                        cc = aa || bb;
-                        strings.push('DATA ' + name + ' INDEX ' + cc.name);
-                    }
-
-                }
-            } else {
-                strings.push('DATA ' + name);
-            }
-
-        });
-
-        appendMarkup(this.$modal_body, strings);
-
-        this.$modal.modal('show');
-    };
-
-    app.MultiSelectTrackLoadController.prototype.isValidLocalInput = function ($input) {
-        return ($input.get(0).files && $input.get(0).files.length > 0);
-    };
-
-    function reconcileIndexFiles(dataFileNames, indexLUT) {
-
-        let strings;
-
-        dataFileNames.forEach(function (name) {
-
-            if (indexLUT[ name ]) {
-
-                indexLUT[ name ].forEach(function (obj) {
-                    console.log('data ' + name + ' index ' + obj.index + (true === obj.missing ? ' MISSING' : ''));
-                });
-
-            } else {
-                console.log('data ' + name);
-            }
-
-        });
-    }
-
-    function fileNames (files) {
-        return files.map(function (file) { return file.name; });
+        return indexFiles;
     }
 
     function appendMarkup($container, strings) {

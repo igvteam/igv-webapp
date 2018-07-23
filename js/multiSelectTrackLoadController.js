@@ -35,6 +35,7 @@ var app = (function (app) {
             files,
             dataFiles,
             indexFileCandidates,
+            test,
             indexFiles,
             jsonPromises;
 
@@ -61,35 +62,30 @@ var app = (function (app) {
                 return igv.knownFileExtensions.has(extension);
             })
             .map(function (file) {
+
+                // map to name/file object
                 return { name: file.name, file: file };
             })
             .reduce(function(obj, item) {
                 let key;
+
+                // reduce list of name/file objects to dictionary key'ed by 'name' value
                 key = item[ 'name' ];
                 obj[ key ] = item.file;
                 return obj;
             }, {});
 
         // index files (potentials)
-        indexFileCandidates = {};
-        files
-            .forEach(function (file) {
-                let extension;
-                extension = igv.getExtension({ url: file });
-                if(false === igv.knownFileExtensions.has(extension)) {
-                    indexFileCandidates[ file.name ] = file;
-                }
-            });
+        indexFileCandidates = files
+            .filter(function (file) {
+                return !(igv.knownFileExtensions.has( igv.getExtension({ url: file }) ));
+            })
+            .reduce(function(obj, file) {
+                obj[ file.name ] = file;
+                return obj;
+            }, {});
 
         indexFiles = getIndexFiles(dataFiles, indexFileCandidates);
-
-
-
-
-
-
-
-
 
         // bail if no data files are selected
         if (0 === jsonPromises.length && 0 === Object.keys(dataFiles).length) {
@@ -104,16 +100,12 @@ var app = (function (app) {
                 .all(jsonPromises)
                 .then(function (trackConfigurations) {
                     let jsonFiles;
-                    
-                    trackConfigurations.forEach(function (trackConfiguration) {
 
-                        console.log(JSON.stringify(trackConfiguration));
-
-                        if (undefined === jsonFiles) {
-                            jsonFiles = {};
-                        }
-                        jsonFiles[ trackConfiguration.name ] = trackConfiguration;
-                    });
+                    jsonFiles = trackConfigurations
+                        .reduce(function(obj, trackConfiguration) {
+                            obj[ trackConfiguration.name ] = trackConfiguration;
+                            return obj;
+                        }, {});
 
                     renderFiles.call(self, dataFiles, indexFiles, jsonFiles);
                 })

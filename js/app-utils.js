@@ -65,32 +65,29 @@ var app = (function (app) {
 
             },
 
-            getIndexObject: function (dataFile) {
+            getIndexObject: function (name) {
                 let extension,
-                    dataName,
                     dataSuffix,
                     lookup,
                     indexObject,
                     aa;
 
-                extension = igv.getExtension({ url: dataFile });
+                extension = igv.getExtension({ url: name });
                 if (false === igv.knownFileExtensions.has( extension )) {
                     return undefined;
                 }
 
-                dataName = igv.getFilename(dataFile);
-
-                dataSuffix = dataName.split('.').pop();
+                dataSuffix = name.split('.').pop();
 
                 lookup = this.indexLookup(dataSuffix);
 
                 indexObject = {};
 
                 // aa
-                aa = dataName + '.' + lookup.index;
+                aa = name + '.' + lookup.index;
 
                 indexObject[ aa ] = {};
-                indexObject[ aa ].data = dataName;
+                indexObject[ aa ].data = name;
                 indexObject[ aa ].isOptional = lookup.isOptional;
 
 
@@ -99,12 +96,12 @@ var app = (function (app) {
                         parts;
 
                     // bb
-                    parts = dataName.split('.');
+                    parts = name.split('.');
                     parts.pop();
                     bb = parts.join('.') + '.' + lookup.index;
 
                     indexObject[ bb ] = {};
-                    indexObject[ bb ].data = dataName;
+                    indexObject[ bb ].data = name;
                     indexObject[ bb ].isOptional = lookup.isOptional;
                 }
 

@@ -23,137 +23,139 @@
 
 var app = (function (app) {
 
-    app.MultiSelectTrackLoadController = function (browser, $modal) {
+    app.MultiSelectTrackLoadController = function (browser, config) {
         this.browser = browser;
-        this.$modal = $modal;
-        this.$modal_body = $modal.find('.modal-body');
+        
+        this.$modal = config.$modal;
+        this.$modal_body = this.$modal.find('.modal-body');
+
+        createDropboxButton.call(this, config.$dropboxButtonContainer);
     };
 
-    app.MultiSelectTrackLoadController.prototype.ingestLocalFiles = function (input) {
+    app.MultiSelectTrackLoadController.prototype.ingestPaths = function (paths) {
 
-        let self = this,
-            files,
-            dataFiles,
-            indexFileCandidates,
-            indexFiles,
+        let dataPaths,
+            indexPathCandidates,
+            indexPaths,
             jsonPromises,
             trackConfigurations;
 
         // discard current contents of modal body
         this.$modal_body.empty();
 
-        // Array-ify FileList object
-        files = Array.from(input.files);
-
-        // accumumate JSON file retrieval promises
-        jsonPromises = files
-            .filter(function (file) {
-                return 'json' === igv.getExtension({ url: file });
+        // accumumate JSON retrieval promises
+        jsonPromises = paths
+            .filter(function (path) {
+                return 'json' === igv.getExtension({ url: path });
             })
-            .map(function (file) {
-                return igv.xhr.loadJson(file);
+            .map(function (path) {
+                return igv.xhr.loadJson(path);
             });
 
-        // data files (non-JSON)
-        dataFiles = files
-            .filter(function (file) {
+        // data (non-JSON)
+        dataPaths = paths
+            .filter(function (path) {
                 let extension;
-                extension = igv.getExtension({ url: file });
+                extension = igv.getExtension({ url: path });
                 return igv.knownFileExtensions.has(extension);
             })
-            .map(function (file) {
+            .map(function (path) {
 
-                // map to name/file object
-                return { name: file.name, file: file };
+                // map to name/path object
+                return { name: igv.getFilename(path), path: path };
             })
             .reduce(function(accumulator, item) {
-                let key;
-
-                // reduce list of name/file objects to dictionary key'ed by 'name' value
-                key = item[ 'name' ];
-                accumulator[ key ] = item.file;
+                // reduce list of name/path objects to dictionary key'ed by name
+                accumulator[ item.name ] = item.path;
                 return accumulator;
             }, {});
 
-        // index files (potentials)
-        indexFileCandidates = files
-            .filter(function (file) {
-                return !(igv.knownFileExtensions.has( igv.getExtension({ url: file }) ));
+        // index paths (potentials)
+        indexPathCandidates = paths
+            .filter(function (path) {
+                return !(igv.knownFileExtensions.has( igv.getExtension({ url: path }) ));
             })
-            .reduce(function(accumulator, file) {
-                accumulator[ file.name ] = file;
+            .reduce(function(accumulator, path) {
+                accumulator[ igv.getFilename(path) ] = path;
                 return accumulator;
             }, {});
 
-        indexFiles = getIndexFiles(dataFiles, indexFileCandidates);
+        indexPaths = getIndexPaths(dataPaths, indexPathCandidates);
 
         // bail if no data files are selected
-        if (0 === jsonPromises.length && 0 === Object.keys(dataFiles).length) {
+        if (0 === jsonPromises.length && 0 === Object.keys(dataPaths).length) {
             appendNoFilesFoundMarkup(this.$modal_body);
             this.$modal.modal('show');
             return;
         }
 
         trackConfigurations = Object
-            .keys(dataFiles)
+            .keys(dataPaths)
             .map(function (dataKey) {
                 let dataValue;
 
-                dataValue = dataFiles[ dataKey ];
-                return trackConfigurator(dataKey, dataValue, indexFiles);
+                dataValue = dataPaths[ dataKey ];
+                return trackConfigurator(dataKey, dataValue, indexPaths);
             });
 
         if (jsonPromises.length > 0) {
 
             Promise
                 .all(jsonPromises)
-                .then(function (jsonTrackConfigurations) {
-                    let jsonFiles;
+                .then(function (list) {
+                    let jsonTrackConfigurations;
 
+                    jsonTrackConfigurations = list.reduce(function(accumulator, item) {
+
+                        if (true === Array.isArray(item)) {
+                            item.forEach(function (config) {
+                                accumulator.push(config);
+                            })
+                        } else {
+                            accumulator.push(item);
+                        }
+
+                        return accumulator;
+                    }, []);
+                    
                     trackConfigurations.push.apply(trackConfigurations, jsonTrackConfigurations);
 
                     igv.browser.loadTrackList( trackConfigurations );
 
-                    // jsonFiles = jsonTrackConfigurations
-                    //     .reduce(function(accumulator, config) {
-                    //         accumulator[ config.name ] = config;
-                    //         return accumulator;
-                    //     }, {});
-                    //
-                    // renderFiles.call(self, dataFiles, indexFiles, jsonFiles);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
 
         } else {
-            // renderFiles.call(this, dataFiles, indexFiles);
+
             igv.browser.loadTrackList( trackConfigurations );
 
+            renderMissingFiles.call(this, dataPaths, indexPaths);
         }
 
     };
 
-    app.MultiSelectTrackLoadController.prototype.isValidLocalInput = function ($input) {
+    app.MultiSelectTrackLoadController.prototype.isValidLocalFileInput = function ($input) {
         return ($input.get(0).files && $input.get(0).files.length > 0);
     };
 
-    function getIndexFiles(dataFiles, indexFileCandidates) {
-        let indexFiles;
+    function getIndexPaths(dataPaths, indexPathCandidates) {
+        let indexPaths;
 
-        // add info about presence and requirement (or not) of an index file
-        indexFiles = Object
-            .keys(dataFiles)
-            .map(function (key) {
+        // add info about presence and requirement (or not) of an index path
+        indexPaths = Object
+            .keys(dataPaths)
+            .map(function (name) {
                 let indexObject;
 
                 // assess the data files need/requirement for index files
-                indexObject  = app.fileutils.getIndexObject(key);
+                indexObject  = app.fileutils.getIndexObject(name);
 
                 // identify the presence/absence of associated index files
                 for (let p in indexObject) {
                     if (indexObject.hasOwnProperty(p)) {
-                        indexObject[ p ].missing = (undefined === indexFileCandidates[ p ]);
+                        indexObject[ p ].missing = (undefined === indexPathCandidates[ p ]);
                     }
                 }
 
@@ -196,14 +198,14 @@ var app = (function (app) {
                             accumulator[ value.data ] = [];
                         }
 
-                        accumulator[ value.data ].push(((false === value.missing) ? indexFileCandidates[ key ] : undefined));
+                        accumulator[ value.data ].push(((false === value.missing) ? indexPathCandidates[ key ] : undefined));
                     }
                 }
 
                 return accumulator;
             }, {});
 
-        return indexFiles;
+        return indexPaths;
     }
 
     function trackConfigurator(dataKey, dataValue, indexFiles) {
@@ -244,57 +246,50 @@ var app = (function (app) {
 
     }
 
-    function renderFiles(dataFiles, indexFiles, jsonFiles = undefined) {
+    function renderMissingFiles(dataPaths, indexPaths) {
         let strings;
 
         strings = Object
-            .keys(dataFiles)
+            .keys(dataPaths)
             .reduce(function(accumulator, name) {
 
-                if (indexFiles[ name ]) {
+                if (indexPaths[ name ]) {
                     let aa;
 
-                    aa = indexFiles[ name ][ 0 ];
-                    if (1 === indexFiles[ name ].length) {
+                    aa = indexPaths[ name ][ 0 ];
+                    if (1 === indexPaths[ name ].length) {
 
                         if (undefined === aa) {
                             accumulator.push('DATA ' + name + ' INDEX file is missing');
+                            /*
                         } else {
                             accumulator.push('DATA ' + name + ' INDEX ' + aa.name);
+                            */
                         }
 
                     } else /* BAM Track with two naming conventions */ {
                         let bb;
 
-                        bb = indexFiles[ name ][ 1 ];
+                        bb = indexPaths[ name ][ 1 ];
                         if (undefined === aa && undefined === bb) {
                             accumulator.push('DATA ' + name + ' INDEX file is missing');
+                            /*
                         } else {
                             let cc;
                             cc = aa || bb;
                             accumulator.push('DATA ' + name + ' INDEX ' + cc.name);
+                            */
                         }
 
                     }
+                    /*
                 } else {
                     accumulator.push('DATA ' + name);
+                    */
                 }
 
                 return accumulator;
             }, []);
-
-        if (jsonFiles) {
-            let jsonStrings;
-
-            jsonStrings = Object
-                .keys(jsonFiles)
-                .reduce(function (accumulator, name) {
-                    accumulator.push('JSON ' + name);
-                    return accumulator;
-                }, []);
-
-            strings.push.apply(strings, jsonStrings);
-        }
 
         appendMarkup(this.$modal_body, strings);
 
@@ -317,6 +312,39 @@ var app = (function (app) {
 
         string = [ 'No Track Files Found' ];
         appendMarkup($container, string);
+    }
+
+    function createDropboxButton($container) {
+
+        $container.get(0).appendChild( Dropbox.createChooseButton( dropboxButtonConfigurator.call(this) ) );
+
+        function dropboxButtonConfigurator() {
+            let self = this,
+                obj;
+
+            obj =
+                {
+
+                    success: function(dbFiles) {
+
+                        self.ingestPaths(dbFiles.map(function (dbFile) {
+                            return dbFile.link;
+                        }));
+
+                    },
+
+                    cancel: function() { },
+
+                    linkType: "preview",
+
+                    multiselect: true,
+
+                    folderselect: false,
+                };
+
+            return obj;
+        }
+
     }
 
     return app;

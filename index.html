@@ -122,19 +122,9 @@
                         <input id="igv-app-dropdown-local-file-input" type="file" name="file" multiple style="display: none;">
                     </label>
 
-                    <!-- local file (legacy) -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-local-file-modal"> (LEGACY) Local File ...</button>
-
-                    <!-- URL -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">URL ...</button>
-
                     <!-- Dropbox -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-dropbox-modal">
-                        <div class=" igv-app-dropdown-item-cloud-storage">
-                            <div>Dropbox</div>
-                            <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
-                            <div>...</div>
-                        </div>
+                    <button class="dropdown-item" type="button">
+                        <div class="igv-app-dropdown-item-cloud-storage"></div>
                     </button>
 
                     <!-- Google Drive -->
@@ -145,6 +135,9 @@
                             <div>...</div>
                         </div>
                     </button>
+
+                    <!-- URL -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">URL ...</button>
 
                     <div class="dropdown-divider"></div>
 

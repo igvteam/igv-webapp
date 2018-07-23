@@ -24,7 +24,8 @@ var app = (function (app) {
 
     app.init = function (browser, $container, urlShortenerConfig) {
 
-        let sessionConfig,
+        let mstcConfig,
+            sessionConfig,
             trackLoadConfig,
             genomeLoadConfig,
             shareConfig;
@@ -33,12 +34,19 @@ var app = (function (app) {
 
         createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
 
-        app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, $('#igv-app-multi-select-track-modal'));
+        mstcConfig =
+            {
+              $modal: $('#igv-app-multi-select-track-modal'),
+              $dropboxButtonContainer: $('.igv-app-dropdown-item-cloud-storage')
+            };
+        app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, mstcConfig);
 
         $('#igv-app-dropdown-local-file-input').on('change', function () {
 
-            if (true === app.multiSelectTrackLoadController.isValidLocalInput( $(this) )) {
-                app.multiSelectTrackLoadController.ingestLocalFiles( $(this).get(0) )
+            if (true === app.multiSelectTrackLoadController.isValidLocalFileInput($(this))) {
+                let input;
+                input = $(this).get(0);
+                app.multiSelectTrackLoadController.ingestPaths(Array.from(input.files));
             }
 
         });

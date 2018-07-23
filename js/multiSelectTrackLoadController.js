@@ -66,13 +66,13 @@ var app = (function (app) {
                 // map to name/file object
                 return { name: file.name, file: file };
             })
-            .reduce(function(obj, item) {
+            .reduce(function(accumulator, item) {
                 let key;
 
                 // reduce list of name/file objects to dictionary key'ed by 'name' value
                 key = item[ 'name' ];
-                obj[ key ] = item.file;
-                return obj;
+                accumulator[ key ] = item.file;
+                return accumulator;
             }, {});
 
         // index files (potentials)
@@ -80,9 +80,9 @@ var app = (function (app) {
             .filter(function (file) {
                 return !(igv.knownFileExtensions.has( igv.getExtension({ url: file }) ));
             })
-            .reduce(function(obj, file) {
-                obj[ file.name ] = file;
-                return obj;
+            .reduce(function(accumulator, file) {
+                accumulator[ file.name ] = file;
+                return accumulator;
             }, {});
 
         indexFiles = getIndexFiles(dataFiles, indexFileCandidates);
@@ -102,9 +102,9 @@ var app = (function (app) {
                     let jsonFiles;
 
                     jsonFiles = trackConfigurations
-                        .reduce(function(obj, trackConfiguration) {
-                            obj[ trackConfiguration.name ] = trackConfiguration;
-                            return obj;
+                        .reduce(function(accumulator, trackConfiguration) {
+                            accumulator[ trackConfiguration.name ] = trackConfiguration;
+                            return accumulator;
                         }, {});
 
                     renderFiles.call(self, dataFiles, indexFiles, jsonFiles);
@@ -124,44 +124,42 @@ var app = (function (app) {
     };
 
     function getIndexFiles(dataFiles, indexFileCandidates) {
-        let indexFileAssessments,
-            indexFiles;
+        let indexFiles;
 
         // add info about presence and requirement (or not) of an index file
-        indexFileAssessments = Object
+        indexFiles = Object
             .keys(dataFiles)
             .map(function (key) {
+                let indexObject;
 
                 // assess the data files need/requirement for index files
-                return app.fileutils.getIndexObject(key);
-
-            })
-            .map(function (io) {
+                indexObject  = app.fileutils.getIndexObject(key);
 
                 // identify the presence/absence of associated index files
-                for (let value in io) {
-                    if (io.hasOwnProperty(value)) {
-                        io[ value ].missing = (undefined === indexFileCandidates[ value ]);
+                for (let p in indexObject) {
+                    if (indexObject.hasOwnProperty(p)) {
+                        indexObject[ p ].missing = (undefined === indexFileCandidates[ p ]);
                     }
                 }
-                return io;
+
+                return indexObject;
             })
-            .filter(function (io) {
+            .filter(function (indexObject) {
 
                 // prune the optional and missing index files for data files
                 // that don't require and index file
-                if (1 === Object.keys(io).length) {
+                if (1 === Object.keys(indexObject).length) {
 
-                    let o;
+                    let obj;
 
-                    o = io[ Object.keys(io)[ 0 ] ];
-                    if( true === o.missing &&  true === o.isOptional) {
+                    obj = indexObject[ Object.keys(indexObject)[ 0 ] ];
+                    if( true === obj.missing &&  true === obj.isOptional) {
                         return false;
-                    } else if (false === o.missing && false === o.isOptional) {
+                    } else if (false === obj.missing && false === obj.isOptional) {
                         return true;
-                    } else if ( true === o.missing && false === o.isOptional) {
+                    } else if ( true === obj.missing && false === obj.isOptional) {
                         return true;
-                    } else /*( false === o.missing && true === o.isOptional)*/ {
+                    } else /*( false === obj.missing && true === obj.isOptional)*/ {
                         return true;
                     }
 
@@ -169,25 +167,26 @@ var app = (function (app) {
                     return true;
                 }
 
-            });
+            })
+            .reduce(function(accumulator, indexObject) {
 
-        indexFiles = {};
-        indexFileAssessments.forEach(function (io) {
+                for (let key in indexObject) {
 
-            for (let ii in io) {
+                    if (indexObject.hasOwnProperty(key)) {
+                        let value;
 
-                if (io.hasOwnProperty(ii)) {
-                    let obj;
+                        value = indexObject[ key ];
 
-                    obj = io[ ii ];
+                        if (undefined === accumulator[ value.data ]) {
+                            accumulator[ value.data ] = [];
+                        }
 
-                    if (undefined === indexFiles[ obj.data ]) indexFiles[ obj.data ] = [];
-
-                    indexFiles[ obj.data ].push(((false === obj.missing) ? indexFileCandidates[ ii ] : undefined));
+                        accumulator[ value.data ].push(((false === value.missing) ? indexFileCandidates[ key ] : undefined));
+                    }
                 }
-            }
 
-        });
+                return accumulator;
+            }, {});
 
         return indexFiles;
     }
@@ -195,10 +194,9 @@ var app = (function (app) {
     function renderFiles(dataFiles, indexFiles, jsonFiles = undefined) {
         let strings;
 
-        strings = [];
-        Object
+        strings = Object
             .keys(dataFiles)
-            .forEach(function (name) {
+            .reduce(function(accumulator, name) {
 
                 if (indexFiles[ name ]) {
                     let aa;
@@ -207,37 +205,42 @@ var app = (function (app) {
                     if (1 === indexFiles[ name ].length) {
 
                         if (undefined === aa) {
-                            strings.push('DATA ' + name + ' INDEX file is missing');
+                            accumulator.push('DATA ' + name + ' INDEX file is missing');
                         } else {
-                            strings.push('DATA ' + name + ' INDEX ' + aa.name);
+                            accumulator.push('DATA ' + name + ' INDEX ' + aa.name);
                         }
+
                     } else /* BAM Track with two naming conventions */ {
                         let bb;
 
                         bb = indexFiles[ name ][ 1 ];
                         if (undefined === aa && undefined === bb) {
-                            strings.push('DATA ' + name + ' INDEX file is missing');
+                            accumulator.push('DATA ' + name + ' INDEX file is missing');
                         } else {
                             let cc;
                             cc = aa || bb;
-                            strings.push('DATA ' + name + ' INDEX ' + cc.name);
+                            accumulator.push('DATA ' + name + ' INDEX ' + cc.name);
                         }
 
                     }
                 } else {
-                    strings.push('DATA ' + name);
+                    accumulator.push('DATA ' + name);
                 }
 
-            });
+                return accumulator;
+            }, []);
 
         if (jsonFiles) {
+            let jsonStrings;
 
-            Object
+            jsonStrings = Object
                 .keys(jsonFiles)
-                .forEach(function (key) {
-                    strings.push('JSON ' + key);
-                });
-
+                .reduce(function (accumulator, name) {
+                    accumulator.push('JSON ' + name);
+                    return accumulator;
+                }, []);
+            
+            strings.push.apply(strings, jsonStrings);
         }
 
         appendMarkup(this.$modal_body, strings);
@@ -247,7 +250,8 @@ var app = (function (app) {
 
     function appendMarkup($container, strings) {
 
-        strings.map(function (string) {
+        strings
+            .map(function (string) {
             let $p;
             $p = $('<p>');
             $p.text(string);

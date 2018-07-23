@@ -35,9 +35,9 @@ var app = (function (app) {
             files,
             dataFiles,
             indexFileCandidates,
-            test,
             indexFiles,
-            jsonPromises;
+            jsonPromises,
+            trackConfigurations;
 
         // discard current contents of modal body
         this.$modal_body.empty();
@@ -94,27 +94,42 @@ var app = (function (app) {
             return;
         }
 
+        trackConfigurations = Object
+            .keys(dataFiles)
+            .map(function (dataKey) {
+                let dataValue;
+
+                dataValue = dataFiles[ dataKey ];
+                return trackConfigurator(dataKey, dataValue, indexFiles);
+            });
+
         if (jsonPromises.length > 0) {
 
             Promise
                 .all(jsonPromises)
-                .then(function (trackConfigurations) {
+                .then(function (jsonTrackConfigurations) {
                     let jsonFiles;
 
-                    jsonFiles = trackConfigurations
-                        .reduce(function(accumulator, trackConfiguration) {
-                            accumulator[ trackConfiguration.name ] = trackConfiguration;
-                            return accumulator;
-                        }, {});
+                    trackConfigurations.push.apply(trackConfigurations, jsonTrackConfigurations);
 
-                    renderFiles.call(self, dataFiles, indexFiles, jsonFiles);
+                    igv.browser.loadTrackList( trackConfigurations );
+
+                    // jsonFiles = jsonTrackConfigurations
+                    //     .reduce(function(accumulator, config) {
+                    //         accumulator[ config.name ] = config;
+                    //         return accumulator;
+                    //     }, {});
+                    //
+                    // renderFiles.call(self, dataFiles, indexFiles, jsonFiles);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
 
         } else {
-            renderFiles.call(this, dataFiles, indexFiles);
+            // renderFiles.call(this, dataFiles, indexFiles);
+            igv.browser.loadTrackList( trackConfigurations );
+
         }
 
     };
@@ -191,6 +206,44 @@ var app = (function (app) {
         return indexFiles;
     }
 
+    function trackConfigurator(dataKey, dataValue, indexFiles) {
+        let config;
+
+        function getIndexURL(indexValue) {
+
+            if (indexValue) {
+                let list;
+
+                list = indexValue;
+                if (1 === list.length) {
+                    return list[ 0 ];
+                } else  /* BAM index files 2 === list.length */ {
+                    return list[ 0 ] || list[ 1 ];
+                }
+
+            } else {
+                return undefined;
+            }
+
+        }
+
+        config =
+            {
+                name: dataKey,
+                filename:dataKey,
+
+                format: igv.inferFileFormat(dataKey),
+
+                url: dataValue,
+                indexURL: getIndexURL(indexFiles[ dataKey ])
+            };
+
+        igv.inferTrackTypes(config);
+
+        return config;
+
+    }
+
     function renderFiles(dataFiles, indexFiles, jsonFiles = undefined) {
         let strings;
 
@@ -239,7 +292,7 @@ var app = (function (app) {
                     accumulator.push('JSON ' + name);
                     return accumulator;
                 }, []);
-            
+
             strings.push.apply(strings, jsonStrings);
         }
 

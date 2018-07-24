@@ -214,7 +214,7 @@ var app = (function (app) {
 
         var extension;
 
-        if (true === isAnIndexFile(fileOrURL)) {
+        if (true === isAnIndexFile.call(this, fileOrURL)) {
             return false;
         } else {
             extension = igv.getExtension({ url: fileOrURL });

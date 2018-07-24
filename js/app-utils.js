@@ -26,6 +26,15 @@ var app = (function (app) {
 
     app.fileutils =
         {
+            isValidIndexExtension: function (path) {
+                let set;
+                set = new Set([ 'bai', 'tbi', 'idx' ]);
+                return set.has( igv.getExtension({ url: path }) );
+            },
+
+            isIndexOptional: function (indexName) {
+                return 'bai' !== igv.getExtension(indexName);
+            },
 
             indexLookup: function (dataSuffix) {
                 let bam,
@@ -65,7 +74,7 @@ var app = (function (app) {
 
             },
 
-            getIndexObject: function (name) {
+            getIndexObjectWithDataName: function (name) {
                 let extension,
                     dataSuffix,
                     lookup,

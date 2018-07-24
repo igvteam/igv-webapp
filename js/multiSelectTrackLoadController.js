@@ -25,7 +25,7 @@ var app = (function (app) {
 
     app.MultiSelectTrackLoadController = function (browser, config) {
         this.browser = browser;
-        
+
         this.$modal = config.$modal;
         this.$modal_body = this.$modal.find('.modal-body');
 
@@ -34,9 +34,12 @@ var app = (function (app) {
 
     app.MultiSelectTrackLoadController.prototype.ingestPaths = function (paths) {
 
-        let dataPaths,
+        let self = this,
+            dataPaths,
             indexPathCandidates,
             indexPaths,
+            indexPathSet,
+            indexPathsLackingDataPaths,
             jsonPromises,
             trackConfigurations;
 
@@ -73,7 +76,8 @@ var app = (function (app) {
         // index paths (potentials)
         indexPathCandidates = paths
             .filter(function (path) {
-                return !(igv.knownFileExtensions.has( igv.getExtension({ url: path }) ));
+                // return !(igv.knownFileExtensions.has( igv.getExtension({ url: path }) ));
+                return app.fileutils.isValidIndexExtension( igv.getExtension({ url: path }) );
             })
             .reduce(function(accumulator, path) {
                 accumulator[ igv.getFilename(path) ] = path;
@@ -82,21 +86,35 @@ var app = (function (app) {
 
         indexPaths = getIndexPaths(dataPaths, indexPathCandidates);
 
-        // bail if no data files are selected
-        if (0 === jsonPromises.length && 0 === Object.keys(dataPaths).length) {
-            appendNoFilesFoundMarkup(this.$modal_body);
-            this.$modal.modal('show');
-            return;
+        indexPathSet = new Set();
+        for (let key in indexPaths) {
+            if (indexPaths.hasOwnProperty(key)) {
+                if (1 === indexPaths[ key ].length) {
+                    if (indexPaths[ key ][ 0 ]) indexPathSet.add( igv.getFilename( indexPaths[ key ][ 0 ] ) );
+                } else {
+                    if (indexPaths[ key ][ 0 ]) indexPathSet.add( igv.getFilename( indexPaths[ key ][ 0 ] ) );
+                    if (indexPaths[ key ][ 1 ]) indexPathSet.add( igv.getFilename( indexPaths[ key ][ 1 ] ) );
+                }
+            }
         }
 
-        trackConfigurations = Object
-            .keys(dataPaths)
-            .map(function (dataKey) {
-                let dataValue;
+        indexPathsLackingDataPaths = [];
+        for (let key in indexPathCandidates) {
+            if (indexPathCandidates.hasOwnProperty(key)) {
+                if (false === indexPathSet.has(key)) {
+                    indexPathsLackingDataPaths.push(key);
+                }
+            }
+        }
 
-                dataValue = dataPaths[ dataKey ];
-                return trackConfigurator(dataKey, dataValue, indexPaths);
-            });
+        trackConfigurations = [];
+        for (let key in dataPaths) {
+            if (dataPaths.hasOwnProperty(key)) {
+                if (false === dataPathIsMissingIndexPath(key, indexPaths) ) {
+                    trackConfigurations.push( trackConfigurator(key, dataPaths[ key ], indexPaths) )
+                }
+            }
+        }
 
         if (jsonPromises.length > 0) {
 
@@ -117,10 +135,12 @@ var app = (function (app) {
 
                         return accumulator;
                     }, []);
-                    
+
                     trackConfigurations.push.apply(trackConfigurations, jsonTrackConfigurations);
 
                     igv.browser.loadTrackList( trackConfigurations );
+
+                    renderUnselectedFiles.call(self, dataPaths, indexPaths, indexPathsLackingDataPaths);
 
                 })
                 .catch(function (error) {
@@ -129,9 +149,11 @@ var app = (function (app) {
 
         } else {
 
-            igv.browser.loadTrackList( trackConfigurations );
+            if (trackConfigurations.length > 0) {
+                igv.browser.loadTrackList( trackConfigurations );
+            }
 
-            renderMissingFiles.call(this, dataPaths, indexPaths);
+            renderUnselectedFiles.call(this, dataPaths, indexPaths, indexPathsLackingDataPaths);
         }
 
     };
@@ -141,16 +163,18 @@ var app = (function (app) {
     };
 
     function getIndexPaths(dataPaths, indexPathCandidates) {
-        let indexPaths;
+        let list,
+            indexPaths,
+            dev_null;
 
         // add info about presence and requirement (or not) of an index path
-        indexPaths = Object
+        list = Object
             .keys(dataPaths)
             .map(function (name) {
                 let indexObject;
 
                 // assess the data files need/requirement for index files
-                indexObject  = app.fileutils.getIndexObject(name);
+                indexObject  = app.fileutils.getIndexObjectWithDataName(name);
 
                 // identify the presence/absence of associated index files
                 for (let p in indexObject) {
@@ -184,7 +208,9 @@ var app = (function (app) {
                     return true;
                 }
 
-            })
+            });
+
+        indexPaths = list
             .reduce(function(accumulator, indexObject) {
 
                 for (let key in indexObject) {
@@ -206,6 +232,33 @@ var app = (function (app) {
             }, {});
 
         return indexPaths;
+    }
+
+    function dataPathIsMissingIndexPath(dataName, indexPaths) {
+        let status,
+            aa;
+
+        if (indexPaths && indexPaths[ dataName ]) {
+
+            aa = indexPaths[ dataName ][ 0 ];
+            if (1 === indexPaths[ dataName ].length) {
+                status = (undefined === aa);
+            } else /* BAM Track with two naming conventions */ {
+                let bb;
+                bb = indexPaths[ dataName ][ 1 ];
+                if (aa || bb) {
+                    status = false
+                } else {
+                    status = true;
+                }
+            }
+
+        } else {
+            status = false;
+        }
+
+        return status;
+
     }
 
     function trackConfigurator(dataKey, dataValue, indexFiles) {
@@ -246,50 +299,24 @@ var app = (function (app) {
 
     }
 
-    function renderMissingFiles(dataPaths, indexPaths) {
+    function renderUnselectedFiles(dataPaths, indexPaths, indexPathsLackingDataPaths) {
         let strings;
 
         strings = Object
             .keys(dataPaths)
             .reduce(function(accumulator, name) {
 
-                if (indexPaths[ name ]) {
-                    let aa;
-
-                    aa = indexPaths[ name ][ 0 ];
-                    if (1 === indexPaths[ name ].length) {
-
-                        if (undefined === aa) {
-                            accumulator.push('DATA ' + name + ' INDEX file is missing');
-                            /*
-                        } else {
-                            accumulator.push('DATA ' + name + ' INDEX ' + aa.name);
-                            */
-                        }
-
-                    } else /* BAM Track with two naming conventions */ {
-                        let bb;
-
-                        bb = indexPaths[ name ][ 1 ];
-                        if (undefined === aa && undefined === bb) {
-                            accumulator.push('DATA ' + name + ' INDEX file is missing');
-                            /*
-                        } else {
-                            let cc;
-                            cc = aa || bb;
-                            accumulator.push('DATA ' + name + ' INDEX ' + cc.name);
-                            */
-                        }
-
-                    }
-                    /*
-                } else {
-                    accumulator.push('DATA ' + name);
-                    */
+                if (true === dataPathIsMissingIndexPath(name, indexPaths)) {
+                    accumulator.push(name + ' requires an index file');
                 }
 
                 return accumulator;
             }, []);
+
+        indexPathsLackingDataPaths
+            .forEach(function (name) {
+                strings.push(name + ' requires a data file');
+            });
 
         appendMarkup(this.$modal_body, strings);
 
@@ -300,11 +327,11 @@ var app = (function (app) {
 
         strings
             .map(function (string) {
-            let $p;
-            $p = $('<p>');
-            $p.text(string);
-            $container.append($p);
-        });
+                let $p;
+                $p = $('<p>');
+                $p.text(string);
+                $container.append($p);
+            });
     }
 
     function appendNoFilesFoundMarkup($container) {

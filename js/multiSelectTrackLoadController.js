@@ -62,14 +62,8 @@ var app = (function (app) {
                 extension = igv.getExtension({ url: path });
                 return igv.knownFileExtensions.has(extension);
             })
-            .map(function (path) {
-
-                // map to name/path object
-                return { name: igv.getFilename(path), path: path };
-            })
-            .reduce(function(accumulator, item) {
-                // reduce list of name/path objects to dictionary key'ed by name
-                accumulator[ item.name ] = item.path;
+            .reduce(function(accumulator, path) {
+                accumulator[ igv.getFilename(path) ] = path;
                 return accumulator;
             }, {});
 
@@ -89,12 +83,12 @@ var app = (function (app) {
         indexPathSet = new Set();
         for (let key in indexPaths) {
             if (indexPaths.hasOwnProperty(key)) {
-                if (1 === indexPaths[ key ].length) {
-                    if (indexPaths[ key ][ 0 ]) indexPathSet.add( igv.getFilename( indexPaths[ key ][ 0 ] ) );
-                } else {
-                    if (indexPaths[ key ][ 0 ]) indexPathSet.add( igv.getFilename( indexPaths[ key ][ 0 ] ) );
-                    if (indexPaths[ key ][ 1 ]) indexPathSet.add( igv.getFilename( indexPaths[ key ][ 1 ] ) );
-                }
+                indexPaths[ key ]
+                    .forEach(function (path) {
+                        if (path) {
+                            indexPathSet.add( igv.getFilename( path ) );
+                        }
+                    });
             }
         }
 

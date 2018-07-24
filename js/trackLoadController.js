@@ -86,6 +86,7 @@ var app = (function (app) {
                 { 'Output Type': '20%' },
                 {     'Bio Rep': '5%' },
                 {    'Tech Rep': '5%'  },
+                {      'Format': '5%'  },
                 {         'Lab': '20%' }
 
             ];

@@ -61,7 +61,7 @@ var igv = (function (igv) {
                 configuration.$modalGoButton
             ];
 
-        _.each(list, function ($e) {
+        list.forEach( function ($e) {
             $e.unbind();
         });
 
@@ -132,7 +132,7 @@ var igv = (function (igv) {
             this.datasource
                 .retrieveData(assembly)
                 .then(function (data) {
-                    console.log('modaltable. then. received data ' + _.size(data));
+               //     console.log('modaltable. then. received data ' + data.length);
                     self.datasource.data = data;
                     self.doRetrieveData = false;
 

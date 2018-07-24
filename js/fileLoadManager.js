@@ -41,11 +41,14 @@ var app = (function (app) {
                 gz: { extension: 'tbi', optional: true  }
             };
 
-        this.indexExtensionToKey = _.invert(_.mapObject(this.keyToIndexExtension, function (val) {
-            return val.extension;
-        }));
+        this.indexExtensionToKey = {
+            bai: 'bam',
+            idx: 'any',
+            tbi: 'gz'
+        }
 
     };
+
 
     app.FileLoadManager.prototype.okHandler = function () {
 
@@ -199,7 +202,8 @@ var app = (function (app) {
         var extension;
 
         extension = igv.getExtension({ url: fileOrURL });
-        return _.contains(_.keys(this.indexExtensionToKey), extension);
+        return this.indexExtensionToKey.hasOwnProperty(extension);
+
     }
 
     function itemName (item) {

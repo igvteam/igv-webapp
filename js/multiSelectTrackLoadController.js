@@ -40,15 +40,15 @@ var app = (function (app) {
             indexPaths,
             indexPathNameSet,
             indexPathNamesLackingDataPaths,
-            jsonPromises,
+            jsonRetrievalPromises,
             trackConfigurations,
             dev_null;
 
         // discard current contents of modal body
         this.$modal_body.empty();
 
-        // accumumate JSON retrieval promises
-        jsonPromises = paths
+        // accumulate JSON retrieval promises
+        jsonRetrievalPromises = paths
             .filter(function (path) {
                 return 'json' === igv.getExtension({ url: path });
             })
@@ -117,10 +117,10 @@ var app = (function (app) {
                 return accumulator;
             }, []);
 
-        if (jsonPromises.length > 0) {
+        if (jsonRetrievalPromises.length > 0) {
 
             Promise
-                .all(jsonPromises)
+                .all(jsonRetrievalPromises)
                 .then(function (list) {
                     let jsonTrackConfigurations;
 
@@ -292,9 +292,10 @@ var app = (function (app) {
                 strings.push(name + ' requires a data file');
             });
 
-        appendMarkup(this.$modal_body, strings);
-
-        this.$modal.modal('show');
+        if (strings.length > 0) {
+            appendMarkup(this.$modal_body, strings);
+            this.$modal.modal('show');
+        }
     }
 
     function dataPathIsMissingIndexPath(dataName, indexPaths) {

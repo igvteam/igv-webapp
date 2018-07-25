@@ -153,20 +153,24 @@ $igv-app-logo-container-width: 20%;
 
     font-size: 18px;
 
-    padding: 8px;
+    span {
+      //font-weight: bolder;
+    }
 
-    border-bottom-color: $igv-app-light-color;
-    border-bottom-style: solid;
-    border-bottom-width: thin;
+    padding-bottom: 8px;
 
+    //border-bottom-color: $igv-app-light-color;
+    //border-bottom-style: solid;
+    //border-bottom-width: thin;
   }
 
   div:last-child {
 
-    border-top-color: transparent;
-    border-top-style: solid;
-    border-top-width: thin;
+    padding-bottom: unset;
 
+    //border-top-color: transparent;
+    //border-top-style: solid;
+    //border-top-width: thin;
   }
 
 }

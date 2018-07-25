@@ -41,8 +41,8 @@ var app = (function (app) {
             indexPathNameSet,
             indexPathNamesLackingDataPaths,
             jsonRetrievalPromises,
-            trackConfigurations,
-            dev_null;
+            jsonNames,
+            trackConfigurations;
 
         // discard current contents of modal body
         this.$modal_body.empty();
@@ -124,24 +124,30 @@ var app = (function (app) {
                 .then(function (list) {
                     let jsonTrackConfigurations;
 
-                    jsonTrackConfigurations = list.reduce(function(accumulator, item) {
+                    jsonTrackConfigurations = list
+                        .reduce(function(accumulator, item) {
 
-                        if (true === Array.isArray(item)) {
-                            item.forEach(function (config) {
-                                accumulator.push(config);
-                            })
-                        } else {
-                            accumulator.push(item);
-                        }
+                            if (true === Array.isArray(item)) {
+                                item.forEach(function (config) {
+                                    accumulator.push(config);
+                                })
+                            } else {
+                                accumulator.push(item);
+                            }
 
-                        return accumulator;
-                    }, []);
+                            return accumulator;
+                        }, []);
+
+                    jsonNames = jsonTrackConfigurations
+                        .map(function (config) {
+                            return config.name;
+                        });
 
                     trackConfigurations.push.apply(trackConfigurations, jsonTrackConfigurations);
 
                     igv.browser.loadTrackList( trackConfigurations );
 
-                    renderUnselectedFiles.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonNames);
 
                 })
                 .catch(function (error) {
@@ -154,7 +160,7 @@ var app = (function (app) {
                 igv.browser.loadTrackList( trackConfigurations );
             }
 
-            renderUnselectedFiles.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+            renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, []);
         }
 
     };
@@ -273,17 +279,15 @@ var app = (function (app) {
 
     }
 
-    function renderUnselectedFiles(dataPaths, indexPaths, indexPathsLackingDataPaths) {
-        let strings;
+    function renderTrackFileSelection(dataPaths, indexPaths, indexPathsLackingDataPaths) {
+        let markup;
 
-        strings = Object
+        markup = Object
             .keys(dataPaths)
             .reduce(function(accumulator, name) {
 
                 if (true === dataPathIsMissingIndexPath(name, indexPaths)) {
-                    accumulator.push(name + ' requires an index file');
-                } else {
-                    accumulator.push(name + ' selected');
+                    accumulator.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: index file must also be selected</div>');
                 }
 
                 return accumulator;
@@ -291,11 +295,15 @@ var app = (function (app) {
 
         indexPathsLackingDataPaths
             .forEach(function (name) {
-                strings.push(name + ' requires a data file');
+                markup.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: data file must also be selected</div>');
             });
 
-        if (strings.length > 0) {
-            appendMarkup(this.$modal_body, strings);
+        if (markup.length > 0) {
+            let header;
+
+            header = '<div> The following files were not loaded ...</div>';
+            markup.unshift(header);
+            this.$modal_body.append(markup.join(''));
             this.$modal.modal('show');
         }
     }
@@ -325,17 +333,6 @@ var app = (function (app) {
 
         return status;
 
-    }
-
-    function appendMarkup($container, strings) {
-
-        strings
-            .map(function (string) {
-                let $e;
-                $e = $('<div>');
-                $e.text(string);
-                $container.append($e);
-            });
     }
 
     function createDropboxButton($container) {

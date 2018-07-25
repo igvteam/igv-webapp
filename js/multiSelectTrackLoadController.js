@@ -282,6 +282,8 @@ var app = (function (app) {
 
                 if (true === dataPathIsMissingIndexPath(name, indexPaths)) {
                     accumulator.push(name + ' requires an index file');
+                } else {
+                    accumulator.push(name + ' selected');
                 }
 
                 return accumulator;
@@ -329,10 +331,10 @@ var app = (function (app) {
 
         strings
             .map(function (string) {
-                let $p;
-                $p = $('<p>');
-                $p.text(string);
-                $container.append($p);
+                let $e;
+                $e = $('<div>');
+                $e.text(string);
+                $container.append($e);
             });
     }
 

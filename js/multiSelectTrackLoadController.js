@@ -38,10 +38,11 @@ var app = (function (app) {
             dataPaths,
             indexPathCandidates,
             indexPaths,
-            indexPathSet,
-            indexPathsLackingDataPaths,
+            indexPathNameSet,
+            indexPathNamesLackingDataPaths,
             jsonPromises,
-            trackConfigurations;
+            trackConfigurations,
+            dev_null;
 
         // discard current contents of modal body
         this.$modal_body.empty();
@@ -70,7 +71,6 @@ var app = (function (app) {
         // index paths (potentials)
         indexPathCandidates = paths
             .filter(function (path) {
-                // return !(igv.knownFileExtensions.has( igv.getExtension({ url: path }) ));
                 return app.fileutils.isValidIndexExtension( igv.getExtension({ url: path }) );
             })
             .reduce(function(accumulator, path) {
@@ -78,37 +78,44 @@ var app = (function (app) {
                 return accumulator;
             }, {});
 
+        // identify index paths that are
+        // 1) present
+        // 2) names of missing index paths for later error reporting
         indexPaths = getIndexPaths(dataPaths, indexPathCandidates);
 
-        indexPathSet = new Set();
+        indexPathNameSet = new Set();
         for (let key in indexPaths) {
             if (indexPaths.hasOwnProperty(key)) {
                 indexPaths[ key ]
                     .forEach(function (path) {
                         if (path) {
-                            indexPathSet.add( igv.getFilename( path ) );
+                            indexPathNameSet.add( igv.getFilename( path ) );
                         }
                     });
             }
         }
 
-        indexPathsLackingDataPaths = [];
-        for (let key in indexPathCandidates) {
-            if (indexPathCandidates.hasOwnProperty(key)) {
-                if (false === indexPathSet.has(key)) {
-                    indexPathsLackingDataPaths.push(key);
-                }
-            }
-        }
+        indexPathNamesLackingDataPaths = Object
+            .keys(indexPathCandidates)
+            .reduce(function(accumulator, key) {
 
-        trackConfigurations = [];
-        for (let key in dataPaths) {
-            if (dataPaths.hasOwnProperty(key)) {
-                if (false === dataPathIsMissingIndexPath(key, indexPaths) ) {
-                    trackConfigurations.push( trackConfigurator(key, dataPaths[ key ], indexPaths) )
+                if (false === indexPathNameSet.has(key)) {
+                    accumulator.push(key);
                 }
-            }
-        }
+
+                return accumulator;
+            }, []);
+
+        trackConfigurations = Object
+            .keys(dataPaths)
+            .reduce(function(accumulator, key) {
+
+                if (false === dataPathIsMissingIndexPath(key, indexPaths) ) {
+                    accumulator.push( trackConfigurator(key, dataPaths[ key ], indexPaths) )
+                }
+
+                return accumulator;
+            }, []);
 
         if (jsonPromises.length > 0) {
 
@@ -134,7 +141,7 @@ var app = (function (app) {
 
                     igv.browser.loadTrackList( trackConfigurations );
 
-                    renderUnselectedFiles.call(self, dataPaths, indexPaths, indexPathsLackingDataPaths);
+                    renderUnselectedFiles.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
 
                 })
                 .catch(function (error) {
@@ -147,7 +154,7 @@ var app = (function (app) {
                 igv.browser.loadTrackList( trackConfigurations );
             }
 
-            renderUnselectedFiles.call(this, dataPaths, indexPaths, indexPathsLackingDataPaths);
+            renderUnselectedFiles.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
         }
 
     };
@@ -228,33 +235,6 @@ var app = (function (app) {
         return indexPaths;
     }
 
-    function dataPathIsMissingIndexPath(dataName, indexPaths) {
-        let status,
-            aa;
-
-        if (indexPaths && indexPaths[ dataName ]) {
-
-            aa = indexPaths[ dataName ][ 0 ];
-            if (1 === indexPaths[ dataName ].length) {
-                status = (undefined === aa);
-            } else /* BAM Track with two naming conventions */ {
-                let bb;
-                bb = indexPaths[ dataName ][ 1 ];
-                if (aa || bb) {
-                    status = false
-                } else {
-                    status = true;
-                }
-            }
-
-        } else {
-            status = false;
-        }
-
-        return status;
-
-    }
-
     function trackConfigurator(dataKey, dataValue, indexFiles) {
         let config;
 
@@ -317,6 +297,33 @@ var app = (function (app) {
         this.$modal.modal('show');
     }
 
+    function dataPathIsMissingIndexPath(dataName, indexPaths) {
+        let status,
+            aa;
+
+        if (indexPaths && indexPaths[ dataName ]) {
+
+            aa = indexPaths[ dataName ][ 0 ];
+            if (1 === indexPaths[ dataName ].length) {
+                status = (undefined === aa);
+            } else /* BAM Track with two naming conventions */ {
+                let bb;
+                bb = indexPaths[ dataName ][ 1 ];
+                if (aa || bb) {
+                    status = false
+                } else {
+                    status = true;
+                }
+            }
+
+        } else {
+            status = false;
+        }
+
+        return status;
+
+    }
+
     function appendMarkup($container, strings) {
 
         strings
@@ -326,13 +333,6 @@ var app = (function (app) {
                 $p.text(string);
                 $container.append($p);
             });
-    }
-
-    function appendNoFilesFoundMarkup($container) {
-        let string;
-
-        string = [ 'No Track Files Found' ];
-        appendMarkup($container, string);
     }
 
     function createDropboxButton($container) {

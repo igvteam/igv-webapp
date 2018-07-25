@@ -32,10 +32,6 @@ var app = (function (app) {
                 return set.has( igv.getExtension({ url: path }) );
             },
 
-            isIndexOptional: function (indexName) {
-                return 'bai' !== igv.getExtension(indexName);
-            },
-
             indexLookup: function (dataSuffix) {
                 let bam,
                     gz,

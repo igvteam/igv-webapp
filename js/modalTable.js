@@ -108,10 +108,10 @@ var igv = (function (igv) {
         this.config.willRetrieveData();
     };
 
-    // igv.ModalTable.prototype.didRetrieveData = function () {
-    //     this.config.didRetrieveData();
-    //     this.buildTable(true);
-    // };
+    igv.ModalTable.prototype.didRetrieveData = function () {
+        this.config.didRetrieveData();
+        this.stopSpinner();
+    };
 
     igv.ModalTable.prototype.didFailToRetrieveData = function () {
         this.stopSpinner();
@@ -157,9 +157,7 @@ var igv = (function (igv) {
 
                 console.log('... done building table');
 
-                self.config.didRetrieveData();
-
-                self.stopSpinner();
+                self.didRetrieveData();
 
                 self.doBuildTable = false;
             }

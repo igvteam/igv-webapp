@@ -110,7 +110,7 @@ var igv = (function (igv) {
 
     igv.ModalTable.prototype.didRetrieveData = function () {
         this.config.didRetrieveData();
-        this.buildTable(true);
+        this.stopSpinner();
     };
 
     igv.ModalTable.prototype.didFailToRetrieveData = function () {
@@ -132,11 +132,9 @@ var igv = (function (igv) {
             this.datasource
                 .retrieveData(assembly)
                 .then(function (data) {
-               //     console.log('modaltable. then. received data ' + data.length);
                     self.datasource.data = data;
                     self.doRetrieveData = false;
-
-                    self.didRetrieveData();
+                    self.buildTable(true);
                 })
                 .catch(function (e) {
                     self.didFailToRetrieveData();
@@ -151,21 +149,18 @@ var igv = (function (igv) {
 
         if (true === success) {
 
-            this.config.$modal.on('shown.bs.modal', function (e) {
+            if (true === self.doBuildTable) {
 
-                if (true === self.doBuildTable) {
+                console.log('building table ...');
 
-                    console.log('building table ...');
+                self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
 
-                    self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
+                console.log('... done building table');
 
-                    console.log('... done building table');
-                    self.stopSpinner();
+                self.didRetrieveData();
 
-                    self.doBuildTable = false;
-                }
-
-            });
+                self.doBuildTable = false;
+            }
 
             this.config.$modalGoButton.on('click', function () {
                 var selected;

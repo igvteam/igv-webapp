@@ -36,8 +36,8 @@ var app = (function (app) {
 
         mstcConfig =
             {
-              $modal: $('#igv-app-multi-select-track-modal'),
-              $dropboxButtonContainer: $('.igv-app-dropdown-item-cloud-storage').find('#igv-app-dropbox-button-container')
+                $modal: $('#igv-app-multi-select-track-modal'),
+                $dropboxButton: $('#igv-app-dropbox-button')
             };
         app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, mstcConfig);
 
@@ -129,7 +129,7 @@ var app = (function (app) {
         } else {
             $("#igv-app-share-button").hide();
         }
-        
+
     };
 
     function appFooterImageHoverBehavior ($img) {

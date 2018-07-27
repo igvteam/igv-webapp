@@ -29,7 +29,7 @@ var app = (function (app) {
         this.$modal = config.$modal;
         this.$modal_body = this.$modal.find('.modal-body');
 
-        createDropboxButton.call(this, config.$dropboxButtonContainer);
+        createDropboxButton.call(this, config.$dropboxButton);
     };
 
     app.MultiSelectTrackLoadController.prototype.ingestPaths = function (paths) {
@@ -335,14 +335,12 @@ var app = (function (app) {
 
     }
 
-    function createDropboxButton($container) {
-        let $a;
+    function createDropboxButton($dropboxButton) {
+        let self = this;
 
-        $container.get(0).appendChild( Dropbox.createChooseButton( dropboxButtonConfigurator.call(this) ) );
-
-        // tweak button styling
-        $a = $container.find('a');
-        $a.removeClass('dropbox-dropin-btn dropbox-dropin-default');
+        $dropboxButton.on('click', function () {
+            Dropbox.choose( dropboxButtonConfigurator.call(self) );
+        });
 
         function dropboxButtonConfigurator() {
             let self = this,

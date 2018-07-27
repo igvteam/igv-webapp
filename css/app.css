@@ -327,7 +327,9 @@ a#igv-app-email-button:active {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
-  height: 18px; }
+  height: 18px;
+  margin-top: 4px;
+  margin-bottom: 4px; }
   .igv-app-dropdown-item-cloud-storage div:first-child {
     margin-right: 4px; }
   .igv-app-dropdown-item-cloud-storage div:last-child {

@@ -71,7 +71,7 @@ var app = (function (app) {
                     .loadGenome(genome)
                     .then(function (genome) {
 
-                        if (genome.id && igv.ModalTable.getAssembly(genome.id)) {
+                        if (genome.id && app.ModalTable.getAssembly(genome.id)) {
                             app.trackLoadController.createEncodeTable(genome.id);
                             app.trackLoadController.updateAnnotationsSelectList(genome.id);
                         } else {

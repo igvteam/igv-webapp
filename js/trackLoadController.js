@@ -87,6 +87,7 @@ var app = (function (app) {
                 {     'Bio Rep': '5%' },
                 {    'Tech Rep': '5%'  },
                 {      'Format': '5%'  },
+                {    'Experiment' : '10%'},
                 {         'Lab': '20%' }
 
             ];

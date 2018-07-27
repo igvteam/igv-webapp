@@ -79,6 +79,7 @@ var app = (function (app) {
             let record = {
                 "Assembly": tokens[1],
                 "ExperimentID": tokens[0],
+                "Experiment": tokens[0].substr(13).replace("/", ""),
                 "Cell Type": tokens[2],
                 "Assay Type": tokens[3],
                 "Target": tokens[4],
@@ -348,11 +349,16 @@ var app = (function (app) {
         function getFormat(row) {
 
             let format = row['Format'],
-                outputType = row['Output Type'];
+                outputType = row['Output Type'],
+                assayType = row['Assay Type'];
 
             if (format === 'bedpe' && outputType && outputType.includes('domain')) {
                 return 'bedpe-domain';
-            } else {
+            } else if(format === 'tsv' && outputType.includes("interaction") && assayType.toLowerCase() === 'hic') {
+                return "bedpe-loop";
+            }
+            
+            else {
                 return format;
             }
         }

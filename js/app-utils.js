@@ -29,7 +29,7 @@ var app = (function (app) {
             isValidIndexExtension: function (path) {
                 let set;
                 set = new Set([ 'bai', 'tbi', 'idx' ]);
-                return set.has( igv.getExtension({ url: path }) );
+                return set.has( app.utils.getExtension(path) );
             },
 
             indexLookup: function (dataSuffix) {
@@ -77,7 +77,7 @@ var app = (function (app) {
                     indexObject,
                     aa;
 
-                extension = igv.getExtension({ url: name });
+                extension = app.utils.getExtension(name);
                 if (false === igv.knownFileExtensions.has( extension )) {
                     return undefined;
                 }

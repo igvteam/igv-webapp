@@ -37,7 +37,7 @@ var app = (function (app) {
     app.MultiSelectTrackLoadController.prototype.ingestPaths = function (paths) {
 
         let self = this,
-            dataPathNames,
+            dataPaths,
             indexPathCandidates,
             indexPaths,
             indexPathNameSet,
@@ -59,7 +59,7 @@ var app = (function (app) {
             });
 
         // data (non-JSON)
-        dataPathNames = paths
+        dataPaths = paths
             .filter((path) => (igv.knownFileExtensions.has( app.utils.getExtension(path) )))
             .reduce(function(accumulator, path) {
                 accumulator[ app.utils.getFilename(path) ] = (path.google_url || path);
@@ -77,15 +77,15 @@ var app = (function (app) {
         // identify index paths that are
         // 1) present
         // 2) names of missing index paths for later error reporting
-        indexPaths = getIndexPaths(dataPathNames, indexPathCandidates);
+        indexPaths = getIndexPaths(dataPaths, indexPathCandidates);
 
         indexPathNameSet = new Set();
         for (let key in indexPaths) {
             if (indexPaths.hasOwnProperty(key)) {
                 indexPaths[ key ]
-                    .forEach(function (path) {
-                        if (path) {
-                            indexPathNameSet.add( app.utils.getFilename( path ) );
+                    .forEach(function (obj) {
+                        if (obj) {
+                            indexPathNameSet.add( obj.name );
                         }
                     });
             }
@@ -103,11 +103,11 @@ var app = (function (app) {
             }, []);
 
         trackConfigurations = Object
-            .keys(dataPathNames)
+            .keys(dataPaths)
             .reduce(function(accumulator, key) {
 
                 if (false === dataPathIsMissingIndexPath(key, indexPaths) ) {
-                    accumulator.push( trackConfigurator(key, dataPathNames[ key ], indexPaths) )
+                    accumulator.push( trackConfigurator(key, dataPaths[key], indexPaths) )
                 }
 
                 return accumulator;
@@ -143,7 +143,7 @@ var app = (function (app) {
 
                     igv.browser.loadTrackList( trackConfigurations );
 
-                    renderTrackFileSelection.call(self, dataPathNames, indexPaths, indexPathNamesLackingDataPaths, jsonNames);
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonNames);
 
                 })
                 .catch(function (error) {
@@ -156,7 +156,7 @@ var app = (function (app) {
                 igv.browser.loadTrackList( trackConfigurations );
             }
 
-            renderTrackFileSelection.call(this, dataPathNames, indexPaths, indexPathNamesLackingDataPaths, []);
+            renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, []);
         }
 
     };
@@ -173,11 +173,11 @@ var app = (function (app) {
         // add info about presence and requirement (or not) of an index path
         list = Object
             .keys(dataPathNames)
-            .map(function (name) {
+            .map(function (dataPathName) {
                 let indexObject;
 
                 // assess the data files need/requirement for index files
-                indexObject  = app.fileutils.getIndexObjectWithDataName(name);
+                indexObject  = app.fileutils.getIndexObjectWithDataName(dataPathName);
 
                 // identify the presence/absence of associated index files
                 for (let p in indexObject) {
@@ -227,7 +227,7 @@ var app = (function (app) {
                             accumulator[ value.data ] = [];
                         }
 
-                        accumulator[ value.data ].push(((false === value.missing) ? indexPathCandidates[ key ] : undefined));
+                        accumulator[ value.data ].push(((false === value.missing) ? { name: key, path: indexPathCandidates[ key ] } : undefined));
                     }
                 }
 
@@ -237,7 +237,7 @@ var app = (function (app) {
         return indexPaths;
     }
 
-    function trackConfigurator(dataKey, dataValue, indexFiles) {
+    function trackConfigurator(dataKey, dataValue, indexPaths) {
         let config;
 
         function getIndexURL(indexValue) {
@@ -246,10 +246,10 @@ var app = (function (app) {
                 let list;
 
                 list = indexValue;
-                if (1 === list.length) {
-                    return list[ 0 ];
-                } else  /* BAM index files 2 === list.length */ {
-                    return list[ 0 ] || list[ 1 ];
+                if (list) {
+                    let url;
+                    url = list[ 0 ].path || list[ 1 ].path;
+                    return url;
                 }
 
             } else {
@@ -266,7 +266,7 @@ var app = (function (app) {
                 format: igv.inferFileFormat(dataKey),
 
                 url: dataValue,
-                indexURL: getIndexURL(indexFiles[ dataKey ])
+                indexURL: getIndexURL(indexPaths[ dataKey ])
             };
 
         igv.inferTrackTypes(config);

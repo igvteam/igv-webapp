@@ -337,13 +337,68 @@ var app = (function (app) {
 
 
             },
+            
+            createDropdownButtonPicker:function (filePickerHandler) {
+
+                app.Google.getAccessToken()
+                    .then(function (accessToken) {
+                        app.Google.updateSignInStatus(true);
+                        return Promise.resolve(accessToken);
+                    })
+                    .then(function (accessToken) {
+
+                        let view,
+                            teamView;
+
+                        view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+                        view.setIncludeFolders(true);
+
+                        teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
+                        teamView.setEnableTeamDrives(true);
+                        teamView.setIncludeFolders(true);
+
+                        if (accessToken) {
+
+                            picker = new google.picker
+                                .PickerBuilder()
+                                .setAppId(igv.Google.properties["project_number"])
+                                .setOAuthToken(igv.oauth.google.access_token)
+                                .addView(view)
+                                .addView(teamView)
+                                .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
+                                .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                                .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                                .setDeveloperKey(igv.Google.properties["developer_key"])
+                                .setCallback(function (data) {
+                                    if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                                        filePickerHandler( data[google.picker.Response.DOCUMENTS] );
+                                    }
+                                })
+                                .build();
+
+                            picker.setVisible(true);
+                        } else {
+                            igv.presentAlert("Sign into Google before using picker");
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+
+
+
+            },
+            
 
             pickerCallback: function (data) {
 
                 let doc,
-                    obj;
+                    obj,
+                    documents;
 
-                doc = data[google.picker.Response.DOCUMENTS][0];
+                documents = data[google.picker.Response.DOCUMENTS];
+                
+                doc = documents[0];
 
                 obj =
                     {

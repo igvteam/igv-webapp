@@ -37,7 +37,8 @@ var app = (function (app) {
         mstcConfig =
             {
                 $modal: $('#igv-app-multi-select-track-modal'),
-                $dropboxButton: $('#igv-app-dropbox-button')
+                $dropboxButton: $('#igv-app-dropbox-button'),
+                $googleDriveButton: $('#igv-app-dropdown-google-drive-button')
             };
         app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, mstcConfig);
 

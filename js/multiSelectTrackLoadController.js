@@ -30,6 +30,8 @@ var app = (function (app) {
         this.$modal_body = this.$modal.find('.modal-body');
 
         createDropboxButton.call(this, config.$dropboxButton);
+
+        createGoogleDriveButton.call(this, config.$googleDriveButton);
     };
 
     app.MultiSelectTrackLoadController.prototype.ingestPaths = function (paths) {
@@ -368,6 +370,26 @@ var app = (function (app) {
 
             return obj;
         }
+
+    }
+
+    function createGoogleDriveButton($button) {
+
+        $button.on('click', function () {
+            app.Google.createDropdownButtonPicker(function (googleDriveResponses) {
+                let objs;
+
+                objs = googleDriveResponses
+                    .map((response) => ({ name:response.name, path: response.url }));
+
+                objs
+                    .forEach((obj) => {
+                        console.log('google drive file ' + obj.name);
+                    });
+
+            });
+
+        });
 
     }
 

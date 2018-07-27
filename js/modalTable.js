@@ -129,7 +129,10 @@ var app = (function (app) {
         if (assembly) {
 
             this.datasource
-                .retrieveData(assembly)
+                .retrieveData(assembly, function (record) {
+                    // Filter bigBed records for now
+                    return record["Format"].toLowerCase() !== "bigbed";
+                })
                 .then(function (data) {
 
                     self.datasource.data = data;

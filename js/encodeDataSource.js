@@ -26,12 +26,11 @@
 
 var app = (function (app) {
 
-    app.EncodeDataSource = function (columnFormat, fileFormats) {
+    app.EncodeDataSource = function (columnFormat) {
         this.columnFormat = columnFormat;
-        this.fileFormats = new Set(fileFormats);
     };
 
-    app.EncodeDataSource.prototype.retrieveData = function (genomeID) {
+    app.EncodeDataSource.prototype.retrieveData = function (genomeID, filter) {
 
         var self = this,
             assembly;
@@ -44,7 +43,7 @@ var app = (function (app) {
 
             .loadString(url, {})
             .then(function (data) {
-                return parseTabData(data, assembly, self.fileFormats);
+                return parseTabData(data, filter);
             })
             .then(function (records) {
                 records.sort(encodeSort);
@@ -61,7 +60,7 @@ var app = (function (app) {
         // });
     };
 
-    function parseTabData(data) {
+    function parseTabData(data, filter) {
 
         if (!data) return null;
 
@@ -93,7 +92,9 @@ var app = (function (app) {
             };
             constructName(record);
 
-            records.push(record);
+            if(filter === undefined || filter(record)) {
+                records.push(record);
+            }
         }
 
         return records;

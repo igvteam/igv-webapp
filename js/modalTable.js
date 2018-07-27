@@ -110,7 +110,6 @@ var app = (function (app) {
 
     app.ModalTable.prototype.didRetrieveData = function () {
         this.config.didRetrieveData();
-        this.buildTable(true);
     };
 
     app.ModalTable.prototype.didFailToRetrieveData = function () {
@@ -132,11 +131,13 @@ var app = (function (app) {
             this.datasource
                 .retrieveData(assembly)
                 .then(function (data) {
-               //     console.log('modaltable. then. received data ' + data.length);
+
                     self.datasource.data = data;
                     self.doRetrieveData = false;
 
                     self.didRetrieveData();
+                    self.buildTable(true);
+
                 })
                 .catch(function (e) {
                     self.didFailToRetrieveData();
@@ -154,14 +155,8 @@ var app = (function (app) {
             this.config.$modal.on('shown.bs.modal', function (e) {
 
                 if (true === self.doBuildTable) {
-
-                    console.log('building table ...');
-
                     self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
-
-                    console.log('... done building table');
                     self.stopSpinner();
-
                     self.doBuildTable = false;
                 }
 
@@ -199,15 +194,20 @@ var app = (function (app) {
             {
                 data: tableData,
                 columns: tableColumns,
+
+                autoWidth: false,
+
                 paging: true,
-                scrollX: false,
+                
+                scrollX: true,
                 scrollY: '400px',
-                scrollCollapse: false,
                 scroller: true,
-                fixedColumns: true
+                scrollCollapse: true
             };
 
+        console.log('ModalTable.tableWithDataAndColumns ...');
         this.$dataTables = this.$table.dataTable(config);
+        console.log('... tableWithDataAndColumns done');
 
         this.$table.find('tbody').on('click', 'tr', function () {
 

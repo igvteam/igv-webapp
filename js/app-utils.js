@@ -117,6 +117,13 @@ var app = (function (app) {
     app.utils =
         {
 
+            getFilename: function (path) {
+                return path.google_url ? path.name : igv.getFilename(path);
+            },
+            getExtension: function (path) {
+                return igv.getExtension({ url: path.google_url ? path.name : path });
+            },
+
             isJSON: function (thang) {
                 // Better JSON test. JSON.parse gives false positives.
                 return (true === (thang instanceof Object) && false === (thang instanceof File));

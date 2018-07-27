@@ -37,7 +37,7 @@ var app = (function (app) {
     app.MultiSelectTrackLoadController.prototype.ingestPaths = function (paths) {
 
         let self = this,
-            dataPaths,
+            dataPathNames,
             indexPathCandidates,
             indexPaths,
             indexPathNameSet,
@@ -51,39 +51,33 @@ var app = (function (app) {
 
         // accumulate JSON retrieval promises
         jsonRetrievalPromises = paths
-            .filter(function (path) {
-                return 'json' === igv.getExtension({ url: path });
-            })
-            .map(function (path) {
-                return igv.xhr.loadJson(path);
+            .filter((path) => ('json' === app.utils.getExtension(path)))
+            .map((path) => {
+                let url;
+                url = (path.google_url || path);
+                return igv.xhr.loadJson(url)
             });
 
         // data (non-JSON)
-        dataPaths = paths
-            .filter(function (path) {
-                let extension;
-                extension = igv.getExtension({ url: path });
-                return igv.knownFileExtensions.has(extension);
-            })
+        dataPathNames = paths
+            .filter((path) => (igv.knownFileExtensions.has( app.utils.getExtension(path) )))
             .reduce(function(accumulator, path) {
-                accumulator[ igv.getFilename(path) ] = path;
+                accumulator[ app.utils.getFilename(path) ] = (path.google_url || path);
                 return accumulator;
             }, {});
 
         // index paths (potentials)
         indexPathCandidates = paths
-            .filter(function (path) {
-                return app.fileutils.isValidIndexExtension( igv.getExtension({ url: path }) );
-            })
+            .filter((path) => app.fileutils.isValidIndexExtension( app.utils.getExtension(path) ))
             .reduce(function(accumulator, path) {
-                accumulator[ igv.getFilename(path) ] = path;
+                accumulator[ app.utils.getFilename(path) ] = (path.google_url || path);
                 return accumulator;
             }, {});
 
         // identify index paths that are
         // 1) present
         // 2) names of missing index paths for later error reporting
-        indexPaths = getIndexPaths(dataPaths, indexPathCandidates);
+        indexPaths = getIndexPaths(dataPathNames, indexPathCandidates);
 
         indexPathNameSet = new Set();
         for (let key in indexPaths) {
@@ -91,7 +85,7 @@ var app = (function (app) {
                 indexPaths[ key ]
                     .forEach(function (path) {
                         if (path) {
-                            indexPathNameSet.add( igv.getFilename( path ) );
+                            indexPathNameSet.add( app.utils.getFilename( path ) );
                         }
                     });
             }
@@ -109,11 +103,11 @@ var app = (function (app) {
             }, []);
 
         trackConfigurations = Object
-            .keys(dataPaths)
+            .keys(dataPathNames)
             .reduce(function(accumulator, key) {
 
                 if (false === dataPathIsMissingIndexPath(key, indexPaths) ) {
-                    accumulator.push( trackConfigurator(key, dataPaths[ key ], indexPaths) )
+                    accumulator.push( trackConfigurator(key, dataPathNames[ key ], indexPaths) )
                 }
 
                 return accumulator;
@@ -149,7 +143,7 @@ var app = (function (app) {
 
                     igv.browser.loadTrackList( trackConfigurations );
 
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonNames);
+                    renderTrackFileSelection.call(self, dataPathNames, indexPaths, indexPathNamesLackingDataPaths, jsonNames);
 
                 })
                 .catch(function (error) {
@@ -162,7 +156,7 @@ var app = (function (app) {
                 igv.browser.loadTrackList( trackConfigurations );
             }
 
-            renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, []);
+            renderTrackFileSelection.call(this, dataPathNames, indexPaths, indexPathNamesLackingDataPaths, []);
         }
 
     };
@@ -171,14 +165,14 @@ var app = (function (app) {
         return ($input.get(0).files && $input.get(0).files.length > 0);
     };
 
-    function getIndexPaths(dataPaths, indexPathCandidates) {
+    function getIndexPaths(dataPathNames, indexPathCandidates) {
         let list,
             indexPaths,
             dev_null;
 
         // add info about presence and requirement (or not) of an index path
         list = Object
-            .keys(dataPaths)
+            .keys(dataPathNames)
             .map(function (name) {
                 let indexObject;
 
@@ -341,52 +335,31 @@ var app = (function (app) {
         let self = this;
 
         $dropboxButton.on('click', function () {
-            Dropbox.choose( dropboxButtonConfigurator.call(self) );
-        });
-
-        function dropboxButtonConfigurator() {
-            let self = this,
-                obj;
+            let obj;
 
             obj =
                 {
-
-                    success: function(dbFiles) {
-
-                        self.ingestPaths(dbFiles.map(function (dbFile) {
-                            return dbFile.link;
-                        }));
-
-                    },
-
+                    success: (dbFiles) => (self.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
                     cancel: function() { },
-
                     linkType: "preview",
-
                     multiselect: true,
-
                     folderselect: false,
                 };
 
-            return obj;
-        }
-
+            Dropbox.choose( obj );
+        });
     }
 
     function createGoogleDriveButton($button) {
 
+        let self = this,
+            paths;
+
         $button.on('click', function () {
+
             app.Google.createDropdownButtonPicker(function (googleDriveResponses) {
-                let objs;
-
-                objs = googleDriveResponses
-                    .map((response) => ({ name:response.name, path: response.url }));
-
-                objs
-                    .forEach((obj) => {
-                        console.log('google drive file ' + obj.name);
-                    });
-
+                paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
+                self.ingestPaths(paths);
             });
 
         });

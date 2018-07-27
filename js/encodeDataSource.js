@@ -115,7 +115,11 @@ var app = (function (app) {
         if (record["Tech Rep"]) {
             name += (record["Bio Rep"] ? ":" : " 0:") + record["Tech Rep"];
         }
+
         name += " " + record["Output Type"];
+
+        name += " " + record["Experiment"];
+
         record["Name"] = name;
 
     }

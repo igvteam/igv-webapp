@@ -336,8 +336,13 @@ var app = (function (app) {
     }
 
     function createDropboxButton($container) {
+        let $a;
 
         $container.get(0).appendChild( Dropbox.createChooseButton( dropboxButtonConfigurator.call(this) ) );
+
+        // tweak button styling
+        $a = $container.find('a');
+        $a.removeClass('dropbox-dropin-btn dropbox-dropin-default');
 
         function dropboxButtonConfigurator() {
             let self = this,

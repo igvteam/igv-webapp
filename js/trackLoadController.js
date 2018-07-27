@@ -91,7 +91,7 @@ var app = (function (app) {
 
             ];
 
-        encodeDatasource = new igv.EncodeDataSource(columnFormat);
+        encodeDatasource = new app.EncodeDataSource(columnFormat);
 
         loadTracks = function (configurationList) {
             self.browser.loadTrackList(configurationList);
@@ -117,7 +117,7 @@ var app = (function (app) {
                 }
             };
 
-        this.encodeTable = new igv.ModalTable(encodeTableConfig);
+        this.encodeTable = new app.ModalTable(encodeTableConfig);
 
         this.encodeTable.loadData(genomeID);
 

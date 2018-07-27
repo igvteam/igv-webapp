@@ -28,9 +28,9 @@
  * Created by dat on 4/18/17.
  */
 
-var igv = (function (igv) {
+var app = (function (app) {
 
-    igv.ModalTable = function (config) {
+    app.ModalTable = function (config) {
 
         this.config = config;
         this.datasource = config.datasource;
@@ -88,44 +88,44 @@ var igv = (function (igv) {
         return result.length > 0 ? result : undefined;
     }
 
-    igv.ModalTable.prototype.startSpinner = function () {
+    app.ModalTable.prototype.startSpinner = function () {
         this.$faSpinner.addClass("fa5-spin");
         this.$spinner.show();
     };
 
-    igv.ModalTable.prototype.stopSpinner = function () {
+    app.ModalTable.prototype.stopSpinner = function () {
         this.$spinner.hide();
         this.$faSpinner.addClass("fa5-spin");
     };
 
-    igv.ModalTable.prototype.hidePresentationButton = function () {
+    app.ModalTable.prototype.hidePresentationButton = function () {
         this.config.$modalPresentationButton.addClass('igv-app-disabled');
         this.config.$modalPresentationButton.text('Genome not supported by ENCODE');
     };
 
-    igv.ModalTable.prototype.willRetrieveData = function () {
+    app.ModalTable.prototype.willRetrieveData = function () {
         this.startSpinner();
         this.config.willRetrieveData();
     };
 
-    igv.ModalTable.prototype.didRetrieveData = function () {
+    app.ModalTable.prototype.didRetrieveData = function () {
         this.config.didRetrieveData();
         this.buildTable(true);
     };
 
-    igv.ModalTable.prototype.didFailToRetrieveData = function () {
+    app.ModalTable.prototype.didFailToRetrieveData = function () {
         this.stopSpinner();
         this.buildTable(false);
     };
 
-    igv.ModalTable.prototype.loadData = function (genomeId) {
+    app.ModalTable.prototype.loadData = function (genomeId) {
 
         var self = this,
             assembly;
 
         this.willRetrieveData();
 
-        assembly = igv.ModalTable.getAssembly( genomeId);
+        assembly = app.ModalTable.getAssembly( genomeId);
 
         if (assembly) {
 
@@ -145,7 +145,7 @@ var igv = (function (igv) {
 
     };
 
-    igv.ModalTable.prototype.buildTable = function (success) {
+    app.ModalTable.prototype.buildTable = function (success) {
 
         var self = this;
 
@@ -190,7 +190,7 @@ var igv = (function (igv) {
 
     };
 
-    igv.ModalTable.prototype.tableWithDataAndColumns = function (tableData, tableColumns) {
+    app.ModalTable.prototype.tableWithDataAndColumns = function (tableData, tableColumns) {
 
         var config;
 
@@ -221,7 +221,7 @@ var igv = (function (igv) {
 
     };
 
-    igv.ModalTable.getAssembly = function (genomeID) {
+    app.ModalTable.getAssembly = function (genomeID) {
         let lut,
             assembly;
 
@@ -238,6 +238,6 @@ var igv = (function (igv) {
         return assembly;
     };
 
-    return igv;
+    return app;
 
-})(igv || {});
+})(app || {});

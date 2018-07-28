@@ -42,7 +42,7 @@ var app = (function (app) {
             indexPaths,
             indexPathNameSet,
             indexPathNamesLackingDataPaths,
-            jsonRetrievalPromises,
+            jsonRetrievalTasks,
             jsonNames,
             trackConfigurations;
 
@@ -50,12 +50,12 @@ var app = (function (app) {
         this.$modal_body.empty();
 
         // accumulate JSON retrieval promises
-        jsonRetrievalPromises = paths
+        jsonRetrievalTasks = paths
             .filter((path) => ('json' === app.utils.getExtension(path)))
             .map((path) => {
                 let url;
                 url = (path.google_url || path);
-                return igv.xhr.loadJson(url)
+                return { name: app.utils.getFilename(path), promise: igv.xhr.loadJson(url) }
             });
 
         // data (non-JSON)
@@ -113,15 +113,16 @@ var app = (function (app) {
                 return accumulator;
             }, []);
 
-        if (jsonRetrievalPromises.length > 0) {
-            jsonRetrievalParallel.call(this, jsonRetrievalPromises, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+        if (jsonRetrievalTasks.length > 0) {
+            // jsonRetrievalParallel.call(this, jsonRetrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+            jsonRetrievalSerial.call(this, jsonRetrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
         } else {
 
             if (trackConfigurations.length > 0) {
                 igv.browser.loadTrackList( trackConfigurations );
             }
 
-            renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, []);
+            renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
         }
 
     };
@@ -130,16 +131,15 @@ var app = (function (app) {
         return ($input.get(0).files && $input.get(0).files.length > 0);
     };
 
-    function jsonRetrievalParallel (promises, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
+    function jsonRetrievalParallel(retrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
         let self = this;
 
         Promise
-            .all(promises)
+            .all(retrievalTasks.map((task) => (task.promise)))
             .then(function (list) {
 
-                if (list.length > 0) {
-                    let configurations,
-                        names;
+                if (list && list.length > 0) {
+                    let configurations;
 
                     configurations = list
                         .reduce(function(accumulator, item) {
@@ -158,13 +158,118 @@ var app = (function (app) {
                     trackConfigurations.push.apply(trackConfigurations, configurations);
                     igv.browser.loadTrackList( trackConfigurations );
 
-                    names = configurations.map((config) => (config.name));
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, names);
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+                } else {
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
                 }
 
             })
             .catch(function (error) {
                 console.log(error);
+                renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+            });
+
+    }
+
+    function jsonRetrievalSerial(retrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
+
+        let self = this,
+            taskSet,
+            failureSet,
+            successSet,
+            configurations,
+            dev_null,
+            ignore;
+
+        taskSet = new Set(retrievalTasks.map(task => task.name));
+        failureSet = new Set();
+        successSet = new Set();
+        configurations = [];
+
+        retrievalTasks
+            .reduce((promiseChain, task) => {
+
+                return promiseChain
+                    .then((chainResults) => {
+                        let promise;
+
+                        promise = task.promise;
+
+                        return promise
+                            .then((currentResult) => {
+
+                                successSet.add(task.name);
+
+                                console.log('parsed json file: ' + task.name);
+                                configurations = [...chainResults, currentResult];
+                                return configurations;
+                            })
+                    })
+            }, Promise.resolve([]))
+            .then(ignore => {
+
+                if (configurations.length > 0) {
+
+                    configurations
+                        .reduce(function(accumulator, item) {
+
+                            if (true === Array.isArray(item)) {
+                                item.forEach(function (config) {
+                                    accumulator.push(config);
+                                })
+                            } else {
+                                accumulator.push(item);
+                            }
+
+                            return accumulator;
+                        }, []);
+
+                    trackConfigurations.push.apply(trackConfigurations, configurations);
+                    igv.browser.loadTrackList( trackConfigurations );
+
+                    failureSet = [...taskSet].filter(x => !successSet.has(x));
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+
+                } else {
+
+                    igv.browser.loadTrackList( trackConfigurations );
+
+                    failureSet = [...taskSet].filter(x => !successSet.has(x));
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+                }
+
+            })
+            .catch(function (error) {
+
+                if (configurations.length > 0) {
+
+                    configurations
+                        .reduce(function(accumulator, item) {
+
+                            if (true === Array.isArray(item)) {
+                                item.forEach(function (config) {
+                                    accumulator.push(config);
+                                })
+                            } else {
+                                accumulator.push(item);
+                            }
+
+                            return accumulator;
+                        }, []);
+
+                    trackConfigurations.push.apply(trackConfigurations, configurations);
+                    igv.browser.loadTrackList( trackConfigurations );
+
+                    failureSet = [...taskSet].filter(x => !successSet.has(x));
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+
+                } else {
+
+                    igv.browser.loadTrackList( trackConfigurations );
+
+                    failureSet = [...taskSet].filter(x => !successSet.has(x));
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+                }
             });
 
     }
@@ -279,7 +384,7 @@ var app = (function (app) {
 
     }
 
-    function renderTrackFileSelection(dataPaths, indexPaths, indexPathsLackingDataPaths) {
+    function renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet) {
         let markup;
 
         markup = Object
@@ -293,9 +398,14 @@ var app = (function (app) {
                 return accumulator;
             }, []);
 
-        indexPathsLackingDataPaths
+        indexPathNamesLackingDataPaths
             .forEach(function (name) {
                 markup.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: data file must also be selected</div>');
+            });
+
+        failureSet
+            .forEach((name) => {
+                markup.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: problems parsing JSON</div>');
             });
 
         if (markup.length > 0) {

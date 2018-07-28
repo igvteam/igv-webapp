@@ -114,42 +114,7 @@ var app = (function (app) {
             }, []);
 
         if (jsonRetrievalPromises.length > 0) {
-
-            Promise
-                .all(jsonRetrievalPromises)
-                .then(function (list) {
-                    let jsonTrackConfigurations;
-
-                    jsonTrackConfigurations = list
-                        .reduce(function(accumulator, item) {
-
-                            if (true === Array.isArray(item)) {
-                                item.forEach(function (config) {
-                                    accumulator.push(config);
-                                })
-                            } else {
-                                accumulator.push(item);
-                            }
-
-                            return accumulator;
-                        }, []);
-
-                    jsonNames = jsonTrackConfigurations
-                        .map(function (config) {
-                            return config.name;
-                        });
-
-                    trackConfigurations.push.apply(trackConfigurations, jsonTrackConfigurations);
-
-                    igv.browser.loadTrackList( trackConfigurations );
-
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonNames);
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
+            jsonRetrievalParallel.call(this, jsonRetrievalPromises, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
         } else {
 
             if (trackConfigurations.length > 0) {
@@ -164,6 +129,45 @@ var app = (function (app) {
     app.MultiSelectTrackLoadController.prototype.isValidLocalFileInput = function ($input) {
         return ($input.get(0).files && $input.get(0).files.length > 0);
     };
+
+    function jsonRetrievalParallel (promises, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
+        let self = this;
+
+        Promise
+            .all(promises)
+            .then(function (list) {
+
+                if (list.length > 0) {
+                    let configurations,
+                        names;
+
+                    configurations = list
+                        .reduce(function(accumulator, item) {
+
+                            if (true === Array.isArray(item)) {
+                                item.forEach(function (config) {
+                                    accumulator.push(config);
+                                })
+                            } else {
+                                accumulator.push(item);
+                            }
+
+                            return accumulator;
+                        }, []);
+
+                    trackConfigurations.push.apply(trackConfigurations, configurations);
+                    igv.browser.loadTrackList( trackConfigurations );
+
+                    names = configurations.map((config) => (config.name));
+                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, names);
+                }
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
 
     function getIndexPaths(dataPathNames, indexPathCandidates) {
         let list,

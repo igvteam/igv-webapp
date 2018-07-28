@@ -24,21 +24,10 @@ var app = (function (app) {
 
     app.TrackLoadController = function (browser, config) {
 
-        var localFileConfig,
-            urlConfig;
+        var urlConfig;
 
         this.browser = browser;
         this.config = config;
-
-        // Local File
-        localFileConfig =
-            {
-                $widgetParent: config.$fileModal.find('.modal-body'),
-                mode: 'localFile'
-            };
-
-        this.localFileWidget = new app.FileLoadWidget(localFileConfig, new app.FileLoadManager());
-        app.utils.configureModal(this.localFileWidget, config.$fileModal);
 
         // URL
         urlConfig =
@@ -49,16 +38,6 @@ var app = (function (app) {
 
         this.urlWidget = new app.FileLoadWidget(urlConfig, new app.FileLoadManager());
         app.utils.configureModal(this.urlWidget, config.$urlModal);
-
-
-
-        // Dropbox
-        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Data');
-        this.dropboxController.configure({ dataFileOnly: false });
-
-        // Google Drive
-        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Data');
-        this.googleDriveController.configure(okHandlerGoogleDrive);
 
         // Annotations
         configureAnnotationsSelectList(config.$annotationsModal);
@@ -181,51 +160,6 @@ var app = (function (app) {
 
         });
 
-    }
-
-    function okHandlerGoogleDrive(fileLoadManager) {
-
-        let obj;
-
-        obj = trackConfigurationGoogleDrive(fileLoadManager);
-
-        if (obj) {
-            igv.browser.loadTrackList( [ obj ] );
-        }
-
-    }
-
-    function trackConfigurationGoogleDrive(fileLoadManager) {
-        let config;
-
-        if (undefined === fileLoadManager.googlePickerFilename) {
-
-            config = undefined;
-        } else if (undefined === fileLoadManager.dictionary) {
-
-            config = undefined;
-        } else if (undefined === fileLoadManager.dictionary.data) {
-
-            config = undefined;
-        } else if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
-
-            return fileLoadManager.dictionary.data;
-        } else {
-
-            config =
-                {
-                    name: fileLoadManager.googlePickerFilename,
-                    filename:fileLoadManager.googlePickerFilename,
-
-                    format: igv.inferFileFormat(fileLoadManager.googlePickerFilename),
-
-                    url: fileLoadManager.dictionary.data,
-                    indexURL: fileLoadManager.dictionary.index
-                };
-
-        }
-
-        return config;
     }
 
     return app;

@@ -24,7 +24,8 @@ var app = (function (app) {
 
     app.init = function (browser, $container, urlShortenerConfig) {
 
-        let sessionConfig,
+        let mstcConfig,
+            sessionConfig,
             trackLoadConfig,
             genomeLoadConfig,
             shareConfig;
@@ -33,14 +34,29 @@ var app = (function (app) {
 
         createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
 
+        mstcConfig =
+            {
+                $modal: $('#igv-app-multi-select-track-modal'),
+                $dropboxButton: $('#igv-app-dropbox-button'),
+                $googleDriveButton: $('#igv-app-dropdown-google-drive-button')
+            };
+        app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, mstcConfig);
+
+        $('#igv-app-dropdown-local-file-input').on('change', function () {
+
+            if (true === app.multiSelectTrackLoadController.isValidLocalFileInput($(this))) {
+                let input;
+                input = $(this).get(0);
+                app.multiSelectTrackLoadController.ingestPaths(Array.from(input.files));
+            }
+
+        });
+
         // Track load controller configuration
         trackLoadConfig =
             {
-                $annotationsModal: $('#igv-app-track-from-annotations-modal'),
-                $fileModal: $('#igv-app-track-from-local-file-modal'),
                 $urlModal: $('#igv-app-track-from-url-modal'),
-                $dropboxModal: $('#igv-app-track-dropbox-modal'),
-                $googleDriveModal: $('#igv-app-track-google-drive-modal'),
+                $annotationsModal: $('#igv-app-track-from-annotations-modal'),
                 $encodeModal: $('#igv-app-encode-modal'),
                 $encodeModalPresentationButton: $('#igv-encode-list-item-button')
             };
@@ -111,7 +127,7 @@ var app = (function (app) {
         } else {
             $("#igv-app-share-button").hide();
         }
-        
+
     };
 
     function appFooterImageHoverBehavior ($img) {

@@ -121,6 +121,9 @@ $igv-app-logo-container-width: 20%;
 
   height: 18px;
 
+  margin-top: 4px;
+  margin-bottom: 4px;
+
   div:first-child {
     margin-right: 4px;
   }
@@ -145,9 +148,61 @@ $igv-app-logo-container-width: 20%;
   }
 }
 
+#igv-app-multi-select-track-modal-body.modal-body {
+
+  div {
+
+    color: $igv-app-dark-color;
+
+    font-size: 18px;
+
+    span {
+      //font-weight: bolder;
+    }
+
+    padding-bottom: 8px;
+
+    //border-bottom-color: $igv-app-light-color;
+    //border-bottom-style: solid;
+    //border-bottom-width: thin;
+  }
+
+  div:last-child {
+
+    padding-bottom: unset;
+
+    //border-top-color: transparent;
+    //border-top-style: solid;
+    //border-top-width: thin;
+  }
+
+}
+
 // Bootstrap modal backdrop color tweak
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25);
+}
+
+// local file load button
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
 }
 
 // Override igvjs classes

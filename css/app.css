@@ -327,7 +327,9 @@ a#igv-app-email-button:active {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
-  height: 18px; }
+  height: 18px;
+  margin-top: 4px;
+  margin-bottom: 4px; }
   .igv-app-dropdown-item-cloud-storage div:first-child {
     margin-right: 4px; }
   .igv-app-dropdown-item-cloud-storage div:last-child {
@@ -341,8 +343,34 @@ a#igv-app-email-button:active {
   position: absolute;
   z-index: -1; }
 
+#igv-app-multi-select-track-modal-body.modal-body div {
+  color: #5f5f5f;
+  font-size: 18px;
+  padding-bottom: 8px; }
+#igv-app-multi-select-track-modal-body.modal-body div:last-child {
+  padding-bottom: unset; }
+
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25); }
+
+.btn-file {
+  position: relative;
+  overflow: hidden; }
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block; }
 
 .igv-file-load-widget-container .igv-flw-input-container {
   margin-top: unset; }

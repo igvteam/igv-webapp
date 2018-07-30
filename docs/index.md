@@ -1,33 +1,33 @@
-# IGV-Web
+IGV-Web
 
 Quick Start
 
-Define a reference genome
+* Define a reference genome
 
-Select pre-defined genomes
+    * Select pre-defined genomes
 
-Load a custom genome
+    * Load a custom genome
 
-Fasta file
+        * Fasta file
 
-JSON file
+        * JSON file
 
-Load tracks
+* Load tracks
 
-Select tracks
+    * Select tracks
 
-Load your own tracks
+    * Load your own tracks
 
-URL
+        * URL
 
-Dropbox
+        * Dropbox
 
-Google Drive
+        * Google Drive
 
-Local file
+        * Local file
 
-Bookmark your session
+* Bookmark your session
 
-Share your session
+* Share your session
 
 

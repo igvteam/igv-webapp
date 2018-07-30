@@ -202,6 +202,16 @@ var app = (function (app) {
                 autoWidth: true,
 
                 paging: true,
+
+                lengthMenu:
+                    [
+                        100,
+                        250,
+                        500,
+                        750,
+                        1000
+                    ],
+                pageLength: 1000,
                 
                 scrollX: true,
                 scrollY: '400px',

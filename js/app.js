@@ -99,6 +99,8 @@ var app = (function (app) {
                         $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
                         $urlModal: $('#igv-app-genome-from-url-modal'),
                         $fileModal: $('#igv-app-genome-from-file-modal'),
+                        $dropboxModal: $('#igv-app-genome-dropbox-modal'),
+                        $googleDriveModal: $('#igv-app-genome-google-drive-modal')
                     };
 
                 app.genomeDropdownLayout(genomeDropdownConfig);

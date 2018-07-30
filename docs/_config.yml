@@ -1,2 +1,4 @@
 theme: jekyll-theme-cayman
-title: IGV Web App
+title: IGV Web App Documentation
+github:
+  is_project_page: false

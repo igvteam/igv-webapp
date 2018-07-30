@@ -198,7 +198,8 @@ var app = (function (app) {
                 data: tableData,
                 columns: tableColumns,
 
-                autoWidth: false,
+                // autoWidth: false,
+                autoWidth: true,
 
                 paging: true,
                 

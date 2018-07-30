@@ -1,5 +1,5 @@
 theme: jekyll-theme-cayman
 title: IGV Web App Documentation
-description:www.igv.org/app
+description: www.igv.org/app
 github:
   is_project_page: false

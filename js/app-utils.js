@@ -137,12 +137,14 @@ var app = (function (app) {
                 $dismiss = $modal.find('.modal-header button:nth-child(1)');
                 $dismiss.on('click', function () {
                     fileLoadWidget.dismiss();
+                    $modal.modal('hide');
                 });
 
                 // lower dismiss - close - button
                 $dismiss = $modal.find('.modal-footer button:nth-child(1)');
                 $dismiss.on('click', function () {
                     fileLoadWidget.dismiss();
+                    $modal.modal('hide');
                 });
 
                 // ok - button
@@ -154,9 +156,10 @@ var app = (function (app) {
                         okHandler(fileLoadWidget.fileLoadManager);
                     } else {
                         fileLoadWidget.fileLoadManager.okHandler();
-                        fileLoadWidget.dismiss();
-                        $modal.modal('hide');
                     }
+                    
+                    fileLoadWidget.dismiss();
+                    $modal.modal('hide');
 
                 });
 

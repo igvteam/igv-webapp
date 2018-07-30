@@ -26,6 +26,16 @@ Quick Start
 
         * Local file
 
+* Navigate
+
+    * By gene  (currently human and mouse only)
+
+    * By explicit location
+
+    * Zooming -- sweep, double-click.  -/+ buttons
+
+    * Multi-locus
+
 * Bookmark your session
 
 * Share your session

@@ -24,8 +24,11 @@
 var app = (function (app) {
 
     app.MultipleFileLoadController = function (browser, config) {
+
         this.browser = browser;
+
         this.fileLoadHander = config.fileLoadHandler;
+        this.configurationHandler = config.configurationHandler;
 
         this.$modal = config.$modal;
         this.$modal.find('.modal-title').text( config.modalTitle );
@@ -47,8 +50,7 @@ var app = (function (app) {
             indexPathNameSet,
             indexPathNamesLackingDataPaths,
             jsonRetrievalTasks,
-            jsonNames,
-            trackConfigurations;
+            configurations;
 
         // discard current contents of modal body
         this.$modal_body.empty();
@@ -106,25 +108,23 @@ var app = (function (app) {
                 return accumulator;
             }, []);
 
-        trackConfigurations = Object
+        configurations = Object
             .keys(dataPaths)
             .reduce(function(accumulator, key) {
 
                 if (false === dataPathIsMissingIndexPath(key, indexPaths) ) {
-                    accumulator.push( trackConfigurator(key, dataPaths[key], indexPaths) )
+                    accumulator.push( self.configurationHandler(key, dataPaths[key], indexPaths) )
                 }
 
                 return accumulator;
             }, []);
 
         if (jsonRetrievalTasks.length > 0) {
-            // jsonRetrievalParallel.call(this, jsonRetrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
-            jsonRetrievalSerial.call(this, jsonRetrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+            jsonRetrievalSerial.call(this, jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
         } else {
 
-            if (trackConfigurations.length > 0) {
-                // igv.browser.loadTrackList( trackConfigurations );
-                this.fileLoadHander( trackConfigurations );
+            if (configurations.length > 0) {
+                this.fileLoadHander( configurations );
             }
 
             renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
@@ -136,7 +136,59 @@ var app = (function (app) {
         return ($input.get(0).files && $input.get(0).files.length > 0);
     };
 
-    function jsonRetrievalParallel(retrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
+    app.MultipleFileLoadController.trackConfigurator = function(dataKey, dataValue, indexPaths) {
+        let config;
+
+        config =
+            {
+                name: dataKey,
+                filename:dataKey,
+
+                format: igv.inferFileFormat(dataKey),
+
+                url: dataValue,
+                indexURL: getIndexURL(indexPaths[ dataKey ])
+            };
+
+        igv.inferTrackTypes(config);
+
+        return config;
+
+    };
+
+    app.MultipleFileLoadController.genomeConfigurator = function(dataKey, dataValue, indexPaths) {
+
+        let config;
+
+        config =
+            {
+                fastaURL: dataValue,
+                indexURL: getIndexURL(indexPaths[ dataKey ])
+            };
+
+        return config;
+
+    };
+
+    function getIndexURL(indexValue) {
+
+        if (indexValue) {
+            let list;
+
+            list = indexValue;
+            if (list) {
+                let url;
+                url = list[ 0 ].path || list[ 1 ].path;
+                return url;
+            }
+
+        } else {
+            return undefined;
+        }
+
+    }
+
+    function jsonRetrievalParallel(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
         let self = this;
 
         Promise
@@ -144,9 +196,9 @@ var app = (function (app) {
             .then(function (list) {
 
                 if (list && list.length > 0) {
-                    let configurations;
+                    let jsonConfigurations;
 
-                    configurations = list
+                    jsonConfigurations = list
                         .reduce(function(accumulator, item) {
 
                             if (true === Array.isArray(item)) {
@@ -160,10 +212,8 @@ var app = (function (app) {
                             return accumulator;
                         }, []);
 
-                    trackConfigurations.push.apply(trackConfigurations, configurations);
-
-                    // igv.browser.loadTrackList( trackConfigurations );
-                    self.fileLoadHander(trackConfigurations);
+                    configurations.push.apply(configurations, jsonConfigurations);
+                    self.fileLoadHander(configurations);
 
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
                 } else {
@@ -178,20 +228,20 @@ var app = (function (app) {
 
     }
 
-    function jsonRetrievalSerial(retrievalTasks, trackConfigurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
+    function jsonRetrievalSerial(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
 
         let self = this,
             taskSet,
             failureSet,
             successSet,
-            configurations,
+            jsonConfigurations,
             dev_null,
             ignore;
 
         taskSet = new Set(retrievalTasks.map(task => task.name));
         failureSet = new Set();
         successSet = new Set();
-        configurations = [];
+        jsonConfigurations = [];
 
         retrievalTasks
             .reduce((promiseChain, task) => {
@@ -208,16 +258,16 @@ var app = (function (app) {
                                 successSet.add(task.name);
 
                                 console.log('parsed json file: ' + task.name);
-                                configurations = [...chainResults, currentResult];
-                                return configurations;
+                                jsonConfigurations = [...chainResults, currentResult];
+                                return jsonConfigurations;
                             })
                     })
             }, Promise.resolve([]))
             .then(ignore => {
 
-                if (configurations.length > 0) {
+                if (jsonConfigurations.length > 0) {
 
-                    configurations
+                    jsonConfigurations
                         .reduce(function(accumulator, item) {
 
                             if (true === Array.isArray(item)) {
@@ -231,17 +281,15 @@ var app = (function (app) {
                             return accumulator;
                         }, []);
 
-                    trackConfigurations.push.apply(trackConfigurations, configurations);
-                    self.fileLoadHander(trackConfigurations);
-                    // igv.browser.loadTrackList( trackConfigurations );
+                    configurations.push.apply(configurations, jsonConfigurations);
+                    self.fileLoadHander(configurations);
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
 
                 } else {
 
-                    self.fileLoadHander(trackConfigurations);
-                    // igv.browser.loadTrackList( trackConfigurations );
+                    self.fileLoadHander(configurations);
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
@@ -250,9 +298,9 @@ var app = (function (app) {
             })
             .catch(function (error) {
 
-                if (configurations.length > 0) {
+                if (jsonConfigurations.length > 0) {
 
-                    configurations
+                    jsonConfigurations
                         .reduce(function(accumulator, item) {
 
                             if (true === Array.isArray(item)) {
@@ -266,17 +314,15 @@ var app = (function (app) {
                             return accumulator;
                         }, []);
 
-                    trackConfigurations.push.apply(trackConfigurations, configurations);
-                    self.fileLoadHander(trackConfigurations);
-                    // igv.browser.loadTrackList( trackConfigurations );
+                    configurations.push.apply(configurations, jsonConfigurations);
+                    self.fileLoadHander(configurations);
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
 
                 } else {
 
-                    self.fileLoadHander(trackConfigurations);
-                    // igv.browser.loadTrackList( trackConfigurations );
+                    self.fileLoadHander(configurations);
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
@@ -357,64 +403,7 @@ var app = (function (app) {
         return indexPaths;
     }
 
-    function trackConfigurator(dataKey, dataValue, indexPaths) {
-        let config;
-
-        function getIndexURL(indexValue) {
-
-            if (indexValue) {
-                let list;
-
-                list = indexValue;
-                if (list) {
-                    let url;
-                    url = list[ 0 ].path || list[ 1 ].path;
-                    return url;
-                }
-
-            } else {
-                return undefined;
-            }
-
-        }
-
-        config =
-            {
-                name: dataKey,
-                filename:dataKey,
-
-                format: igv.inferFileFormat(dataKey),
-
-                url: dataValue,
-                indexURL: getIndexURL(indexPaths[ dataKey ])
-            };
-
-        igv.inferTrackTypes(config);
-
-        return config;
-
-    }
-
-    function genomeConfigurator(dataKey, dataValue, indexPaths) {
-
-        if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
-
-            return fileLoadManager.dictionary.data;
-
-        } else {
-
-            obj =
-                {
-                    fastaURL: fileLoadManager.dictionary.data,
-                    indexURL: fileLoadManager.dictionary.index
-                };
-
-            return obj;
-        }
-
-    }
-
-    function renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet) {
+    function renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonFailureNameSet) {
         let markup;
 
         markup = Object
@@ -433,7 +422,7 @@ var app = (function (app) {
                 markup.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: data file must also be selected</div>');
             });
 
-        failureSet
+        jsonFailureNameSet
             .forEach((name) => {
                 markup.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: problems parsing JSON</div>');
             });

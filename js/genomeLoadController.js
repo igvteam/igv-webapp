@@ -32,25 +32,7 @@ var app = (function (app) {
 
         let self = this,
             urlConfig,
-            localFileConfig,
             doOK;
-
-        // Local File
-        localFileConfig =
-            {
-                dataTitle: 'Genome',
-                $widgetParent: config.$fileModal.find('.modal-body'),
-                mode: 'localFile'
-            };
-
-        this.localFileWidget = new app.FileLoadWidget(localFileConfig, new app.FileLoadManager());
-
-        doOK = function (fileLoadManager) {
-            okHandler(self, fileLoadManager);
-        };
-
-        app.utils.configureModal(this.localFileWidget, config.$fileModal, doOK);
-
 
         // URL
         urlConfig =
@@ -67,24 +49,6 @@ var app = (function (app) {
         };
 
         app.utils.configureModal(this.urlWidget, config.$urlModal, doOK);
-
-
-        // Dropbox
-        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal, 'Genome');
-
-        doOK = function (fileLoadManager) {
-            okHandler(self, fileLoadManager);
-        };
-
-        this.dropboxController.configure({ okHandler: doOK, dataFileOnly: false });
-
-
-        // Google Drive
-        this.googleDriveController = new app.GoogleDriveController(browser, config.$googleDriveModal, 'Genome');
-
-        this.googleDriveController.configure(function (fileLoadManager) {
-            okHandler(self, fileLoadManager);
-        });
 
     };
 

@@ -377,7 +377,6 @@ var app = (function (app) {
                                 .addView(teamView)
                                 .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
                                 .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
-                                .enableFeature(google.picker.Feature.NAV_HIDDEN)
                                 .setDeveloperKey(igv.Google.properties["developer_key"])
                                 .setCallback(function (data) {
                                     if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {

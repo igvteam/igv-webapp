@@ -24,7 +24,9 @@ var app = (function (app) {
 
     app.init = function (browser, $container, urlShortenerConfig) {
 
-        let mstcConfig,
+        let $multipleFileLoadModal,
+            mtflConfig,
+            mgflConfig,
             sessionConfig,
             trackLoadConfig,
             genomeLoadConfig,
@@ -34,14 +36,36 @@ var app = (function (app) {
 
         createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
 
-        mstcConfig =
+        $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
+
+        mtflConfig =
             {
-                $modal: $('#igv-app-multi-select-track-modal'),
+                $modal: $multipleFileLoadModal,
+                modalTitle: 'Track File Error',
                 $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
                 $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-                $googleDriveButton: $('#igv-app-dropdown-google-drive-track-file-button')
+                $googleDriveButton: $('#igv-app-dropdown-google-drive-track-file-button'),
+                fileLoadHandler: (configurations) => {
+                    igv.browser.loadTrackList( configurations );
+                }
             };
-        app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, mstcConfig);
+        app.multipleTrackFileLoader = new app.MultipleFileLoadController(browser, mtflConfig);
+
+        mgflConfig =
+            {
+                $modal: $multipleFileLoadModal,
+                modalTitle: 'Genome File Error',
+                $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
+                $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
+                $googleDriveButton: $('#igv-app-dropdown-google-drive-genome-file-button'),
+                fileLoadHandler: (configurations) => {
+                    let config;
+                    config = configurations[ 0 ];
+                    app.utils.loadGenome(config);
+                }
+            };
+
+        app.multipleGenomeFileLoader = new app.MultipleFileLoadController(browser, mgflConfig);
 
         // Track load controller configuration
         trackLoadConfig =

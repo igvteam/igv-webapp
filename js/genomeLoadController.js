@@ -92,7 +92,24 @@ var app = (function (app) {
         let path;
 
         path = 'https://s3.amazonaws.com/igv.org.genomes/genomes.json';
-        return this.getGenomes(path);
+
+        return igv.xhr
+            .loadJson(path, {})
+            .then(function (result) {
+                let dictionary;
+
+                dictionary = {};
+                if (true === Array.isArray(result)) {
+                    result.forEach(function (json) {
+                        dictionary[ json.id ] = json;
+                    });
+                } else {
+                    dictionary[ result.id ] = result;
+                }
+
+                return dictionary;
+            });
+
     };
 
     app.GenomeLoadController.prototype.genomeConfiguration = function (fileLoadManager) {
@@ -117,27 +134,6 @@ var app = (function (app) {
 
             return Promise.resolve(obj);
         }
-
-    };
-
-    app.GenomeLoadController.prototype.getGenomes = function (url) {
-
-        return igv.xhr
-            .loadJson(url, {})
-            .then(function (result) {
-                let dictionary;
-
-                dictionary = {};
-                if (true === Array.isArray(result)) {
-                    result.forEach(function (json) {
-                        dictionary[ json.id ] = json;
-                    });
-                } else {
-                    dictionary[ result.id ] = result;
-                }
-
-                return dictionary;
-            });
 
     };
 

@@ -23,10 +23,12 @@
 
 var app = (function (app) {
 
-    app.MultiSelectTrackLoadController = function (browser, config) {
+    app.MultipleFileLoadController = function (browser, config) {
         this.browser = browser;
+        this.fileLoadHander = config.fileLoadHandler;
 
         this.$modal = config.$modal;
+        this.$modal.find('.modal-title').text( config.modalTitle );
         this.$modal_body = this.$modal.find('.modal-body');
 
         createLocalInput.call(this, config.$localFileInput);
@@ -36,7 +38,7 @@ var app = (function (app) {
         createGoogleDriveButton.call(this, config.$googleDriveButton);
     };
 
-    app.MultiSelectTrackLoadController.prototype.ingestPaths = function (paths) {
+    app.MultipleFileLoadController.prototype.ingestPaths = function (paths) {
 
         let self = this,
             dataPaths,
@@ -62,7 +64,7 @@ var app = (function (app) {
 
         // data (non-JSON)
         dataPaths = paths
-            .filter((path) => (igv.knownFileExtensions.has( app.utils.getExtension(path) )))
+            .filter((path) => (app.utils.isKnownFileExtension( app.utils.getExtension(path) )))
             .reduce(function(accumulator, path) {
                 accumulator[ app.utils.getFilename(path) ] = (path.google_url || path);
                 return accumulator;
@@ -121,7 +123,8 @@ var app = (function (app) {
         } else {
 
             if (trackConfigurations.length > 0) {
-                igv.browser.loadTrackList( trackConfigurations );
+                // igv.browser.loadTrackList( trackConfigurations );
+                this.fileLoadHander( trackConfigurations );
             }
 
             renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
@@ -129,7 +132,7 @@ var app = (function (app) {
 
     };
 
-    app.MultiSelectTrackLoadController.prototype.isValidLocalFileInput = function ($input) {
+    app.MultipleFileLoadController.prototype.isValidLocalFileInput = function ($input) {
         return ($input.get(0).files && $input.get(0).files.length > 0);
     };
 
@@ -158,7 +161,9 @@ var app = (function (app) {
                         }, []);
 
                     trackConfigurations.push.apply(trackConfigurations, configurations);
-                    igv.browser.loadTrackList( trackConfigurations );
+
+                    // igv.browser.loadTrackList( trackConfigurations );
+                    self.fileLoadHander(trackConfigurations);
 
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
                 } else {
@@ -227,14 +232,16 @@ var app = (function (app) {
                         }, []);
 
                     trackConfigurations.push.apply(trackConfigurations, configurations);
-                    igv.browser.loadTrackList( trackConfigurations );
+                    self.fileLoadHander(trackConfigurations);
+                    // igv.browser.loadTrackList( trackConfigurations );
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
 
                 } else {
 
-                    igv.browser.loadTrackList( trackConfigurations );
+                    self.fileLoadHander(trackConfigurations);
+                    // igv.browser.loadTrackList( trackConfigurations );
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
@@ -260,14 +267,16 @@ var app = (function (app) {
                         }, []);
 
                     trackConfigurations.push.apply(trackConfigurations, configurations);
-                    igv.browser.loadTrackList( trackConfigurations );
+                    self.fileLoadHander(trackConfigurations);
+                    // igv.browser.loadTrackList( trackConfigurations );
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
 
                 } else {
 
-                    igv.browser.loadTrackList( trackConfigurations );
+                    self.fileLoadHander(trackConfigurations);
+                    // igv.browser.loadTrackList( trackConfigurations );
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
@@ -386,6 +395,25 @@ var app = (function (app) {
 
     }
 
+    function genomeConfigurator(dataKey, dataValue, indexPaths) {
+
+        if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
+
+            return fileLoadManager.dictionary.data;
+
+        } else {
+
+            obj =
+                {
+                    fastaURL: fileLoadManager.dictionary.data,
+                    indexURL: fileLoadManager.dictionary.index
+                };
+
+            return obj;
+        }
+
+    }
+
     function renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet) {
         let markup;
 
@@ -461,6 +489,7 @@ var app = (function (app) {
         });
 
     }
+
     function createDropboxButton($dropboxButton) {
         let self = this;
 

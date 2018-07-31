@@ -343,11 +343,11 @@ a#igv-app-email-button:active {
   position: absolute;
   z-index: -1; }
 
-#igv-app-multi-select-track-modal-body.modal-body div {
+#igv-app-multiple-file-load-modal-body.modal-body div {
   color: #5f5f5f;
   font-size: 18px;
   padding-bottom: 8px; }
-#igv-app-multi-select-track-modal-body.modal-body div:last-child {
+#igv-app-multiple-file-load-modal-body.modal-body div:last-child {
   padding-bottom: unset; }
 
 .modal-backdrop {

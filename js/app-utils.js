@@ -28,15 +28,22 @@ var app = (function (app) {
         {
             isValidIndexExtension: function (path) {
                 let set;
-                set = new Set([ 'bai', 'tbi', 'idx' ]);
+                set = new Set([ 'fai', 'bai', 'tbi', 'idx' ]);
                 return set.has( app.utils.getExtension(path) );
             },
 
             indexLookup: function (dataSuffix) {
-                let bam,
+                let fasta,
+                    bam,
                     gz,
                     any,
                     lut;
+
+                fasta =
+                    {
+                        index: 'fai',
+                        isOptional: true
+                    };
 
                 bam =
                     {
@@ -58,6 +65,7 @@ var app = (function (app) {
 
                 lut =
                     {
+                        fasta: fasta,
                         bam: bam,
                         gz: gz
                     };
@@ -78,7 +86,7 @@ var app = (function (app) {
                     aa;
 
                 extension = app.utils.getExtension(name);
-                if (false === igv.knownFileExtensions.has( extension )) {
+                if (false === app.utils.isKnownFileExtension( extension )) {
                     return undefined;
                 }
 
@@ -116,10 +124,19 @@ var app = (function (app) {
 
     app.utils =
         {
+            isKnownFileExtension: function (extension) {
+                let fasta,
+                    union;
+
+                fasta = new Set(['fasta']);
+                union = new Set([...(igv.knownFileExtensions), ...fasta]);
+                return union.has(extension);
+            },
 
             getFilename: function (path) {
                 return path.google_url ? path.name : igv.getFilename(path);
             },
+
             getExtension: function (path) {
                 return igv.getExtension({ url: path.google_url ? path.name : path });
             },

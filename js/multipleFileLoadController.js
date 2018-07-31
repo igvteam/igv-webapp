@@ -289,7 +289,9 @@ var app = (function (app) {
 
                 } else {
 
-                    self.fileLoadHander(configurations);
+                    if (configurations.length > 0) {
+                        self.fileLoadHander(configurations);
+                    }
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
@@ -322,7 +324,9 @@ var app = (function (app) {
 
                 } else {
 
-                    self.fileLoadHander(configurations);
+                    if (configurations.length > 0) {
+                        self.fileLoadHander(configurations);
+                    }
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
                     renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);

@@ -37,20 +37,11 @@ var app = (function (app) {
         mstcConfig =
             {
                 $modal: $('#igv-app-multi-select-track-modal'),
-                $dropboxButton: $('#igv-app-dropbox-button'),
-                $googleDriveButton: $('#igv-app-dropdown-google-drive-button')
+                $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
+                $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
+                $googleDriveButton: $('#igv-app-dropdown-google-drive-track-file-button')
             };
         app.multiSelectTrackLoadController = new app.MultiSelectTrackLoadController(browser, mstcConfig);
-
-        $('#igv-app-dropdown-local-file-input').on('change', function () {
-
-            if (true === app.multiSelectTrackLoadController.isValidLocalFileInput($(this))) {
-                let input;
-                input = $(this).get(0);
-                app.multiSelectTrackLoadController.ingestPaths(Array.from(input.files));
-            }
-
-        });
 
         // Track load controller configuration
         trackLoadConfig =
@@ -94,13 +85,9 @@ var app = (function (app) {
 
                 genomeDropdownConfig =
                     {
-                        genomeDictionary: genomeDictionary,
                         browser: browser,
-                        $dropdown_menu: $('#igv-app-genome-dropdown').find('.dropdown-menu'),
-                        $urlModal: $('#igv-app-genome-from-url-modal'),
-                        $fileModal: $('#igv-app-genome-from-file-modal'),
-                        $dropboxModal: $('#igv-app-genome-dropbox-modal'),
-                        $googleDriveModal: $('#igv-app-genome-google-drive-modal')
+                        genomeDictionary: genomeDictionary,
+                        $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
                     };
 
                 app.genomeDropdownLayout(genomeDropdownConfig);

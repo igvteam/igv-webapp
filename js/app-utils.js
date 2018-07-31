@@ -28,15 +28,22 @@ var app = (function (app) {
         {
             isValidIndexExtension: function (path) {
                 let set;
-                set = new Set([ 'bai', 'tbi', 'idx' ]);
+                set = new Set([ 'fai', 'bai', 'tbi', 'idx' ]);
                 return set.has( app.utils.getExtension(path) );
             },
 
             indexLookup: function (dataSuffix) {
-                let bam,
+                let fasta,
+                    bam,
                     gz,
                     any,
                     lut;
+
+                fasta =
+                    {
+                        index: 'fai',
+                        isOptional: true
+                    };
 
                 bam =
                     {
@@ -58,6 +65,7 @@ var app = (function (app) {
 
                 lut =
                     {
+                        fasta: fasta,
                         bam: bam,
                         gz: gz
                     };

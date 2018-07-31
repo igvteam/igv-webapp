@@ -179,55 +179,35 @@ var app = (function (app) {
     app.genomeDropdownLayout = function (config) {
 
         var $divider,
-            $button,
-            keys;
+            $button;
 
-        config.$dropdown_menu.empty();
+        // discard all buttons preceeding the divider div
+        $divider = config.$dropdown_menu.find('#igv-app-genome-dropdown-divider');
+        $divider.prevAll().remove();
 
-        keys = Object.keys(config.genomeDictionary);
+        for (let key in config.genomeDictionary) {
 
-        keys.forEach(function (jsonID) {
+            if (config.genomeDictionary.hasOwnProperty(key)) {
 
-            $button = createButton(jsonID);
-            config.$dropdown_menu.append($button);
+                $button = createButton(key);
 
-            $button.on('click', function () {
-                var key;
+                // prepend buttons relative to divider
+                $button.insertBefore( $divider );
 
-                key = $(this).text();
+                $button.on('click', function () {
+                    var key;
 
-                if (key !== config.browser.genome.id) {
-                    app.utils.loadGenome(config.genomeDictionary[ key ]);
-                }
+                    key = $(this).text();
 
-            });
+                    if (key !== config.browser.genome.id) {
+                        app.utils.loadGenome(config.genomeDictionary[ key ]);
+                    }
 
-        });
+                });
 
-        // menu divider
-        $divider  = $('<div>', { class:'dropdown-divider' });
-        config.$dropdown_menu.append($divider);
+            } // if (...)
 
-        // genome from local file
-        $button = createButton('Local File ...');
-        config.$dropdown_menu.append($button);
-        $button.on('click', function () {
-            config.$fileModal.modal();
-        });
-
-        // genome from URL
-        $button = createButton('URL ...');
-        config.$dropdown_menu.append($button);
-        $button.on('click', function () {
-            config.$urlModal.modal();
-        });
-
-        // genome from Dropbox
-        $button = createCloudStorageButton(config.$dropdown_menu, config.$dropboxModal, 'Dropbox', 'img/dropbox-dropdown-menu-item.png');
-
-        // genome from Google Drive
-        $button = createCloudStorageButton(config.$dropdown_menu, config.$googleDriveModal, 'Google Drive', 'img/googledrive-dropdown-menu-item.png');
-
+        } // for (...)
 
         function createButton (title) {
             var $button;
@@ -238,40 +218,6 @@ var app = (function (app) {
             return $button;
         }
 
-        function createCloudStorageButton($parent, $modal, title, logo) {
-            var $button,
-                $container,
-                $div,
-                $img;
-
-            $button = $('<button>', { class:'dropdown-item', type:'button' });
-            $parent.append($button);
-
-            $button.on('click', function () {
-                $modal.modal('show');
-            });
-
-            // container for text | logo | text
-            $container = $('<div>', { class:'igv-app-dropdown-item-cloud-storage' });
-            $button.append($container);
-
-            // text
-            $div = $('<div>');
-            $container.append($div);
-            $div.text(title);
-
-            // logo
-            $div = $('<div>');
-            $container.append($div);
-            $img = $('<img>', { src :logo, width :18, height :18 });
-            $div.append($img);
-
-            // text
-            $div = $('<div>');
-            $container.append($div);
-            $div.text('...');
-
-        }
     };
 
     return app;

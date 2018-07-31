@@ -29,6 +29,8 @@ var app = (function (app) {
         this.$modal = config.$modal;
         this.$modal_body = this.$modal.find('.modal-body');
 
+        createLocalInput.call(this, config.$localFileInput);
+
         createDropboxButton.call(this, config.$dropboxButton);
 
         createGoogleDriveButton.call(this, config.$googleDriveButton);
@@ -445,6 +447,20 @@ var app = (function (app) {
 
     }
 
+    function createLocalInput($input) {
+        let self = this;
+
+        $input.on('change', function () {
+
+            if (true === self.isValidLocalFileInput($(this))) {
+                let input;
+                input = $(this).get(0);
+                self.ingestPaths(Array.from(input.files));
+            }
+
+        });
+
+    }
     function createDropboxButton($dropboxButton) {
         let self = this;
 

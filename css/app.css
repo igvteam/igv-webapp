@@ -353,6 +353,9 @@ a#igv-app-email-button:active {
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25); }
 
+label.dropdown-item {
+  margin-bottom: unset; }
+
 .btn-file {
   position: relative;
   overflow: hidden; }

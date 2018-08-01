@@ -96,12 +96,12 @@ var app = (function (app) {
                 $urlModal: $('#igv-app-track-from-url-modal'),
                 $annotationsModal: $('#igv-app-track-from-annotations-modal'),
                 $encodeModal: $('#igv-app-encode-modal'),
-                $encodeModalPresentationButton: $('#igv-encode-list-item-button')
+                $encodeModalPresentationButton: $('#igv-app-encode-button'),
+                $gtexModal: $('#igv-app-track-from-gtex-modal'),
+                $gtexModalPresentationButton: $('#igv-app-gtex-button'),
             };
 
         app.trackLoadController = new app.TrackLoadController(browser, tlConfig);
-
-
 
         // Session Modal Controller
         sessionConfig =

@@ -195,12 +195,38 @@ var app = (function (app) {
                 igv.browser
                     .loadGenome(genome)
                     .then(function (genome) {
+                        let doUpdateEncode,
+                            doUpdateGTex;
 
-                        if (genome.id && app.ModalTable.getAssembly(genome.id)) {
+                        doUpdateEncode = false;
+                        doUpdateGTex = false;
+
+                        if (genome.id) {
+
+                            doUpdateGTex = true;
+
+                            if (app.ModalTable.getAssembly(genome.id)) {
+                                doUpdateEncode = true;
+                            }
+
+                        }
+
+                        if (doUpdateEncode) {
                             app.trackLoadController.createEncodeTable(genome.id);
                             app.trackLoadController.updateAnnotationsSelectList(genome.id);
                         } else {
-                            app.trackLoadController.encodeTable.hidePresentationButton();
+
+                            // hide ENCODE dropdown button
+                            app.trackLoadController.hideEncodeDropdownButton();
+                        }
+
+                        if (doUpdateGTex) {
+
+                            app.trackLoadController.updateGTexSelectList(genome.id);
+                        } else {
+
+                            // hide GTex dropdown button
+                            app.trackLoadController.hideGTexDropdownButton();
                         }
 
                     })

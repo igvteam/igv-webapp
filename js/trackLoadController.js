@@ -45,6 +45,25 @@ var app = (function (app) {
 
         // ENCODE
         this.createEncodeTable(browser.genome.id);
+
+        // GTEX
+        configureGTexSelectList(config.$gtexModal);
+        this.updateGTexSelectList(browser.genome.id);
+
+    };
+
+    app.TrackLoadController.prototype.hideEncodeDropdownButton = function () {
+        this.encodeTable.hidePresentationButton();
+    };
+
+    app.TrackLoadController.prototype.hideGTexDropdownButton = function () {
+        this.config.$gtexModalPresentationButton.addClass('igv-app-disabled');
+        this.config.$gtexModalPresentationButton.text('Genome not supported by GTex');
+    };
+
+    app.TrackLoadController.prototype.showGTexDropdownButton = function () {
+        this.config.$gtexModalPresentationButton.removeClass('igv-app-disabled');
+        this.config.$gtexModalPresentationButton.text('GTEX ...');
     };
 
     app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
@@ -127,17 +146,91 @@ var app = (function (app) {
                 $option = $('<option>', { value:'-', text:'-' });
                 $select.append($option);
 
-                tracks.forEach(function (track) {
-                    $option = $('<option>', { value:track.name, text:track.name });
-                    $option.data('track', track);
-                    $select.append($option);
-                });
+                tracks
+                    .reduce(function($accumulator, track) {
+                        let $option;
+
+                        $option = $('<option>', { value:track.name, text:track.name });
+                        $option.data('track', track);
+
+                        $accumulator.append($option);
+
+                        return $accumulator;
+                    }, $select);
 
             })
             .catch(function (error) {
-                igv.presentAlert(error);
+                igv.presentAlert(error.message);
             });
-        
+
+    };
+
+    let gtex_lut;
+    gtex_lut =
+        {
+            hg19: 'gtex_v7',
+            // hg38: 'gtex_v78'
+        };
+
+    app.TrackLoadController.prototype.updateGTexSelectList = function (genome_id) {
+
+        let self = this,
+            $select;
+
+        $select = this.config.$gtexModal.find('select');
+
+        // discard current annotations
+        $select.empty();
+
+        if (gtex_lut[ genome_id ]) {
+
+            igv.GtexUtils
+                .getTissueInfo(gtex_lut[ genome_id ])
+                .then((json) => {
+                    let $option,
+                        tissueInfoList;
+
+                    $option = $('<option>', { value:'-', text:'-' });
+                    $select.append($option);
+
+                    tissueInfoList = json['tissueInfo'];
+
+                    tissueInfoList
+                        .reduce(function($accumulator, tissueInfo) {
+                            let gtexTrack;
+
+                            $option = $('<option>', { value:tissueInfo.tissueName, text:tissueInfo.tissueName });
+
+                            gtexTrack =
+                                {
+                                    type: "eqtl",
+                                    sourceType: "gtex-ws",
+                                    url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocationDev",
+                                    tissueName: tissueInfo.tissueId,
+                                    name: tissueInfo.tissueName,
+                                    visibilityWindow: 1000000
+                                };
+
+                            $option.data('track', gtexTrack);
+
+                            $accumulator.append($option);
+
+                            return $accumulator;
+                        }, $select);
+
+                    self.showGTexDropdownButton();
+
+                })
+                .catch(function (error) {
+                    igv.presentAlert(error.message);
+                });
+        } else {
+
+            // hide GTex dropdown button
+            self.hideGTexDropdownButton();
+
+        }
+
     };
 
     function configureAnnotationsSelectList($modal) {
@@ -155,6 +248,28 @@ var app = (function (app) {
             $option.removeAttr("selected");
 
             igv.browser.loadTrack( json );
+
+            $modal.modal('hide');
+
+        });
+
+    }
+
+    function configureGTexSelectList($modal) {
+
+        let $select;
+
+        $select = $modal.find('select');
+
+        $select.on('change', function (e) {
+            let $option,
+                config;
+
+            $option = $(this).find('option:selected');
+            config = $option.data('track');
+            $option.removeAttr("selected");
+
+            igv.browser.loadTrack( config );
 
             $modal.modal('hide');
 

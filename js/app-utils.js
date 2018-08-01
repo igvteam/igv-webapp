@@ -33,11 +33,18 @@ var app = (function (app) {
             },
 
             indexLookup: function (dataSuffix) {
-                let fasta,
+                let fa,
+                    fasta,
                     bam,
                     gz,
                     any,
                     lut;
+
+                fa =
+                    {
+                        index: 'fai',
+                        isOptional: true
+                    };
 
                 fasta =
                     {
@@ -65,6 +72,7 @@ var app = (function (app) {
 
                 lut =
                     {
+                        fa: fa,
                         fasta: fasta,
                         bam: bam,
                         gz: gz
@@ -128,7 +136,7 @@ var app = (function (app) {
                 let fasta,
                     union;
 
-                fasta = new Set(['fasta']);
+                fasta = new Set(['fa', 'fasta']);
                 union = new Set([...(igv.knownFileExtensions), ...fasta]);
                 return union.has(extension);
             },

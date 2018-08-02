@@ -1,5 +1,6 @@
 {
   "label": "Platinum Genomes",
+  "link": "https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes",
   "tracks": [
     {
       "sourceType": "gcs",

@@ -143,14 +143,19 @@ var app = (function (app) {
             .then(function (tracks) {
                 let $option;
 
-                $option = $('<option>', { value:'-', text:'-' });
+                // Choose one of the following...
+                $option = $('<option>', { text:'Choose one of the following...' });
                 $select.append($option);
+
+                $option.attr('selected','selected');
+                $option.val(undefined);
 
                 tracks
                     .reduce(function($accumulator, track) {
-                        let $option;
 
                         $option = $('<option>', { value:track.name, text:track.name });
+                        $select.append($option);
+
                         $option.data('track', track);
 
                         $accumulator.append($option);
@@ -190,8 +195,12 @@ var app = (function (app) {
                     let $option,
                         tissueInfoList;
 
-                    $option = $('<option>', { value:'-', text:'-' });
+                    // Choose one of the following...
+                    $option = $('<option>', { text:'Choose one of the following...' });
                     $select.append($option);
+
+                    $option.attr('selected','selected');
+                    $option.val(undefined);
 
                     tissueInfoList = json['tissueInfo'];
 
@@ -200,7 +209,8 @@ var app = (function (app) {
                             let gtexTrack;
 
                             $option = $('<option>', { value:tissueInfo.tissueName, text:tissueInfo.tissueName });
-
+                            $select.append($option);
+                            
                             gtexTrack =
                                 {
                                     type: "eqtl",
@@ -241,13 +251,21 @@ var app = (function (app) {
 
         $select.on('change', function (e) {
             let $option,
-                json;
+                config,
+                value;
 
             $option = $(this).find('option:selected');
-            json = $option.data('track');
-            $option.removeAttr("selected");
+            value = $option.val();
 
-            igv.browser.loadTrack( json );
+            if ('' === value) {
+                // do nothing
+            } else {
+                config = $option.data('track');
+                $option.removeAttr("selected");
+
+                igv.browser.loadTrack( config );
+
+            }
 
             $modal.modal('hide');
 
@@ -263,13 +281,20 @@ var app = (function (app) {
 
         $select.on('change', function (e) {
             let $option,
+                value,
                 config;
 
             $option = $(this).find('option:selected');
-            config = $option.data('track');
-            $option.removeAttr("selected");
+            value = $option.val();
 
-            igv.browser.loadTrack( config );
+            if ('' === $option.val()) {
+                // do nothing
+            } else {
+                config = $option.data('track');
+                $option.removeAttr("selected");
+
+                igv.browser.loadTrack( config );
+            }
 
             $modal.modal('hide');
 

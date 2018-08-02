@@ -196,7 +196,11 @@
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-annotations-modal">Annotations ...</button>
 
                     <!-- ENCODE -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal" id="igv-encode-list-item-button">ENCODE ...</button>
+                    <button id="igv-app-encode-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal">ENCODE ...</button>
+
+                    <!-- GTex -->
+                    <button id="igv-app-gtex-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-gtex-modal">GTEX ...</button>
+
                 </div>
             </div>
 
@@ -356,7 +360,7 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <select id="igv-app-annotation-selector" name="annotation-selector" class="form-control" title="Select Annotation">
+                        <select name="annotation-selector" class="form-control" title="Select Annotation">
                         </select>
                     </div>
 
@@ -390,6 +394,33 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Track from GTEX -->
+    <div id="igv-app-track-from-gtex-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-gtex-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4  id="igv-app-track-from-gtex-modal-label" class="modal-title">Load Track: GTEX</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <select name="annotation-selector" class="form-control" title="Select Track">
+                        </select>
+                    </div>
                 </div>
 
             </div>
@@ -641,14 +672,14 @@
             };
 
         // Note: Run app WITH Google authentication. Debug Chrome Dev Tools ONLY
-        gapi.load('client:auth2', gapiConfig);
+        // gapi.load('client:auth2', gapiConfig);
 
         // Note: Run app WITHOUT Google authentication. Debug in IntelliJ IDE or Chrome Dev Tools
-        // igv
-        //     .createBrowser($('#igv-app-container').get(0), igvConfig)
-        //     .then(function (browser) {
-        //         app.init(browser, $('#igv-app-container'), urlShortenerConfig);
-        //     });
+        igv
+            .createBrowser($('#igv-app-container').get(0), igvConfig)
+            .then(function (browser) {
+                app.init(browser, $('#igv-app-container'), urlShortenerConfig);
+            });
 
     });
 

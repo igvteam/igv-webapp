@@ -196,14 +196,14 @@ var app = (function (app) {
                     .loadGenome(genome)
                     .then(function (genome) {
                         let doUpdateEncode,
-                            doUpdateGTex;
+                            doUpdateTrackSelectLists;
 
                         doUpdateEncode = false;
-                        doUpdateGTex = false;
+                        doUpdateTrackSelectLists = false;
 
                         if (genome.id) {
 
-                            doUpdateGTex = true;
+                            doUpdateTrackSelectLists = true;
 
                             if (app.ModalTable.getAssembly(genome.id)) {
                                 doUpdateEncode = true;
@@ -213,19 +213,15 @@ var app = (function (app) {
 
                         if (doUpdateEncode) {
                             app.trackLoadController.createEncodeTable(genome.id);
-                            app.trackLoadController.updateAnnotationsSelectList(genome.id);
                         } else {
 
                             // hide ENCODE dropdown button
                             app.trackLoadController.hideEncodeDropdownButton();
                         }
 
-                        if (doUpdateGTex) {
-
+                        if (doUpdateTrackSelectLists) {
                             app.trackLoadController.updateGTexSelectList(genome.id);
                         } else {
-
-                            // hide GTex dropdown button
                             app.trackLoadController.hideGTexDropdownButton();
                         }
 

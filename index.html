@@ -135,13 +135,13 @@
             </div>
 
             <!-- Tracks -->
-            <div class="dropdown igv-app-site-widget">
+            <div id="igv-app-track-dropdown" class="dropdown igv-app-site-widget">
 
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="igv-track-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button id="igv-track-dropdown-button" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Load Track
                 </button>
 
-                <div class="dropdown-menu" aria-labelledby="igv-track-dropdown-button">
+                <div id="igv-app-track-dropdown-menu" class="dropdown-menu" aria-labelledby="igv-app-track-dropdown-button">
 
                     <!-- local file -->
                     <label class="dropdown-item btn btn-default btn-file">
@@ -180,10 +180,7 @@
                     <!-- URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">URL ...</button>
 
-                    <div class="dropdown-divider"></div>
-
-                    <!-- Annotations -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-annotations-modal">Annotations ...</button>
+                    <div id="igv-app-annotations-section" class="dropdown-divider"></div>
 
                     <!-- ENCODE -->
                     <button id="igv-app-encode-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-encode-modal">ENCODE ...</button>
@@ -331,15 +328,15 @@
 
     </div>
 
-    <!-- Track from Annotations -->
-    <div id="igv-app-track-from-annotations-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-track-from-annotations-modal-label" aria-hidden="true">
+    <!-- Generic Track Select Modal -->
+    <div id="igv-app-generic-track-select-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-generic-track-select-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4  id="igv-app-track-from-annotations-modal-label" class="modal-title">Load Track: Annotations</h4>
+                    <h4  id="igv-app-generic-track-select-modal-label" class="modal-title">Load Track: Annotations</h4>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -350,7 +347,7 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <select name="annotation-selector" class="custom-select custom-select-lg form-control">
+                        <select id="igv-app-generic-select" name="igv-app-generic-selector" class="custom-select custom-select-lg form-control">
                         </select>
                     </div>
 
@@ -662,14 +659,14 @@
             };
 
         // Note: Run app WITH Google authentication. Debug Chrome Dev Tools ONLY
-        gapi.load('client:auth2', gapiConfig);
+        // gapi.load('client:auth2', gapiConfig);
 
         // Note: Run app WITHOUT Google authentication. Debug in IntelliJ IDE or Chrome Dev Tools
-        // igv
-        //     .createBrowser($('#igv-app-container').get(0), igvConfig)
-        //     .then(function (browser) {
-        //         app.init(browser, $('#igv-app-container'), urlShortenerConfig);
-        //     });
+        igv
+            .createBrowser($('#igv-app-container').get(0), igvConfig)
+            .then(function (browser) {
+                app.init(browser, $('#igv-app-container'), urlShortenerConfig);
+            });
 
     });
 

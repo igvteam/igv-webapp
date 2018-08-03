@@ -28,6 +28,7 @@ var app = (function (app) {
 
         this.browser = browser;
         this.config = config;
+        this.$genericTrackSelectModal = config.$genericTrackSelectModal;
 
         // URL
         urlConfig =
@@ -39,10 +40,6 @@ var app = (function (app) {
         this.urlWidget = new app.FileLoadWidget(urlConfig, new app.FileLoadManager());
         app.utils.configureModal(this.urlWidget, config.$urlModal);
 
-        // Annotations
-        configureAnnotationsSelectList(config.$annotationsModal);
-        this.updateAnnotationsSelectList(browser.genome.id);
-
         // ENCODE
         this.createEncodeTable(browser.genome.id);
 
@@ -50,10 +47,23 @@ var app = (function (app) {
         configureGTexSelectList(config.$gtexModal);
         this.updateGTexSelectList(browser.genome.id);
 
+
+        configureGeneralizedAnnotations.call(this, config.$dropdownMenu, this.$genericTrackSelectModal, browser.genome.id);
+
     };
 
     app.TrackLoadController.prototype.hideEncodeDropdownButton = function () {
         this.encodeTable.hidePresentationButton();
+    };
+
+    app.TrackLoadController.prototype.hideAnnotationDropdownButton = function () {
+        this.config.annotationsModalPresentationButton.addClass('igv-app-disabled');
+        this.config.annotationsModalPresentationButton.text('Genome not supported by Annotations');
+    };
+
+    app.TrackLoadController.prototype.showAnnotationDropdownButton = function () {
+        this.config.annotationsModalPresentationButton.removeClass('igv-app-disabled');
+        this.config.annotationsModalPresentationButton.text('(LEGACY) Annotations ...');
     };
 
     app.TrackLoadController.prototype.hideGTexDropdownButton = function () {
@@ -122,54 +132,6 @@ var app = (function (app) {
 
     };
 
-    app.TrackLoadController.prototype.updateAnnotationsSelectList = function (genome_id) {
-
-        let $select,
-            a,
-            b,
-            path;
-
-        $select = this.config.$annotationsModal.find('select');
-
-        // discard current annotations
-        $select.empty();
-
-        a = 'resources/tracks/';
-        b = genome_id + '_tracks.json';
-        path = a + b;
-
-        igv.xhr
-            .loadJson(path)
-            .then(function (tracks) {
-                let $option;
-
-                // Choose one of the following...
-                $option = $('<option>', { text:'Choose one of the following...' });
-                $select.append($option);
-
-                $option.attr('selected','selected');
-                $option.val(undefined);
-
-                tracks
-                    .reduce(function($accumulator, track) {
-
-                        $option = $('<option>', { value:track.name, text:track.name });
-                        $select.append($option);
-
-                        $option.data('track', track);
-
-                        $accumulator.append($option);
-
-                        return $accumulator;
-                    }, $select);
-
-            })
-            .catch(function (error) {
-                igv.presentAlert(error.message);
-            });
-
-    };
-
     let gtex_lut;
     gtex_lut =
         {
@@ -210,7 +172,7 @@ var app = (function (app) {
 
                             $option = $('<option>', { value:tissueInfo.tissueName, text:tissueInfo.tissueName });
                             $select.append($option);
-                            
+
                             gtexTrack =
                                 {
                                     type: "eqtl",
@@ -243,36 +205,6 @@ var app = (function (app) {
 
     };
 
-    function configureAnnotationsSelectList($modal) {
-
-        let $select;
-
-        $select = $modal.find('select');
-
-        $select.on('change', function (e) {
-            let $option,
-                config,
-                value;
-
-            $option = $(this).find('option:selected');
-            value = $option.val();
-
-            if ('' === value) {
-                // do nothing
-            } else {
-                config = $option.data('track');
-                $option.removeAttr("selected");
-
-                igv.browser.loadTrack( config );
-
-            }
-
-            $modal.modal('hide');
-
-        });
-
-    }
-
     function configureGTexSelectList($modal) {
 
         let $select;
@@ -299,6 +231,118 @@ var app = (function (app) {
             $modal.modal('hide');
 
         });
+
+    }
+
+    function configureGeneralizedAnnotations($dropdownMenu, $modal, genomeID) {
+        let root,
+            tracks,
+            path;
+
+        root = 'resources/tracks';
+        tracks = root + '/' + genomeID + '_' + 'tracks.txt';
+        igv.xhr
+            .loadString(tracks)
+            .then((result) => {
+                let paths,
+                    promises;
+
+                paths = result.split('\n').filter((part) => ( !('' === part) ));
+
+                promises = paths.map((path) => {
+                    return igv.xhr.loadJson(( root + '/' + path));
+                });
+                Promise
+                    .all(promises)
+                    .then((menuItemConfigurations) => {
+                        let $divider;
+
+                        $divider = $dropdownMenu.find('#igv-app-annotations-section');
+
+                        menuItemConfigurations
+                            .forEach((menuItemConfiguration) => {
+                                let $button,
+                                    id,
+                                    str;
+
+                                $button = $('<button>', { class:'dropdown-item', type:'button' });
+                                str = menuItemConfiguration.label + ' ...';
+                                $button.text(str);
+
+                                id = genomeID + '_' + menuItemConfiguration.label.toLowerCase().split(' ').join('_');
+                                $button.attr('id', id);
+
+                                $button.insertAfter($divider);
+
+                                $button.on('click', function () {
+                                    let label;
+
+                                    label = 'Load Track: ' + menuItemConfiguration.label;
+                                    $modal.find('#igv-app-generic-track-select-modal-label').text(label);
+
+                                    configureSelectList( $modal.find('select'), menuItemConfiguration.tracks, $modal);
+
+                                    $modal.modal('show');
+                                });
+                            });
+
+                    })
+
+            })
+            .catch((error) => {
+                console.log('ERROR ' + error.message)
+            });
+
+        function configureSelectList($select, trackConfigurations, $modal) {
+
+            let $option;
+
+            $select.empty();
+            $select.unbind();
+
+            // Choose one of the following...
+            $option = $('<option>', { text:'Choose one of the following...' });
+            $select.append($option);
+
+            $option.attr('selected','selected');
+            $option.val(undefined);
+
+            trackConfigurations
+                .reduce(function($accumulator, config) {
+
+                    $option = $('<option>', { value:config.name, text:config.name });
+                    $select.append($option);
+
+                    $option.data('track', config);
+
+                    $accumulator.append($option);
+
+                    return $accumulator;
+                }, $select);
+
+            $select.on('change', function (e) {
+                let $option,
+                    config,
+                    value;
+
+                $option = $(this).find('option:selected');
+                value = $option.val();
+
+                if ('' === value) {
+                    // do nothing
+                } else {
+                    config = $option.data('track');
+                    $option.removeAttr("selected");
+
+                    igv.browser.loadTrack( config );
+
+                }
+
+                $modal.modal('hide');
+
+            });
+
+        }
 
     }
 

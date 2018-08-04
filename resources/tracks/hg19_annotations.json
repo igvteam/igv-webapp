@@ -1,48 +1,48 @@
 {
-  "label": "Annotations",
-  "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
-  "tracks": [
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12877_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12877_S1.bam.bai",
-	  "name": "NA12877"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam.bai",
-	  "name": "NA12878"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12889_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12889_S1.bam.bai",
-	  "name": "NA12889"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12890_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12890_S1.bam.bai",
-	  "name": "NA12890"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam.bai",
-	  "name": "NA12891"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam.bai",
-	  "name": "NA12892"
-	}
-  ]
+	"label": "Annotations",
+	"link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+	"tracks": [
+		{
+			"sourceType": "gcs",
+			"type": "alignment",
+			"url": "gs://genomics-public-data/platinum-genomes/bam/NA12877_S1.bam",
+			"indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12877_S1.bam.bai",
+			"name": "NA12877"
+		},
+		{
+			"sourceType": "gcs",
+			"type": "alignment",
+			"url": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam",
+			"indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam.bai",
+			"name": "NA12878"
+		},
+		{
+			"sourceType": "gcs",
+			"type": "alignment",
+			"url": "gs://genomics-public-data/platinum-genomes/bam/NA12889_S1.bam",
+			"indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12889_S1.bam.bai",
+			"name": "NA12889"
+		},
+		{
+			"sourceType": "gcs",
+			"type": "alignment",
+			"url": "gs://genomics-public-data/platinum-genomes/bam/NA12890_S1.bam",
+			"indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12890_S1.bam.bai",
+			"name": "NA12890"
+		},
+		{
+			"sourceType": "gcs",
+			"type": "alignment",
+			"url": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam",
+			"indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam.bai",
+			"name": "NA12891"
+		},
+		{
+			"sourceType": "gcs",
+			"type": "alignment",
+			"url": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam",
+			"indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam.bai",
+			"name": "NA12892"
+		}
+	]
 }

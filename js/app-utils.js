@@ -220,10 +220,7 @@ var app = (function (app) {
                         }
 
                         if (doUpdateTrackSelectLists) {
-                            app.trackLoadController.updateGTexSelectList(genome.id);
                             app.trackLoadController.updateGeneralizedAnnotations(genome.id);
-                        } else {
-                            app.trackLoadController.hideGTexDropdownButton();
                         }
 
                     })

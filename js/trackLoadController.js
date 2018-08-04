@@ -280,7 +280,7 @@ var app = (function (app) {
                                     label = 'Load Track: ' + menuItemConfiguration.label;
                                     $modal.find('#igv-app-generic-track-select-modal-label').text(label);
 
-                                    configureSelectList( $modal.find('select'), menuItemConfiguration.tracks, $modal);
+                                    configureSelectList($modal, menuItemConfiguration.tracks);
 
                                     $modal.modal('show');
                                 });
@@ -293,12 +293,15 @@ var app = (function (app) {
                 console.log('ERROR ' + error.message)
             });
 
-        function configureSelectList($select, trackConfigurations, $modal) {
+        function configureSelectList($modal, trackConfigurations) {
 
-            let $option;
+            let $select,
+                $option;
 
-            $select.empty();
-            $select.unbind();
+            $modal.find('select').remove();
+
+            $select = $('<select>', { class:'custom-select custom-select-lg form-control' });
+            $modal.find('.form-group').append($select);
 
             // Choose one of the following...
             $option = $('<option>', { text:'Choose one of the following...' });

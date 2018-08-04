@@ -41,40 +41,15 @@ var app = (function (app) {
         this.urlWidget = new app.FileLoadWidget(urlConfig, new app.FileLoadManager());
         app.utils.configureModal(this.urlWidget, config.$urlModal);
 
+        this.updateGeneralizedAnnotations(browser.genome.id);
+
         // ENCODE
         this.createEncodeTable(browser.genome.id);
-
-        // GTEX
-        configureGTexSelectList(config.$gtexModal);
-        this.updateGTexSelectList(browser.genome.id);
-
-
-        this.updateGeneralizedAnnotations(browser.genome.id);
 
     };
 
     app.TrackLoadController.prototype.hideEncodeDropdownButton = function () {
         this.encodeTable.hidePresentationButton();
-    };
-
-    app.TrackLoadController.prototype.hideAnnotationDropdownButton = function () {
-        this.config.annotationsModalPresentationButton.addClass('igv-app-disabled');
-        this.config.annotationsModalPresentationButton.text('Genome not supported by Annotations');
-    };
-
-    app.TrackLoadController.prototype.showAnnotationDropdownButton = function () {
-        this.config.annotationsModalPresentationButton.removeClass('igv-app-disabled');
-        this.config.annotationsModalPresentationButton.text('(LEGACY) Annotations ...');
-    };
-
-    app.TrackLoadController.prototype.hideGTexDropdownButton = function () {
-        this.config.$gtexModalPresentationButton.addClass('igv-app-disabled');
-        this.config.$gtexModalPresentationButton.text('Genome not supported by GTex');
-    };
-
-    app.TrackLoadController.prototype.showGTexDropdownButton = function () {
-        this.config.$gtexModalPresentationButton.removeClass('igv-app-disabled');
-        this.config.$gtexModalPresentationButton.text('GTEX ...');
     };
 
     app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
@@ -133,52 +108,84 @@ var app = (function (app) {
 
     };
 
+    let gtex_lut;
+    gtex_lut =
+        {
+            hg19: 'gtex_v7',
+            // hg38: 'gtex_v78'
+        };
+
     app.TrackLoadController.prototype.updateGeneralizedAnnotations = function (genomeID) {
+
+        const id_prefix = 'genome_specific_';
+
         let self = this,
             root,
-            tracks;
+            tracks,
+            searchString,
+            $divider,
+            $found;
+
+        $divider = self.$dropdownMenu.find('#igv-app-annotations-section');
+
+        searchString = '[id^=' + id_prefix + ']';
+        $found = self.$dropdownMenu.find(searchString);
+        $found.remove();
 
         root = 'resources/tracks';
         tracks = root + '/' + genomeID + '_' + 'tracks.txt';
+
         igv.xhr
             .loadString(tracks)
             .then((result) => {
                 let paths,
-                    promises;
+                    promiseTasks,
+                    filenames;
 
                 paths = result.split('\n').filter((part) => ( !('' === part) ));
+                filenames = paths.map((path) => (path.split('.').shift()));
 
-                promises = paths.map((path) => {
-                    return igv.xhr.loadJson(( root + '/' + path));
-                });
+                promiseTasks = paths.map((path, i) => ({ name: filenames[ i ], promise: igv.xhr.loadJson(( root + '/' + path)) }));
+
+                if (gtex_lut[ genomeID ]) {
+                    promiseTasks.push({ name: 'GTex', promise: igv.GtexUtils.getTissueInfo(gtex_lut[ genomeID ])});
+                }
+
                 Promise
-                    .all(promises)
-                    .then((menuItemConfigurations) => {
-                        let $divider,
-                            searchString,
-                            $found;
+                    .all( promiseTasks.map((task) => (task.promise)))
+                    .then((json) => {
+                        let menuItemConfigurations;
 
-                        const id_prefix = 'genome_specific_';
+                        // hack to include GTex
+                        menuItemConfigurations = json.map((m) => {
+                            let revised;
 
-                        $divider = self.$dropdownMenu.find('#igv-app-annotations-section');
+                            revised = m;
 
-                        searchString = '[id^=' + id_prefix + ']';
-                        self.$dropdownMenu.find(searchString);
+                            if (revised[ 'tissueInfo' ]) {
+                                Object.defineProperty(revised, 'tracks',
+                                    Object.getOwnPropertyDescriptor(revised, 'tissueInfo'));
+                                delete revised[ 'tissueInfo' ];
+                            }
 
-                        $found = self.$dropdownMenu.find(searchString);
-                        $found.remove();
+                            if (undefined === revised[ 'label' ]) {
+                                revised[ 'label' ] = 'GTex';
+                            }
+
+                            return revised;
+                        });
 
                         menuItemConfigurations
-                            .forEach((menuItemConfiguration) => {
+                            .forEach((config, i) => {
                                 let $button,
                                     id,
                                     str;
 
                                 $button = $('<button>', { class:'dropdown-item', type:'button' });
-                                str = menuItemConfiguration.label + ' ...';
+                                str = config.label + ' ...';
                                 $button.text(str);
 
-                                id = id_prefix + menuItemConfiguration.label.toLowerCase().split(' ').join('_');
+                                id = id_prefix + config.label.toLowerCase().split(' ').join('_');
                                 $button.attr('id', id);
 
                                 $button.insertAfter($divider);
@@ -186,10 +193,10 @@ var app = (function (app) {
                                 $button.on('click', function () {
                                     let label;
 
-                                    label = 'Load Track: ' + menuItemConfiguration.label;
+                                    label = 'Load Track: ' + config.label;
                                     self.$modal.find('#igv-app-generic-track-select-modal-label').text(label);
 
-                                    configureSelectList(self.$modal, menuItemConfiguration.tracks);
+                                    configureModalSelectList(self.$modal, config.tracks, promiseTasks[i].name);
 
                                     self.$modal.modal('show');
                                 });
@@ -204,109 +211,20 @@ var app = (function (app) {
 
     };
 
-    let gtex_lut;
-    gtex_lut =
-        {
-            hg19: 'gtex_v7',
-            // hg38: 'gtex_v78'
-        };
+    function trackConfigurationFromTissueInfo (tissueInfo) {
 
-    app.TrackLoadController.prototype.updateGTexSelectList = function (genome_id) {
-
-        let self = this,
-            $select;
-
-        $select = this.config.$gtexModal.find('select');
-
-        // discard current annotations
-        $select.empty();
-
-        if (gtex_lut[ genome_id ]) {
-
-            igv.GtexUtils
-                .getTissueInfo(gtex_lut[ genome_id ])
-                .then((json) => {
-                    let $option,
-                        tissueInfoList;
-
-                    // Choose one of the following...
-                    $option = $('<option>', { text:'Choose one of the following...' });
-                    $select.append($option);
-
-                    $option.attr('selected','selected');
-                    $option.val(undefined);
-
-                    tissueInfoList = json['tissueInfo'];
-
-                    tissueInfoList
-                        .reduce(function($accumulator, tissueInfo) {
-                            let gtexTrack;
-
-                            $option = $('<option>', { value:tissueInfo.tissueName, text:tissueInfo.tissueName });
-                            $select.append($option);
-
-                            gtexTrack =
-                                {
-                                    type: "eqtl",
-                                    sourceType: "gtex-ws",
-                                    url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocationDev",
-                                    tissueName: tissueInfo.tissueId,
-                                    name: tissueInfo.tissueName,
-                                    visibilityWindow: 1000000
-                                };
-
-                            $option.data('track', gtexTrack);
-
-                            $accumulator.append($option);
-
-                            return $accumulator;
-                        }, $select);
-
-                    self.showGTexDropdownButton();
-
-                })
-                .catch(function (error) {
-                    igv.presentAlert(error.message);
-                });
-        } else {
-
-            // hide GTex dropdown button
-            self.hideGTexDropdownButton();
-
+        return {
+            type: "eqtl",
+            sourceType: "gtex-ws",
+            url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocationDev",
+            tissueName: tissueInfo.tissueId,
+            name: tissueInfo.tissueName,
+            visibilityWindow: 1000000
         }
-
-    };
-
-    function configureGTexSelectList($modal) {
-
-        let $select;
-
-        $select = $modal.find('select');
-
-        $select.on('change', function (e) {
-            let $option,
-                value,
-                config;
-
-            $option = $(this).find('option:selected');
-            value = $option.val();
-
-            if ('' === $option.val()) {
-                // do nothing
-            } else {
-                config = $option.data('track');
-                $option.removeAttr("selected");
-
-                igv.browser.loadTrack( config );
-            }
-
-            $modal.modal('hide');
-
-        });
 
     }
 
-    function configureSelectList($modal, trackConfigurations) {
+    function configureModalSelectList($modal, configurations, promiseTaskName) {
 
         let $select,
             $option;
@@ -322,13 +240,17 @@ var app = (function (app) {
         $option.attr('selected','selected');
         $option.val(undefined);
 
-        trackConfigurations
+        configurations
             .reduce(function($accumulator, config) {
+                let trackConfiguration;
 
-                $option = $('<option>', { value:config.name, text:config.name });
+                // hack to support GTex
+                trackConfiguration = ('GTex' === promiseTaskName) ? trackConfigurationFromTissueInfo(config) : config;
+
+                $option = $('<option>', { value:trackConfiguration.name, text:trackConfiguration.name });
                 $select.append($option);
 
-                $option.data('track', config);
+                $option.data('track', trackConfiguration);
 
                 $accumulator.append($option);
 
@@ -337,7 +259,7 @@ var app = (function (app) {
 
         $select.on('change', function (e) {
             let $option,
-                config,
+                trackConfiguration,
                 value;
 
             $option = $(this).find('option:selected');
@@ -346,10 +268,10 @@ var app = (function (app) {
             if ('' === value) {
                 // do nothing
             } else {
-                config = $option.data('track');
+                trackConfiguration = $option.data('track');
                 $option.removeAttr("selected");
 
-                igv.browser.loadTrack( config );
+                igv.browser.loadTrack( trackConfiguration );
 
             }
 

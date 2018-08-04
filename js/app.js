@@ -96,8 +96,6 @@ var app = (function (app) {
                 $urlModal: $('#igv-app-track-from-url-modal'),
                 $encodeModal: $('#igv-app-encode-modal'),
                 $encodeModalPresentationButton: $('#igv-app-encode-button'),
-                $gtexModal: $('#igv-app-track-from-gtex-modal'),
-                $gtexModalPresentationButton: $('#igv-app-gtex-button'),
                 $dropdownMenu: $('#igv-app-track-dropdown-menu'),
                 $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
             };

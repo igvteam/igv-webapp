@@ -28,7 +28,8 @@ var app = (function (app) {
 
         this.browser = browser;
         this.config = config;
-        this.$genericTrackSelectModal = config.$genericTrackSelectModal;
+        this.$modal = config.$genericTrackSelectModal;
+        this.$dropdownMenu = config.$dropdownMenu;
 
         // URL
         urlConfig =
@@ -48,7 +49,7 @@ var app = (function (app) {
         this.updateGTexSelectList(browser.genome.id);
 
 
-        configureGeneralizedAnnotations.call(this, config.$dropdownMenu, this.$genericTrackSelectModal, browser.genome.id);
+        this.updateGeneralizedAnnotations(browser.genome.id);
 
     };
 
@@ -129,6 +130,77 @@ var app = (function (app) {
         this.encodeTable = new app.ModalTable(encodeTableConfig);
 
         this.encodeTable.loadData(genomeID);
+
+    };
+
+    app.TrackLoadController.prototype.updateGeneralizedAnnotations = function (genomeID) {
+        let self = this,
+            root,
+            tracks;
+
+        root = 'resources/tracks';
+        tracks = root + '/' + genomeID + '_' + 'tracks.txt';
+        igv.xhr
+            .loadString(tracks)
+            .then((result) => {
+                let paths,
+                    promises;
+
+                paths = result.split('\n').filter((part) => ( !('' === part) ));
+
+                promises = paths.map((path) => {
+                    return igv.xhr.loadJson(( root + '/' + path));
+                });
+                Promise
+                    .all(promises)
+                    .then((menuItemConfigurations) => {
+                        let $divider,
+                            searchString,
+                            $found;
+
+                        const id_prefix = 'genome_specific_';
+
+                        $divider = self.$dropdownMenu.find('#igv-app-annotations-section');
+
+                        searchString = '[id^=' + id_prefix + ']';
+                        self.$dropdownMenu.find(searchString);
+
+                        $found = self.$dropdownMenu.find(searchString);
+                        $found.remove();
+
+                        menuItemConfigurations
+                            .forEach((menuItemConfiguration) => {
+                                let $button,
+                                    id,
+                                    str;
+
+                                $button = $('<button>', { class:'dropdown-item', type:'button' });
+                                str = menuItemConfiguration.label + ' ...';
+                                $button.text(str);
+
+                                id = id_prefix + menuItemConfiguration.label.toLowerCase().split(' ').join('_');
+                                $button.attr('id', id);
+
+                                $button.insertAfter($divider);
+
+                                $button.on('click', function () {
+                                    let label;
+
+                                    label = 'Load Track: ' + menuItemConfiguration.label;
+                                    self.$modal.find('#igv-app-generic-track-select-modal-label').text(label);
+
+                                    configureSelectList(self.$modal, menuItemConfiguration.tracks);
+
+                                    self.$modal.modal('show');
+                                });
+                            });
+
+                    })
+
+            })
+            .catch((error) => {
+                console.log('ERROR ' + error.message)
+            });
 
     };
 
@@ -234,118 +306,56 @@ var app = (function (app) {
 
     }
 
-    function configureGeneralizedAnnotations($dropdownMenu, $modal, genomeID) {
-        let root,
-            tracks,
-            path;
+    function configureSelectList($modal, trackConfigurations) {
 
-        root = 'resources/tracks';
-        tracks = root + '/' + genomeID + '_' + 'tracks.txt';
-        igv.xhr
-            .loadString(tracks)
-            .then((result) => {
-                let paths,
-                    promises;
+        let $select,
+            $option;
 
-                paths = result.split('\n').filter((part) => ( !('' === part) ));
+        $modal.find('select').remove();
 
-                promises = paths.map((path) => {
-                    return igv.xhr.loadJson(( root + '/' + path));
-                });
-                Promise
-                    .all(promises)
-                    .then((menuItemConfigurations) => {
-                        let $divider;
+        $select = $('<select>', { class:'custom-select custom-select-lg form-control' });
+        $modal.find('.form-group').append($select);
 
-                        $divider = $dropdownMenu.find('#igv-app-annotations-section');
+        $option = $('<option>', { text:'Choose one of the following...' });
+        $select.append($option);
 
-                        menuItemConfigurations
-                            .forEach((menuItemConfiguration) => {
-                                let $button,
-                                    id,
-                                    str;
+        $option.attr('selected','selected');
+        $option.val(undefined);
 
-                                $button = $('<button>', { class:'dropdown-item', type:'button' });
-                                str = menuItemConfiguration.label + ' ...';
-                                $button.text(str);
+        trackConfigurations
+            .reduce(function($accumulator, config) {
 
-                                id = genomeID + '_' + menuItemConfiguration.label.toLowerCase().split(' ').join('_');
-                                $button.attr('id', id);
+                $option = $('<option>', { value:config.name, text:config.name });
+                $select.append($option);
 
-                                $button.insertAfter($divider);
+                $option.data('track', config);
 
-                                $button.on('click', function () {
-                                    let label;
+                $accumulator.append($option);
 
-                                    label = 'Load Track: ' + menuItemConfiguration.label;
-                                    $modal.find('#igv-app-generic-track-select-modal-label').text(label);
+                return $accumulator;
+            }, $select);
 
-                                    configureSelectList($modal, menuItemConfiguration.tracks);
+        $select.on('change', function (e) {
+            let $option,
+                config,
+                value;
 
-                                    $modal.modal('show');
-                                });
-                            });
+            $option = $(this).find('option:selected');
+            value = $option.val();
 
-                    })
+            if ('' === value) {
+                // do nothing
+            } else {
+                config = $option.data('track');
+                $option.removeAttr("selected");
 
-            })
-            .catch((error) => {
-                console.log('ERROR ' + error.message)
-            });
+                igv.browser.loadTrack( config );
 
-        function configureSelectList($modal, trackConfigurations) {
+            }
 
-            let $select,
-                $option;
+            $modal.modal('hide');
 
-            $modal.find('select').remove();
-
-            $select = $('<select>', { class:'custom-select custom-select-lg form-control' });
-            $modal.find('.form-group').append($select);
-
-            // Choose one of the following...
-            $option = $('<option>', { text:'Choose one of the following...' });
-            $select.append($option);
-
-            $option.attr('selected','selected');
-            $option.val(undefined);
-
-            trackConfigurations
-                .reduce(function($accumulator, config) {
-
-                    $option = $('<option>', { value:config.name, text:config.name });
-                    $select.append($option);
-
-                    $option.data('track', config);
-
-                    $accumulator.append($option);
-
-                    return $accumulator;
-                }, $select);
-
-            $select.on('change', function (e) {
-                let $option,
-                    config,
-                    value;
-
-                $option = $(this).find('option:selected');
-                value = $option.val();
-
-                if ('' === value) {
-                    // do nothing
-                } else {
-                    config = $option.data('track');
-                    $option.removeAttr("selected");
-
-                    igv.browser.loadTrack( config );
-
-                }
-
-                $modal.modal('hide');
-
-            });
-
-        }
+        });
 
     }
 

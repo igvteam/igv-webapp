@@ -244,7 +244,7 @@ var app = (function (app) {
 
         $modal.find('select').remove();
 
-        $select = $('<select>', { class:'custom-select form-control' });
+        $select = $('<select>', { class:'form-control' } );
         $modal.find('.form-group').append($select);
 
         $option = $('<option>', { text:'Choose one of the following...' });

@@ -6,30 +6,16 @@ layout: default
 
 [back](./)
 
-### Reference Genomes
+**Reference Genomes:** [UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
 
-[UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
+**ENCODE:** [ENCODE project page](https://www.encodeproject.org/)
 
-### ENCODE
+**Annotations:** [UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
 
-[ENCODE project page](https://www.encodeproject.org/)
+**GTEx:** [GTEx portal](https://www.gtexportal.org/home/)
 
-### Annotations
+**cBio:** [cBio Portal for Cancer Genomics](http://www.cbioportal.org/)
 
-[UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
+**1000 Genomes:** [IGSR: The International Genome Sample Resource](http://www.internationalgenome.org/ "Home")
 
-### GTex
-
-[GTex portal](https://www.gtexportal.org/home/)
-
-### cBio
-
-[cBio Portal for Cancer Genomics](http://www.cbioportal.org/)
-
-### 1000 Genomes
-
-[IGSR: The International Genome Sample Resource](http://www.internationalgenome.org/ "Home")
-
-### Platinum Genomes
-
-[Illumina Platinum Genomes](https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes)
+**Platinum Genomes:** [Illumina Platinum Genomes](https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes)

@@ -140,6 +140,7 @@ var app = (function (app) {
             .then((result) => {
                 let paths,
                     promiseTasks,
+                    gTexPromiseTask,
                     filenames;
 
                 paths = result.split('\n').filter((part) => ( !('' === part) ));
@@ -148,13 +149,16 @@ var app = (function (app) {
                 promiseTasks = paths.map((path, i) => ({ name: filenames[ i ], promise: igv.xhr.loadJson(( root + '/' + path)) }));
 
                 if (gtex_lut[ genomeID ]) {
-                    promiseTasks.push({ name: 'GTex', promise: igv.GtexUtils.getTissueInfo(gtex_lut[ genomeID ])});
+                    gTexPromiseTask = { name: 'GTex', promise: igv.GtexUtils.getTissueInfo(gtex_lut[ genomeID ])};
+                    promiseTasks.push(gTexPromiseTask);
                 }
 
                 Promise
                     .all( promiseTasks.map((task) => (task.promise)))
                     .then((json) => {
-                        let menuItemConfigurations;
+                        let menuItemConfigurations,
+                            desiredMenuListOrder,
+                            popped;
 
                         // hack to include GTex
                         menuItemConfigurations = json.map((m) => {
@@ -175,7 +179,16 @@ var app = (function (app) {
                             return revised;
                         });
 
-                        menuItemConfigurations
+                        // remove last item in list (GTex)
+                        popped = menuItemConfigurations.pop();
+
+                        // reverse the list
+                        desiredMenuListOrder = menuItemConfigurations.reverse();
+
+                        // append GTex item
+                        desiredMenuListOrder.push(popped);
+
+                        desiredMenuListOrder
                             .forEach((config, i) => {
                                 let $button,
                                     id,
@@ -211,7 +224,7 @@ var app = (function (app) {
 
     };
 
-    function trackConfigurationFromTissueInfo (tissueInfo) {
+    function trackConfigurationFromGTexTissueInfo(tissueInfo) {
 
         return {
             type: "eqtl",
@@ -245,7 +258,7 @@ var app = (function (app) {
                 let trackConfiguration;
 
                 // hack to support GTex
-                trackConfiguration = ('GTex' === promiseTaskName) ? trackConfigurationFromTissueInfo(config) : config;
+                trackConfiguration = ('GTex' === promiseTaskName) ? trackConfigurationFromGTexTissueInfo(config) : config;
 
                 $option = $('<option>', { value:trackConfiguration.name, text:trackConfiguration.name });
                 $select.append($option);

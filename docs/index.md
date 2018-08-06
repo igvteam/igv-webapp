@@ -1,8 +1,7 @@
-IGV-Web
 
-Quick Start
+# Quick Start
 
-* Define a reference genome
+## Define a reference genome
 
     * Select pre-defined genomes
 
@@ -12,11 +11,13 @@ Quick Start
 
         * JSON file
 
-* Load tracks
+## Load tracks
 
     * Select tracks
 
     * Load your own tracks
+    
+        * Information on [Data Sources](./dataSources.html)
 
         * URL
 
@@ -26,7 +27,7 @@ Quick Start
 
         * Local file
 
-* Navigate
+## Navigate
 
     * By gene  (currently human and mouse only)
 
@@ -36,8 +37,8 @@ Quick Start
 
     * Multi-locus
 
-* Bookmark your session
+## Bookmark your session
 
-* Share your session
+## Share your session
 
 

@@ -3,39 +3,39 @@
 
 ## Define a reference genome
 
-    * Select pre-defined genomes
+* Select pre-defined genomes
 
-    * Load a custom genome
+* Load a custom genome
 
-        * Fasta file
+  * Fasta file
 
-        * JSON file
+  * JSON file
 
 ## Load tracks
 
-    * Select tracks
+* Select tracks
 
-    * Load your own tracks
+* Load your own tracks
     
-        * Information on [Data Sources](./dataSources.html)
+   * Information on [Data Sources](./dataSources.html)
 
-        * URL
+   * URL
 
-        * Dropbox
+   * Dropbox
 
-        * Google Drive
+   * Google Drive
 
-        * Local file
+   * Local file
 
 ## Navigate
 
-    * By gene  (currently human and mouse only)
+* By gene  (currently human and mouse only)
 
-    * By explicit location
+* By explicit location
 
-    * Zooming -- sweep, double-click.  -/+ buttons
+* Zooming -- sweep, double-click.  -/+ buttons
 
-    * Multi-locus
+* Multi-locus
 
 ## Bookmark your session
 

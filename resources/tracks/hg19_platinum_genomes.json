@@ -1,5 +1,6 @@
 {
   "label": "Platinum Genomes",
+  "description": "Illumina Platinum Genomes - source <a href=https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes target=_blank>Google public datasets</a>",
   "link": "https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes",
   "tracks": [
     {

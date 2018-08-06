@@ -1,5 +1,6 @@
 {
 	"label": "Annotations",
+    "description": "Annotations - source <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a>",
 	"link": "http://hgdownload.soe.ucsc.edu/downloads.html",
 	"tracks": [
 

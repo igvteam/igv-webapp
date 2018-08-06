@@ -1,29 +1,35 @@
-Data Sources
+---
+layout: default
+---
 
-Reference Genomes
+# Data Sources
+
+[back](./)
+
+### Reference Genomes
 
 [UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
 
-ENCODE
+### ENCODE
 
 [ENCODE project page](https://www.encodeproject.org/)
 
-Annotations
+### Annotations
 
 [UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
 
-GTex
+### GTex
 
 [GTex portal](https://www.gtexportal.org/home/)
 
-cBio
+### cBio
 
 [cBio Portal for Cancer Genomics](http://www.cbioportal.org/)
 
-1000 Genomes
+### 1000 Genomes
 
 [IGSR: The International Genome Sample Resource](http://www.internationalgenome.org/ "Home")
 
-Platinum Genomes
+### Platinum Genomes
 
 [Illumina Platinum Genomes](https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes)

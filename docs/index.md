@@ -36,8 +36,6 @@ You will be prompted to sign into a Google account if you select the `Google Dri
 
 > Note that if you load the reference genome by loading a FASTA file, IGV cannot display the cytoband idiogram in the chromosome ruler or automatically load a corresponding gene annotation track. You can load a genome annotation file directly via the `Load Track` menu.
 
-SHALL WE DOCUMENT THE JSON OPTION HERE TOO? OR MENTION IT AND REFER TO THE DEVELOPER WIKI DOC? OR NOT MENTION IT AT ALL?
-
 ### 3. Load data tracks
 
 To load data and genomic annotations, click on the `Load Track` dropdown menu and either select from the selection of pre-defined tracks or choose one of the options to load a file that you specify.

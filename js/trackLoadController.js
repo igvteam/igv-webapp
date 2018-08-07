@@ -147,7 +147,7 @@ var app = (function (app) {
                     .then((results) => {
                         let menuItemConfigurations,
                             desiredMenuListOrder,
-                            popped;
+                            names;
 
                         // hack to include GTex
                         menuItemConfigurations = results.map((m) => {
@@ -175,7 +175,7 @@ var app = (function (app) {
 
                         // reverse the list
                         desiredMenuListOrder = menuItemConfigurations.reverse();
-
+                        names = promiseTasks.reverse().map((task) => (task.name));
                         desiredMenuListOrder
                             .forEach((config, i) => {
                                 let $button,
@@ -201,7 +201,7 @@ var app = (function (app) {
                                         self.encodeTable.buildTableWithData(config.data);
                                         self.encodeTable.$modal.modal('show');
                                     } else {
-                                        configureModalSelectList(self.$modal, config.tracks, promiseTasks[i].name);
+                                        configureModalSelectList(self.$modal, config.tracks, names[i]);
                                         self.$modal.modal('show');
                                     }
 

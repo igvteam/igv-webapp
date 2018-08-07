@@ -1,4 +1,6 @@
 $default-font-family: 'Open Sans', sans-serif;
+$default-font-size: .875rem;
+
 $default-dark-color: #5f5f5f;
 
 #igv-app-share-modal {
@@ -7,7 +9,7 @@ $default-dark-color: #5f5f5f;
 
   .modal-body {
     font-family: $default-font-family;
-    font-size: 16px;
+    font-size: $default-font-size;
     font-weight: 400;
   }
 }

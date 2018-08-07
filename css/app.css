@@ -202,7 +202,7 @@
   color: #5f5f5f; }
   #igv-app-share-modal .modal-body {
     font-family: "Open Sans", sans-serif;
-    font-size: 16px;
+    font-size: 0.875rem;
     font-weight: 400; }
 
 #igv-app-qrcode-image {

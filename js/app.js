@@ -126,7 +126,7 @@ var app = (function (app) {
                 {
                     $modal: $('#igv-app-share-modal'),
                     $share_input: $('#igv-app-share-input'),
-                    $copy_link_button: $('#hic-copy-link-button'),
+                    $copy_link_button: $('#igv-app-copy-link-button'),
                     $tweet_button_container: $('#igv-app-tweet-button-container'),
                     $email_button: $('#igv-app-email-button'),
                     $embed_button: $('#igv-app-embed-button'),

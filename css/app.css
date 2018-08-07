@@ -367,6 +367,10 @@ a#igv-app-email-button:active {
 label.dropdown-item {
   margin-bottom: unset; }
 
+.btn:focus, .btn:active {
+  outline: none !important;
+  box-shadow: none; }
+
 .btn-file {
   position: relative;
   overflow: hidden; }

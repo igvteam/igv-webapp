@@ -187,9 +187,14 @@ $igv-app-logo-container-width: 20%;
   }
 }
 
-
 label.dropdown-item {
   margin-bottom: unset;
+}
+
+// prevent button glow outline
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
 }
 
 // local file load button

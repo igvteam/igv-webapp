@@ -1,5 +1,8 @@
+***
 
-**THIS SITE IS UNDER CONSTRUCTION**
+# THIS SITE IS UNDER CONSTRUCTION
+
+***
 
 ## Quick Start
 

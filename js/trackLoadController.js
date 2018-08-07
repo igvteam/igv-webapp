@@ -149,7 +149,7 @@ var app = (function (app) {
                 promiseTasks = paths.map((path, i) => ({ name: filenames[ i ], promise: igv.xhr.loadJson(( root + '/' + path)) }));
 
                 if (gtex_lut[ genomeID ]) {
-                    gTexPromiseTask = { name: 'GTex', promise: igv.GtexUtils.getTissueInfo(gtex_lut[ genomeID ])};
+                    gTexPromiseTask = { name: 'GTEx', promise: igv.GtexUtils.getTissueInfo(gtex_lut[ genomeID ])};
                     promiseTasks.push(gTexPromiseTask);
                 }
 
@@ -173,7 +173,7 @@ var app = (function (app) {
                             }
 
                             if (undefined === revised[ 'label' ]) {
-                                revised[ 'label' ] = 'GTex';
+                                revised[ 'label' ] = 'GTEx';
                             }
 
                             return revised;
@@ -244,7 +244,7 @@ var app = (function (app) {
 
         $modal.find('select').remove();
 
-        $select = $('<select>', { class:'custom-select form-control' });
+        $select = $('<select>', { class:'form-control' } );
         $modal.find('.form-group').append($select);
 
         $option = $('<option>', { text:'Choose one of the following...' });
@@ -258,7 +258,7 @@ var app = (function (app) {
                 let trackConfiguration;
 
                 // hack to support GTex
-                trackConfiguration = ('GTex' === promiseTaskName) ? trackConfigurationFromGTexTissueInfo(config) : config;
+                trackConfiguration = ('GTEx' === promiseTaskName) ? trackConfigurationFromGTexTissueInfo(config) : config;
 
                 $option = $('<option>', { value:trackConfiguration.name, text:trackConfiguration.name });
                 $select.append($option);

@@ -164,13 +164,40 @@ $igv-app-logo-container-width: 20%;
 
 }
 
-// Bootstrap modal backdrop color tweak
+.modal-header {
+  color: $igv-app-dark-color;
+}
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25);
 }
 
+.igv-app-dropdown-item-cloud-storage {
+  font-size: .875rem;
+}
+
+.dropdown-menu {
+  font-size: .875rem;
+}
+
+.modal-body {
+
+  select {
+    font-size: .875rem;
+
+    option {
+      font-size: .875rem;
+    }
+  }
+}
+
 label.dropdown-item {
   margin-bottom: unset;
+}
+
+// prevent button glow outline
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
 }
 
 // local file load button

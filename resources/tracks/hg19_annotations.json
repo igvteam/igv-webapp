@@ -4,46 +4,28 @@
   "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
 	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12877_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12877_S1.bam.bai",
-	  "name": "NA12877"
+	  "type": "bed",
+	  "url": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
+	  "indexURL": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
+	  "name": "Gencode V18"
 	},
 	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam.bai",
-	  "name": "NA12878"
+	  "name": "SNP 150",
+	  "type": "snp",
+	  "displayMode": "EXPANDED",
+	  "sourceType": "ucscservice",
+	  "visibilityWindow": 10000,
+	  "source": {
+		"url": "https://data.igv.org/ucsc?db=hg19",
+		"method": "GET",
+		"tableName": "snp150Common"
+	  }
 	},
 	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12889_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12889_S1.bam.bai",
-	  "name": "NA12889"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12890_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12890_S1.bam.bai",
-	  "name": "NA12890"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam.bai",
-	  "name": "NA12891"
-	},
-	{
-	  "sourceType": "gcs",
-	  "type": "alignment",
-	  "url": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam",
-	  "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam.bai",
-	  "name": "NA12892"
+	  "url": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz?versionId=null",
+	  "indexURL": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz.tbi?versionId=null",
+	  "visibilityWindow": 20000,
+	  "name": "1000 Genomes Sites"
 	}
   ]
 }

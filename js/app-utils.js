@@ -195,34 +195,7 @@ var app = (function (app) {
                 igv.browser
                     .loadGenome(genome)
                     .then(function (genome) {
-                        let doUpdateEncode,
-                            doUpdateTrackSelectLists;
-
-                        doUpdateEncode = false;
-                        doUpdateTrackSelectLists = false;
-
-                        if (genome.id) {
-
-                            doUpdateTrackSelectLists = true;
-
-                            if (app.ModalTable.getAssembly(genome.id)) {
-                                doUpdateEncode = true;
-                            }
-
-                        }
-
-                        if (doUpdateEncode) {
-                            app.trackLoadController.createEncodeTable(genome.id);
-                        } else {
-
-                            // hide ENCODE dropdown button
-                            app.trackLoadController.hideEncodeDropdownButton();
-                        }
-
-                        if (doUpdateTrackSelectLists) {
-                            app.trackLoadController.updateGeneralizedAnnotations(genome.id);
-                        }
-
+                        app.trackLoadController.updateGeneralizedAnnotations(genome.id);
                     })
                     .catch(function (error) {
                         igv.presentAlert(error);

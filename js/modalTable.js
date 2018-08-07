@@ -39,6 +39,9 @@ var app = (function (app) {
         teardownModalDOM(config);
         this.$table = $('<table cellpadding="0" cellspacing="0" border="0" class="display"></table>');
         config.$modalBody.append(this.$table);
+
+        this.$modal = config.$modal;
+
         this.doRetrieveData = true;
         this.doBuildTable = true;
 
@@ -98,55 +101,38 @@ var app = (function (app) {
         this.$faSpinner.addClass("fa5-spin");
     };
 
-    app.ModalTable.prototype.hidePresentationButton = function () {
-        this.config.$modalPresentationButton.addClass('igv-app-disabled');
-        this.config.$modalPresentationButton.text('Genome not supported by ENCODE');
-    };
-
-    app.ModalTable.prototype.willRetrieveData = function () {
-        this.startSpinner();
-        this.config.willRetrieveData();
-    };
-
-    app.ModalTable.prototype.didRetrieveData = function () {
-        this.config.didRetrieveData();
-    };
-
     app.ModalTable.prototype.didFailToRetrieveData = function () {
         this.stopSpinner();
         this.buildTable(false);
     };
 
-    app.ModalTable.prototype.loadData = function (genomeId) {
+    app.ModalTable.prototype.promisifiedLoadData = function (genomeId) {
 
         var self = this,
             assembly;
-
-        this.willRetrieveData();
 
         assembly = app.ModalTable.getAssembly( genomeId);
 
         if (assembly) {
 
-            this.datasource
+            return this.datasource
                 .retrieveData(assembly, function (record) {
                     // Filter bigBed records for now
                     return record["Format"].toLowerCase() !== "bigbed";
                 })
-                .then(function (data) {
-
-                    self.datasource.data = data;
-                    self.doRetrieveData = false;
-
-                    self.didRetrieveData();
-                    self.buildTable(true);
-
-                })
                 .catch(function (e) {
                     self.didFailToRetrieveData();
                 });
+        } else {
+            return Promise.resolve(undefined);
         }
 
+    };
+
+    app.ModalTable.prototype.buildTableWithData = function (data) {
+        this.doRetrieveData = false;
+        this.datasource.data = data;
+        this.buildTable(true);
     };
 
     app.ModalTable.prototype.buildTable = function (success) {
@@ -158,8 +144,11 @@ var app = (function (app) {
             this.config.$modal.on('shown.bs.modal', function (e) {
 
                 if (true === self.doBuildTable) {
+
+                    self.startSpinner();
                     self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
                     self.stopSpinner();
+
                     self.doBuildTable = false;
                 }
 
@@ -192,7 +181,6 @@ var app = (function (app) {
 
         var config;
 
-        this.stopSpinner();
         config =
             {
                 data: tableData,

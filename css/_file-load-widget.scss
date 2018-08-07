@@ -1,4 +1,5 @@
 $igv-flw-font-face: 'Open Sans', sans-serif;
+$igv-flw-font-size: .875rem;
 $igv-flw-light-grey-color: #bfbfbf;
 $igv-flw-grey-color: #7F7F7F;
 $igv-flw-dark-grey-color: #373737;
@@ -35,7 +36,7 @@ $igv-flw-border-radius: 2px;
 
     font-family: $igv-flw-font-face;
     font-weight: 200;
-    font-size: 16px;
+    font-size: $igv-flw-font-size;
     color: $igv-flw-dark-grey-color;
     text-align: left;
 
@@ -55,13 +56,13 @@ $igv-flw-border-radius: 2px;
   position: relative;
   border-color: transparent;
   width:100%;
-  //width:$igv-flw-container-width;
+
 
   padding-bottom: 20px;
 
   color: $igv-flw-grey-color;
   font-family: $igv-flw-font-face;
-  font-size: 16px;
+  font-size: $igv-flw-font-size;
   font-weight: 200;
 
   border-style: solid;
@@ -270,7 +271,7 @@ $igv-flw-border-radius: 2px;
     padding-left: 8px;
 
     color: white;
-    font-size: 14px;
+    font-size: $igv-flw-font-size;
 
     background-color: rgba(59, 92, 127, 0.5);
 
@@ -318,7 +319,7 @@ $igv-flw-border-radius: 2px;
     margin-top: 32px;
 
     color: white;
-    font-size: 14px;
+    font-size: $igv-flw-font-size;
 
     display: flex;
     flex-flow: row;

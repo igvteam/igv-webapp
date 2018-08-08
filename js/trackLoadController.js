@@ -43,16 +43,9 @@ var app = (function (app) {
 
         this.updateGeneralizedAnnotations(browser.genome.id);
 
-        // ENCODE
-        this.createEncodeTable(browser.genome.id);
-
     };
 
-    app.TrackLoadController.prototype.hideEncodeDropdownButton = function () {
-        this.encodeTable.hidePresentationButton();
-    };
-
-    app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
+    app.TrackLoadController.prototype.promisifiedCreateEncodeTable = function (genomeID) {
 
         var self = this,
             columnFormat,
@@ -78,10 +71,6 @@ var app = (function (app) {
 
         encodeDatasource = new app.EncodeDataSource(columnFormat);
 
-        loadTracks = function (configurationList) {
-            self.browser.loadTrackList(configurationList);
-        };
-
         encodeTableConfig =
             {
                 $modal:this.config.$encodeModal,
@@ -89,22 +78,16 @@ var app = (function (app) {
                 $modalTopCloseButton: this.config.$encodeModal.find('.modal-header button:nth-child(1)'),
                 $modalBottomCloseButton: this.config.$encodeModal.find('.modal-footer button:nth-child(1)'),
                 $modalGoButton: this.config.$encodeModal.find('.modal-footer button:nth-child(2)'),
-                $modalPresentationButton : this.config.$encodeModalPresentationButton,
                 datasource: encodeDatasource,
-                browserHandler: loadTracks,
-                willRetrieveData: function () {
-                    self.config.$encodeModalPresentationButton.addClass('igv-app-disabled');
-                    self.config.$encodeModalPresentationButton.text('Configuring ENCODE table...');
-                },
-                didRetrieveData: function () {
-                    self.config.$encodeModalPresentationButton.removeClass('igv-app-disabled');
-                    self.config.$encodeModalPresentationButton.text('ENCODE ...');
+                browserHandler: (trackConfigurations) =>  {
+                    self.browser.loadTrackList(trackConfigurations);
                 }
             };
 
         this.encodeTable = new app.ModalTable(encodeTableConfig);
 
-        this.encodeTable.loadData(genomeID);
+        return this.encodeTable.promisifiedLoadData(genomeID);
+
 
     };
 
@@ -140,6 +123,7 @@ var app = (function (app) {
             .then((result) => {
                 let paths,
                     promiseTasks,
+                    encodePromiseTask,
                     gTexPromiseTask,
                     filenames;
 
@@ -148,6 +132,11 @@ var app = (function (app) {
 
                 promiseTasks = paths.map((path, i) => ({ name: filenames[ i ], promise: igv.xhr.loadJson(( root + '/' + path)) }));
 
+                if (app.ModalTable.getAssembly(genomeID)) {
+                    encodePromiseTask = { name: 'ENCODE', promise: self.promisifiedCreateEncodeTable(genomeID) };
+                    promiseTasks.push(encodePromiseTask);
+                }
+
                 if (gtex_lut[ genomeID ]) {
                     gTexPromiseTask = { name: 'GTEx', promise: igv.GtexUtils.getTissueInfo(gtex_lut[ genomeID ])};
                     promiseTasks.push(gTexPromiseTask);
@@ -155,39 +144,38 @@ var app = (function (app) {
 
                 Promise
                     .all( promiseTasks.map((task) => (task.promise)))
-                    .then((json) => {
+                    .then((results) => {
                         let menuItemConfigurations,
                             desiredMenuListOrder,
-                            popped;
+                            names;
 
                         // hack to include GTex
-                        menuItemConfigurations = json.map((m) => {
+                        menuItemConfigurations = results.map((m) => {
                             let revised;
 
-                            revised = m;
+                            // GTEx
+                            if (m[ 'tissueInfo' ]) {
 
-                            if (revised[ 'tissueInfo' ]) {
+                                revised = m;
                                 Object.defineProperty(revised, 'tracks',
                                     Object.getOwnPropertyDescriptor(revised, 'tissueInfo'));
-                                delete revised[ 'tissueInfo' ];
-                            }
 
-                            if (undefined === revised[ 'label' ]) {
+                                delete revised[ 'tissueInfo' ];
+
                                 revised[ 'label' ] = 'GTEx';
+
+                            } else if (Array.isArray(m)) {
+                                revised = { label: 'ENCODE', data: m };
+                            } else {
+                                revised = m;
                             }
 
                             return revised;
                         });
 
-                        // remove last item in list (GTex)
-                        popped = menuItemConfigurations.pop();
-
                         // reverse the list
                         desiredMenuListOrder = menuItemConfigurations.reverse();
-
-                        // append GTex item
-                        desiredMenuListOrder.push(popped);
-
+                        names = promiseTasks.reverse().map((task) => (task.name));
                         desiredMenuListOrder
                             .forEach((config, i) => {
                                 let $button,
@@ -209,9 +197,15 @@ var app = (function (app) {
                                     label = 'Load Track: ' + config.label;
                                     self.$modal.find('#igv-app-generic-track-select-modal-label').text(label);
 
-                                    configureModalSelectList(self.$modal, config.tracks, promiseTasks[i].name);
+                                    if ('ENCODE' === config.label) {
+                                        self.encodeTable.buildTableWithData(config.data);
+                                        self.encodeTable.$modal.modal('show');
+                                    } else {
+                                        configureModalSelectList(self.$modal, config.tracks, names[i]);
+                                        self.$modal.modal('show');
+                                    }
 
-                                    self.$modal.modal('show');
+
                                 });
                             });
 

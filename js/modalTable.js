@@ -42,7 +42,6 @@ var app = (function (app) {
 
         this.$modal = config.$modal;
 
-        this.doRetrieveData = true;
         this.doBuildTable = true;
 
         this.$spinner = $('<div>');
@@ -130,8 +129,9 @@ var app = (function (app) {
     };
 
     app.ModalTable.prototype.buildTableWithData = function (data) {
-        this.doRetrieveData = false;
         this.datasource.data = data;
+
+        this.startSpinner();
         this.buildTable(true);
     };
 
@@ -144,9 +144,8 @@ var app = (function (app) {
             this.config.$modal.on('shown.bs.modal', function (e) {
 
                 if (true === self.doBuildTable) {
-
-                    self.startSpinner();
                     self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
+
                     self.stopSpinner();
 
                     self.doBuildTable = false;
@@ -207,7 +206,7 @@ var app = (function (app) {
                 scrollCollapse: true
             };
 
-        console.log('ModalTable.tableWithDataAndColumns ...');
+        console.log('ModalTable.tableWithDataAndColumns ' + tableData.length + ' rows ...');
         this.$dataTables = this.$table.dataTable(config);
         console.log('... tableWithDataAndColumns done');
 

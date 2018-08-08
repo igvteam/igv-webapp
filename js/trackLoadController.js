@@ -123,6 +123,7 @@ var app = (function (app) {
             .then((result) => {
                 let paths,
                     promiseTasks,
+                    promiseTasksReversed,
                     encodePromiseTask,
                     gTexPromiseTask,
                     filenames;
@@ -130,53 +131,52 @@ var app = (function (app) {
                 paths = result.split('\n').filter((part) => ( !('' === part) ));
                 filenames = paths.map((path) => (path.split('.').shift()));
 
-                promiseTasks = paths.map((path, i) => ({ name: filenames[ i ], promise: igv.xhr.loadJson(( root + '/' + path)) }));
+                promiseTasks = paths
+                    .map((path, i) => ({ name: filenames[ i ], promise: igv.xhr.loadJson(( root + '/' + path)) }))
+                    .reverse();
 
                 if (app.ModalTable.getAssembly(genomeID)) {
                     encodePromiseTask = { name: 'ENCODE', promise: self.promisifiedCreateEncodeTable(genomeID) };
-                    promiseTasks.push(encodePromiseTask);
+                    promiseTasks.unshift(encodePromiseTask);
                 }
 
                 if (gtex_lut[ genomeID ]) {
                     gTexPromiseTask = { name: 'GTEx', promise: igv.GtexUtils.getTissueInfo(gtex_lut[ genomeID ])};
-                    promiseTasks.push(gTexPromiseTask);
+                    promiseTasks.unshift(gTexPromiseTask);
                 }
 
                 Promise
                     .all( promiseTasks.map((task) => (task.promise)))
                     .then((results) => {
                         let menuItemConfigurations,
-                            desiredMenuListOrder,
                             names;
 
                         // hack to include GTex
                         menuItemConfigurations = results.map((m) => {
-                            let revised;
+                            let cooked;
 
                             // GTEx
                             if (m[ 'tissueInfo' ]) {
 
-                                revised = m;
-                                Object.defineProperty(revised, 'tracks',
-                                    Object.getOwnPropertyDescriptor(revised, 'tissueInfo'));
+                                cooked = m;
+                                Object.defineProperty(cooked, 'tracks',
+                                    Object.getOwnPropertyDescriptor(cooked, 'tissueInfo'));
 
-                                delete revised[ 'tissueInfo' ];
+                                delete cooked[ 'tissueInfo' ];
 
-                                revised[ 'label' ] = 'GTEx';
+                                cooked[ 'label' ] = 'GTEx';
 
                             } else if (Array.isArray(m)) {
-                                revised = { label: 'ENCODE', data: m };
+                                cooked = { label: 'ENCODE', data: m };
                             } else {
-                                revised = m;
+                                cooked = m;
                             }
 
-                            return revised;
+                            return cooked;
                         });
 
-                        // reverse the list
-                        desiredMenuListOrder = menuItemConfigurations.reverse();
-                        names = promiseTasks.reverse().map((task) => (task.name));
-                        desiredMenuListOrder
+                        names = promiseTasks.map((task) => (task.name));
+                        menuItemConfigurations
                             .forEach((config, i) => {
                                 let $button,
                                     id,

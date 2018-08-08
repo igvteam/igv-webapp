@@ -192,10 +192,11 @@ var app = (function (app) {
                                 $button.insertAfter($divider);
 
                                 $button.on('click', function () {
-                                    let label;
+                                    let markup;
 
-                                    label = 'Load Track: ' + config.label;
-                                    self.$modal.find('#igv-app-generic-track-select-modal-label').text(label);
+                                    markup = config.description || ('Load Track: ' + config.label);
+
+                                    self.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
 
                                     if ('ENCODE' === config.label) {
                                         self.encodeTable.buildTableWithData(config.data);

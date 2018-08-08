@@ -232,16 +232,13 @@ var app = (function (app) {
 
         let self = this,
             taskSet,
-            failureSet,
             successSet,
             jsonConfigurations,
             ignore;
 
         taskSet = new Set(retrievalTasks.map(task => task.name));
-        failureSet = new Set();
         successSet = new Set();
         jsonConfigurations = [];
-
         retrievalTasks
             .reduce((promiseChain, task) => {
 
@@ -264,76 +261,53 @@ var app = (function (app) {
             }, Promise.resolve([]))
             .then(ignore => {
 
-                if (jsonConfigurations.length > 0) {
-                    let reduction;
-
-                    reduction = jsonConfigurations
-                        .reduce(function(accumulator, item) {
-
-                            if (true === Array.isArray(item)) {
-                                item.forEach(function (config) {
-                                    accumulator.push(config);
-                                })
-                            } else {
-                                accumulator.push(item);
-                            }
-
-                            return accumulator;
-                        }, []);
-
-                    configurations.push.apply(configurations, reduction);
-                    self.fileLoadHander(configurations);
-
-                    failureSet = [...taskSet].filter(x => !successSet.has(x));
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
-
-                } else {
-
-                    if (configurations.length > 0) {
-                        self.fileLoadHander(configurations);
-                    }
-
-                    failureSet = [...taskSet].filter(x => !successSet.has(x));
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
-                }
+                jsonConfigurator.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet);
 
             })
             .catch(function (error) {
 
-                if (jsonConfigurations.length > 0) {
-                    let reduction;
+                jsonConfigurator.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet);
 
-                    reduction = jsonConfigurations
-                        .reduce(function(accumulator, item) {
-
-                            if (true === Array.isArray(item)) {
-                                item.forEach(function (config) {
-                                    accumulator.push(config);
-                                })
-                            } else {
-                                accumulator.push(item);
-                            }
-
-                            return accumulator;
-                        }, []);
-
-                    configurations.push.apply(configurations, reduction);
-                    self.fileLoadHander(configurations);
-
-                    failureSet = [...taskSet].filter(x => !successSet.has(x));
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
-
-                } else {
-
-                    if (configurations.length > 0) {
-                        self.fileLoadHander(configurations);
-                    }
-
-                    failureSet = [...taskSet].filter(x => !successSet.has(x));
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
-                }
             });
 
+    }
+
+    function jsonConfigurator(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet) {
+        let self = this,
+            failureSet;
+
+        if (jsonConfigurations.length > 0) {
+            let reduction;
+
+            reduction = jsonConfigurations
+                .reduce(function(accumulator, item) {
+
+                    if (true === Array.isArray(item)) {
+                        item.forEach(function (config) {
+                            accumulator.push(config);
+                        })
+                    } else {
+                        accumulator.push(item);
+                    }
+
+                    return accumulator;
+                }, []);
+
+            configurations.push.apply(configurations, reduction);
+            self.fileLoadHander(configurations);
+
+            failureSet = [...taskSet].filter(x => !successSet.has(x));
+            renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+
+        } else {
+
+            if (configurations.length > 0) {
+                self.fileLoadHander(configurations);
+            }
+
+            failureSet = [...taskSet].filter(x => !successSet.has(x));
+            renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+        }
     }
 
     function getIndexPaths(dataPathNames, indexPathCandidates) {

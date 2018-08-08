@@ -235,7 +235,6 @@ var app = (function (app) {
             failureSet,
             successSet,
             jsonConfigurations,
-            dev_null,
             ignore;
 
         taskSet = new Set(retrievalTasks.map(task => task.name));
@@ -266,8 +265,9 @@ var app = (function (app) {
             .then(ignore => {
 
                 if (jsonConfigurations.length > 0) {
+                    let reduction;
 
-                    jsonConfigurations
+                    reduction = jsonConfigurations
                         .reduce(function(accumulator, item) {
 
                             if (true === Array.isArray(item)) {
@@ -281,7 +281,7 @@ var app = (function (app) {
                             return accumulator;
                         }, []);
 
-                    configurations.push.apply(configurations, jsonConfigurations);
+                    configurations.push.apply(configurations, reduction);
                     self.fileLoadHander(configurations);
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));
@@ -301,8 +301,9 @@ var app = (function (app) {
             .catch(function (error) {
 
                 if (jsonConfigurations.length > 0) {
+                    let reduction;
 
-                    jsonConfigurations
+                    reduction = jsonConfigurations
                         .reduce(function(accumulator, item) {
 
                             if (true === Array.isArray(item)) {
@@ -316,7 +317,7 @@ var app = (function (app) {
                             return accumulator;
                         }, []);
 
-                    configurations.push.apply(configurations, jsonConfigurations);
+                    configurations.push.apply(configurations, reduction);
                     self.fileLoadHander(configurations);
 
                     failureSet = [...taskSet].filter(x => !successSet.has(x));

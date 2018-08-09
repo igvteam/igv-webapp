@@ -156,13 +156,13 @@ var app = (function (app) {
                             let cooked;
 
                             // GTEx
-                            if (m[ 'tissueInfo' ]) {
+                            if (m[ 'tissueSummary' ]) {
 
                                 cooked = m;
                                 Object.defineProperty(cooked, 'tracks',
-                                    Object.getOwnPropertyDescriptor(cooked, 'tissueInfo'));
+                                    Object.getOwnPropertyDescriptor(cooked, 'tissueSummary'));
 
-                                delete cooked[ 'tissueInfo' ];
+                                delete cooked[ 'tissueSummary' ];
 
                                 cooked[ 'label' ] = 'GTEx';
 
@@ -225,8 +225,8 @@ var app = (function (app) {
             type: "eqtl",
             sourceType: "gtex-ws",
             url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocation",
-            tissueName: tissueInfo.tissueId,
-            name: tissueInfo.tissueName,
+            tissueName: tissueInfo.tissueSiteDetailId,
+            name: (tissueInfo.tissueSiteDetailId.split('_').join(' ')),
             visibilityWindow: 1000000
         }
 

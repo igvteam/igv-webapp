@@ -626,14 +626,14 @@
             };
 
         // Note: Run app WITH Google authentication. Debug Chrome Dev Tools ONLY
-        gapi.load('client:auth2', gapiConfig);
+        // gapi.load('client:auth2', gapiConfig);
 
         // Note: Run app WITHOUT Google authentication. Debug in IntelliJ IDE or Chrome Dev Tools
-        // igv
-        //     .createBrowser($('#igv-app-container').get(0), igvConfig)
-        //     .then(function (browser) {
-        //         app.init(browser, $('#igv-app-container'), urlShortenerConfig);
-        //     });
+        igv
+            .createBrowser($('#igv-app-container').get(0), igvConfig)
+            .then(function (browser) {
+                app.init(browser, $('#igv-app-container'), urlShortenerConfig);
+            });
 
     });
 

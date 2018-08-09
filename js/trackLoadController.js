@@ -225,8 +225,8 @@ var app = (function (app) {
             type: "eqtl",
             sourceType: "gtex-ws",
             url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocation",
-            tissueName: tissueInfo.tissueId,
-            name: tissueInfo.tissueName,
+            tissueName: tissueInfo.tissueSiteDetailId,
+            name: (tissueInfo.tissueSiteDetailId.split('_').join(' ')),
             visibilityWindow: 1000000
         }
 

@@ -1,3 +1,4 @@
+// locus: SEC1P
 let tissue_info_object =
     {
         "colorHex": "FF6600",

@@ -156,13 +156,13 @@ var app = (function (app) {
                             let cooked;
 
                             // GTEx
-                            if (m[ 'tissueInfo' ]) {
+                            if (m[ 'tissueSummary' ]) {
 
                                 cooked = m;
                                 Object.defineProperty(cooked, 'tracks',
-                                    Object.getOwnPropertyDescriptor(cooked, 'tissueInfo'));
+                                    Object.getOwnPropertyDescriptor(cooked, 'tissueSummary'));
 
-                                delete cooked[ 'tissueInfo' ];
+                                delete cooked[ 'tissueSummary' ];
 
                                 cooked[ 'label' ] = 'GTEx';
 

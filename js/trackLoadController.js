@@ -224,7 +224,7 @@ var app = (function (app) {
         return {
             type: "eqtl",
             sourceType: "gtex-ws",
-            url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocationDev",
+            url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocation",
             tissueName: tissueInfo.tissueId,
             name: tissueInfo.tissueName,
             visibilityWindow: 1000000

@@ -194,7 +194,8 @@ var app = (function (app) {
                                 $button.on('click', function () {
                                     let markup;
 
-                                    markup = config.description || ('Load Track: ' + config.label);
+                                    // markup = config.description || ('Load Track: ' + config.label);
+                                    markup = config.description || config.label;
 
                                     self.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
 

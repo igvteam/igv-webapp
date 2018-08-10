@@ -253,7 +253,7 @@ var app = (function (app) {
                 let trackConfiguration;
 
                 // hack to support GTex
-                trackConfiguration = ('GTEx' === promiseTaskName) ? trackConfigurationFromGTexTissueInfo(config) : config;
+                trackConfiguration = ('GTEx' === promiseTaskName) ? igv.GtexUtils.trackConfiguration(config) : config;
 
                 $option = $('<option>', { value:trackConfiguration.name, text:trackConfiguration.name });
                 $select.append($option);

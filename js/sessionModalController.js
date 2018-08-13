@@ -28,6 +28,8 @@
  * Created by dat on 5/8/18.
  */
 
+'use strict';
+
 var app = (function (app) {
     app.SessionModalController = function (browser, config) {
 

@@ -28,6 +28,8 @@
  * Created by dat on 7/11/18.
  */
 
+'use strict';
+
 var app = (function (app) {
 
     app.FileLoadManager = function () {

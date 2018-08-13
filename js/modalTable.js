@@ -28,6 +28,8 @@
  * Created by dat on 4/18/17.
  */
 
+'use strict';
+
 var app = (function (app) {
 
     app.ModalTable = function (config) {

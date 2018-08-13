@@ -24,6 +24,8 @@
  * THE SOFTWARE.
  */
 
+'use strict';
+
 var app = (function (app) {
 
     app.EncodeDataSource = function (columnFormat) {
@@ -82,7 +84,7 @@ var app = (function (app) {
                 "Cell Type": tokens[2],
                 "Assay Type": tokens[3],
                 "Target": tokens[4],
-                "Lab": tokens,
+                // "Lab": tokens,
                 "Format": tokens[8],
                 "Output Type": tokens[7],
                 "Lab": tokens[9],

@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+
+'use strict';
+
 var app = (function (app) {
 
     app.TrackLoadController = function (browser, config) {

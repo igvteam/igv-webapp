@@ -24,6 +24,9 @@
 /**
  * Created by dat on 3/8/17.
  */
+
+'use strict';
+
 var app = (function (app) {
 
     var urlShorteners;

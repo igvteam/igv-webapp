@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  *
  */
+
+'use strict';
+
 var app = (function (app) {
     app.DropboxController = function (browser, $modal, dataTitle) {
         this.browser = browser;

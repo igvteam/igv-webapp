@@ -21,6 +21,8 @@
  *
  */
 
+'use strict';
+
 var app = (function (app) {
 
     app.MultipleFileLoadController = function (browser, config) {

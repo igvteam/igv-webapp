@@ -27,6 +27,9 @@
 /**
  * Created by dat on 4/8/18.
  */
+
+'use strict';
+
 var app = (function (app) {
     app.FileLoadWidget = function (config, fileLoadManager) {
         var self = this,

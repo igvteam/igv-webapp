@@ -48,7 +48,7 @@ var app = (function (app) {
 
     };
 
-    app.TrackLoadController.prototype.promisifiedCreateEncodeTable = function (genomeID) {
+    app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
 
         var self = this,
             columnFormat,
@@ -126,7 +126,6 @@ var app = (function (app) {
             .then((result) => {
                 let paths,
                     promiseTasks,
-                    promiseTasksReversed,
                     encodePromiseTask,
                     gTexPromiseTask,
                     filenames;
@@ -139,7 +138,7 @@ var app = (function (app) {
                     .reverse();
 
                 if (app.ModalTable.getAssembly(genomeID)) {
-                    encodePromiseTask = { name: 'ENCODE', promise: self.promisifiedCreateEncodeTable(genomeID) };
+                    encodePromiseTask = { name: 'ENCODE', promise: self.createEncodeTable(genomeID) };
                     promiseTasks.unshift(encodePromiseTask);
                 }
 

@@ -338,12 +338,12 @@ var app = (function (app) {
 
                             picker = new google.picker
                                 .PickerBuilder()
-                                .setAppId(igv.Google.properties["project_number"])
+                                //.setAppId(igv.Google.properties["project_number"])
                                 .setOAuthToken(igv.oauth.google.access_token)
                                 .addView(view)
                                 .addView(teamView)
                                 .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
-                                .setDeveloperKey(igv.Google.properties["developer_key"])
+                                //.setDeveloperKey(igv.Google.properties["developer_key"])
                                 .setCallback(function (data) {
                                     if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
                                         let response;
@@ -392,13 +392,13 @@ var app = (function (app) {
 
                             picker = new google.picker
                                 .PickerBuilder()
-                                .setAppId(igv.Google.properties["project_number"])
+                                //.setAppId(igv.Google.properties["project_number"])
                                 .setOAuthToken(igv.oauth.google.access_token)
                                 .addView(view)
                                 .addView(teamView)
                                 .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
                                 .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
-                                .setDeveloperKey(igv.Google.properties["developer_key"])
+                                //.setDeveloperKey(igv.Google.properties["developer_key"])
                                 .setCallback(function (data) {
                                     if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
                                         filePickerHandler( data[google.picker.Response.DOCUMENTS] );

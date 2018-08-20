@@ -5,10 +5,10 @@ function embedJS() {
     div = document.getElementById("igvDiv");
     query = extractQuery(window.location.href);
 
+
     shortURL = query["shortURL"];
 
     expandURL(shortURL)
-
         .then(function (expandedURL) {
 
             var config, query2;
@@ -22,13 +22,13 @@ function embedJS() {
         });
 
 
-    function expandURL(shortURL) {
+    function expandURL(url) {
 
-        if(shortURL) {
-            return app.expandURL(shortURL);
+        if (url) {
+            return app.expandURL(url);
         }
         else {
-            return Promise.resolve(window.location.href);
+            return Promise.resolve({});
         }
 
     }

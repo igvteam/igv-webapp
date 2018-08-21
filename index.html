@@ -610,85 +610,39 @@
 
     $(document).ready(function () {
 
-        const options = {
-
-            igvOptions: {
-
-                queryParametersSupported: true,
-                showChromosomeWidget: true,
-                genome: "hg19"
-            },
-
-            googleKeys: {
-
-                apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0",
-                clientId: "",
-                projectNumber: "",
-                developerKey: ""
-            },
-
-            urlShortener:  {
-                provider: "google",
-                apiKey: "",
-            }
-
-
-
-        }
-
-        let urlShortenerConfig,
-            igvConfig,
-            gapiConfig;
-
-        urlShortenerConfig =
+        const config =
             {
-                urlShortener:
-                    [
-                        {
-                            provider: "google",
-                            hostname: "goo.gl"
-                        }
-                    ],
-                embedTarget: "https://igv.org/web/jb/release/1.0.0/site/embed.html"
+
+                igvConfig:
+                    {
+
+                        queryParametersSupported: true,
+                        showChromosomeWidget: true,
+                        genome: "hg19"
+                    },
+
+                googleConfig:
+                    {
+                        button: $('.igv-app-google-account-switch-button'),
+                        apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0",
+                        clientId: "661332306814-8nt29308rppg325bkq372vli8nm3na14.apps.googleusercontent.com",
+                    },
+
+                urlShortenerConfig:
+                    {
+                        urlShortener:
+                            [
+                                {
+                                    provider: "google",
+                                    hostname: "goo.gl"
+                                }
+                            ],
+                        embedTarget: "https://igv.org/web/jb/release/1.0.0/site/embed.html"
+                    }
+
             };
 
-        igvConfig = {
-
-            queryParametersSupported: true,
-            showChromosomeWidget: true,
-            genome: "hg19"
-        };
-
-        gapiConfig =
-            {
-                callback: function () {
-                    let promise;
-
-                    app.Google.init($('.igv-app-google-account-switch-button'))
-                        .then(function () {
-                            igvConfig['apiKey'] = igv.Google.properties['api_key'];
-                            return igv.createBrowser($('#igv-app-container').get(0), igvConfig);
-                        })
-                        .then(function (browser) {
-                            app.Google.postInit();
-                            app.init(browser, $('#igv-app-container'), urlShortenerConfig);
-                        });
-                },
-                onerror: function () {
-                    console.log('gapi.client:auth2 - failed to load!');
-                }
-            };
-
-        // Note: Run app WITH Google authentication. Debug Chrome Dev Tools ONLY
-        gapi.load('client:auth2', gapiConfig);
-
-        // Note: Run app WITHOUT Google authentication. Debug in IntelliJ IDE or Chrome Dev Tools
-        // igv
-        //     .createBrowser($('#igv-app-container').get(0), igvConfig)
-        //     .then(function (browser) {
-        //         app.init(browser, $('#igv-app-container'), urlShortenerConfig);
-        //     });
-
+        app.betterInit($('#igv-app-container'), config);
     });
 
 </script>

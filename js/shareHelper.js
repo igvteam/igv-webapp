@@ -31,40 +31,33 @@ var app = (function (app) {
 
     var urlShorteners;
 
-    app.setURLShortener = function (shortenerConfigs) {
+    app.setURLShortener = function (urlShortenerConfig) {
 
-        if (!shortenerConfigs || shortenerConfigs === "none") {
+        urlShorteners = urlShortenerConfig.urlShortener.map((src) => (getShortener(src)));
 
-        } else {
-            urlShorteners = [];
-            shortenerConfigs.forEach(function (config) {
-                urlShorteners.push(getShortener(config));
-            })
-        }
-
-        function getShortener(shortener) {
-            if (shortener.provider) {
-                if (shortener.provider === "google") {
-                    return new GoogleURL(shortener);
+        function getShortener(obj) {
+            if (obj.provider) {
+                if (obj.provider === "google") {
+                    return new GoogleURL(obj);
                 }
-                else if (shortener.provider === "bitly") {
-                    return new BitlyURL(shortener);
+                else if (obj.provider === "bitly") {
+                    return new BitlyURL(obj);
                 }
                 else {
-                    igv.presentAlert("Unknown url shortener provider: " + shortener.provider);
+                    igv.presentAlert("Unknown url shortener provider: " + obj.provider);
                 }
             }
             else {    // Custom
-                if (typeof shortener.shortenURL === "function" &&
-                    typeof shortener.hostname === "string") {
-                    return shortener;
+                if (typeof obj.shortenURL === "function" &&
+                    typeof obj.hostname === "string") {
+                    return obj;
                 }
                 else {
                     igv.presentAlert("URL shortener object must define functions 'shortenURL' and 'expandURL' and string constant 'hostname'")
                 }
             }
         }
-    }
+    };
 
     app.shortenURL = function (url) {
         if (urlShorteners) {

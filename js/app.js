@@ -25,7 +25,43 @@
 
 var app = (function (app) {
 
-    app.init = function (browser, $container, urlShortenerConfig) {
+    app.betterInit = function ($container, config) {
+
+        if (config.googleConfig) {
+            let gapiConfig =
+                {
+                    callback: function () {
+                        let promise;
+
+                        app.Google
+                            .init(config.googleConfig.button)
+                            .then(function () {
+
+                                config.igvConfig['apiKey'] = igv.Google.properties['api_key'];
+                                return igv.createBrowser($container.get(0), config.igvConfig);
+                            })
+                            .then(function (browser) {
+                                app.Google.postInit();
+                                app.initHelper(browser, $container, config);
+                            });
+                    },
+                    onerror: function () {
+                        console.log('gapi.client:auth2 - failed to load!');
+                    }
+                };
+
+            gapi.load('client:auth2', gapiConfig);
+
+        } else {
+            igv
+                .createBrowser($container.get(0), config.igvConfig)
+                .then(function (browser) {
+                    app.initHelper(browser, $container, config);
+                });
+        }
+    };
+
+    app.initHelper = function (browser, $container, options) {
 
         let $multipleFileLoadModal,
             mtflConfig,
@@ -33,7 +69,9 @@ var app = (function (app) {
             sessionConfig,
             tlConfig,
             glConfig,
-            shareConfig;
+            shareConfig,
+            $igv_app_dropdown_google_drive_track_file_button,
+            $igv_app_dropdown_google_drive_genome_file_button;
 
         appFooterImageHoverBehavior($('.igv-app-footer').find('a img'));
 
@@ -41,13 +79,18 @@ var app = (function (app) {
 
         $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
+        $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
+        if (undefined === options.googleConfig) {
+            $igv_app_dropdown_google_drive_track_file_button.parent().hide();
+        }
+
         mtflConfig =
             {
                 $modal: $multipleFileLoadModal,
                 modalTitle: 'Track File Error',
                 $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
                 $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-                $googleDriveButton: $('#igv-app-dropdown-google-drive-track-file-button'),
+                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
                 configurationHandler: app.MultipleFileLoadController.trackConfigurator,
                 fileLoadHandler: (configurations) => {
                     igv.browser.loadTrackList( configurations );
@@ -55,13 +98,18 @@ var app = (function (app) {
             };
         app.multipleTrackFileLoader = new app.MultipleFileLoadController(browser, mtflConfig);
 
+        $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
+        if (undefined === options.googleConfig) {
+            $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
+        }
+
         mgflConfig =
             {
                 $modal: $multipleFileLoadModal,
                 modalTitle: 'Genome File Error',
                 $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
                 $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
-                $googleDriveButton: $('#igv-app-dropdown-google-drive-genome-file-button'),
+                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
                 configurationHandler: app.MultipleFileLoadController.genomeConfigurator,
                 fileLoadHandler: (configurations) => {
                     let config;
@@ -105,6 +153,7 @@ var app = (function (app) {
         app.trackLoadController = new app.TrackLoadController(browser, tlConfig);
 
         // Session Modal Controller
+        /*
         sessionConfig =
             {
                 $urlModal: $('#igv-app-session-url-modal'),
@@ -118,30 +167,30 @@ var app = (function (app) {
             file = e.target.files[ 0 ];
             browser.loadSession(file);
         });
+        */
 
         // URL Shortener Configuration
-        if (urlShortenerConfig.urlShortener) {
-
-            app.setURLShortener(urlShortenerConfig.urlShortener);
-
-            shareConfig =
-                {
-                    $modal: $('#igv-app-share-modal'),
-                    $share_input: $('#igv-app-share-input'),
-                    $copy_link_button: $('#igv-app-copy-link-button'),
-                    $tweet_button_container: $('#igv-app-tweet-button-container'),
-                    $email_button: $('#igv-app-email-button'),
-                    $embed_button: $('#igv-app-embed-button'),
-                    $qrcode_button: $('#igv-app-qrcode-button'),
-                    $embed_container: $('#igv-app-embed-container'),
-                    $qrcode_image: $('#igv-app-qrcode-image')
-                };
-
-            app.shareController = new app.ShareController($container, browser, shareConfig);
-
+        let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
+        if (options.urlShortenerConfig) {
+            app.setURLShortener(options.urlShortenerConfig);
         } else {
-            $("#igv-app-share-button").hide();
+            $igv_app_tweet_button_container.hide();
         }
+
+        shareConfig =
+            {
+                $modal: $('#igv-app-share-modal'),
+                $share_input: $('#igv-app-share-input'),
+                $copy_link_button: $('#igv-app-copy-link-button'),
+                $tweet_button_container: options.urlShortenerConfig ? $igv_app_tweet_button_container : undefined,
+                $email_button: $('#igv-app-email-button'),
+                $embed_button: $('#igv-app-embed-button'),
+                $qrcode_button: $('#igv-app-qrcode-button'),
+                $embed_container: $('#igv-app-embed-container'),
+                $qrcode_image: $('#igv-app-qrcode-image')
+            };
+
+        app.shareController = new app.ShareController($container, browser, shareConfig);
 
     };
 

@@ -76,16 +76,21 @@ var app = (function (app) {
 
                     qrcode.makeCode(shortURL);
 
-                    shareConfig.$tweet_button_container.empty();
-                    obj =
-                        {
-                            text: ''
-                        };
+                    if (shareConfig.$tweet_button_container) {
 
-                    return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
+                        shareConfig.$tweet_button_container.empty();
+                        obj =
+                            {
+                                text: ''
+                            };
+
+                        return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
+                    } else {
+                        return Promise.resolve(undefined);
+                    }
                 })
                 .then(function (el) {
-                    console.log("Tweet button updated");
+                    // console.log("Tweet button updated");
                 });
         });
 

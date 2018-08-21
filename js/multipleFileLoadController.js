@@ -40,7 +40,10 @@ var app = (function (app) {
 
         createDropboxButton.call(this, config.$dropboxButton);
 
-        createGoogleDriveButton.call(this, config.$googleDriveButton);
+        if (config.$googleDriveButton) {
+            createGoogleDriveButton.call(this, config.$googleDriveButton);
+        }
+
     };
 
     app.MultipleFileLoadController.prototype.ingestPaths = function (paths) {

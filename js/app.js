@@ -25,16 +25,19 @@
 
 var app = (function (app) {
 
-    app.betterInit = function ($container, config) {
+    app.initialize = function ($container, config) {
 
         if (config.googleConfig) {
-            let gapiConfig =
+
+            let gapiConfig;
+
+            gapiConfig =
                 {
                     callback: function () {
                         let promise;
 
                         app.Google
-                            .init(config.googleConfig.button)
+                            .init( $('.igv-app-google-account-switch-button') )
                             .then(function () {
 
                                 config.igvConfig['apiKey'] = igv.Google.properties['api_key'];
@@ -42,7 +45,7 @@ var app = (function (app) {
                             })
                             .then(function (browser) {
                                 app.Google.postInit();
-                                app.initHelper(browser, $container, config);
+                                app.initializationHelper(browser, $container, config);
                             });
                     },
                     onerror: function () {
@@ -56,12 +59,12 @@ var app = (function (app) {
             igv
                 .createBrowser($container.get(0), config.igvConfig)
                 .then(function (browser) {
-                    app.initHelper(browser, $container, config);
+                    app.initializationHelper(browser, $container, config);
                 });
         }
     };
 
-    app.initHelper = function (browser, $container, options) {
+    app.initializationHelper = function (browser, $container, options) {
 
         let $multipleFileLoadModal,
             mtflConfig,

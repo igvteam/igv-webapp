@@ -31,8 +31,8 @@ var app = (function (app) {
         {
             isValidIndexExtension: function (path) {
                 let set;
-                set = new Set([ 'fai', 'bai', 'tbi', 'idx' ]);
-                return set.has( app.utils.getExtension(path) );
+                set = new Set(['fai', 'bai', 'tbi', 'idx']);
+                return set.has(app.utils.getExtension(path));
             },
 
             indexLookup: function (dataSuffix) {
@@ -81,8 +81,8 @@ var app = (function (app) {
                         gz: gz
                     };
 
-                if (lut[ dataSuffix ]) {
-                    return lut[ dataSuffix ];
+                if (lut[dataSuffix]) {
+                    return lut[dataSuffix];
                 } else {
                     return any;
                 }
@@ -97,7 +97,7 @@ var app = (function (app) {
                     aa;
 
                 extension = app.utils.getExtension(name);
-                if (false === app.utils.isKnownFileExtension( extension )) {
+                if (false === app.utils.isKnownFileExtension(extension)) {
                     return undefined;
                 }
 
@@ -110,9 +110,9 @@ var app = (function (app) {
                 // aa
                 aa = name + '.' + lookup.index;
 
-                indexObject[ aa ] = {};
-                indexObject[ aa ].data = name;
-                indexObject[ aa ].isOptional = lookup.isOptional;
+                indexObject[aa] = {};
+                indexObject[aa].data = name;
+                indexObject[aa].isOptional = lookup.isOptional;
 
 
                 if ('bam' === extension) {
@@ -124,9 +124,9 @@ var app = (function (app) {
                     parts.pop();
                     bb = parts.join('.') + '.' + lookup.index;
 
-                    indexObject[ bb ] = {};
-                    indexObject[ bb ].data = name;
-                    indexObject[ bb ].isOptional = lookup.isOptional;
+                    indexObject[bb] = {};
+                    indexObject[bb].data = name;
+                    indexObject[bb].isOptional = lookup.isOptional;
                 }
 
                 return indexObject;
@@ -149,7 +149,7 @@ var app = (function (app) {
             },
 
             getExtension: function (path) {
-                return igv.getExtension({ url: path.google_url ? path.name : path });
+                return igv.getExtension({url: path.google_url ? path.name : path});
             },
 
             isJSON: function (thang) {
@@ -185,7 +185,7 @@ var app = (function (app) {
                     } else {
                         fileLoadWidget.fileLoadManager.okHandler();
                     }
-                    
+
                     fileLoadWidget.dismiss();
                     $modal.modal('hide');
 
@@ -209,34 +209,32 @@ var app = (function (app) {
 
     app.Google =
         {
-            init: function ($googleAccountSwitchButtons) {
+            init: function ($googleAccountSwitchButtons, clientId) {
 
                 this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
 
-                return igv.Google
-                    .loadGoogleProperties("https://s3.amazonaws.com/igv.org.app/web_client_google")
-                    .then(function (properties) {
-                        let scope,
-                            config;
 
-                        scope =
-                            [
-                                'https://www.googleapis.com/auth/cloud-platform',
-                                'https://www.googleapis.com/auth/genomics',
-                                'https://www.googleapis.com/auth/devstorage.read_only',
-                                'https://www.googleapis.com/auth/userinfo.profile',
-                                'https://www.googleapis.com/auth/drive.readonly'
-                            ];
+                let scope,
+                    config;
 
-                        config =
-                            {
-                                'clientId': properties["client_id"],
-                                'scope': scope.join(' ')
-                            };
+                scope =
+                    [
+                        'https://www.googleapis.com/auth/cloud-platform',
+                        'https://www.googleapis.com/auth/genomics',
+                        'https://www.googleapis.com/auth/devstorage.read_only',
+                        'https://www.googleapis.com/auth/userinfo.profile',
+                        'https://www.googleapis.com/auth/drive.readonly'
+                    ];
 
-                        return gapi.client.init(config)
+                config =
+                    {
+                        'clientId': clientId,
+                        'scope': scope.join(' ')
+                    };
 
-                    });
+                return gapi.client.init(config)
+
+
             },
 
             signInHandler: function () {
@@ -338,7 +336,7 @@ var app = (function (app) {
 
                             picker = new google.picker
                                 .PickerBuilder()
-                                //.setAppId(igv.Google.properties["project_number"])
+                            //.setAppId(igv.Google.properties["project_number"])
                                 .setOAuthToken(igv.oauth.google.access_token)
                                 .addView(view)
                                 .addView(teamView)
@@ -366,10 +364,9 @@ var app = (function (app) {
                     });
 
 
-
             },
-            
-            createDropdownButtonPicker:function (filePickerHandler) {
+
+            createDropdownButtonPicker: function (filePickerHandler) {
 
                 app.Google.getAccessToken()
                     .then(function (accessToken) {
@@ -392,7 +389,7 @@ var app = (function (app) {
 
                             picker = new google.picker
                                 .PickerBuilder()
-                                //.setAppId(igv.Google.properties["project_number"])
+                            //.setAppId(igv.Google.properties["project_number"])
                                 .setOAuthToken(igv.oauth.google.access_token)
                                 .addView(view)
                                 .addView(teamView)
@@ -401,7 +398,7 @@ var app = (function (app) {
                                 //.setDeveloperKey(igv.Google.properties["developer_key"])
                                 .setCallback(function (data) {
                                     if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-                                        filePickerHandler( data[google.picker.Response.DOCUMENTS] );
+                                        filePickerHandler(data[google.picker.Response.DOCUMENTS]);
                                     }
                                 })
                                 .build();
@@ -416,9 +413,8 @@ var app = (function (app) {
                     });
 
 
-
             },
-            
+
 
             pickerCallback: function (data) {
 
@@ -427,13 +423,13 @@ var app = (function (app) {
                     documents;
 
                 documents = data[google.picker.Response.DOCUMENTS];
-                
+
                 doc = documents[0];
 
                 obj =
                     {
-                        name: doc[ google.picker.Document.NAME ],
-                        path: 'https://www.googleapis.com/drive/v3/files/' + doc[ google.picker.Document.ID ] + '?alt=media'
+                        name: doc[google.picker.Document.NAME],
+                        path: 'https://www.googleapis.com/drive/v3/files/' + doc[google.picker.Document.ID] + '?alt=media'
                     };
 
                 return obj;

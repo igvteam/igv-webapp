@@ -613,33 +613,67 @@
         const config =
             {
 
-                igvConfig:
-                    {
+                // Path to a json file of genome definitions
+                genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
 
+                // Alternatively,  list genomes in place
+                // genomes: [
+                //     {
+                //         id: "hg38",
+                //         name: "Human (GRCh38/hg38)",
+                //         fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
+                //         indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa.fai",
+                //         cytobandURL: "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/cytoBandIdeo.txt.gz",
+                //         tracks: [
+                //             {
+                //                 name: "Refseq Genes",
+                //                 format: "refgene",
+                //                 url: "https://s3.amazonaws.com/igv.org.genomes/hg38/refGene.sorted.txt.gz",
+                //                 indexURL: "https://s3.amazonaws.com/igv.org.genomes/hg38/refGene.sorted.txt.gz.tbi",
+                //                 visibilityWindow: -1,
+                //                 order: 1000000
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         id: "hg19",
+                //         name: "Human (CRCh37/hg19)",
+                //         fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta",
+                //         indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta.fai",
+                //         cytobandURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/cytoBand.txt",
+                //         tracks: [
+                //             {
+                //                 name: "Refseq Genes",
+                //                 format: "refgene",
+                //                 url: "https://s3.amazonaws.com/igv.org.genomes/hg19/refGene.sorted.txt.gz",
+                //                 indexURL: "https://s3.amazonaws.com/igv.org.genomes/hg19/refGene.sorted.txt.gz.tbi",
+                //                 visibilityWindow: -1,
+                //                 order: 1000000
+                //             }
+                //         ]
+                //     }],
+
+                // IGV configuration object.   See https://github.com/igvteam/igv.js/wiki
+                igv:
+                    {
                         queryParametersSupported: true,
                         showChromosomeWidget: true,
                         genome: "hg19"
                     },
 
-                googleConfig:
+                // Google configuration.   Optional, supports Google Picker and oAuth for non-public Google resources
+                google:
                     {
                         apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0",
                         clientId: "661332306814-8nt29308rppg325bkq372vli8nm3na14.apps.googleusercontent.com",
                     },
 
-                urlShortenerConfig:
-                    {
-                        urlShortener:
-                            [
-                                {
-                                    provider: "google",
-                                    hostname: "goo.gl"
-                                }
-                            ],
-                        embedTarget: "https://igv.org/web/jb/release/1.0.0/site/embed.html"
-                    }
 
-            };
+                urlShortener: {
+                    provider: "google"
+                }
+            }
+
 
         app.initialize($('#igv-app-container'), config);
     });

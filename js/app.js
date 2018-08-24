@@ -27,7 +27,7 @@ var app = (function (app) {
 
     app.initialize = function ($container, config) {
 
-        if (config.googleConfig) {
+        if (config.google) {
 
             let gapiConfig;
 
@@ -37,12 +37,13 @@ var app = (function (app) {
                         let promise;
 
                         app.Google
-                            .init( $('.igv-app-google-account-switch-button') )
-                            .then(function () {
+                            .init( $('.igv-app-google-account-switch-button'), config.google.clientId )
 
-                                config.igvConfig['apiKey'] = igv.Google.properties['api_key'];
-                                return igv.createBrowser($container.get(0), config.igvConfig);
+                            .then(function () {
+                                config.igv.apiKey = config.google.apiKey;
+                                return igv.createBrowser($container.get(0), config.igv);
                             })
+
                             .then(function (browser) {
                                 app.Google.postInit();
                                 app.initializationHelper(browser, $container, config);
@@ -57,7 +58,7 @@ var app = (function (app) {
 
         } else {
             igv
-                .createBrowser($container.get(0), config.igvConfig)
+                .createBrowser($container.get(0), config.igv)
                 .then(function (browser) {
                     app.initializationHelper(browser, $container, config);
                 });
@@ -83,7 +84,7 @@ var app = (function (app) {
         $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
         $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
-        if (undefined === options.googleConfig) {
+        if (undefined === options.google) {
             $igv_app_dropdown_google_drive_track_file_button.parent().hide();
         }
 
@@ -93,7 +94,7 @@ var app = (function (app) {
                 modalTitle: 'Track File Error',
                 $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
                 $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
+                $googleDriveButton: options.google ? $igv_app_dropdown_google_drive_track_file_button : undefined,
                 configurationHandler: app.MultipleFileLoadController.trackConfigurator,
                 fileLoadHandler: (configurations) => {
                     igv.browser.loadTrackList( configurations );
@@ -102,7 +103,7 @@ var app = (function (app) {
         app.multipleTrackFileLoader = new app.MultipleFileLoadController(browser, mtflConfig);
 
         $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
-        if (undefined === options.googleConfig) {
+        if (undefined === options.google) {
             $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
         }
 
@@ -112,7 +113,7 @@ var app = (function (app) {
                 modalTitle: 'Genome File Error',
                 $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
                 $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
-                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
+                $googleDriveButton: options.google ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
                 configurationHandler: app.MultipleFileLoadController.genomeConfigurator,
                 fileLoadHandler: (configurations) => {
                     let config;
@@ -127,22 +128,32 @@ var app = (function (app) {
         glConfig =
             {
                 $urlModal: $('#igv-app-genome-from-url-modal'),
+                genomes: options.genomes
             };
         app.genomeLoadController = new app.GenomeLoadController(browser, glConfig);
 
         app.genomeLoadController.getAppLaunchGenomes()
+
             .then(function (dictionary) {
-                var gdConfig;
 
-                gdConfig =
-                    {
-                        browser: browser,
-                        genomeDictionary: dictionary,
-                        $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
-                    };
+                if (dictionary) {
 
-                app.genomeDropdownLayout(gdConfig);
+                    var gdConfig;
+
+                    gdConfig =
+                        {
+                            browser: browser,
+                            genomeDictionary: dictionary,
+                            $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
+                        };
+
+                    app.genomeDropdownLayout(gdConfig);
+                }
+                else {
+                    // TODO -- hide Genomes button
+                }
             });
+
 
         // Track load controller configuration
         tlConfig =

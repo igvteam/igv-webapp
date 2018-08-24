@@ -31,11 +31,14 @@
 'use strict';
 
 var app = (function (app) {
+
     app.GenomeLoadController = function (browser, config) {
 
         let self = this,
             urlConfig,
             doOK;
+
+        this.config = config;
 
         // URL
         urlConfig =
@@ -56,26 +59,43 @@ var app = (function (app) {
     };
 
     app.GenomeLoadController.prototype.getAppLaunchGenomes = function () {
+
         let path;
 
-        path = 'https://s3.amazonaws.com/igv.org.genomes/genomes.json';
+        if(!this.config.genomes) {
+            return Promise.resolve(undefined);
+        }
+        if(Array.isArray(this.config.genomes)) {
+            return Promise.resolve(buildDictionary(this.config.genomes));
+        }
 
-        return igv.xhr
-            .loadJson(path, {})
-            .then(function (result) {
-                let dictionary;
+        else {
+            path = this.config.genomes;
 
-                dictionary = {};
-                if (true === Array.isArray(result)) {
-                    result.forEach(function (json) {
-                        dictionary[ json.id ] = json;
-                    });
-                } else {
-                    dictionary[ result.id ] = result;
-                }
+            return igv.xhr
 
-                return dictionary;
-            });
+                .loadJson(path, {})
+
+                .then(function (result) {
+
+                    return buildDictionary(result);
+                });
+        }
+
+        function buildDictionary(array) {
+
+            let dictionary;
+            dictionary = {};
+            if (true === Array.isArray(array)) {
+                array.forEach(function (json) {
+                    dictionary[ json.id ] = json;
+                });
+            } else {
+                dictionary[ array.id ] = array;
+            }
+
+            return dictionary;
+        }
 
     };
 

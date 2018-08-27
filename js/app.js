@@ -27,7 +27,7 @@ var app = (function (app) {
 
     app.initialize = function ($container, config) {
 
-        if (config.google) {
+        if (config.googleConfig) {
 
             let gapiConfig;
 
@@ -37,11 +37,13 @@ var app = (function (app) {
                         let promise;
 
                         app.Google
-                            .init( $('.igv-app-google-account-switch-button'), config.google.clientId )
+                            .init( $('.igv-app-google-account-switch-button'), config.googleConfig.clientId )
 
                             .then(function () {
-                                config.igv.apiKey = config.google.apiKey;
-                                return igv.createBrowser($container.get(0), config.igv);
+                                if(config.googleConfig.apiKey) {
+                                    config.igvConfig.apiKey = config.googleConfig.apiKey;
+                                }
+                                return igv.createBrowser($container.get(0), config.igvConfig);
                             })
 
                             .then(function (browser) {
@@ -58,7 +60,7 @@ var app = (function (app) {
 
         } else {
             igv
-                .createBrowser($container.get(0), config.igv)
+                .createBrowser($container.get(0), config.igvConfig)
                 .then(function (browser) {
                     app.initializationHelper(browser, $container, config);
                 });
@@ -84,7 +86,7 @@ var app = (function (app) {
         $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
         $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
-        if (undefined === options.google) {
+        if (undefined === options.googleConfig) {
             $igv_app_dropdown_google_drive_track_file_button.parent().hide();
         }
 
@@ -94,7 +96,7 @@ var app = (function (app) {
                 modalTitle: 'Track File Error',
                 $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
                 $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-                $googleDriveButton: options.google ? $igv_app_dropdown_google_drive_track_file_button : undefined,
+                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
                 configurationHandler: app.MultipleFileLoadController.trackConfigurator,
                 fileLoadHandler: (configurations) => {
                     igv.browser.loadTrackList( configurations );
@@ -103,7 +105,7 @@ var app = (function (app) {
         app.multipleTrackFileLoader = new app.MultipleFileLoadController(browser, mtflConfig);
 
         $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
-        if (undefined === options.google) {
+        if (undefined === options.googleConfig) {
             $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
         }
 
@@ -113,7 +115,7 @@ var app = (function (app) {
                 modalTitle: 'Genome File Error',
                 $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
                 $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
-                $googleDriveButton: options.google ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
+                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
                 configurationHandler: app.MultipleFileLoadController.genomeConfigurator,
                 fileLoadHandler: (configurations) => {
                     let config;
@@ -185,8 +187,9 @@ var app = (function (app) {
 
         // URL Shortener Configuration
         let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
-        if (options.urlShortenerConfig) {
-            app.setURLShortener(options.urlShortenerConfig);
+
+        if (options.urlShortener) {
+            app.setURLShortener(options.urlShortener);
         } else {
             $igv_app_tweet_button_container.hide();
         }

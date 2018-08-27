@@ -5,33 +5,14 @@ function embedJS() {
     div = document.getElementById("igvDiv");
     query = extractQuery(window.location.href);
 
+    const session = query["sessionURL"];
 
-    shortURL = query["shortURL"];
-
-    expandURL(shortURL)
-        .then(function (expandedURL) {
-
-            var config, query2;
-
-            query2 = extractQuery(expandedURL);
-            config = Object.assign(query, query2);
-            config.queryParametersSupported = true;
-
-
-            igv.createBrowser(div, config);
-        });
-
-
-    function expandURL(url) {
-
-        if (url) {
-            return app.expandURL(url);
-        }
-        else {
-            return Promise.resolve({});
-        }
-
+    const config = {
+        sessionURL: session,
+        //queryParametersSupported: true;
     }
+
+    igv.createBrowser(div, config);
 
 
     function extractQuery(uri) {
@@ -56,7 +37,7 @@ function embedJS() {
                     value = decodeURIComponent(tokens[1]);
                     query[key] = value;
                 }
-                
+
                 i = j + 1;
             }
         }

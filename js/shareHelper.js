@@ -29,39 +29,40 @@
 
 var app = (function (app) {
 
-    var urlShorteners;
+    let urlShortener;
 
-    app.setURLShortener = function (urlShortenerConfig) {
+    app.setURLShortener = function (obj) {
 
-        urlShorteners = urlShortenerConfig.urlShortener.map((src) => (getShortener(src)));
 
-        function getShortener(obj) {
-            if (obj.provider) {
-                if (obj.provider === "google") {
-                    return new GoogleURL(obj);
+        if (typeof obj === "function") {
+
+            urlShortener =
+                {
+                    shortenURL: obj
                 }
-                else if (obj.provider === "bitly") {
-                    return new BitlyURL(obj);
-                }
-                else {
-                    igv.presentAlert("Unknown url shortener provider: " + obj.provider);
-                }
+        }
+
+        else if (obj.provider) {
+            if (obj.provider === "google") {
+                urlShortener = new GoogleURL(obj);
             }
-            else {    // Custom
-                if (typeof obj.shortenURL === "function" &&
-                    typeof obj.hostname === "string") {
-                    return obj;
-                }
-                else {
-                    igv.presentAlert("URL shortener object must define functions 'shortenURL' and 'expandURL' and string constant 'hostname'")
-                }
+            else if (obj.provider === "bitly") {
+                urlShortener = new BitlyURL(obj);
+            }
+            else {
+                igv.presentAlert("Unknown url shortener provider: " + obj.provider);
             }
         }
+        else {
+            igv.presentAlert("URL shortener object must either be an object specifying a now provider or a function")
+        }
+
+
     };
 
     app.shortenURL = function (url) {
-        if (urlShorteners) {
-            return urlShorteners[0].shortenURL(url);
+        if (urlShortener) {
+            return urlShortener.shortenURL(url);
         }
         else {
             return Promise.resolve(url);
@@ -82,27 +83,13 @@ var app = (function (app) {
         return surl;
     };
 
-    app.shortJuiceboxURL = function (base) {
+    app.shortSessionURL = function (base, session) {
 
-        var url,
-            self = this;
+        const url = base + "?sessionURL=blob:" + session;
 
-        // TODO: HACK - dat
-        url = base + "?sessionURL=blob:";
-
-        url += igv.browser.compressedSession();
-
-        return self.shortenURL(url)
+        return this.shortenURL(url)
 
     };
-
-    app.expandURL = function (shortURL) {
-
-        var expander = (shortURL.startsWith("https://goo.gl")) ? new GoogleURL({}) : new BitlyURL({});
-
-        return expander.expandURL(shortURL);
-
-    }
 
     var BitlyURL = function (config) {
         this.api = "https://api-ssl.bitly.com";

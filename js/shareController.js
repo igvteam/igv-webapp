@@ -43,17 +43,16 @@ var app = (function (app) {
                 href = href.substring(0, idx);
             }
 
+            const session = igv.browser.compressedSession();
+
+            // Embeddable snippet
+            const snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, session);
+            shareConfig.$embed_container.find('textarea').val(snippet);
+            shareConfig.$embed_container.find('textarea').get(0).select();
+
             app
-                .shortJuiceboxURL(href)
-                .then(function (jbUrl) {
-                    var snippet;
+                .shortSessionURL(href, session)
 
-                    snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, jbUrl);
-                    shareConfig.$embed_container.find('textarea').val(snippet);
-                    shareConfig.$embed_container.find('textarea').get(0).select();
-
-                    return jbUrl;
-                })
                 .then(function (shortURL) {
 
                     var obj;
@@ -89,9 +88,6 @@ var app = (function (app) {
                         return Promise.resolve(undefined);
                     }
                 })
-                .then(function (el) {
-                    // console.log("Tweet button updated");
-                });
         });
 
         shareConfig.$modal.on('hidden.bs.modal', function (e) {
@@ -137,20 +133,13 @@ var app = (function (app) {
 
     };
 
-    function getEmbeddableSnippet($appContainer, embedTarget, jbUrl) {
+    function getEmbeddableSnippet($appContainer, embedTarget, session) {
 
-        var idx,
-            embedUrl,
-            width,
-            height;
-
-        embedUrl = (embedTarget || getEmbedTarget()) + "?shortURL=" + jbUrl;
-        width = $appContainer.width() + 50;
-        height = $appContainer.height() + 50;
+        const embedUrl = (embedTarget || getEmbedTarget()) + "?sessionURL=blob:" + session;
+        const height = $appContainer.height() + 50;
         return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 
     }
-
 
 
     /**

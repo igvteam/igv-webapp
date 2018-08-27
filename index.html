@@ -56,7 +56,6 @@
     <script src="js/fileLoadWidget.js"></script>
     <script src="js/multipleFileLoadController.js"></script>
     <script src="js/app-utils.js"></script>
-    <script src="js/app.js"></script>
 </head>
 
 <body class="igv-app-body-footerized">
@@ -606,7 +605,9 @@
     </div>
 </footer>
 
-<script type="text/javascript">
+<script type="module">
+
+    import { initialize } from './js/app.js';
 
     $(document).ready(function () {
 
@@ -657,10 +658,10 @@
                      provider: "bitly",
       //               apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0"
                  }
-            }
+            };
 
 
-        app.initialize($('#igv-app-container'), config);
+        initialize($('#igv-app-container'), config);
     });
 
 </script>

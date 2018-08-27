@@ -21,222 +21,214 @@
  *
  */
 
-'use strict';
+export function initialize($container, config) {
 
-var app = (function (app) {
+    if (config.googleConfig) {
 
-    app.initialize = function ($container, config) {
+        let gapiConfig;
 
-        if (config.googleConfig) {
-
-            let gapiConfig;
-
-            gapiConfig =
-                {
-                    callback: function () {
-                        let promise;
-
-                        app.Google
-                            .init( $('.igv-app-google-account-switch-button'), config.googleConfig.clientId )
-
-                            .then(function () {
-                                if(config.googleConfig.apiKey) {
-                                    config.igvConfig.apiKey = config.googleConfig.apiKey;
-                                }
-                                return igv.createBrowser($container.get(0), config.igvConfig);
-                            })
-
-                            .then(function (browser) {
-                                app.Google.postInit();
-                                app.initializationHelper(browser, $container, config);
-                            });
-                    },
-                    onerror: function () {
-                        console.log('gapi.client:auth2 - failed to load!');
-                    }
-                };
-
-            gapi.load('client:auth2', gapiConfig);
-
-        } else {
-            igv
-                .createBrowser($container.get(0), config.igvConfig)
-                .then(function (browser) {
-                    app.initializationHelper(browser, $container, config);
-                });
-        }
-    };
-
-    app.initializationHelper = function (browser, $container, options) {
-
-        let $multipleFileLoadModal,
-            mtflConfig,
-            mgflConfig,
-            sessionConfig,
-            tlConfig,
-            glConfig,
-            shareConfig,
-            $igv_app_dropdown_google_drive_track_file_button,
-            $igv_app_dropdown_google_drive_genome_file_button;
-
-        appFooterImageHoverBehavior($('.igv-app-footer').find('a img'));
-
-        createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
-
-        $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
-
-        $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
-        if (undefined === options.googleConfig) {
-            $igv_app_dropdown_google_drive_track_file_button.parent().hide();
-        }
-
-        mtflConfig =
+        gapiConfig =
             {
-                $modal: $multipleFileLoadModal,
-                modalTitle: 'Track File Error',
-                $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
-                $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
-                configurationHandler: app.MultipleFileLoadController.trackConfigurator,
-                fileLoadHandler: (configurations) => {
-                    igv.browser.loadTrackList( configurations );
-                }
-            };
-        app.multipleTrackFileLoader = new app.MultipleFileLoadController(browser, mtflConfig);
+                callback: function () {
+                    let promise;
 
-        $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
-        if (undefined === options.googleConfig) {
-            $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
-        }
+                    app.Google
+                        .init( $('.igv-app-google-account-switch-button'), config.googleConfig.clientId )
 
-        mgflConfig =
-            {
-                $modal: $multipleFileLoadModal,
-                modalTitle: 'Genome File Error',
-                $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
-                $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
-                $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
-                configurationHandler: app.MultipleFileLoadController.genomeConfigurator,
-                fileLoadHandler: (configurations) => {
-                    let config;
-                    config = configurations[ 0 ];
-                    app.utils.loadGenome(config);
+                        .then(function () {
+                            if(config.googleConfig.apiKey) {
+                                config.igvConfig.apiKey = config.googleConfig.apiKey;
+                            }
+                            return igv.createBrowser($container.get(0), config.igvConfig);
+                        })
+
+                        .then(function (browser) {
+                            app.Google.postInit();
+                            initializationHelper(browser, $container, config);
+                        });
+                },
+                onerror: function () {
+                    console.log('gapi.client:auth2 - failed to load!');
                 }
             };
 
-        app.multipleGenomeFileLoader = new app.MultipleFileLoadController(browser, mgflConfig);
+        gapi.load('client:auth2', gapiConfig);
 
-        // Genome Modal Controller
-        glConfig =
-            {
-                $urlModal: $('#igv-app-genome-from-url-modal'),
-                genomes: options.genomes
-            };
-        app.genomeLoadController = new app.GenomeLoadController(browser, glConfig);
-
-        app.genomeLoadController.getAppLaunchGenomes()
-
-            .then(function (dictionary) {
-
-                if (dictionary) {
-
-                    var gdConfig;
-
-                    gdConfig =
-                        {
-                            browser: browser,
-                            genomeDictionary: dictionary,
-                            $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
-                        };
-
-                    app.genomeDropdownLayout(gdConfig);
-                }
-                else {
-                    // TODO -- hide Genomes button
-                }
+    } else {
+        igv
+            .createBrowser($container.get(0), config.igvConfig)
+            .then(function (browser) {
+                app.initializationHelper(browser, $container, config);
             });
+    }
+}
 
+function initializationHelper(browser, $container, options) {
 
-        // Track load controller configuration
-        tlConfig =
-            {
-                $urlModal: $('#igv-app-track-from-url-modal'),
-                $encodeModal: $('#igv-app-encode-modal'),
-                $dropdownMenu: $('#igv-app-track-dropdown-menu'),
-                $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
-            };
+    let $multipleFileLoadModal,
+        mtflConfig,
+        mgflConfig,
+        sessionConfig,
+        tlConfig,
+        glConfig,
+        shareConfig,
+        $igv_app_dropdown_google_drive_track_file_button,
+        $igv_app_dropdown_google_drive_genome_file_button;
 
-        app.trackLoadController = new app.TrackLoadController(browser, tlConfig);
+    appFooterImageHoverBehavior($('.igv-app-footer').find('a img'));
 
-        // Session Modal Controller
-        /*
-        sessionConfig =
-            {
-                $urlModal: $('#igv-app-session-url-modal'),
-                $dropboxModal: $('#igv-app-session-dropbox-modal'),
-                $googleDriveModal: $('#igv-app-session-google-drive-modal')
-            };
-        app.sessionModalController = new app.SessionModalController(browser, sessionConfig);
+    createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
 
-        $('#igv-app-session-file-input').on('change', function (e) {
-            let file;
-            file = e.target.files[ 0 ];
-            browser.loadSession(file);
-        });
-        */
+    $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
-        // URL Shortener Configuration
-        let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
-
-        if (options.urlShortener) {
-            app.setURLShortener(options.urlShortener);
-        } else {
-            $igv_app_tweet_button_container.hide();
-        }
-
-        shareConfig =
-            {
-                $modal: $('#igv-app-share-modal'),
-                $share_input: $('#igv-app-share-input'),
-                $copy_link_button: $('#igv-app-copy-link-button'),
-                $tweet_button_container: options.urlShortenerConfig ? $igv_app_tweet_button_container : undefined,
-                $email_button: $('#igv-app-email-button'),
-                $embed_button: $('#igv-app-embed-button'),
-                $qrcode_button: $('#igv-app-qrcode-button'),
-                $embed_container: $('#igv-app-embed-container'),
-                $qrcode_image: $('#igv-app-qrcode-image')
-            };
-
-        app.shareController = new app.ShareController($container, browser, shareConfig);
-
-    };
-
-    function appFooterImageHoverBehavior ($img) {
-
-        $img.hover(function () {
-                $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
-            },
-            function () {
-                $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
-            });
-
+    $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
+    if (undefined === options.googleConfig) {
+        $igv_app_dropdown_google_drive_track_file_button.parent().hide();
     }
 
-    function createAppBookmarkHandler (app, $bookmark_button) {
+    mtflConfig =
+        {
+            $modal: $multipleFileLoadModal,
+            modalTitle: 'Track File Error',
+            $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
+            $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
+            $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
+            configurationHandler: app.MultipleFileLoadController.trackConfigurator,
+            fileLoadHandler: (configurations) => {
+                igv.browser.loadTrackList( configurations );
+            }
+        };
+    app.multipleTrackFileLoader = new app.MultipleFileLoadController(browser, mtflConfig);
 
-        $bookmark_button.on('click', function (e) {
-            let blurb,
-                str;
-
-            window.history.pushState({}, "IGV", app.sessionURL());
-
-            str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
-            blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
-            alert(blurb);
-        });
-
+    $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
+    if (undefined === options.googleConfig) {
+        $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
     }
 
-    return app;
+    mgflConfig =
+        {
+            $modal: $multipleFileLoadModal,
+            modalTitle: 'Genome File Error',
+            $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
+            $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
+            $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
+            configurationHandler: app.MultipleFileLoadController.genomeConfigurator,
+            fileLoadHandler: (configurations) => {
+                let config;
+                config = configurations[ 0 ];
+                app.utils.loadGenome(config);
+            }
+        };
 
-})(app || {});
+    app.multipleGenomeFileLoader = new app.MultipleFileLoadController(browser, mgflConfig);
+
+    // Genome Modal Controller
+    glConfig =
+        {
+            $urlModal: $('#igv-app-genome-from-url-modal'),
+            genomes: options.genomes
+        };
+    app.genomeLoadController = new app.GenomeLoadController(browser, glConfig);
+
+    app.genomeLoadController.getAppLaunchGenomes()
+
+        .then(function (dictionary) {
+
+            if (dictionary) {
+
+                var gdConfig;
+
+                gdConfig =
+                    {
+                        browser: browser,
+                        genomeDictionary: dictionary,
+                        $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
+                    };
+
+                app.genomeDropdownLayout(gdConfig);
+            }
+            else {
+                // TODO -- hide Genomes button
+            }
+        });
+
+
+    // Track load controller configuration
+    tlConfig =
+        {
+            $urlModal: $('#igv-app-track-from-url-modal'),
+            $encodeModal: $('#igv-app-encode-modal'),
+            $dropdownMenu: $('#igv-app-track-dropdown-menu'),
+            $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
+        };
+
+    app.trackLoadController = new app.TrackLoadController(browser, tlConfig);
+
+    // Session Modal Controller
+    /*
+    sessionConfig =
+        {
+            $urlModal: $('#igv-app-session-url-modal'),
+            $dropboxModal: $('#igv-app-session-dropbox-modal'),
+            $googleDriveModal: $('#igv-app-session-google-drive-modal')
+        };
+    app.sessionModalController = new app.SessionModalController(browser, sessionConfig);
+
+    $('#igv-app-session-file-input').on('change', function (e) {
+        let file;
+        file = e.target.files[ 0 ];
+        browser.loadSession(file);
+    });
+    */
+
+    // URL Shortener Configuration
+    let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
+
+    if (options.urlShortener) {
+        app.setURLShortener(options.urlShortener);
+    } else {
+        $igv_app_tweet_button_container.hide();
+    }
+
+    shareConfig =
+        {
+            $modal: $('#igv-app-share-modal'),
+            $share_input: $('#igv-app-share-input'),
+            $copy_link_button: $('#igv-app-copy-link-button'),
+            $tweet_button_container: options.urlShortenerConfig ? $igv_app_tweet_button_container : undefined,
+            $email_button: $('#igv-app-email-button'),
+            $embed_button: $('#igv-app-embed-button'),
+            $qrcode_button: $('#igv-app-qrcode-button'),
+            $embed_container: $('#igv-app-embed-container'),
+            $qrcode_image: $('#igv-app-qrcode-image')
+        };
+
+    app.shareController = new app.ShareController($container, browser, shareConfig);
+
+}
+
+function appFooterImageHoverBehavior ($img) {
+
+    $img.hover(function () {
+            $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
+        },
+        function () {
+            $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
+        });
+
+}
+
+function createAppBookmarkHandler (app, $bookmark_button) {
+
+    $bookmark_button.on('click', function (e) {
+        let blurb,
+            str;
+
+        window.history.pushState({}, "IGV", app.sessionURL());
+
+        str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+        blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
+        alert(blurb);
+    });
+
+}

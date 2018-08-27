@@ -390,7 +390,7 @@ var app = (function (app) {
                             picker = new google.picker
                                 .PickerBuilder()
                             //.setAppId(igv.Google.properties["project_number"])
-                                .setOAuthToken(igv.oauth.googleConfig.access_token)
+                                .setOAuthToken(igv.oauth.google.access_token)
                                 .addView(view)
                                 .addView(teamView)
                                 .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)

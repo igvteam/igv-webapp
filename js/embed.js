@@ -1,4 +1,4 @@
-function embedJS() {
+export function embedJS() {
 
     var div, query, shortURL;
 

@@ -21,6 +21,13 @@
  *
  */
 
+import * as igv from 'https://igv.org/web/test/dist/igv.js';
+import * as google_utils from './google-utils.js';
+
+import { loadGenome } from './utils.js';
+
+import MultipleFileLoadController from './multipleFileLoadController.js';
+
 export function initialize($container, config) {
 
     if (config.googleConfig) {
@@ -32,7 +39,7 @@ export function initialize($container, config) {
                 callback: function () {
                     let promise;
 
-                    app.Google
+                    google_utils
                         .init( $('.igv-app-google-account-switch-button'), config.googleConfig.clientId )
 
                         .then(function () {
@@ -43,7 +50,7 @@ export function initialize($container, config) {
                         })
 
                         .then(function (browser) {
-                            app.Google.postInit();
+                            google_utils.postInit();
                             initializationHelper(browser, $container, config);
                         });
                 },
@@ -58,7 +65,7 @@ export function initialize($container, config) {
         igv
             .createBrowser($container.get(0), config.igvConfig)
             .then(function (browser) {
-                app.initializationHelper(browser, $container, config);
+                initializationHelper(browser, $container, config);
             });
     }
 }
@@ -93,12 +100,12 @@ function initializationHelper(browser, $container, options) {
             $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
             $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
             $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
-            configurationHandler: app.MultipleFileLoadController.trackConfigurator,
+            configurationHandler: MultipleFileLoadController.trackConfigurator,
             fileLoadHandler: (configurations) => {
                 igv.browser.loadTrackList( configurations );
             }
         };
-    app.multipleTrackFileLoader = new app.MultipleFileLoadController(browser, mtflConfig);
+    app.multipleTrackFileLoader = new MultipleFileLoadController(browser, mtflConfig);
 
     $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
     if (undefined === options.googleConfig) {
@@ -112,15 +119,15 @@ function initializationHelper(browser, $container, options) {
             $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
             $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
             $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
-            configurationHandler: app.MultipleFileLoadController.genomeConfigurator,
+            configurationHandler: MultipleFileLoadController.genomeConfigurator,
             fileLoadHandler: (configurations) => {
                 let config;
                 config = configurations[ 0 ];
-                app.utils.loadGenome(config);
+                loadGenome(config);
             }
         };
 
-    app.multipleGenomeFileLoader = new app.MultipleFileLoadController(browser, mgflConfig);
+    app.multipleGenomeFileLoader = new MultipleFileLoadController(browser, mgflConfig);
 
     // Genome Modal Controller
     glConfig =

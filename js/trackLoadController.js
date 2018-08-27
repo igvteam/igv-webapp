@@ -21,7 +21,12 @@
  *
  */
 
-'use strict';
+import * as igv from 'https://igv.org/web/test/dist/igv.js';
+
+import FileLoadWidget from './fileLoadWidget.js';
+import FileLoadManager from './fileLoadManager.js';
+
+import { configureModal } from './utils.js';
 
 var app = (function (app) {
 
@@ -41,8 +46,8 @@ var app = (function (app) {
                 mode: 'url',
             };
 
-        this.urlWidget = new app.FileLoadWidget(urlConfig, new app.FileLoadManager());
-        app.utils.configureModal(this.urlWidget, config.$urlModal);
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        configureModal(this.urlWidget, config.$urlModal);
 
         this.updateGeneralizedAnnotations(browser.genome.id);
 

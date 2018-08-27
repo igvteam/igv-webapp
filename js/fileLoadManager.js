@@ -24,15 +24,13 @@
  * THE SOFTWARE.
  */
 
-/**
- * Created by dat on 7/11/18.
- */
+import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
-'use strict';
+import { isJSON } from './utils.js';
 
-var app = (function (app) {
-
-    app.FileLoadManager = function () {
+class FileLoadManager {
+    
+    constructor () {
 
         this.dictionary = {};
 
@@ -49,10 +47,9 @@ var app = (function (app) {
             tbi: 'gz'
         }
 
-    };
-
-
-    app.FileLoadManager.prototype.okHandler = function () {
+    }
+    
+    okHandler () {
 
         var obj;
         obj = this.trackLoadConfiguration();
@@ -70,21 +67,21 @@ var app = (function (app) {
                 })
         }
 
-    };
+    }
 
-    app.FileLoadManager.prototype.inputHandler = function (path, isIndexFile) {
+    inputHandler (path, isIndexFile) {
         this.ingestPath(path, isIndexFile);
-    };
+    }
 
-    app.FileLoadManager.prototype.didDragDrop = function (dataTransfer) {
+    didDragDrop (dataTransfer) {
         var files;
 
         files = dataTransfer.files;
 
         return (files && files.length > 0);
-    };
-
-    app.FileLoadManager.prototype.dragDropHandler = function (dataTransfer, isIndexFile) {
+    }
+    
+    dragDropHandler (dataTransfer, isIndexFile) {
         var url,
             files,
             isValid;
@@ -98,21 +95,21 @@ var app = (function (app) {
             this.ingestPath(url, isIndexFile);
         }
 
-    };
+    }
 
-    app.FileLoadManager.prototype.indexName = function () {
+    indexName () {
         return itemName(this.dictionary.index);
-    };
+    }
 
-    app.FileLoadManager.prototype.dataName = function () {
+    dataName () {
         return itemName(this.dictionary.data);
-    };
+    }
 
-    app.FileLoadManager.prototype.reset = function () {
+    reset () {
         this.dictionary = {};
-    };
+    }
 
-    app.FileLoadManager.prototype.trackLoadConfiguration = function () {
+    trackLoadConfiguration () {
         var extension,
             key,
             config,
@@ -126,19 +123,19 @@ var app = (function (app) {
         } else {
 
 
-            if (true === app.utils.isJSON(this.dictionary.data)) {
+            if (true === isJSON(this.dictionary.data)) {
                 return this.dictionary.data;
             }
 
             if (this.dictionary.index) {
-                _isIndexFile = isAnIndexFile.call(this, this.dictionary.index);
+                _isIndexFile = this.isAnIndexFile(this.dictionary.index);
                 if (false === _isIndexFile) {
                     this.fileLoadWidget.presentErrorMessage('Error: index file is not valid.');
                     return undefined;
                 }
             }
 
-            _isIndexable = isIndexable.call(this, this.dictionary.data);
+            _isIndexable = this.isIndexable(this.dictionary.data);
 
             extension = igv.getExtension({ url: this.dictionary.data });
 
@@ -173,9 +170,9 @@ var app = (function (app) {
 
         }
 
-    };
+    }
 
-    app.FileLoadManager.prototype.ingestPath = function (path, isIndexFile) {
+    ingestPath (path, isIndexFile) {
         let self = this,
             extension;
 
@@ -197,25 +194,21 @@ var app = (function (app) {
             this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;
         }
 
-    };
+    }
 
-    function isAnIndexFile(fileOrURL) {
-        var extension;
+    isAnIndexFile(fileOrURL) {
+        let extension;
 
         extension = igv.getExtension({ url: fileOrURL });
         return this.indexExtensionToKey.hasOwnProperty(extension);
 
     }
 
-    function itemName (item) {
-        return igv.isFilePath(item) ? item.name : item;
-    }
+    isIndexable(fileOrURL) {
 
-    function isIndexable(fileOrURL) {
+        let extension;
 
-        var extension;
-
-        if (true === isAnIndexFile.call(this, fileOrURL)) {
+        if (true === this.isAnIndexFile(fileOrURL)) {
             return false;
         } else {
             extension = igv.getExtension({ url: fileOrURL });
@@ -224,77 +217,82 @@ var app = (function (app) {
 
     }
 
-    function extractName(config) {
+}
 
-        var tmp,
-            id;
+function itemName (item) {
+    return igv.isFilePath(item) ? item.name : item;
+}
 
-        if (config.name === undefined && igv.isString(config.url) && config.url.includes("drive.google.com")) {
-            tmp = extractQuery(config.url);
-            id = tmp["id"];
+function extractName(config) {
 
-            return igv.Google.getDriveFileInfo(config.url)
-                .then(function (json) {
-                    return json.originalFilename || json.name;
-                })
+    var tmp,
+        id;
+
+    if (config.name === undefined && igv.isString(config.url) && config.url.includes("drive.google.com")) {
+        tmp = extractQuery(config.url);
+        id = tmp["id"];
+
+        return igv.Google.getDriveFileInfo(config.url)
+            .then(function (json) {
+                return json.originalFilename || json.name;
+            })
+    } else {
+        if (config.name === undefined) {
+            return Promise.resolve(extractFilename(config.url));
         } else {
-            if (config.name === undefined) {
-                return Promise.resolve(extractFilename(config.url));
-            } else {
-                return Promise.resolve(config.name);
-            }
+            return Promise.resolve(config.name);
         }
-
-        function extractFilename (urlOrFile) {
-            var idx,
-                str;
-
-            if (igv.isFilePath(urlOrFile)) {
-                return urlOrFile.name;
-            } else {
-
-                str = urlOrFile.split('?').shift();
-                idx = urlOrFile.lastIndexOf("/");
-
-                return idx > 0 ? str.substring(idx + 1) : str;
-            }
-        }
-
-        function extractQuery (uri) {
-            var i1,
-                i2,
-                i,
-                j,
-                s,
-                query,
-                tokens;
-
-            query = {};
-            i1 = uri.indexOf("?");
-            i2 = uri.lastIndexOf("#");
-
-            if (i1 >= 0) {
-                if (i2 < 0) i2 = uri.length;
-
-                for (i = i1 + 1; i < i2;) {
-
-                    j = uri.indexOf("&", i);
-                    if (j < 0) j = i2;
-
-                    s = uri.substring(i, j);
-                    tokens = s.split("=", 2);
-                    if (tokens.length === 2) {
-                        query[tokens[0]] = tokens[1];
-                    }
-
-                    i = j + 1;
-                }
-            }
-            return query;
-        }
-
     }
 
-    return app;
-}) (app || {});
+    function extractFilename (urlOrFile) {
+        var idx,
+            str;
+
+        if (igv.isFilePath(urlOrFile)) {
+            return urlOrFile.name;
+        } else {
+
+            str = urlOrFile.split('?').shift();
+            idx = urlOrFile.lastIndexOf("/");
+
+            return idx > 0 ? str.substring(idx + 1) : str;
+        }
+    }
+
+    function extractQuery (uri) {
+        var i1,
+            i2,
+            i,
+            j,
+            s,
+            query,
+            tokens;
+
+        query = {};
+        i1 = uri.indexOf("?");
+        i2 = uri.lastIndexOf("#");
+
+        if (i1 >= 0) {
+            if (i2 < 0) i2 = uri.length;
+
+            for (i = i1 + 1; i < i2;) {
+
+                j = uri.indexOf("&", i);
+                if (j < 0) j = i2;
+
+                s = uri.substring(i, j);
+                tokens = s.split("=", 2);
+                if (tokens.length === 2) {
+                    query[tokens[0]] = tokens[1];
+                }
+
+                i = j + 1;
+            }
+        }
+        return query;
+    }
+
+}
+
+export default FileLoadManager;
 

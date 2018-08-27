@@ -24,15 +24,14 @@
  * THE SOFTWARE.
  */
 
-/**
- * Created by dat on 4/8/18.
- */
+import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
-'use strict';
+import FileLoadManager from './fileLoadManager.js';
 
-var app = (function (app) {
-    app.FileLoadWidget = function (config, fileLoadManager) {
-        var self = this,
+class FileLoadWidget {
+
+    constructor(config, fileLoadManager) {
+        let self = this,
             obj;
 
         this.config = config;
@@ -57,7 +56,6 @@ var app = (function (app) {
                     dataTitle: config.dataTitle + ' file',
                     indexTitle: config.indexTitle + ' file'
                 };
-            createInputContainer.call(this, this.$container, obj);
         } else {
 
             // url data/index
@@ -67,8 +65,9 @@ var app = (function (app) {
                     dataTitle: config.dataTitle + ' URL',
                     indexTitle: config.indexTitle + ' URL'
                 };
-            createInputContainer.call(this, this.$container, obj);
         }
+
+        this.createInputContainer(this.$container, obj);
 
         // error message container
         this.$error_message = $("<div>", { class:"igv-flw-error-message-container" });
@@ -84,23 +83,24 @@ var app = (function (app) {
 
         this.dismissErrorMessage();
 
-    };
 
-    app.FileLoadWidget.prototype.presentErrorMessage = function(message) {
+    }
+
+    presentErrorMessage(message) {
         this.$error_message.find('.igv-flw-error-message').text(message);
         this.$error_message.show();
-    };
+    }
 
-    app.FileLoadWidget.prototype.dismissErrorMessage = function() {
+    dismissErrorMessage() {
         this.$error_message.hide();
         this.$error_message.find('.igv-flw-error-message').text('');
-    };
+    }
 
-    app.FileLoadWidget.prototype.present = function () {
+    present() {
         this.$container.show();
-    };
+    }
 
-    app.FileLoadWidget.prototype.dismiss = function () {
+    dismiss() {
 
         this.dismissErrorMessage();
 
@@ -109,14 +109,14 @@ var app = (function (app) {
 
         this.fileLoadManager.reset();
 
-    };
+    }
 
-    app.FileLoadWidget.prototype.customizeLayout = function (customizer) {
+    customizeLayout(customizer) {
         customizer(this.$container);
-    };
+    }
 
-    function createInputContainer($parent, config) {
-        var $container,
+    createInputContainer($parent, config) {
+        let $container,
             $input_data_row,
             $input_index_row,
             $label;
@@ -135,9 +135,9 @@ var app = (function (app) {
         $label.text(config.dataTitle);
 
         if (true === config.doURL) {
-            createURLContainer.call(this, $input_data_row, 'igv-flw-data-url', false);
+            this.createURLContainer($input_data_row, 'igv-flw-data-url', false);
         } else {
-            createLocalFileContainer.call(this, $input_data_row, 'igv-flw-local-data-file', false);
+            this.createLocalFileContainer($input_data_row, 'igv-flw-local-data-file', false);
         }
 
         // index
@@ -149,14 +149,14 @@ var app = (function (app) {
         $label.text(config.indexTitle);
 
         if (true === config.doURL) {
-            createURLContainer.call(this, $input_index_row, 'igv-flw-index-url', true);
+            this.createURLContainer($input_index_row, 'igv-flw-index-url', true);
         } else {
-            createLocalFileContainer.call(this, $input_index_row, 'igv-flw-local-index-file', true);
+            this.createLocalFileContainer($input_index_row, 'igv-flw-local-index-file', true);
         }
 
     }
 
-    function createURLContainer($parent, id, isIndexFile) {
+    createURLContainer($parent, id, isIndexFile) {
         var self = this,
             $input;
 
@@ -193,7 +193,7 @@ var app = (function (app) {
 
     }
 
-    function createLocalFileContainer($parent, id, isIndexFile) {
+    createLocalFileContainer($parent, id, isIndexFile) {
         var self = this,
             $file_chooser_container,
             $label,
@@ -203,7 +203,6 @@ var app = (function (app) {
 
         $file_chooser_container = $("<div>", { class:"igv-flw-file-chooser-container" });
         $parent.append($file_chooser_container);
-
 
         str = id + igv.guid();
 
@@ -266,6 +265,6 @@ var app = (function (app) {
 
     }
 
-    return app;
+}
 
-})(app || {});
+export default FileLoadWidget;

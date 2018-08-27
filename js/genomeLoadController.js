@@ -24,11 +24,12 @@
  * THE SOFTWARE.
  */
 
-/**
- * Created by dat on 5/8/18.
- */
+import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
-'use strict';
+import { loadGenome, isJSON, configureModal } from './utils.js';
+
+import FileLoadWidget from './fileLoadWidget.js';
+import FileLoadManager from './fileLoadManager.js';
 
 var app = (function (app) {
 
@@ -48,13 +49,13 @@ var app = (function (app) {
                 mode: 'url'
             };
 
-        this.urlWidget = new app.FileLoadWidget(urlConfig, new app.FileLoadManager());
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
 
         doOK = function (fileLoadManager) {
             okHandler(self, fileLoadManager);
         };
 
-        app.utils.configureModal(this.urlWidget, config.$urlModal, doOK);
+        configureModal(this.urlWidget, config.$urlModal, doOK);
 
     };
 
@@ -104,7 +105,7 @@ var app = (function (app) {
         let self = this,
             obj;
 
-        if (true === app.utils.isJSON(fileLoadManager.dictionary.data)) {
+        if (true === isJSON(fileLoadManager.dictionary.data)) {
             obj = {};
             obj[ 'noname' ] = fileLoadManager.dictionary.data;
 
@@ -133,7 +134,7 @@ var app = (function (app) {
                 .then(function (obj) {
                     let genome;
                     genome = Object.values(obj).pop();
-                    app.utils.loadGenome(genome);
+                    loadGenome(genome);
                 });
 
         }
@@ -183,7 +184,7 @@ var app = (function (app) {
                     key = $(this).text();
 
                     if (key !== config.browser.genome.id) {
-                        app.utils.loadGenome(config.genomeDictionary[ key ]);
+                        loadGenome(config.genomeDictionary[ key ]);
                     }
 
                 });

@@ -21,7 +21,10 @@
  *
  */
 
-'use strict';
+import { configureModal } from './utils.js';
+import * as google_utils from './google-utils.js';
+import FileLoadWidget from './fileLoadWidget.js';
+import FileLoadManager from './fileLoadManager.js';
 
 var app = (function (app) {
 
@@ -43,7 +46,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.fileLoadWidget = new app.FileLoadWidget(widgetConfig, new app.FileLoadManager());
+        this.fileLoadWidget = new FileLoadWidget(widgetConfig, new FileLoadManager());
 
         this.fileLoadWidget.customizeLayout(function ($parent) {
             let $file_chooser_container;
@@ -64,7 +67,7 @@ var app = (function (app) {
 
                 $(this).on('click', function (e) {
                     self.$modal.modal('hide');
-                    app.Google.createPicker(self.fileLoadWidget.fileLoadManager, self.$modal, $filenameContainer, (1 === index), filePickerHandler);
+                    google_utils.createPicker(self.fileLoadWidget.fileLoadManager, self.$modal, $filenameContainer, (1 === index), filePickerHandler);
                 });
             });
 
@@ -72,7 +75,7 @@ var app = (function (app) {
 
         });
 
-        app.utils.configureModal(this.fileLoadWidget, this.$modal, okHandler);
+        configureModal(this.fileLoadWidget, this.$modal, okHandler);
 
 
     };

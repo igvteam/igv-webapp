@@ -24,11 +24,8 @@
  * THE SOFTWARE.
  */
 
-/**
- * Created by dat on 5/8/18.
- */
-
-'use strict';
+import FileLoadWidget from './fileLoadWidget.js';
+import FileLoadManager from './fileLoadManager.js';
 
 var app = (function (app) {
     app.SessionModalController = function (browser, config) {
@@ -46,7 +43,7 @@ var app = (function (app) {
                 $widgetParent: this.$modal.find('.modal-body')
             };
 
-        this.loader = new app.FileLoadWidget(loaderConfig, new app.FileLoadManager());
+        this.loader = new FileLoadWidget(loaderConfig, new FileLoadManager());
         this.loader.customizeLayout(function ($parent) {
 
             $parent.find('.igv-flw-input-container').each(function (ii) {

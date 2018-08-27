@@ -21,7 +21,7 @@
  *
  */
 
-'use strict';
+import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
 var app = (function (app) {
 

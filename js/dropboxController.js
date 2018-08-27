@@ -21,7 +21,10 @@
  *
  */
 
-'use strict';
+import { configureModal } from './utils.js';
+
+import FileLoadWidget from './fileLoadWidget.js';
+import FileLoadManager from './fileLoadManager.js';
 
 var app = (function (app) {
     app.DropboxController = function (browser, $modal, dataTitle) {
@@ -42,7 +45,7 @@ var app = (function (app) {
                 mode: 'localFile'
             };
 
-        this.fileLoadWidget = new app.FileLoadWidget(widgetConfig, new app.FileLoadManager());
+        this.fileLoadWidget = new FileLoadWidget(widgetConfig, new FileLoadManager());
 
         this.fileLoadWidget.customizeLayout(function ($parent) {
 
@@ -71,7 +74,7 @@ var app = (function (app) {
             }
         });
 
-        app.utils.configureModal(this.fileLoadWidget, this.$modal, config.okHandler);
+        configureModal(this.fileLoadWidget, this.$modal, config.okHandler);
 
     };
 

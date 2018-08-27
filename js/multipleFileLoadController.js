@@ -21,11 +21,15 @@
  *
  */
 
-'use strict';
+import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
-var app = (function (app) {
+import * as google_utils from './google-utils.js';
 
-    app.MultipleFileLoadController = function (browser, config) {
+import { getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
+
+class MultipleFileLoadController {
+
+    constructor (browser, config) {
 
         this.browser = browser;
 
@@ -36,17 +40,17 @@ var app = (function (app) {
         this.$modal.find('.modal-title').text( config.modalTitle );
         this.$modal_body = this.$modal.find('.modal-body');
 
-        createLocalInput.call(this, config.$localFileInput);
+        this.createLocalInput(config.$localFileInput);
 
-        createDropboxButton.call(this, config.$dropboxButton);
+        this.createDropboxButton(config.$dropboxButton);
 
         if (config.$googleDriveButton) {
-            createGoogleDriveButton.call(this, config.$googleDriveButton);
+            this.createGoogleDriveButton(config.$googleDriveButton);
         }
 
-    };
+    }
 
-    app.MultipleFileLoadController.prototype.ingestPaths = function (paths) {
+    ingestPaths(paths) {
 
         let self = this,
             dataPaths,
@@ -62,26 +66,26 @@ var app = (function (app) {
 
         // accumulate JSON retrieval promises
         jsonRetrievalTasks = paths
-            .filter((path) => ('json' === app.utils.getExtension(path)))
+            .filter((path) => ('json' === getExtension(path)))
             .map((path) => {
                 let url;
                 url = (path.google_url || path);
-                return { name: app.utils.getFilename(path), promise: igv.xhr.loadJson(url) }
+                return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
             });
 
         // data (non-JSON)
         dataPaths = paths
-            .filter((path) => (app.utils.isKnownFileExtension( app.utils.getExtension(path) )))
+            .filter((path) => (isKnownFileExtension( getExtension(path) )))
             .reduce(function(accumulator, path) {
-                accumulator[ app.utils.getFilename(path) ] = (path.google_url || path);
+                accumulator[ getFilename(path) ] = (path.google_url || path);
                 return accumulator;
             }, {});
 
         // index paths (potentials)
         indexPathCandidates = paths
-            .filter((path) => app.fileutils.isValidIndexExtension( app.utils.getExtension(path) ))
+            .filter((path) => isValidIndexExtension( getExtension(path) ))
             .reduce(function(accumulator, path) {
-                accumulator[ app.utils.getFilename(path) ] = (path.google_url || path);
+                accumulator[ getFilename(path) ] = (path.google_url || path);
                 return accumulator;
             }, {});
 
@@ -125,75 +129,69 @@ var app = (function (app) {
             }, []);
 
         if (jsonRetrievalTasks.length > 0) {
-            jsonRetrievalSerial.call(this, jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+            this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
         } else {
 
             if (configurations.length > 0) {
                 this.fileLoadHander( configurations );
             }
 
-            renderTrackFileSelection.call(this, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
-        }
-
-    };
-
-    app.MultipleFileLoadController.prototype.isValidLocalFileInput = function ($input) {
-        return ($input.get(0).files && $input.get(0).files.length > 0);
-    };
-
-    app.MultipleFileLoadController.trackConfigurator = function(dataKey, dataValue, indexPaths) {
-        let config;
-
-        config =
-            {
-                name: dataKey,
-                filename:dataKey,
-
-                format: igv.inferFileFormat(dataKey),
-
-                url: dataValue,
-                indexURL: getIndexURL(indexPaths[ dataKey ])
-            };
-
-        igv.inferTrackTypes(config);
-
-        return config;
-
-    };
-
-    app.MultipleFileLoadController.genomeConfigurator = function(dataKey, dataValue, indexPaths) {
-
-        let config;
-
-        config =
-            {
-                fastaURL: dataValue,
-                indexURL: getIndexURL(indexPaths[ dataKey ])
-            };
-
-        return config;
-
-    };
-
-    function getIndexURL(indexValue) {
-
-        if (indexValue) {
-
-            if (indexValue[ 0 ]) {
-                return indexValue[ 0 ].path;
-            } else if (indexValue[ 1 ]) {
-                return indexValue[ 1 ].path;
-            } else {
-                return undefined;
-            }
-
-        } else {
-            return undefined;
+            this.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
         }
 
     }
 
-    function jsonRetrievalParallel(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
+    createLocalInput($input) {
+        let self = this;
+
+        $input.on('change', function () {
+
+            if (true === self.isValidLocalFileInput($(this))) {
+                let input;
+                input = $(this).get(0);
+                self.ingestPaths(Array.from(input.files));
+            }
+
+        });
+
+    }
+
+    createDropboxButton($dropboxButton) {
+        let self = this;
+
+        $dropboxButton.on('click', function () {
+            let obj;
+
+            obj =
+                {
+                    success: (dbFiles) => (self.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
+                    cancel: function() { },
+                    linkType: "preview",
+                    multiselect: true,
+                    folderselect: false,
+                };
+
+            Dropbox.choose( obj );
+        });
+    }
+
+    createGoogleDriveButton($button) {
+
+        let self = this,
+            paths;
+
+        $button.on('click', function () {
+
+            google_utils.createDropdownButtonPicker(function (googleDriveResponses) {
+                paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
+                self.ingestPaths(paths);
+            });
+
+        });
+
+    }
+
+    jsonRetrievalParallel(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
         let self = this;
 
         Promise
@@ -220,20 +218,20 @@ var app = (function (app) {
                     configurations.push.apply(configurations, jsonConfigurations);
                     self.fileLoadHander(configurations);
 
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+                    self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
                 } else {
-                    renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+                    self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
                 }
 
             })
             .catch(function (error) {
                 console.log(error);
-                renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+                self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
             });
 
     }
 
-    function jsonRetrievalSerial(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
+    jsonRetrievalSerial(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
 
         let self = this,
             taskSet,
@@ -266,128 +264,18 @@ var app = (function (app) {
             }, Promise.resolve([]))
             .then(ignore => {
 
-                jsonConfigurator.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet);
+                self.jsonConfigurator(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet);
 
             })
             .catch(function (error) {
 
-                jsonConfigurator.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet);
+                self.jsonConfigurator(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet);
 
             });
 
     }
 
-    function jsonConfigurator(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet) {
-        let self = this,
-            failureSet;
-
-        if (jsonConfigurations.length > 0) {
-            let reduction;
-
-            reduction = jsonConfigurations
-                .reduce(function(accumulator, item) {
-
-                    if (true === Array.isArray(item)) {
-                        item.forEach(function (config) {
-                            accumulator.push(config);
-                        })
-                    } else {
-                        accumulator.push(item);
-                    }
-
-                    return accumulator;
-                }, []);
-
-            configurations.push.apply(configurations, reduction);
-            self.fileLoadHander(configurations);
-
-            failureSet = [...taskSet].filter(x => !successSet.has(x));
-            renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
-
-        } else {
-
-            if (configurations.length > 0) {
-                self.fileLoadHander(configurations);
-            }
-
-            failureSet = [...taskSet].filter(x => !successSet.has(x));
-            renderTrackFileSelection.call(self, dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
-        }
-    }
-
-    function getIndexPaths(dataPathNames, indexPathCandidates) {
-        let list,
-            indexPaths,
-            dev_null;
-
-        // add info about presence and requirement (or not) of an index path
-        list = Object
-            .keys(dataPathNames)
-            .map(function (dataPathName) {
-                let indexObject;
-
-                // assess the data files need/requirement for index files
-                indexObject  = app.fileutils.getIndexObjectWithDataName(dataPathName);
-
-                // identify the presence/absence of associated index files
-                for (let p in indexObject) {
-                    if (indexObject.hasOwnProperty(p)) {
-                        indexObject[ p ].missing = (undefined === indexPathCandidates[ p ]);
-                    }
-                }
-
-                return indexObject;
-            })
-            .filter(function (indexObject) {
-
-                // prune the optional and missing index files for data files
-                // that don't require and index file
-                if (1 === Object.keys(indexObject).length) {
-
-                    let obj;
-
-                    obj = indexObject[ Object.keys(indexObject)[ 0 ] ];
-                    if( true === obj.missing &&  true === obj.isOptional) {
-                        return false;
-                    } else if (false === obj.missing && false === obj.isOptional) {
-                        return true;
-                    } else if ( true === obj.missing && false === obj.isOptional) {
-                        return true;
-                    } else /*( false === obj.missing && true === obj.isOptional)*/ {
-                        return true;
-                    }
-
-                } else {
-                    return true;
-                }
-
-            });
-
-        indexPaths = list
-            .reduce(function(accumulator, indexObject) {
-
-                for (let key in indexObject) {
-
-                    if (indexObject.hasOwnProperty(key)) {
-                        let value;
-
-                        value = indexObject[ key ];
-
-                        if (undefined === accumulator[ value.data ]) {
-                            accumulator[ value.data ] = [];
-                        }
-
-                        accumulator[ value.data ].push(((false === value.missing) ? { name: key, path: indexPathCandidates[ key ] } : undefined));
-                    }
-                }
-
-                return accumulator;
-            }, {});
-
-        return indexPaths;
-    }
-
-    function renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonFailureNameSet) {
+    renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonFailureNameSet) {
         let markup;
 
         markup = Object
@@ -421,83 +309,199 @@ var app = (function (app) {
         }
     }
 
-    function dataPathIsMissingIndexPath(dataName, indexPaths) {
-        let status,
-            aa;
+    jsonConfigurator(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonConfigurations, configurations, taskSet, successSet) {
+        let self = this,
+            failureSet;
 
-        if (indexPaths && indexPaths[ dataName ]) {
+        if (jsonConfigurations.length > 0) {
+            let reduction;
 
-            aa = indexPaths[ dataName ][ 0 ];
-            if (1 === indexPaths[ dataName ].length) {
-                status = (undefined === aa);
-            } else /* BAM Track with two naming conventions */ {
-                let bb;
-                bb = indexPaths[ dataName ][ 1 ];
-                if (aa || bb) {
-                    status = false
-                } else {
-                    status = true;
+            reduction = jsonConfigurations
+                .reduce(function(accumulator, item) {
+
+                    if (true === Array.isArray(item)) {
+                        item.forEach(function (config) {
+                            accumulator.push(config);
+                        })
+                    } else {
+                        accumulator.push(item);
+                    }
+
+                    return accumulator;
+                }, []);
+
+            configurations.push.apply(configurations, reduction);
+            self.fileLoadHander(configurations);
+
+            failureSet = [...taskSet].filter(x => !successSet.has(x));
+            self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+
+        } else {
+
+            if (configurations.length > 0) {
+                self.fileLoadHander(configurations);
+            }
+
+            failureSet = [...taskSet].filter(x => !successSet.has(x));
+            self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+        }
+    }
+
+    static isValidLocalFileInput($input) {
+        return ($input.get(0).files && $input.get(0).files.length > 0);
+    }
+
+    static trackConfigurator(dataKey, dataValue, indexPaths) {
+        let config;
+
+        config =
+            {
+                name: dataKey,
+                filename:dataKey,
+
+                format: igv.inferFileFormat(dataKey),
+
+                url: dataValue,
+                indexURL: getIndexURL(indexPaths[ dataKey ])
+            };
+
+        igv.inferTrackTypes(config);
+
+        return config;
+
+    }
+
+    static genomeConfigurator(dataKey, dataValue, indexPaths) {
+
+        let config;
+
+        config =
+            {
+                fastaURL: dataValue,
+                indexURL: getIndexURL(indexPaths[ dataKey ])
+            };
+
+        return config;
+
+    }
+
+}
+
+function getIndexURL(indexValue) {
+
+    if (indexValue) {
+        let list;
+
+        list = indexValue;
+        if (list) {
+            let url;
+            url = list[ 0 ].path || list[ 1 ].path;
+            return url;
+        }
+
+    } else {
+        return undefined;
+    }
+
+}
+
+function getIndexPaths(dataPathNames, indexPathCandidates) {
+    let list,
+        indexPaths,
+        dev_null;
+
+    // add info about presence and requirement (or not) of an index path
+    list = Object
+        .keys(dataPathNames)
+        .map(function (dataPathName) {
+            let indexObject;
+
+            // assess the data files need/requirement for index files
+            indexObject  = getIndexObjectWithDataName(dataPathName);
+
+            // identify the presence/absence of associated index files
+            for (let p in indexObject) {
+                if (indexObject.hasOwnProperty(p)) {
+                    indexObject[ p ].missing = (undefined === indexPathCandidates[ p ]);
                 }
             }
 
-        } else {
-            status = false;
-        }
+            return indexObject;
+        })
+        .filter(function (indexObject) {
 
-        return status;
+            // prune the optional and missing index files for data files
+            // that don't require and index file
+            if (1 === Object.keys(indexObject).length) {
 
-    }
+                let obj;
 
-    function createLocalInput($input) {
-        let self = this;
+                obj = indexObject[ Object.keys(indexObject)[ 0 ] ];
+                if( true === obj.missing &&  true === obj.isOptional) {
+                    return false;
+                } else if (false === obj.missing && false === obj.isOptional) {
+                    return true;
+                } else if ( true === obj.missing && false === obj.isOptional) {
+                    return true;
+                } else /*( false === obj.missing && true === obj.isOptional)*/ {
+                    return true;
+                }
 
-        $input.on('change', function () {
-
-            if (true === self.isValidLocalFileInput($(this))) {
-                let input;
-                input = $(this).get(0);
-                self.ingestPaths(Array.from(input.files));
+            } else {
+                return true;
             }
 
         });
 
+    indexPaths = list
+        .reduce(function(accumulator, indexObject) {
+
+            for (let key in indexObject) {
+
+                if (indexObject.hasOwnProperty(key)) {
+                    let value;
+
+                    value = indexObject[ key ];
+
+                    if (undefined === accumulator[ value.data ]) {
+                        accumulator[ value.data ] = [];
+                    }
+
+                    accumulator[ value.data ].push(((false === value.missing) ? { name: key, path: indexPathCandidates[ key ] } : undefined));
+                }
+            }
+
+            return accumulator;
+        }, {});
+
+    return indexPaths;
+}
+
+function dataPathIsMissingIndexPath(dataName, indexPaths) {
+    let status,
+        aa;
+
+    if (indexPaths && indexPaths[ dataName ]) {
+
+        aa = indexPaths[ dataName ][ 0 ];
+        if (1 === indexPaths[ dataName ].length) {
+            status = (undefined === aa);
+        } else /* BAM Track with two naming conventions */ {
+            let bb;
+            bb = indexPaths[ dataName ][ 1 ];
+            if (aa || bb) {
+                status = false
+            } else {
+                status = true;
+            }
+        }
+
+    } else {
+        status = false;
     }
 
-    function createDropboxButton($dropboxButton) {
-        let self = this;
+    return status;
 
-        $dropboxButton.on('click', function () {
-            let obj;
+}
 
-            obj =
-                {
-                    success: (dbFiles) => (self.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
-                    cancel: function() { },
-                    linkType: "preview",
-                    multiselect: true,
-                    folderselect: false,
-                };
-
-            Dropbox.choose( obj );
-        });
-    }
-
-    function createGoogleDriveButton($button) {
-
-        let self = this,
-            paths;
-
-        $button.on('click', function () {
-
-            app.Google.createDropdownButtonPicker(function (googleDriveResponses) {
-                paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
-                self.ingestPaths(paths);
-            });
-
-        });
-
-    }
-
-    return app;
-
-})(app || {});
+export default MultipleFileLoadController;

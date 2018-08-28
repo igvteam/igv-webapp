@@ -21,12 +21,23 @@
  *
  */
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
+import igv from './igv.esm.js';
 import * as google_utils from './google-utils.js';
-
+import { setURLShortener, sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';
-
+import { genomeDropdownLayout } from './genomeLoadController.js';
 import MultipleFileLoadController from './multipleFileLoadController.js';
+import GenomeLoadController from './genomeLoadController.js';
+import TrackLoadController from './trackLoadController.js';
+import ShareController from './shareController.js';
+import SessionModalController from './sessionModalController.js';
+
+export let trackLoadController;
+let multipleTrackFileLoader;
+let multipleGenomeFileLoader;
+let genomeLoadController;
+let sessionModalController;
+let shareController;
 
 export function initialize($container, config) {
 
@@ -84,7 +95,7 @@ function initializationHelper(browser, $container, options) {
 
     appFooterImageHoverBehavior($('.igv-app-footer').find('a img'));
 
-    createAppBookmarkHandler(app, $('#igv-app-bookmark-button'));
+    createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
     $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
@@ -102,10 +113,10 @@ function initializationHelper(browser, $container, options) {
             $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
             configurationHandler: MultipleFileLoadController.trackConfigurator,
             fileLoadHandler: (configurations) => {
-                igv.browser.loadTrackList( configurations );
+                browser.loadTrackList( configurations );
             }
         };
-    app.multipleTrackFileLoader = new MultipleFileLoadController(browser, mtflConfig);
+    multipleTrackFileLoader = new MultipleFileLoadController(browser, mtflConfig);
 
     $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
     if (undefined === options.googleConfig) {
@@ -127,7 +138,7 @@ function initializationHelper(browser, $container, options) {
             }
         };
 
-    app.multipleGenomeFileLoader = new MultipleFileLoadController(browser, mgflConfig);
+    multipleGenomeFileLoader = new MultipleFileLoadController(browser, mgflConfig);
 
     // Genome Modal Controller
     glConfig =
@@ -135,9 +146,9 @@ function initializationHelper(browser, $container, options) {
             $urlModal: $('#igv-app-genome-from-url-modal'),
             genomes: options.genomes
         };
-    app.genomeLoadController = new app.GenomeLoadController(browser, glConfig);
+    genomeLoadController = new GenomeLoadController(browser, glConfig);
 
-    app.genomeLoadController.getAppLaunchGenomes()
+    genomeLoadController.getAppLaunchGenomes()
 
         .then(function (dictionary) {
 
@@ -152,13 +163,12 @@ function initializationHelper(browser, $container, options) {
                         $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
                     };
 
-                app.genomeDropdownLayout(gdConfig);
+                genomeDropdownLayout(gdConfig);
             }
             else {
                 // TODO -- hide Genomes button
             }
         });
-
 
     // Track load controller configuration
     tlConfig =
@@ -169,7 +179,7 @@ function initializationHelper(browser, $container, options) {
             $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
         };
 
-    app.trackLoadController = new app.TrackLoadController(browser, tlConfig);
+    trackLoadController = new TrackLoadController(browser, tlConfig);
 
     // Session Modal Controller
     /*
@@ -179,7 +189,7 @@ function initializationHelper(browser, $container, options) {
             $dropboxModal: $('#igv-app-session-dropbox-modal'),
             $googleDriveModal: $('#igv-app-session-google-drive-modal')
         };
-    app.sessionModalController = new app.SessionModalController(browser, sessionConfig);
+    sessionModalController = new SessionModalController(browser, sessionConfig);
 
     $('#igv-app-session-file-input').on('change', function (e) {
         let file;
@@ -192,7 +202,7 @@ function initializationHelper(browser, $container, options) {
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
 
     if (options.urlShortener) {
-        app.setURLShortener(options.urlShortener);
+        setURLShortener(options.urlShortener);
     } else {
         $igv_app_tweet_button_container.hide();
     }
@@ -210,7 +220,7 @@ function initializationHelper(browser, $container, options) {
             $qrcode_image: $('#igv-app-qrcode-image')
         };
 
-    app.shareController = new app.ShareController($container, browser, shareConfig);
+    shareController = new ShareController($container, browser, shareConfig);
 
 }
 
@@ -225,13 +235,13 @@ function appFooterImageHoverBehavior ($img) {
 
 }
 
-function createAppBookmarkHandler (app, $bookmark_button) {
+function createAppBookmarkHandler($bookmark_button) {
 
     $bookmark_button.on('click', function (e) {
         let blurb,
             str;
 
-        window.history.pushState({}, "IGV", app.sessionURL());
+        window.history.pushState({}, "IGV", sessionURL());
 
         str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
         blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';

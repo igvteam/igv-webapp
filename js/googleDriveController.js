@@ -26,15 +26,15 @@ import * as google_utils from './google-utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 
-var app = (function (app) {
+class GoogleDriveController {
 
-    app.GoogleDriveController = function (browser, $modal, dataTitle) {
+    constructor(browser, $modal, dataTitle) {
         this.browser = browser;
         this.$modal = $modal;
         this.dataTitle = dataTitle;
-    };
+    }
 
-    app.GoogleDriveController.prototype.configure = function (okHandler) {
+    configurefunction (okHandler) {
 
         let self = this,
             widgetConfig;
@@ -78,23 +78,25 @@ var app = (function (app) {
         configureModal(this.fileLoadWidget, this.$modal, okHandler);
 
 
-    };
-
-    function filePickerHandler(fileLoadManager, $modal, googlePickerResponse, $filenameContainer, isIndexFile) {
-
-        // update file name label
-        $filenameContainer.text(googlePickerResponse.name);
-        $filenameContainer.show();
-
-        if (false === isIndexFile) {
-            fileLoadManager.googlePickerFilename = googlePickerResponse.name;
-        }
-
-        fileLoadManager.inputHandler(googlePickerResponse.path, isIndexFile);
-
-        $modal.modal('show');
-
     }
 
-    return app;
-})(app || {});
+}
+
+
+function filePickerHandler(fileLoadManager, $modal, googlePickerResponse, $filenameContainer, isIndexFile) {
+
+    // update file name label
+    $filenameContainer.text(googlePickerResponse.name);
+    $filenameContainer.show();
+
+    if (false === isIndexFile) {
+        fileLoadManager.googlePickerFilename = googlePickerResponse.name;
+    }
+
+    fileLoadManager.inputHandler(googlePickerResponse.path, isIndexFile);
+
+    $modal.modal('show');
+
+}
+
+export default GoogleDriveController;

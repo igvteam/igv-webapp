@@ -66,7 +66,7 @@ export function createPicker(fileLoadManager, $modal, $filenameContainer, isInde
 
                 picker.setVisible(true);
             } else {
-                igv.presentAlert("Sign into Google before using picker");
+                igv.browser.presentAlert("Sign into Google before using picker");
             }
         })
         .catch(function (error) {
@@ -170,7 +170,7 @@ export function createDropdownButtonPicker(filePickerHandler) {
 
                 picker.setVisible(true);
             } else {
-                igv.presentAlert("Sign into Google before using picker");
+                igv.browser.presentAlert("Sign into Google before using picker");
             }
         })
         .catch(function (error) {

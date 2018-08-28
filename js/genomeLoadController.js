@@ -24,28 +24,26 @@
  * THE SOFTWARE.
  */
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
-
+import igv from './igv.esm.js';
 import { loadGenome, isJSON, configureModal } from './utils.js';
-
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 
-var app = (function (app) {
+class GenomeLoadController {
 
-    app.GenomeLoadController = function (browser, config) {
+    constructor (browser, { $urlModal, genomes }) {
 
         let self = this,
             urlConfig,
             doOK;
 
-        this.config = config;
+        this.genomes = genomes;
 
         // URL
         urlConfig =
             {
                 dataTitle: 'Genome',
-                $widgetParent: config.$urlModal.find('.modal-body'),
+                $widgetParent: $urlModal.find('.modal-body'),
                 mode: 'url'
             };
 
@@ -55,23 +53,23 @@ var app = (function (app) {
             okHandler(self, fileLoadManager);
         };
 
-        configureModal(this.urlWidget, config.$urlModal, doOK);
+        configureModal(this.urlWidget, $urlModal, doOK);
 
-    };
+    }
 
-    app.GenomeLoadController.prototype.getAppLaunchGenomes = function () {
+    getAppLaunchGenomes () {
 
         let path;
 
-        if(!this.config.genomes) {
+        if(!this.genomes) {
             return Promise.resolve(undefined);
         }
-        if(Array.isArray(this.config.genomes)) {
-            return Promise.resolve(buildDictionary(this.config.genomes));
+        if(Array.isArray(this.genomes)) {
+            return Promise.resolve(buildDictionary(this.genomes));
         }
 
         else {
-            path = this.config.genomes;
+            path = this.genomes;
 
             return igv.xhr
 
@@ -98,9 +96,9 @@ var app = (function (app) {
             return dictionary;
         }
 
-    };
+    }
 
-    app.GenomeLoadController.prototype.genomeConfiguration = function (fileLoadManager) {
+    genomeConfiguration (fileLoadManager) {
 
         let self = this,
             obj;
@@ -123,87 +121,88 @@ var app = (function (app) {
             return Promise.resolve(obj);
         }
 
-    };
+    }
 
-    function okHandler(genomeLoadController, fileLoadManager) {
+}
 
-        if (isValidGenomeConfiguration(fileLoadManager)) {
+export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
 
-            genomeLoadController
-                .genomeConfiguration(fileLoadManager)
-                .then(function (obj) {
-                    let genome;
-                    genome = Object.values(obj).pop();
-                    loadGenome(genome);
-                });
+    var $divider,
+        $button;
 
-        }
+    // discard all buttons preceeding the divider div
+    $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
+    $divider.prevAll().remove();
+
+    for (let key in genomeDictionary) {
+
+        if (genomeDictionary.hasOwnProperty(key)) {
+
+            $button = createButton(key);
+
+            // prepend buttons relative to divider
+            $button.insertBefore( $divider );
+
+            $button.on('click', function () {
+                var key;
+
+                key = $(this).text();
+
+                if (key !== browser.genome.id) {
+                    loadGenome(genomeDictionary[ key ]);
+                }
+
+            });
+
+        } // if (...)
+
+    } // for (...)
+
+    function createButton (title) {
+        var $button;
+
+        $button = $('<button>', { class:'dropdown-item', type:'button' });
+        $button.text(title);
+
+        return $button;
+    }
+
+}
+
+function okHandler(genomeLoadController, fileLoadManager) {
+
+    if (isValidGenomeConfiguration(fileLoadManager)) {
+
+        genomeLoadController
+            .genomeConfiguration(fileLoadManager)
+            .then(function (obj) {
+                let genome;
+                genome = Object.values(obj).pop();
+                loadGenome(genome);
+            });
 
     }
 
-    function isValidGenomeConfiguration(fileLoadManager) {
+}
 
-        let success = true;
+function isValidGenomeConfiguration(fileLoadManager) {
 
-        if (undefined === fileLoadManager.dictionary) {
+    let success = true;
 
-            success = false;
-        } else if (undefined === fileLoadManager.dictionary.data) {
+    if (undefined === fileLoadManager.dictionary) {
 
-            success = false;
-        } else if (undefined === fileLoadManager.dictionary.data && undefined === fileLoadManager.dictionary.index) {
+        success = false;
+    } else if (undefined === fileLoadManager.dictionary.data) {
 
-            success = false;
-        }
+        success = false;
+    } else if (undefined === fileLoadManager.dictionary.data && undefined === fileLoadManager.dictionary.index) {
 
-        return success;
-
+        success = false;
     }
 
-    app.genomeDropdownLayout = function (config) {
+    return success;
 
-        var $divider,
-            $button;
+}
 
-        // discard all buttons preceeding the divider div
-        $divider = config.$dropdown_menu.find('#igv-app-genome-dropdown-divider');
-        $divider.prevAll().remove();
+export default GenomeLoadController;
 
-        for (let key in config.genomeDictionary) {
-
-            if (config.genomeDictionary.hasOwnProperty(key)) {
-
-                $button = createButton(key);
-
-                // prepend buttons relative to divider
-                $button.insertBefore( $divider );
-
-                $button.on('click', function () {
-                    var key;
-
-                    key = $(this).text();
-
-                    if (key !== config.browser.genome.id) {
-                        loadGenome(config.genomeDictionary[ key ]);
-                    }
-
-                });
-
-            } // if (...)
-
-        } // for (...)
-
-        function createButton (title) {
-            var $button;
-
-            $button = $('<button>', { class:'dropdown-item', type:'button' });
-            $button.text(title);
-
-            return $button;
-        }
-
-    };
-
-    return app;
-
-})(app || {});

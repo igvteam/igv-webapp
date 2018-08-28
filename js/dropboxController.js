@@ -26,14 +26,15 @@ import { configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 
-var app = (function (app) {
-    app.DropboxController = function (browser, $modal, dataTitle) {
+class DropboxController {
+
+    constructor(browser, $modal, dataTitle) {
         this.browser = browser;
         this.$modal = $modal;
         this.dataTitle = dataTitle;
-    };
+    }
 
-    app.DropboxController.prototype.configure = function (config) {
+    configure(config) {
 
         let self = this,
             widgetConfig;
@@ -76,13 +77,14 @@ var app = (function (app) {
 
         configureModal(this.fileLoadWidget, this.$modal, config.okHandler);
 
-    };
+    }
+}
 
-    function dbButtonConfigurator(fileLoadManager, $trackNameLabel, isIndexFile) {
-        let obj;
+function dbButtonConfigurator(fileLoadManager, $trackNameLabel, isIndexFile) {
+    let obj;
 
-        obj =
-            {
+    obj =
+        {
 
             success: function(dbFiles) {
                 // Single file selection only
@@ -98,8 +100,7 @@ var app = (function (app) {
             folderselect: false,
         };
 
-        return obj;
-    }
+    return obj;
+}
 
-    return app;
-})(app || {});
+export default DropboxController;

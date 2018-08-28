@@ -21,7 +21,8 @@
  *
  */
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
+import igv from './igv.esm.js';
+import { trackLoadController } from './app.js';
 
 export function isValidIndexExtension(path) {
     let set;
@@ -136,10 +137,10 @@ export function loadGenome(genome) {
     igv.browser
         .loadGenome(genome)
         .then(function (genome) {
-            app.trackLoadController.updateGeneralizedAnnotations(genome.id);
+            trackLoadController.updateGeneralizedAnnotations(genome.id);
         })
         .catch(function (error) {
-            igv.presentAlert(error);
+            igv.browser.presentAlert(error);
         });
 
 }

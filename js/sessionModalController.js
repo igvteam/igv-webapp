@@ -26,9 +26,11 @@
 
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
+import DropboxController from './dropboxController.js';
 
-var app = (function (app) {
-    app.SessionModalController = function (browser, config) {
+class SessionModalController {
+
+    constructor(browser, config) {
 
         let self = this,
             loaderConfig,
@@ -88,7 +90,7 @@ var app = (function (app) {
         });
 
         // Dropbox
-        this.dropboxController = new app.DropboxController(browser, config.$dropboxModal);
+        this.dropboxController = new DropboxController(browser, config.$dropboxModal);
         this.dropboxController.configure(function (loader, $modal) {
             let session;
 
@@ -103,9 +105,9 @@ var app = (function (app) {
 
         });
 
-    };
+    }
 
-    app.SessionModalController.prototype.okHandler = function () {
+    okHandler() {
 
         if (this.loader.fileLoadManager.dictionary.data) {
             this.browser.loadSession(this.loader.fileLoadManager.dictionary.data);
@@ -115,7 +117,8 @@ var app = (function (app) {
             this.loader.presentErrorMessage('Error: No data file');
         }
 
-    };
+    }
 
-    return app;
-})(app || {});
+}
+
+export default SessionModalController;

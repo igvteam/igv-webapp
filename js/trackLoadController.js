@@ -21,39 +21,45 @@
  *
  */
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
-
+import igv from './igv.esm.js';
+import { configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
+import EncodeDataSource from './encodeDataSource.js';
+import ModalTable from './modalTable.js';
 
-import { configureModal } from './utils.js';
+const gtex_lut =
+    {
+        hg19: 'gtex_v7',
+        // hg38: 'gtex_v78'
+    };
 
-var app = (function (app) {
+class TrackLoadController {
 
-    app.TrackLoadController = function (browser, config) {
+    constructor (browser, { $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal }) {
 
-        var urlConfig;
+        let urlConfig;
 
         this.browser = browser;
-        this.config = config;
-        this.$modal = config.$genericTrackSelectModal;
-        this.$dropdownMenu = config.$dropdownMenu;
+        this.$modal = $genericTrackSelectModal;
+        this.$dropdownMenu = $dropdownMenu;
+        this.$encodeModal = $encodeModal;
 
         // URL
         urlConfig =
             {
-                $widgetParent: config.$urlModal.find('.modal-body'),
+                $widgetParent: $urlModal.find('.modal-body'),
                 mode: 'url',
             };
 
         this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
-        configureModal(this.urlWidget, config.$urlModal);
+        configureModal(this.urlWidget, $urlModal);
 
         this.updateGeneralizedAnnotations(browser.genome.id);
 
-    };
+    }
 
-    app.TrackLoadController.prototype.createEncodeTable = function (genomeID) {
+    createEncodeTable (genomeID) {
 
         var self = this,
             columnFormat,
@@ -77,36 +83,29 @@ var app = (function (app) {
 
             ];
 
-        encodeDatasource = new app.EncodeDataSource(columnFormat);
+        encodeDatasource = new EncodeDataSource(columnFormat);
 
         encodeTableConfig =
             {
-                $modal:this.config.$encodeModal,
-                $modalBody:this.config.$encodeModal.find('.modal-body'),
-                $modalTopCloseButton: this.config.$encodeModal.find('.modal-header button:nth-child(1)'),
-                $modalBottomCloseButton: this.config.$encodeModal.find('.modal-footer button:nth-child(1)'),
-                $modalGoButton: this.config.$encodeModal.find('.modal-footer button:nth-child(2)'),
+                $modal:this.$encodeModal,
+                $modalBody:this.$encodeModal.find('.modal-body'),
+                $modalTopCloseButton: this.$encodeModal.find('.modal-header button:nth-child(1)'),
+                $modalBottomCloseButton: this.$encodeModal.find('.modal-footer button:nth-child(1)'),
+                $modalGoButton: this.$encodeModal.find('.modal-footer button:nth-child(2)'),
                 datasource: encodeDatasource,
                 browserHandler: (trackConfigurations) =>  {
                     self.browser.loadTrackList(trackConfigurations);
                 }
             };
 
-        this.encodeTable = new app.ModalTable(encodeTableConfig);
+        this.encodeTable = new ModalTable(encodeTableConfig);
 
         return this.encodeTable.promisifiedLoadData(genomeID);
 
 
     };
 
-    let gtex_lut;
-    gtex_lut =
-        {
-            hg19: 'gtex_v7',
-            // hg38: 'gtex_v78'
-        };
-
-    app.TrackLoadController.prototype.updateGeneralizedAnnotations = function (genomeID) {
+    updateGeneralizedAnnotations (genomeID) {
 
         const id_prefix = 'genome_specific_';
 
@@ -142,7 +141,7 @@ var app = (function (app) {
                     .map((path, i) => ({ name: filenames[ i ], promise: igv.xhr.loadJson(( root + '/' + path)) }))
                     .reverse();
 
-                if (app.ModalTable.getAssembly(genomeID)) {
+                if (ModalTable.getAssembly(genomeID)) {
                     encodePromiseTask = { name: 'ENCODE', promise: self.createEncodeTable(genomeID) };
                     promiseTasks.unshift(encodePromiseTask);
                 }
@@ -227,76 +226,63 @@ var app = (function (app) {
 
     };
 
-    function trackConfigurationFromGTexTissueInfo(tissueInfo) {
+}
 
-        return {
-            type: "eqtl",
-            sourceType: "gtex-ws",
-            url: "https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocation",
-            tissueName: tissueInfo.tissueSiteDetailId,
-            name: (tissueInfo.tissueSiteDetailId.split('_').join(' ')),
-            visibilityWindow: 1000000
+function configureModalSelectList($modal, configurations, promiseTaskName) {
+
+    let $select,
+        $option;
+
+    $modal.find('select').remove();
+
+    $select = $('<select>', { class:'form-control' } );
+    $modal.find('.form-group').append($select);
+
+    $option = $('<option>', { text:'Choose one of the following...' });
+    $select.append($option);
+
+    $option.attr('selected','selected');
+    $option.val(undefined);
+
+    configurations
+        .reduce(function($accumulator, config) {
+            let trackConfiguration;
+
+            // hack to support GTex
+            trackConfiguration = ('GTEx' === promiseTaskName) ? igv.GtexUtils.trackConfiguration(config) : config;
+
+            $option = $('<option>', { value:trackConfiguration.name, text:trackConfiguration.name });
+            $select.append($option);
+
+            $option.data('track', trackConfiguration);
+
+            $accumulator.append($option);
+
+            return $accumulator;
+        }, $select);
+
+    $select.on('change', function (e) {
+        let $option,
+            trackConfiguration,
+            value;
+
+        $option = $(this).find('option:selected');
+        value = $option.val();
+
+        if ('' === value) {
+            // do nothing
+        } else {
+            trackConfiguration = $option.data('track');
+            $option.removeAttr("selected");
+
+            igv.browser.loadTrack( trackConfiguration );
+
         }
 
-    }
+        $modal.modal('hide');
 
-    function configureModalSelectList($modal, configurations, promiseTaskName) {
+    });
 
-        let $select,
-            $option;
+}
 
-        $modal.find('select').remove();
-
-        $select = $('<select>', { class:'form-control' } );
-        $modal.find('.form-group').append($select);
-
-        $option = $('<option>', { text:'Choose one of the following...' });
-        $select.append($option);
-
-        $option.attr('selected','selected');
-        $option.val(undefined);
-
-        configurations
-            .reduce(function($accumulator, config) {
-                let trackConfiguration;
-
-                // hack to support GTex
-                trackConfiguration = ('GTEx' === promiseTaskName) ? igv.GtexUtils.trackConfiguration(config) : config;
-
-                $option = $('<option>', { value:trackConfiguration.name, text:trackConfiguration.name });
-                $select.append($option);
-
-                $option.data('track', trackConfiguration);
-
-                $accumulator.append($option);
-
-                return $accumulator;
-            }, $select);
-
-        $select.on('change', function (e) {
-            let $option,
-                trackConfiguration,
-                value;
-
-            $option = $(this).find('option:selected');
-            value = $option.val();
-
-            if ('' === value) {
-                // do nothing
-            } else {
-                trackConfiguration = $option.data('track');
-                $option.removeAttr("selected");
-
-                igv.browser.loadTrack( trackConfiguration );
-
-            }
-
-            $modal.modal('hide');
-
-        });
-
-    }
-
-    return app;
-
-})(app || {});
+export default TrackLoadController;

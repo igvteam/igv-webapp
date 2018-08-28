@@ -24,18 +24,18 @@
  * THE SOFTWARE.
  */
 
+import igv from './igv.esm.js';
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
+class ModalTable {
 
-var app = (function (app) {
-
-    app.ModalTable = function (config) {
+    constructor (config) {
 
         this.config = config;
         this.datasource = config.datasource;
         this.browserHandler = config.browserHandler;
 
         teardownModalDOM(config);
+
         this.$table = $('<table cellpadding="0" cellspacing="0" border="0" class="display"></table>');
         config.$modalBody.append(this.$table);
 
@@ -48,68 +48,29 @@ var app = (function (app) {
 
         this.$faSpinner = igv.createIcon("spinner");
         this.$spinner.append(this.$faSpinner);
-    };
-
-    function teardownModalDOM(configuration) {
-
-        var list;
-
-        list =
-            [
-                configuration.$modal,
-                configuration.$modalTopCloseButton,
-                configuration.$modalBottomCloseButton,
-                configuration.$modalGoButton
-            ];
-
-        list.forEach( function ($e) {
-            $e.unbind();
-        });
-
-        configuration.$modalBody.empty();
     }
 
-    function getSelectedTableRowsData($rows) {
-
-        var self = this,
-            dt,
-            result;
-
-        result = [];
-        if ($rows.length > 0) {
-
-            $rows.removeClass('selected');
-
-            dt = self.$table.DataTable();
-            $rows.each(function() {
-                result.push( self.datasource.dataAtRowIndex(self.datasource.data, dt.row(this).index()) );
-            });
-        }
-
-        return result.length > 0 ? result : undefined;
-    }
-
-    app.ModalTable.prototype.startSpinner = function () {
+    startSpinner() {
         this.$faSpinner.addClass("fa5-spin");
         this.$spinner.show();
-    };
+    }
 
-    app.ModalTable.prototype.stopSpinner = function () {
+    stopSpinner() {
         this.$spinner.hide();
         this.$faSpinner.addClass("fa5-spin");
-    };
+    }
 
-    app.ModalTable.prototype.didFailToRetrieveData = function () {
+    didFailToRetrieveData() {
         this.stopSpinner();
         this.buildTable(false);
-    };
+    }
 
-    app.ModalTable.prototype.promisifiedLoadData = function (genomeId) {
+    promisifiedLoadData(genomeId) {
 
         var self = this,
             assembly;
 
-        assembly = app.ModalTable.getAssembly( genomeId);
+        assembly = ModalTable.getAssembly( genomeId);
 
         if (assembly) {
 
@@ -125,16 +86,16 @@ var app = (function (app) {
             return Promise.resolve(undefined);
         }
 
-    };
+    }
 
-    app.ModalTable.prototype.buildTableWithData = function (data) {
+    buildTableWithData(data) {
         this.datasource.data = data;
 
         this.startSpinner();
         this.buildTable(true);
-    };
+    }
 
-    app.ModalTable.prototype.buildTable = function (success) {
+    buildTable(success) {
 
         var self = this;
 
@@ -173,9 +134,9 @@ var app = (function (app) {
             $('tr.selected').removeClass('selected');
         });
 
-    };
+    }
 
-    app.ModalTable.prototype.tableWithDataAndColumns = function (tableData, tableColumns) {
+    tableWithDataAndColumns(tableData, tableColumns) {
 
         var config;
 
@@ -198,7 +159,7 @@ var app = (function (app) {
                         1000
                     ],
                 pageLength: 1000,
-                
+
                 scrollX: true,
                 scrollY: '400px',
                 scroller: true,
@@ -219,9 +180,9 @@ var app = (function (app) {
 
         });
 
-    };
+    }
 
-    app.ModalTable.getAssembly = function (genomeID) {
+    static getAssembly(genomeID) {
         let lut,
             assembly;
 
@@ -236,8 +197,47 @@ var app = (function (app) {
         assembly = lut[ genomeID ];
 
         return assembly;
-    };
+    }
 
-    return app;
+}
 
-})(app || {});
+function teardownModalDOM(configuration) {
+
+    var list;
+
+    list =
+        [
+            configuration.$modal,
+            configuration.$modalTopCloseButton,
+            configuration.$modalBottomCloseButton,
+            configuration.$modalGoButton
+        ];
+
+    list.forEach( function ($e) {
+        $e.unbind();
+    });
+
+    configuration.$modalBody.empty();
+}
+
+function getSelectedTableRowsData($rows) {
+
+    var self = this,
+        dt,
+        result;
+
+    result = [];
+    if ($rows.length > 0) {
+
+        $rows.removeClass('selected');
+
+        dt = self.$table.DataTable();
+        $rows.each(function() {
+            result.push( self.datasource.dataAtRowIndex(self.datasource.data, dt.row(this).index()) );
+        });
+    }
+
+    return result.length > 0 ? result : undefined;
+}
+
+export default ModalTable;

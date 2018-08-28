@@ -23,9 +23,9 @@
 
 import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
-var app = (function (app) {
+class ShareController {
 
-    app.ShareController = function ($appContainer, browser, shareConfig) {
+    constructor($appContainer, browser, shareConfig) {
 
         var qrcode;
 
@@ -131,38 +131,35 @@ var app = (function (app) {
             shareConfig.$qrcode_image.toggle();
         });
 
-    };
+    }
+}
 
-    function getEmbeddableSnippet($appContainer, embedTarget, session) {
+function getEmbeddableSnippet($appContainer, embedTarget, session) {
 
-        const embedUrl = (embedTarget || getEmbedTarget()) + "?sessionURL=blob:" + session;
-        const height = $appContainer.height() + 50;
-        return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
+    const embedUrl = (embedTarget || getEmbedTarget()) + "?sessionURL=blob:" + session;
+    const height = $appContainer.height() + 50;
+    return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 
+}
+
+/**
+ * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
+ */
+function getEmbedTarget() {
+
+    var href,
+        idx;
+
+    href = window.location.href.slice();
+
+    idx = href.indexOf("?");
+    if (idx > 0) {
+        href = href.substring(0, idx);
     }
 
+    idx = href.lastIndexOf("/");
+    return href.substring(0, idx) + "/embed.html"
 
-    /**
-     * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
-     */
-    function getEmbedTarget() {
+}
 
-        var href,
-            idx;
-
-        href = window.location.href.slice();
-
-        idx = href.indexOf("?");
-        if (idx > 0) {
-            href = href.substring(0, idx);
-        }
-
-        idx = href.lastIndexOf("/");
-        return href.substring(0, idx) + "/embed.html"
-
-    }
-
-    return app;
-
-})
-(app || {});
+export default ShareController;

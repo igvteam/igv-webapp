@@ -10,3 +10,6 @@
 /.idea/misc.xml
 /js/igv.js
 /.idea/
+/js/igv.esm.js
+/js/igv.esm.min.js
+/js/igv.esm.min.js.map

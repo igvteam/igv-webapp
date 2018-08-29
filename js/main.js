@@ -39,7 +39,7 @@ let genomeLoadController;
 let sessionModalController;
 let shareController;
 
-export function initialize($container, config) {
+export function main($container, config) {
 
     if (config.googleConfig) {
 

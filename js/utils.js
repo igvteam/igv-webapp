@@ -22,7 +22,7 @@
  */
 
 import igv from './igv.esm.js';
-import { trackLoadController } from './app.js';
+import { trackLoadController } from './main.js';
 
 export function isValidIndexExtension(path) {
     let set;

@@ -22,7 +22,7 @@
  */
 
 import { configureModal } from './utils.js';
-import * as google_utils from './google-utils.js';
+import * as app_google from './app-google.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 
@@ -67,7 +67,7 @@ class GoogleDriveController {
 
                 $(this).on('click', function (e) {
                     self.$modal.modal('hide');
-                    google_utils.createPicker(self.fileLoadWidget.fileLoadManager, self.$modal, $filenameContainer, (1 === index), filePickerHandler);
+                    app_google.createPicker(self.fileLoadWidget.fileLoadManager, self.$modal, $filenameContainer, (1 === index), filePickerHandler);
                 });
             });
 

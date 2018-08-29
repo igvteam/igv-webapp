@@ -22,7 +22,7 @@
  */
 
 import igv from './igv.esm.js';
-import * as google_utils from './google-utils.js';
+import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';
 import { genomeDropdownLayout } from './genomeLoadController.js';
@@ -47,7 +47,7 @@ export function main($container, config) {
             {
                 callback: function () {
 
-                    google_utils
+                    app_google
 
                         .init(config.googleConfig.clientId)
 
@@ -59,7 +59,7 @@ export function main($container, config) {
                         })
 
                         .then(function (browser) {
-                            google_utils.postInit();
+                            app_google.postInit();
                             initializationHelper(browser, $container, config);
                         });
                 },

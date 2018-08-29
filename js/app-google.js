@@ -25,7 +25,61 @@ import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
 let picker;
 
-export function createPicker(fileLoadManager, $modal, $filenameContainer, isIndexFile, filePickerHandler) {
+function init(clientId) {
+
+    let scope,
+        config;
+
+    scope =
+        [
+            'https://www.googleapis.com/auth/cloud-platform',
+            'https://www.googleapis.com/auth/genomics',
+            'https://www.googleapis.com/auth/devstorage.read_only',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/drive.readonly'
+        ];
+
+    config =
+        {
+            'clientId': clientId,
+            'scope': scope.join(' ')
+        };
+
+    return gapi.client.init(config)
+
+
+}
+
+function postInit() {
+    let callback,
+        onerror,
+        config;
+
+    gapi.auth2
+        .getAuthInstance()
+        .isSignedIn
+        .listen(updateSignInStatus);
+
+    callback = function () {
+        console.log('Google Picker library loaded successfully');
+    };
+
+    onerror = function () {
+        console.log('Error loading Google Picker library');
+        alert('Error loading Google Picker library');
+    };
+
+    config =
+        {
+            callback: callback,
+            onerror: onerror
+        };
+
+    gapi.load('picker', config);
+
+}
+
+function createPicker(fileLoadManager, $modal, $filenameContainer, isIndexFile, filePickerHandler) {
 
     getAccessToken()
         .then(function (accessToken) {
@@ -76,88 +130,7 @@ export function createPicker(fileLoadManager, $modal, $filenameContainer, isInde
 
 }
 
-export function init(clientId) {
-
-    let scope,
-        config;
-
-    scope =
-        [
-            'https://www.googleapis.com/auth/cloud-platform',
-            'https://www.googleapis.com/auth/genomics',
-            'https://www.googleapis.com/auth/devstorage.read_only',
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/drive.readonly'
-        ];
-
-    config =
-        {
-            'clientId': clientId,
-            'scope': scope.join(' ')
-        };
-
-    return gapi.client.init(config)
-
-
-}
-
-function depricated_init($googleAccountSwitchButtons, clientId) {
-
-    this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
-
-    let scope,
-        config;
-
-    scope =
-        [
-            'https://www.googleapis.com/auth/cloud-platform',
-            'https://www.googleapis.com/auth/genomics',
-            'https://www.googleapis.com/auth/devstorage.read_only',
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/drive.readonly'
-        ];
-
-    config =
-        {
-            'clientId': clientId,
-            'scope': scope.join(' ')
-        };
-
-    return gapi.client.init(config)
-
-
-}
-
-export function postInit() {
-    let callback,
-        onerror,
-        config;
-
-    gapi.auth2
-        .getAuthInstance()
-        .isSignedIn
-        .listen(updateSignInStatus);
-
-    callback = function () {
-        console.log('Google Picker library loaded successfully');
-    };
-
-    onerror = function () {
-        console.log('Error loading Google Picker library');
-        alert('Error loading Google Picker library');
-    };
-
-    config =
-        {
-            callback: callback,
-            onerror: onerror
-        };
-
-    gapi.load('picker', config);
-
-}
-
-export function createDropdownButtonPicker(filePickerHandler) {
+function createDropdownButtonPicker(filePickerHandler) {
 
     getAccessToken()
         .then(function (accessToken) {
@@ -274,6 +247,33 @@ function updateSignInStatus(signInStatus) {
     // do nothing
 }
 
+function depricated_init($googleAccountSwitchButtons, clientId) {
+
+    this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
+
+    let scope,
+        config;
+
+    scope =
+        [
+            'https://www.googleapis.com/auth/cloud-platform',
+            'https://www.googleapis.com/auth/genomics',
+            'https://www.googleapis.com/auth/devstorage.read_only',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/drive.readonly'
+        ];
+
+    config =
+        {
+            'clientId': clientId,
+            'scope': scope.join(' ')
+        };
+
+    return gapi.client.init(config)
+
+
+}
+
 function depricate_updateSignInStatus(signInStatus) {
 
     if (signInStatus) {
@@ -292,3 +292,5 @@ function depricate_updateSignInStatus(signInStatus) {
     }
 
 }
+
+export { init, postInit, createPicker, createDropdownButtonPicker };

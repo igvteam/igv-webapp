@@ -22,7 +22,6 @@
  */
 
 import { configureModal } from './utils.js';
-
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 

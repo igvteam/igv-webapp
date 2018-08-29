@@ -21,10 +21,8 @@
  *
  */
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
-
-import * as google_utils from './google-utils.js';
-
+import igv from './igv.esm.js';
+import * as app_google from './app-google.js';
 import { getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 
 class MultipleFileLoadController {
@@ -182,7 +180,7 @@ class MultipleFileLoadController {
 
         $button.on('click', function () {
 
-            google_utils.createDropdownButtonPicker(function (googleDriveResponses) {
+            app_google.createDropdownButtonPicker(function (googleDriveResponses) {
                 paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
                 self.ingestPaths(paths);
             });

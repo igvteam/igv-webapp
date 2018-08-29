@@ -76,10 +76,34 @@ export function createPicker(fileLoadManager, $modal, $filenameContainer, isInde
 
 }
 
-export function init($googleAccountSwitchButtons, clientId) {
+export function init(clientId) {
+
+    let scope,
+        config;
+
+    scope =
+        [
+            'https://www.googleapis.com/auth/cloud-platform',
+            'https://www.googleapis.com/auth/genomics',
+            'https://www.googleapis.com/auth/devstorage.read_only',
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/drive.readonly'
+        ];
+
+    config =
+        {
+            'clientId': clientId,
+            'scope': scope.join(' ')
+        };
+
+    return gapi.client.init(config)
+
+
+}
+
+function depricated_init($googleAccountSwitchButtons, clientId) {
 
     this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
-
 
     let scope,
         config;
@@ -156,7 +180,7 @@ export function createDropdownButtonPicker(filePickerHandler) {
 
                 picker = new google.picker
                     .PickerBuilder()
-                    .setOAuthToken(igv.oauth.googleConfig.access_token)
+                    .setOAuthToken(igv.oauth.google.access_token)
                     .addView(view)
                     .addView(teamView)
                     .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
@@ -247,6 +271,10 @@ function pickerCallback(data) {
 }
 
 function updateSignInStatus(signInStatus) {
+    // do nothing
+}
+
+function depricate_updateSignInStatus(signInStatus) {
 
     if (signInStatus) {
         let username,
@@ -258,10 +286,6 @@ function updateSignInStatus(signInStatus) {
             .get()
             .getBasicProfile()
             .getName();
-
-        // $e = $("#igv-app-google-account-switch-button");
-        // $e.text("Logged in as: " + username);
-        // $e.show();
 
         this.$googleAccountSwitchButtons.find('span').text(username);
         this.$googleAccountSwitchButtons.show();

@@ -43,15 +43,13 @@ export function main($container, config) {
 
     if (config.googleConfig) {
 
-        let gapiConfig;
-
-        gapiConfig =
+        let gapiConfig =
             {
                 callback: function () {
-                    let promise;
 
                     google_utils
-                        .init( $('.igv-app-google-account-switch-button'), config.googleConfig.clientId )
+
+                        .init(config.googleConfig.clientId)
 
                         .then(function () {
                             if(config.googleConfig.apiKey) {

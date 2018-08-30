@@ -60,11 +60,11 @@ let postInit = () => {
         .isSignedIn
         .listen(updateSignInStatus);
 
-    callback = function () {
+    callback = () => {
         console.log('Google Picker library loaded successfully');
     };
 
-    onerror = function () {
+    onerror = () => {
         console.log('Error loading Google Picker library');
         alert('Error loading Google Picker library');
     };
@@ -82,11 +82,11 @@ let postInit = () => {
 let createPicker = (fileLoadManager, $modal, $filenameContainer, isIndexFile, filePickerHandler) => {
 
     getAccessToken()
-        .then(function (accessToken) {
+        .then((accessToken) => {
             updateSignInStatus(true);
             return Promise.resolve(accessToken);
         })
-        .then(function (accessToken) {
+        .then((accessToken) => {
 
             let view,
                 teamView;

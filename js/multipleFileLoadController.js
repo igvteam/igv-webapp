@@ -144,7 +144,7 @@ class MultipleFileLoadController {
 
         $input.on('change', function () {
 
-            if (true === self.isValidLocalFileInput($(this))) {
+            if (true === MultipleFileLoadController.isValidLocalFileInput($(this))) {
                 let input;
                 input = $(this).get(0);
                 self.ingestPaths(Array.from(input.files));
@@ -388,13 +388,13 @@ class MultipleFileLoadController {
 function getIndexURL(indexValue) {
 
     if (indexValue) {
-        let list;
 
-        list = indexValue;
-        if (list) {
-            let url;
-            url = list[ 0 ].path || list[ 1 ].path;
-            return url;
+        if        (indexValue[ 0 ]) {
+            return indexValue[ 0 ].path;
+        } else if (indexValue[ 1 ]) {
+            return indexValue[ 1 ].path;
+        } else {
+            return undefined;
         }
 
     } else {

@@ -178,13 +178,13 @@ var app = (function (app) {
     function getIndexURL(indexValue) {
 
         if (indexValue) {
-            let list;
 
-            list = indexValue;
-            if (list) {
-                let url;
-                url = list[ 0 ].path || list[ 1 ].path;
-                return url;
+            if (indexValue[ 0 ]) {
+                return indexValue[ 0 ].path;
+            } else if (indexValue[ 1 ]) {
+                return indexValue[ 1 ].path;
+            } else {
+                return undefined;
             }
 
         } else {

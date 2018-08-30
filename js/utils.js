@@ -24,13 +24,13 @@
 import igv from './igv.esm.js';
 import { trackLoadController } from './main.js';
 
-export function isValidIndexExtension(path) {
+let isValidIndexExtension = (path) => {
     let set;
     set = new Set(['fai', 'bai', 'tbi', 'idx']);
     return set.has(getExtension(path));
-}
+};
 
-export function getIndexObjectWithDataName(name) {
+let getIndexObjectWithDataName = (name) => {
     let extension,
         dataSuffix,
         lookup,
@@ -72,31 +72,31 @@ export function getIndexObjectWithDataName(name) {
     }
 
     return indexObject;
-}
+};
 
-export function isKnownFileExtension(extension) {
+let isKnownFileExtension = (extension) => {
     let fasta,
         union;
 
     fasta = new Set(['fa', 'fasta']);
     union = new Set([...(igv.knownFileExtensions), ...fasta]);
     return union.has(extension);
-}
+};
 
-export function getFilename(path) {
+let getFilename = (path) => {
     return path.google_url ? path.name : igv.getFilename(path);
-}
+};
 
-export function getExtension(path) {
+let getExtension = (path) => {
     return igv.getExtension({url: path.google_url ? path.name : path});
-}
+};
 
-export function isJSON(thang) {
+let isJSON = (thang) => {
     // Better JSON test. JSON.parse gives false positives.
     return (true === (thang instanceof Object) && false === (thang instanceof File));
-}
+};
 
-export function configureModal(fileLoadWidget, $modal, okHandler = undefined) {
+let configureModal = (fileLoadWidget, $modal, okHandler = undefined) => {
     let $dismiss,
         $ok;
 
@@ -130,9 +130,9 @@ export function configureModal(fileLoadWidget, $modal, okHandler = undefined) {
 
     });
 
-}
+};
 
-export function loadGenome(genome) {
+let loadGenome = (genome) => {
 
     igv.browser
         .loadGenome(genome)
@@ -143,9 +143,9 @@ export function loadGenome(genome) {
             igv.browser.presentAlert(error);
         });
 
-}
+};
 
-function indexLookup(dataSuffix) {
+let indexLookup = (dataSuffix) => {
     let fa,
         fasta,
         bam,
@@ -197,4 +197,6 @@ function indexLookup(dataSuffix) {
         return any;
     }
 
-}
+};
+
+export { isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, isJSON, configureModal, loadGenome };

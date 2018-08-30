@@ -32,38 +32,38 @@ import TrackLoadController from './trackLoadController.js';
 import ShareController from './shareController.js';
 import SessionModalController from './sessionModalController.js';
 
-export let trackLoadController;
+let trackLoadController;
 let multipleTrackFileLoader;
 let multipleGenomeFileLoader;
 let genomeLoadController;
 let sessionModalController;
 let shareController;
 
-export function main($container, config) {
+let main = ($container, config) => {
 
     if (config.googleConfig) {
 
         let gapiConfig =
             {
-                callback: function () {
+                callback: () => {
 
                     app_google
 
                         .init(config.googleConfig.clientId)
 
-                        .then(function () {
+                        .then(() => {
                             if(config.googleConfig.apiKey) {
                                 config.igvConfig.apiKey = config.googleConfig.apiKey;
                             }
                             return igv.createBrowser($container.get(0), config.igvConfig);
                         })
 
-                        .then(function (browser) {
+                        .then((browser) => {
                             app_google.postInit();
                             initializationHelper(browser, $container, config);
                         });
                 },
-                onerror: function () {
+                onerror: () => {
                     console.log('gapi.client:auth2 - failed to load!');
                 }
             };
@@ -73,13 +73,13 @@ export function main($container, config) {
     } else {
         igv
             .createBrowser($container.get(0), config.igvConfig)
-            .then(function (browser) {
+            .then((browser) => {
                 initializationHelper(browser, $container, config);
             });
     }
-}
+};
 
-function initializationHelper(browser, $container, options) {
+let initializationHelper = (browser, $container, options) => {
 
     let $multipleFileLoadModal,
         mtflConfig,
@@ -148,13 +148,11 @@ function initializationHelper(browser, $container, options) {
 
     genomeLoadController.getAppLaunchGenomes()
 
-        .then(function (dictionary) {
+        .then((dictionary) => {
 
             if (dictionary) {
 
-                var gdConfig;
-
-                gdConfig =
+                let gdConfig =
                     {
                         browser: browser,
                         genomeDictionary: dictionary,
@@ -189,7 +187,7 @@ function initializationHelper(browser, $container, options) {
         };
     sessionModalController = new SessionModalController(browser, sessionConfig);
 
-    $('#igv-app-session-file-input').on('change', function (e) {
+    $('#igv-app-session-file-input').on('change', (e) => {
         let file;
         file = e.target.files[ 0 ];
         browser.loadSession(file);
@@ -220,22 +218,22 @@ function initializationHelper(browser, $container, options) {
 
     shareController = new ShareController($container, browser, shareConfig);
 
-}
+};
 
-function appFooterImageHoverBehavior ($img) {
+let appFooterImageHoverBehavior = ($img) => {
 
-    $img.hover(function () {
+    $img.hover(() => {
             $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
         },
-        function () {
+        () => {
             $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
         });
 
-}
+};
 
-function createAppBookmarkHandler($bookmark_button) {
+let createAppBookmarkHandler = ($bookmark_button) => {
 
-    $bookmark_button.on('click', function (e) {
+    $bookmark_button.on('click', (e) => {
         let blurb,
             str;
 
@@ -246,4 +244,6 @@ function createAppBookmarkHandler($bookmark_button) {
         alert(blurb);
     });
 
-}
+};
+
+export { main, trackLoadController };

@@ -25,7 +25,7 @@ import * as igv from 'https://igv.org/web/test/dist/igv.js';
 
 let picker;
 
-function init(clientId) {
+let init = (clientId) => {
 
     let scope,
         config;
@@ -48,9 +48,9 @@ function init(clientId) {
     return gapi.client.init(config)
 
 
-}
+};
 
-function postInit() {
+let postInit = () => {
     let callback,
         onerror,
         config;
@@ -77,9 +77,9 @@ function postInit() {
 
     gapi.load('picker', config);
 
-}
+};
 
-function createPicker(fileLoadManager, $modal, $filenameContainer, isIndexFile, filePickerHandler) {
+let createPicker = (fileLoadManager, $modal, $filenameContainer, isIndexFile, filePickerHandler) => {
 
     getAccessToken()
         .then(function (accessToken) {
@@ -128,9 +128,9 @@ function createPicker(fileLoadManager, $modal, $filenameContainer, isIndexFile, 
         });
 
 
-}
+};
 
-function createDropdownButtonPicker(filePickerHandler) {
+let createDropdownButtonPicker = (filePickerHandler) => {
 
     getAccessToken()
         .then(function (accessToken) {
@@ -175,9 +175,9 @@ function createDropdownButtonPicker(filePickerHandler) {
         });
 
 
-}
+};
 
-function signInHandler() {
+let signInHandler = () => {
 
     let scope,
         options;
@@ -206,25 +206,18 @@ function signInHandler() {
 
             return authResponse["access_token"];
         })
-}
+};
 
-function getAccessToken() {
+let getAccessToken = () => {
 
     if (igv.oauth.google.access_token) {
         return Promise.resolve(igv.oauth.google.access_token);
     } else {
         return signInHandler();
     }
-}
+};
 
-function switchUser() {
-    signInHandler()
-        .then(function (accessToken) {
-            updateSignInStatus(true);
-        });
-}
-
-function pickerCallback(data) {
+let pickerCallback = (data) => {
 
     let doc,
         obj,
@@ -241,13 +234,20 @@ function pickerCallback(data) {
         };
 
     return obj;
-}
+};
 
-function updateSignInStatus(signInStatus) {
+let updateSignInStatus = (signInStatus) => {
     // do nothing
-}
+};
 
-function depricated_init($googleAccountSwitchButtons, clientId) {
+let switchUser = () => {
+    signInHandler()
+        .then(function (accessToken) {
+            updateSignInStatus(true);
+        });
+};
+
+let depricated_init = ($googleAccountSwitchButtons, clientId) => {
 
     this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
 
@@ -272,9 +272,9 @@ function depricated_init($googleAccountSwitchButtons, clientId) {
     return gapi.client.init(config)
 
 
-}
+};
 
-function depricate_updateSignInStatus(signInStatus) {
+let depricate_updateSignInStatus = (signInStatus) => {
 
     if (signInStatus) {
         let username,
@@ -291,6 +291,6 @@ function depricate_updateSignInStatus(signInStatus) {
         this.$googleAccountSwitchButtons.show();
     }
 
-}
+};
 
 export { init, postInit, createPicker, createDropdownButtonPicker };

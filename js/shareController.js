@@ -21,7 +21,7 @@
  *
  */
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
+import igv from './igv.esm.js';
 
 class ShareController {
 

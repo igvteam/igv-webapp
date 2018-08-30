@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-import * as igv from 'https://igv.org/web/test/dist/igv.js';
+import igv from './igv.esm';
 
 class EncodeDataSource {
 

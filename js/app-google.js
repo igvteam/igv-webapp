@@ -21,8 +21,6 @@
  *
  */
 
-import igv from './igv.esm.js';
-
 let picker;
 
 let init = (clientId) => {

@@ -21,8 +21,6 @@
  *
  */
 
-import igv from "./igv.esm.js";
-
 class GoogleURL {
 
     constructor ({ apiKey, hostname }) {

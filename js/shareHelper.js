@@ -21,7 +21,6 @@
  *
  */
 
-import igv from './igv.esm.js';
 import BitlyURL from './bitlyURL.js';
 import GoogleURL from './googleURL.js';
 

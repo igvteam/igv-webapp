@@ -21,8 +21,6 @@
  *
  */
 
-import igv from "./igv.esm.js";
-
 class BitlyURL {
 
     constructor ({ apiKey, hostname }) {

@@ -24,8 +24,6 @@
  * THE SOFTWARE.
  */
 
-import igv from './igv.esm';
-
 class EncodeDataSource {
 
     constructor (columnFormat) {

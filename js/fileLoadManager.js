@@ -24,7 +24,6 @@
  * THE SOFTWARE.
  */
 
-import igv from './igv.esm.js';
 import { isJSON } from './utils.js';
 
 class FileLoadManager {

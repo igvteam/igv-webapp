@@ -5,7 +5,5 @@
 /build/
 /js/igv.esm.js
 /js/igv.esm.min.js
-/js/igv.esm.min.js.map
-/js/igv.build.js
-/js/igv.build.min.js
-/js/igv.build.min.js.map
+/js/igv.js
+/js/igv.min.js

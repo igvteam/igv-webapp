@@ -1,0 +1,32 @@
+{
+	"label": "Annotations",
+    "description": "Annotations - source <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a>",
+	"link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+	"tracks": [
+
+		{
+			"name": "Gencode v28 Basic",
+			"type": "annotation",
+			"displayMode": "EXPANDED",
+			"sourceType": "ucscservice",
+			"source": {
+				"url": "https://data.igv.org/ucsc?db=hg38",
+				"method": "GET",
+				"tableName": "wgEncodeGencodeBasicV28"
+			},
+			"visibilityWindow": 1000000
+		},
+		{
+			"name": "Common SNPS (150)",
+			"type": "snp",
+			"sourceType": "ucscservice",
+			"visibilityWindow": 10000,
+			"source": {
+				"url": "https://data.igv.org/ucsc?db=hg38",
+				"method": "GET",
+				"tableName": "snp150"
+			}
+		}
+
+	]
+}

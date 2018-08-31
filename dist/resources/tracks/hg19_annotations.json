@@ -1,0 +1,31 @@
+{
+  "label": "Annotations",
+  "description": "Annotations - source <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a>",
+  "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+  "tracks": [
+	{
+	  "type": "bed",
+	  "url": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
+	  "indexURL": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
+	  "name": "Gencode V18"
+	},
+	{
+	  "name": "SNP 150",
+	  "type": "snp",
+	  "displayMode": "EXPANDED",
+	  "sourceType": "ucscservice",
+	  "visibilityWindow": 10000,
+	  "source": {
+		"url": "https://data.igv.org/ucsc?db=hg19",
+		"method": "GET",
+		"tableName": "snp150Common"
+	  }
+	},
+	{
+	  "url": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz?versionId=null",
+	  "indexURL": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz.tbi?versionId=null",
+	  "visibilityWindow": 20000,
+	  "name": "1000 Genomes Sites"
+	}
+  ]
+}

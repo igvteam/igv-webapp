@@ -2,27 +2,27 @@
   "name": "igv-webapp",
   "version": "1.0.0",
   "description": "igv web app",
-  "main": "main.js",
-  "directories": {
-    "test": "test"
-  },
+  "main": "app.js",
   "scripts": {
-    "babel": "babel --presets es2015 js/main.js -o build/main.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/igvteam/igv-webapp.git"
   },
-  "author": "Doug and Jim",
+  "author": "Douglass Turner and Jim Robinson",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/igvteam/igv-webapp/issues"
   },
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-loader": "^8.0.0"
+  },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-es2015": "^6.24.1"
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0"
   }
 }

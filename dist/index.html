@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <title>IGV</title>
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
 
     <!-- Bootstrap 4 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
@@ -18,10 +18,10 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 
     <!-- APP CSS -->
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="../css/app.css">
 
     <!-- IGV JS-->
-    <script src='js/igv.js'></script>
+    <script src='https://igv.org/web/test/dist/igv.js'></script>
 
     <!-- Dropbox Chooser API-->
     <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8glijwyao9fq8we"></script>
@@ -39,13 +39,14 @@
 
     <!-- Twitter -->
     <script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 </head>
 
 <body class="igv-app-body-footerized">
 
 <nav class="navbar navbar-dark igv-app-background-dark justify-content-between">
     <div class="navbar-brand">
-        <img src="img/igv-logo-cooked-40x40.png" width="40" height="40" class="d-inline-block align-center" alt="">
+        <img src="../img/igv-logo-cooked-40x40.png" width="40" height="40" class="d-inline-block align-center" alt="">
         <span class="igv-app-navbar-text">beta</span>
     </div>
     <ul class="navbar-nav">
@@ -98,7 +99,7 @@
                              class="igv-app-dropdown-item-cloud-storage">
 
                             <div>Dropbox</div>
-                            <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
+                            <div><img src="../img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
 
                         </div>
@@ -110,7 +111,7 @@
                         <div id="igv-app-dropdown-google-drive-genome-file-button"
                              class="igv-app-dropdown-item-cloud-storage">
                             <div>Google Drive</div>
-                            <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                            <div><img src="../img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
                         </div>
                     </button>
@@ -155,7 +156,7 @@
                              class="igv-app-dropdown-item-cloud-storage">
 
                             <div>Dropbox</div>
-                            <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
+                            <div><img src="../img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
 
                         </div>
@@ -167,7 +168,7 @@
                         <div id="igv-app-dropdown-google-drive-track-file-button"
                              class="igv-app-dropdown-item-cloud-storage">
                             <div>Google Drive</div>
-                            <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                            <div><img src="../img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
                         </div>
                     </button>
@@ -576,78 +577,19 @@
 
         <div id="igv-app-ucsd-logo" class="col">
             <a class="ml-4" href="https://ucsd.edu/" title="University of California at San Diego" target="_blank">
-                <img src="img/ucsd-logo.png" width="164" height="32" alt="University of California at San Diego">
+                <img src="../img/ucsd-logo.png" width="164" height="32" alt="University of California at San Diego">
             </a>
         </div>
 
         <div id="igv-app-broad-logo" class="col">
             <a class="ml-4" href="https://www.broadinstitute.org" title="Broad Institute home page" target="_blank">
-                <img src="img/broad-institute-logo.png" width="127" height="32" alt="Broad Institute logo">
+                <img src="../img/broad-institute-logo.png" width="127" height="32" alt="Broad Institute logo">
             </a>
         </div>
     </div>
 </footer>
 
-<script type="module">
-
-    import { main } from './js/main.js';
-
-    $(document).ready(() => {
-
-        const config =
-            {
-
-                // Path to a json file of genome definitions
-                genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
-
-                // Alternatively,  list genomes in place
-                // genomes: [
-                //     {
-                //         id: "hg38",
-                //         name: "Human (GRCh38/hg38)",
-                //         fastaURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
-                //         indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa.fai",
-                //         cytobandURL: "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/cytoBandIdeo.txt.gz",
-                //         tracks: [
-                //             {
-                //                 name: "Refseq Genes",
-                //                 format: "refgene",
-                //                 url: "https://s3.amazonaws.com/igv.org.genomes/hg38/refGene.sorted.txt.gz",
-                //                 indexURL: "https://s3.amazonaws.com/igv.org.genomes/hg38/refGene.sorted.txt.gz.tbi",
-                //                 visibilityWindow: -1,
-                //                 order: 1000000
-                //             }
-                //         ]
-                //     }],
-
-                // IGV configuration object.   See https://github.com/igvteam/igv.js/wiki
-                igvConfig:
-                    {
-                        queryParametersSupported: true,
-                        showChromosomeWidget: true,
-                        genome: "hg38"
-                    },
-
-                // Google configuration.   Optional, supports Google Picker and oAuth for non-public Google resources
-                googleConfig:
-                    {
-                        apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0",
-                        clientId: "661332306814-8nt29308rppg325bkq372vli8nm3na14.apps.googleusercontent.com",
-                    },
-
-                // URL shortener -- optional, used to shorten urls for sharing
-                urlShortener:
-                    {
-                        provider: "bitly",
-                        // apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0"
-                    }
-            };
-
-
-        main($('#igv-app-container'), config);
-    });
-
-</script>
+<script src="bundle.js"></script>
 
 </body>
 

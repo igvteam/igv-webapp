@@ -7,6 +7,4 @@
 /js/igv.esm.min.js
 /js/igv.js
 /js/igv.min.js
-/dist/css
-/dist/favicon.ico
-/dist/img
+/dist/bundle.js

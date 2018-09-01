@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports =
     {
@@ -29,5 +30,15 @@ module.exports =
                                 }
                         }
                     ]
-            }
+            },
+        plugins:
+            [
+                new CopyWebpackPlugin([
+                    { from:'css/app.css', to:'css' },
+                    { from:'img/*' },
+                    { from:'resources/*/*' },
+                    { from:'favicon.ico' }
+                ])
+
+            ]
     };

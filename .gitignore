@@ -1,5 +1,6 @@
 .DS_Store
 *.iml
+/dist/
 /.idea/
 /node_modules/
 /build/

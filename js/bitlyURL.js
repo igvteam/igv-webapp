@@ -42,7 +42,7 @@ class BitlyURL {
 
         if (url.startsWith("http://localhost")) url = url.replace("localhost", this.devIP);  // Dev hack
 
-        return getApiKey()
+        return this.getApiKey()
 
             .then(function (key) {
                 let endpoint = self.api + "/v3/shorten?access_token=" + key + "&longUrl=" + encodeURIComponent(url);

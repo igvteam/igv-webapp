@@ -21,6 +21,9 @@
  *
  */
 
+import {shortSessionURL} from './shareHelper.js';
+import {QRCode} from './qrcode';
+
 class ShareController {
 
     constructor($appContainer, browser, shareConfig) {
@@ -48,8 +51,7 @@ class ShareController {
             shareConfig.$embed_container.find('textarea').val(snippet);
             shareConfig.$embed_container.find('textarea').get(0).select();
 
-            app
-                .shortSessionURL(href, session)
+            shortSessionURL(href, session)
 
                 .then(function (shortURL) {
 
@@ -159,5 +161,7 @@ function getEmbedTarget() {
     return href.substring(0, idx) + "/embed.html"
 
 }
+
+
 
 export default ShareController;

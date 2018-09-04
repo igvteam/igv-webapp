@@ -24,8 +24,8 @@ $(document).ready(() => {
 
             clientId: "CLIENT_ID",
 
-            //urlShortener: bitlyShortener("BITLY_TOKEN"),
-            urlShortener: googleShortener("API_KEY")
+            urlShortener: bitlyShortener("BITLY_TOKEN"),
+            //urlShortener: googleShortener("API_KEY")
 
         };
 

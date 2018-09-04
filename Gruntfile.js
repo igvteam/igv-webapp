@@ -3,6 +3,7 @@ const webpackConfig = require('./webpack.config.js');
 module.exports = function (grunt) {
 
     grunt.initConfig({
+
         webpack:
             {
                 options:
@@ -12,6 +13,14 @@ module.exports = function (grunt) {
                 prod: webpackConfig,
                 dev: Object.assign({watch: true}, webpackConfig)
             },
+
+        copy: {
+            js: {
+                expand: true,
+                src: 'js/*',
+                dest: 'build/',
+            }
+        },
 
         'string-replace': {
             dist: {
@@ -34,10 +43,19 @@ module.exports = function (grunt) {
 
     });
 
+
+
+    //load the copy module
+    grunt.loadNpmTasks('grunt-contrib-copy');
+
+    //register the build task
+
+
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-string-replace');
 
-    grunt.registerTask('default', ['inject-apikeys', 'webpack:prod', 'string-replace:dist']);
+    grunt.registerTask('default', ['copy', 'inject-apikeys', 'webpack:prod', 'string-replace:dist']);
+
 
     grunt.task.registerTask('inject-apikeys', 'Inject API keys', function () {
 
@@ -47,19 +65,21 @@ module.exports = function (grunt) {
 
         var contents;
 
-        contents = grunt.file.read('js/app.js');
+        contents = grunt.file.read('build/js/app.js');
 
-        if(bitlyToken) {
-            contents = contents.replace('BITLY_TOKEN', bitlyToken);
-        }
-        if(apiKey) {
-            contents = contents.replace('API_KEY', apiKey);
-        }
-        if(clientId) {
-            contents = contents.replace("CLIENT_ID", clientId);
-        }
+        if(bitlyToken || apiKey || clientId) {
+            if (bitlyToken) {
+                contents = contents.replace('BITLY_TOKEN', bitlyToken);
+            }
+            if (apiKey) {
+                contents = contents.replace('API_KEY', apiKey);
+            }
+            if (clientId) {
+                contents = contents.replace("CLIENT_ID", clientId);
+            }
 
-        grunt.file.write('js/app.js', contents);
+            grunt.file.write('build/js/app.js', contents);
+        }
     });
 
 };

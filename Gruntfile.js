@@ -37,8 +37,30 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-string-replace');
 
-    grunt.registerTask('default', 'Webpack rocks', ['webpack:prod']);
-    grunt.registerTask('index', 'string-replace:dist');
+    grunt.registerTask('default', ['inject-apikeys', 'webpack:prod', 'string-replace:dist']);
+
+    grunt.task.registerTask('inject-apikeys', 'Inject API keys', function () {
+
+        var bitlyToken = grunt.option('bitlyToken');
+        var apiKey = grunt.option('apiKey');
+        var clientId = grunt.option('clientId');
+
+        var contents;
+
+        contents = grunt.file.read('js/app.js');
+
+        if(bitlyToken) {
+            contents = contents.replace('BITLY_TOKEN', bitlyToken);
+        }
+        if(apiKey) {
+            contents = contents.replace('API_KEY', apiKey);
+        }
+        if(clientId) {
+            contents = contents.replace("CLIENT_ID", clientId);
+        }
+
+        grunt.file.write('js/app.js', contents);
+    });
 
 };
 

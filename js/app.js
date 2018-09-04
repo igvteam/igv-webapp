@@ -19,13 +19,13 @@ $(document).ready(() => {
                     queryParametersSupported: true,
                     showChromosomeWidget: true,
                     genome: "hg19",
-                    apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0"
+                    apiKey: "API_KEY"
                 },
 
-            clientId: "661332306814-8nt29308rppg325bkq372vli8nm3na14.apps.googleusercontent.com",
+            clientId: "CLIENT_ID",
 
-            //urlShortener: bitlyShortener("76670dc60b519eaf9be4fc1c227b4f3e3b3a5e26"),
-            urlShortener: googleShortener("AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0")
+            //urlShortener: bitlyShortener("BITLY_TOKEN"),
+            urlShortener: googleShortener("API_KEY")
 
         };
 

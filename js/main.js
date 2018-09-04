@@ -41,7 +41,7 @@ let googleEnabled = false;
 
 let main = ($container, config) => {
 
-    if (config.clientId) {
+    if (config.clientId && config.clientId !== "CLIENT_ID") {
 
         const gapiConfig =
             {

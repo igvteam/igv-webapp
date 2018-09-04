@@ -23,44 +23,58 @@
 
 export function bitlyShortener(accessToken) {
 
-    const api = "https://api-ssl.bitly.com/v3/shorten";
-    const devIP = "192.168.1.11";
+    if (!accessToken || accessToken === "BITLY_TOKEN") {
+        return undefined;
+    }
 
-    return function (url) {
+    else {
 
-        if (url.startsWith("http://localhost")) {
-            url = url.replace("localhost", devIP);
-        }  // Dev hack
+        return function (url) {
 
-        let endpoint = api + "?access_token=" + accessToken+ "&longUrl=" + encodeURIComponent(url);
+            const api = "https://api-ssl.bitly.com/v3/shorten";
+            const devIP = "192.168.1.11";
 
-        return igv.xhr.loadJson(endpoint, {})
+            if (url.startsWith("http://localhost")) {
+                url = url.replace("localhost", devIP);
+            }  // Dev hack
 
-            .then(function (json) {
-                return json.data.url;
-            })
-    };
+            let endpoint = api + "?access_token=" + accessToken + "&longUrl=" + encodeURIComponent(url);
+
+            return igv.xhr.loadJson(endpoint, {})
+
+                .then(function (json) {
+                    return json.data.url;
+                })
+        }
+    }
 
 }
 
 
 export function googleShortener(apiKey) {
 
-    const api = "https://www.googleapis.com/urlshortener/v1/url";
+    if (!apiKey || apiKey === "API_KEY") {
+        return undefined;
+    }
 
-    return function (url) {
+    else {
 
-        var endpoint = api + "?key=" + apiKey;
+        return function (url) {
 
-        return igv.xhr
+            const api = "https://www.googleapis.com/urlshortener/v1/url";
 
-            .loadJson(endpoint, {sendData: JSON.stringify({"longUrl": url}), contentType: "application/json"})
+            const endpoint = api + "?key=" + apiKey;
 
-            .then(function (json) {
+            return igv.xhr
 
-                return json.id;
+                .loadJson(endpoint, {sendData: JSON.stringify({"longUrl": url}), contentType: "application/json"})
 
-            })
-    };
+                .then(function (json) {
+
+                    return json.id;
+
+                })
+        }
+    }
 
 }

@@ -1,6 +1,13 @@
-import { main } from './main.js';
+import {main} from './main.js';
+import {bitlyShortener, googleShortener} from './urlShortener.js';
 
 $(document).ready(() => {
+
+    // Use some variables to prevent webpack or other optimiziers from removing the factory functions.  These can be set
+    // by users after post packaging.
+
+    const f1 = bitlyShortener;
+    const f2 = googleShortener;
 
     const config =
         {
@@ -11,20 +18,15 @@ $(document).ready(() => {
                 {
                     queryParametersSupported: true,
                     showChromosomeWidget: true,
-                    genome: "hg38"
+                    genome: "hg19",
+                    apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0"
                 },
 
-            googleConfig:
-                {
-                    apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0",
-                    clientId: "661332306814-8nt29308rppg325bkq372vli8nm3na14.apps.googleusercontent.com",
-                },
+            clientId: "661332306814-8nt29308rppg325bkq372vli8nm3na14.apps.googleusercontent.com",
 
-            urlShortener:
-                {
-                    provider: "bitly",
-                    // apiKey: "AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0"
-                }
+            //urlShortener: bitlyShortener("76670dc60b519eaf9be4fc1c227b4f3e3b3a5e26"),
+            urlShortener: googleShortener("AIzaSyDUUAUFpQEN4mumeMNIRWXSiTh5cPtUAD0")
+
         };
 
 

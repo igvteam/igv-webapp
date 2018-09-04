@@ -238,57 +238,5 @@ let updateSignInStatus = (signInStatus) => {
     // do nothing
 };
 
-let switchUser = () => {
-    signInHandler()
-        .then(function (accessToken) {
-            updateSignInStatus(true);
-        });
-};
-
-let depricated_init = ($googleAccountSwitchButtons, clientId) => {
-
-    this.$googleAccountSwitchButtons = $googleAccountSwitchButtons;
-
-    let scope,
-        config;
-
-    scope =
-        [
-            'https://www.googleapis.com/auth/cloud-platform',
-            'https://www.googleapis.com/auth/genomics',
-            'https://www.googleapis.com/auth/devstorage.read_only',
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/drive.readonly'
-        ];
-
-    config =
-        {
-            'clientId': clientId,
-            'scope': scope.join(' ')
-        };
-
-    return gapi.client.init(config)
-
-
-};
-
-let depricate_updateSignInStatus = (signInStatus) => {
-
-    if (signInStatus) {
-        let username,
-            $e;
-
-        username = gapi.auth2
-            .getAuthInstance()
-            .currentUser
-            .get()
-            .getBasicProfile()
-            .getName();
-
-        this.$googleAccountSwitchButtons.find('span').text(username);
-        this.$googleAccountSwitchButtons.show();
-    }
-
-};
 
 export { init, postInit, createPicker, createDropdownButtonPicker };

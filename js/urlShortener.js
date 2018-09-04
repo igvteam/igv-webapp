@@ -21,52 +21,46 @@
  *
  */
 
+export function bitlyShortener(accessToken) {
 
-let urlShortener;
+    const api = "https://api-ssl.bitly.com/v3/shorten";
+    const devIP = "192.168.1.11";
 
-export function setURLShortener(obj) {
+    return function (url) {
 
-    if (typeof obj === "function") {
+        if (url.startsWith("http://localhost")) {
+            url = url.replace("localhost", devIP);
+        }  // Dev hack
 
-        urlShortener =
-            {
-                shortenURL: obj
-            }
+        let endpoint = api + "?access_token=" + accessToken+ "&longUrl=" + encodeURIComponent(url);
 
-    } else {
-        igv.browser.presentAlert("URL shortener object must either be an object specifying a now provider or a function")
-    }
+        return igv.xhr.loadJson(endpoint, {})
 
-
-}
-
-export function sessionURL() {
-
-    let surl,
-        path,
-        idx;
-
-    path = window.location.href.slice();
-    idx = path.indexOf("?");
-
-    surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + igv.browser.compressedSession();
-
-    return surl;
-}
-
-export function shortSessionURL(base, session) {
-
-    const url = base + "?sessionURL=blob:" + session;
-
-    return shortenURL(url)
+            .then(function (json) {
+                return json.data.url;
+            })
+    };
 
 }
 
-function shortenURL(url) {
-    if (urlShortener) {
-        return urlShortener.shortenURL(url);
-    }
-    else {
-        return Promise.resolve(url);
-    }
+
+export function googleShortener(apiKey) {
+
+    const api = "https://www.googleapis.com/urlshortener/v1/url";
+
+    return function (url) {
+
+        var endpoint = api + "?key=" + apiKey;
+
+        return igv.xhr
+
+            .loadJson(endpoint, {sendData: JSON.stringify({"longUrl": url}), contentType: "application/json"})
+
+            .then(function (json) {
+
+                return json.id;
+
+            })
+    };
+
 }

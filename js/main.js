@@ -37,41 +37,48 @@ let multipleGenomeFileLoader;
 let genomeLoadController;
 let sessionModalController;
 let shareController;
+let googleEnabled = false;
 
 let main = ($container, config) => {
 
-    if (config.googleConfig) {
+    if (config.clientId) {
 
-        let gapiConfig =
+        const gapiConfig =
             {
                 callback: () => {
 
                     app_google
 
-                        .init(config.googleConfig.clientId)
+                        .init(config.clientId)
 
-                        .then(() => {
-                            if(config.googleConfig.apiKey) {
-                                config.igvConfig.apiKey = config.googleConfig.apiKey;
-                            }
+                        .then((ignore) => {
+
                             return igv.createBrowser($container.get(0), config.igvConfig);
                         })
 
                         .then((browser) => {
+
+                            googleEnabled = true;
+
                             app_google.postInit();
+
                             initializationHelper(browser, $container, config);
                         });
                 },
-                onerror: () => {
+                onerror: (error) => {
                     console.log('gapi.client:auth2 - failed to load!');
+                    console.error(error);
+                    initializationHelper(browser, $container, config);
                 }
             };
 
         gapi.load('client:auth2', gapiConfig);
 
     } else {
+
         igv
             .createBrowser($container.get(0), config.igvConfig)
+
             .then((browser) => {
                 initializationHelper(browser, $container, config);
             });
@@ -97,7 +104,7 @@ let initializationHelper = (browser, $container, options) => {
     $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
     $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
-    if (undefined === options.googleConfig) {
+    if (!googleEnabled) {
         $igv_app_dropdown_google_drive_track_file_button.parent().hide();
     }
 
@@ -107,7 +114,7 @@ let initializationHelper = (browser, $container, options) => {
             modalTitle: 'Track File Error',
             $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
             $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-            $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_track_file_button : undefined,
+            $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined,
             configurationHandler: MultipleFileLoadController.trackConfigurator,
             fileLoadHandler: (configurations) => {
                 browser.loadTrackList( configurations );
@@ -116,7 +123,7 @@ let initializationHelper = (browser, $container, options) => {
     multipleTrackFileLoader = new MultipleFileLoadController(browser, mtflConfig);
 
     $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
-    if (undefined === options.googleConfig) {
+    if (!googleEnabled) {
         $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
     }
 
@@ -126,7 +133,7 @@ let initializationHelper = (browser, $container, options) => {
             modalTitle: 'Genome File Error',
             $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
             $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
-            $googleDriveButton: options.googleConfig ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
+            $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
             configurationHandler: MultipleFileLoadController.genomeConfigurator,
             fileLoadHandler: (configurations) => {
                 let config;

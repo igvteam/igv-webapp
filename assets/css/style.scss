@@ -1,0 +1,94 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+body {
+  font:16px/24px 'Quattrocento Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  font-size:28px;  
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px; 
+}
+
+h2 {
+  font-size: 26px;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* modernist 
+hr {
+  border:0;
+  background:#aaa;
+  height:1px;
+  margin:0 0 20px;
+}
+*/
+
+hr {
+  height: 1px;
+  margin-bottom: 5px;
+  border: none;
+  background: url('../images/bg_hr.png') repeat-x center;
+}
+
+code {
+  font-size:14px;
+  color:#554D4B;  
+  text-shadow: 0px 0px 0px #000;
+  margin: 0 1px;
+  background: #EAF4F8;
+}
+
+header {
+  min-height: 50px;
+  padding:20px 20px;
+
+  h1 {
+    text-shadow: 0px 0px 0px;
+    border-bottom: 0px;
+    padding-bottom: 0px;
+  }
+    
+  p {
+    color: #f3f3f3;
+    text-shadow: 0 0 0
+  }
+}
+
+section {
+  width: 800px;
+  margin-top: 150px;
+}
+
+nav {
+  width: 300px; 
+  top: 150px;
+  margin-left:-660px;
+  text-align: left;
+
+  ul {
+    font-size: 16px;
+    line-height:20px; 
+    
+    li {
+      padding: 2px 0px;
+      line-height: 16px;
+  
+       &.tag-h1 {
+         margin-top:10px;
+      }
+    }
+  }
+}

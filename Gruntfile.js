@@ -65,7 +65,7 @@ module.exports = function (grunt) {
 
         var contents;
 
-        contents = grunt.file.read('build/js/app.js');
+        contents = grunt.file.read('build/js/igvwebConfig.js');
 
         if(bitlyToken || apiKey || clientId) {
             if (bitlyToken) {
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
                 contents = contents.replace("CLIENT_ID", clientId);
             }
 
-            grunt.file.write('build/js/app.js', contents);
+            grunt.file.write('build/js/igvwebConfig.js', contents);
         }
     });
 

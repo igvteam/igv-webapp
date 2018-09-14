@@ -28,5 +28,8 @@
     "http-server": "^0.8.0",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "npm": "^6.4.1"
   }
 }

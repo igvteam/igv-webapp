@@ -7,8 +7,6 @@ component developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) 
 ## Requirements
 - Node >= v8.11.4
 - NPM >= 5.6.0
-- grunt-cli >= v1.3.1
-- grunt >= v1.0.3
 
 ## Installation
 * Clone this repository

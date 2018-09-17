@@ -97,7 +97,8 @@ let initializationHelper = (browser, $container, options) => {
         $igv_app_dropdown_google_drive_track_file_button,
         $igv_app_dropdown_google_drive_genome_file_button;
 
-    appFooterImageHoverBehavior($('.igv-app-footer').find('a img'));
+    appFooterImageHoverBehavior($('#igv-app-ucsd-logo').find('img'));
+    appFooterImageHoverBehavior($('#igv-app-broad-logo').find('img'));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
@@ -229,10 +230,26 @@ let initializationHelper = (browser, $container, options) => {
 let appFooterImageHoverBehavior = ($img) => {
 
     $img.hover(() => {
-            $(this).attr('src', $(this).attr('src').replace(/\.png/, '-hover.png') );
+            let src,
+                replacement;
+
+            src = $img.attr('src');
+
+            replacement = src.replace(/\.png/, '-hover.png');
+
+            $img.attr('src', replacement );
         },
         () => {
-            $(this).attr('src', $(this).attr('src').replace(/-hover\.png/, '.png') );
+
+            let src,
+                replacement;
+
+            src = $img.attr('src');
+
+            replacement = src.replace(/-hover\.png/, '.png');
+
+            $img.attr('src', replacement );
+
         });
 
 };

@@ -256,7 +256,7 @@ function configureModalSelectList($modal, configurations, promiseTaskName) {
     $select = $('<select>', {class: 'form-control'});
     $modal.find('.form-group').append($select);
 
-    $option = $('<option>', {text: 'Choose one of the following...'});
+    $option = $('<option>', {text: 'Select...'});
     $select.append($option);
 
     $option.attr('selected', 'selected');

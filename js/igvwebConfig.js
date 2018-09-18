@@ -7,6 +7,8 @@ export const config =
 
         genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
 
+        trackRegistryFile: "resources/tracks/trackRegistry.json",
+
         igvConfig:
             {
                 queryParametersSupported: true,

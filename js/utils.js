@@ -136,7 +136,7 @@ let loadGenome = (genome) => {
     igv.browser
         .loadGenome(genome)
         .then(function (genome) {
-            trackLoadController.updateGeneralizedAnnotations(genome.id);
+            trackLoadController.updateTrackMenus(genome.id);
         })
         .catch(function (error) {
             igv.browser.presentAlert(error);

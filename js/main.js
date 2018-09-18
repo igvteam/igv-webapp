@@ -176,6 +176,7 @@ let initializationHelper = (browser, $container, options) => {
     // Track load controller configuration
     tlConfig =
         {
+            trackRegistryFile: options.trackRegistryFile,
             $urlModal: $('#igv-app-track-from-url-modal'),
             $encodeModal: $('#igv-app-encode-modal'),
             $dropdownMenu: $('#igv-app-track-dropdown-menu'),

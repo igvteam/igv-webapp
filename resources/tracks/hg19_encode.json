@@ -1,0 +1,6 @@
+{
+  "label": "ENCODE",
+  "type": "ENCODE",
+  "description": "<a href=hhttps://www.encodeproject.org/ target=_blank>Encylopedia of Genomic Elements</a>",
+  "genomeID": "hg19"
+}

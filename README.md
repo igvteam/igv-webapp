@@ -38,7 +38,7 @@ are customizable.
 
 * genomes - url to a file containing a list of genome configuration objects.  This list populates the Genomes 
 pulldown menu.  See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome-2.0) for a description of 
-genome the genome configuration object.  For an example see 
+the genome configuration object.  For an example see 
 the [defult genome list](https://s3.amazonaws.com/igv.org.genomes/genomes.json).
 
 
@@ -62,7 +62,7 @@ instructions on obtaining a clienId.  OAuth requests from igv.js will include th
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/drive.readonly'
    ```     
-
+* urlShortener - an object or function defining a URL shortener to shorten links created by the **Share** button.   This is optional, if not provided the links are not shortened, and the "Twitter" option is disabled.  The value of this property can be a function, taking a single argument (the long URL) and returning the shortened url, or an Object. Objects define a provider and an apiKey to be used with the provider service.  Currently 2 providers are recognized,  __bitly__ and __google__.  
 
 ### Default configuration
 

@@ -4,7 +4,7 @@
 
 "use strict";
 
-const igvwebConfig = {
+var igvwebConfig = {
 
     genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
 
@@ -24,7 +24,11 @@ const igvwebConfig = {
         provider: "bitly",
         apiKey: "BITLY_TOKEN"
     }
-    //urlShortener: googleShortener("API_KEY")
+
+    // urlShortener: {
+    //     provider: "google",
+    //     apiKey: "API_KEY"
+    // }
 
 }
 

@@ -19,6 +19,10 @@ module.exports = function (grunt) {
                 expand: true,
                 src: 'js/*',
                 dest: 'build/',
+            },
+            config: {
+                src: 'igvwebConfig.js',
+                dest: 'dist/',
             }
         },
 
@@ -39,9 +43,11 @@ module.exports = function (grunt) {
                         }]
                 }
             }
-        }
+        },
 
+        clean: ['build']
     });
+
 
 
 
@@ -53,8 +59,9 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-string-replace');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('default', ['copy', 'inject-apikeys', 'webpack:prod', 'string-replace:dist']);
+    grunt.registerTask('default', ['copy', 'inject-apikeys', 'webpack:prod', 'string-replace:dist', 'clean']);
 
 
     grunt.task.registerTask('inject-apikeys', 'Inject API keys', function () {
@@ -65,7 +72,7 @@ module.exports = function (grunt) {
 
         var contents;
 
-        contents = grunt.file.read('build/js/igvwebConfig.js');
+        contents = grunt.file.read('dist/igvwebConfig.js');
 
         if(bitlyToken || apiKey || clientId) {
             if (bitlyToken) {
@@ -78,7 +85,7 @@ module.exports = function (grunt) {
                 contents = contents.replace("CLIENT_ID", clientId);
             }
 
-            grunt.file.write('build/js/igvwebConfig.js', contents);
+            grunt.file.write('dist/igvwebConfig.js', contents);
         }
     });
 

@@ -22,21 +22,41 @@
  */
 
 
+import {bitlyShortener, googleShortener} from "./urlShortener";
+
 let urlShortener;
+
 
 export function setURLShortener(obj) {
 
+    let fn;
+
     if (typeof obj === "function") {
 
-        urlShortener =
-            {
-                shortenURL: obj
-            }
+        fn = obj;
 
-    } else {
-        igv.browser.presentAlert("URL shortener object must either be an object specifying a now provider or a function")
+    } else if (obj.provider && obj.apiKey) {
+
+        if ("bitly" === obj.provider) {
+            fn = bitlyShortener(obj.apiKey);
+        }
+        else if ("google" === obj.provider) {
+            fn = googleShortener(obj.apiKey);
+        }
+        else {
+            igv.browser.presentAlert("Unknown URL shortener provider: " + obj.provider);
+        }
+    }
+    else {
+        igv.browser.presentAlert("URL shortener object must either be an object specifying a provider and apiKey, or a function")
     }
 
+    if (fn) {
+        urlShortener =
+            {
+                shortenURL: fn
+            }
+    }
 
 }
 

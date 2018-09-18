@@ -6,7 +6,7 @@ component developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) 
 
 ## Requirements
 - Node >= v8.11.4
-- NPM >= 5.6.0
+- NPM >= v5.6.0
 
 ## Installation
 * Clone this repository

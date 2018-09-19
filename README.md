@@ -118,11 +118,9 @@ and a single menu for hg38.
 ```
 
 
-Menu files specify a label for the menu, an optional description of the menu,  and a list of tracks configurations. 
+Menu files specify a label for the menu, an optional description of the menu,  and a list of tracks configurations or a type property. 
 The example below defines a menu labeled "Annotations" with a single entry, a bed file of gene annotations.
 For a complete description of track configuration objects see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
-
-
 
 ```json
 {
@@ -139,6 +137,20 @@ For a complete description of track configuration objects see the [igv.js wiki](
 	
 ```
 
+The type property can be used in lieu of a track list to trigger pre-defined lists of tracks for special data sources.
+Currently the only recognized value is "ENCODE".   This property can be used to populate an ENCODE load widget for any
+genome assembly with data hosted by the [ENCODE project](https://www.encodeproject.org/).   Currently this includes
+assemblies for human (hg19, GRCh38),  mouse (mm10), worm (ce11), and fly (dm6).
+
+```json
+{
+  "label": "ENCODE",
+  "type": "ENCODE",
+  "description": "<a href=hhttps://www.encodeproject.org/ target=_blank>Encylopedia of Genomic Elements</a>",
+  "genomeID": "hg19"
+}
+
+```
 
 ## License
 IGV Web App is [MIT](/LICENSE) licensed.

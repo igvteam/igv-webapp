@@ -252,6 +252,17 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
+#igv-app-generic-track-select-modal-label {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start; }
+  #igv-app-generic-track-select-modal-label div:first-child {
+    font-size: 1.5rem; }
+  #igv-app-generic-track-select-modal-label div:last-child {
+    font-size: 01.125rem; }
+
 .igv-app-html {
   position: relative;
   min-height: 100%; }

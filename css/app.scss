@@ -12,6 +12,23 @@ $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 60px;
 $igv-app-logo-container-width: 20%;
 
+#igv-app-generic-track-select-modal-label {
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  div:first-child {
+    font-size: 1.5rem;
+  }
+  div:last-child {
+    font-size: 01.125rem;
+  }
+
+}
+
 .igv-app-html {
   position: relative;
   min-height: 100%;

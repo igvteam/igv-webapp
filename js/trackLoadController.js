@@ -176,8 +176,10 @@ class TrackLoadController {
                                     $button.on('click', function () {
                                         let markup;
 
-                                        // markup = config.description || ('Load Track: ' + config.label);
-                                        markup = config.description || config.label;
+                                        markup = '<div>' + config.label + '</div>';
+                                        if (config.description) {
+                                            markup += '<div>' + config.description + '</div>';
+                                        }
 
                                         self.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
 

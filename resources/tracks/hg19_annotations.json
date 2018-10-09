@@ -2,27 +2,28 @@
   "label": "Annotations",
   "description": "Annotations - source <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a>",
   "tracks": [
-	{
-	  "type": "bed",
-	  "url": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
-	  "indexURL": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
-	  "name": "Gencode V18"
-	},
-	  {
-		  "name": "Common SNPs (150)",
-		  "type": "snp",
-		  "format": "snp",
-		  "visibilityWindow": 10000,
-		  "height": 30,
-		  "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz",
-		  "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi"
-
-	  },
-	{
-	  "url": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz?versionId=null",
-	  "indexURL": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz.tbi?versionId=null",
-	  "visibilityWindow": 20000,
-	  "name": "1000 Genomes Sites"
-	}
+    {
+      "type": "annotation",
+      "format": "gtf",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz.tbi",
+      "name": "GENCODE genes v28",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Common SNPs (150)",
+      "type": "snp",
+      "format": "snp",
+      "visibilityWindow": 10000,
+      "height": 30,
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi"
+    },
+    {
+      "url": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz?versionId=null",
+      "indexURL": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz.tbi?versionId=null",
+      "visibilityWindow": 20000,
+      "name": "1000 Genomes Sites"
+    }
   ]
 }

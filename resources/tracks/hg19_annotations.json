@@ -8,18 +8,16 @@
 	  "indexURL": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
 	  "name": "Gencode V18"
 	},
-	{
-	  "name": "SNP 150",
-	  "type": "snp",
-	  "displayMode": "EXPANDED",
-	  "sourceType": "ucscservice",
-	  "visibilityWindow": 10000,
-	  "source": {
-		"url": "https://data.igv.org/ucsc?db=hg19",
-		"method": "GET",
-		"tableName": "snp150Common"
-	  }
-	},
+	  {
+		  "name": "Common SNPs (150)",
+		  "type": "snp",
+		  "format": "snp",
+		  "visibilityWindow": 10000,
+		  "height": 30,
+		  "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz",
+		  "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi"
+
+	  },
 	{
 	  "url": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz?versionId=null",
 	  "indexURL": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz.tbi?versionId=null",

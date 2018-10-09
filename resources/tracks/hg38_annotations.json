@@ -17,15 +17,14 @@
 			"visibilityWindow": 1000000
 		},
 		{
-			"name": "Common SNPS (150)",
+			"name": "Common SNPs (150)",
 			"type": "snp",
-			"sourceType": "ucscservice",
+			"format": "snp",
 			"visibilityWindow": 10000,
-			"source": {
-				"url": "https://data.igv.org/ucsc?db=hg38",
-				"method": "GET",
-				"tableName": "snp150"
-			}
+			"height": 30,
+			"url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz",
+			"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz.tbi"
+
 		}
 
 	]

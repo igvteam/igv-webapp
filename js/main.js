@@ -205,9 +205,13 @@ let initializationHelper = (browser, $container, options) => {
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
 
+
+    let urlShortenerFn;
     if (options.urlShortener) {
-        setURLShortener(options.urlShortener);
-    } else {
+        urlShortenerFn = setURLShortener(options.urlShortener) !== undefined;
+    }
+
+    if(!urlShortenerFn) {
         $igv_app_tweet_button_container.hide();
     }
 
@@ -216,7 +220,7 @@ let initializationHelper = (browser, $container, options) => {
             $modal: $('#igv-app-share-modal'),
             $share_input: $('#igv-app-share-input'),
             $copy_link_button: $('#igv-app-copy-link-button'),
-            $tweet_button_container: options.urlShortener ? $igv_app_tweet_button_container : undefined,
+            $tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
             $email_button: $('#igv-app-email-button'),
             $embed_button: $('#igv-app-embed-button'),
             $qrcode_button: $('#igv-app-qrcode-button'),

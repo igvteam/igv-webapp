@@ -58,6 +58,8 @@ export function setURLShortener(obj) {
             }
     }
 
+    return fn;
+
 }
 
 export function sessionURL() {

@@ -3,7 +3,7 @@
 
 ### 1. Open the IGV-Web app
 
-In a web browser, navigate to <https://www.igv.org/app>.  
+In a web browser, navigate to <https://igv.org/app>.  
 
 ### 2. Load a reference genome
 IGV displays data mapped to the genomic coordinates of a reference genome. When the IGV-Web page first loads, it will load the default reference genome **hg19**. To load a different genome, click on the `Genome` dropdown menu and either select from the list of pre-defined genomes, or use one of the options to load a genome sequence file that you specify.

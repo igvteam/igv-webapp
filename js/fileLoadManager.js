@@ -49,8 +49,7 @@ class FileLoadManager {
     
     okHandler () {
 
-        var obj;
-        obj = this.trackLoadConfiguration();
+        let obj = this.trackLoadConfiguration();
         if (obj) {
 
             extractName(obj)
@@ -62,7 +61,11 @@ class FileLoadManager {
                     // Ignore errors extracting the name
                     console.error(error);
                     igv.browser.loadTrackList( [ obj ] );
-                })
+                });
+
+            return true;
+        } else {
+            return false;
         }
 
     }

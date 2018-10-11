@@ -118,14 +118,17 @@ let configureModal = (fileLoadWidget, $modal, okHandler = undefined) => {
 
     $ok.on('click', function () {
 
+        let status = true;
         if (okHandler) {
-            okHandler(fileLoadWidget.fileLoadManager);
+            status = okHandler(fileLoadWidget.fileLoadManager);
         } else {
-            fileLoadWidget.fileLoadManager.okHandler();
+            status = fileLoadWidget.fileLoadManager.okHandler();
         }
 
-        fileLoadWidget.dismiss();
-        $modal.modal('hide');
+        if (true === status) {
+            fileLoadWidget.dismiss();
+            $modal.modal('hide');
+        }
 
     });
 

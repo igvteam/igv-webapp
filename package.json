@@ -31,6 +31,8 @@
     "grunt-contrib-clean": "^1.1.0"
   },
   "dependencies": {
-    "npm": "^6.4.1"
+    "npm": "^6.4.1",
+    "to": "^0.2.9",
+    "update": "^0.7.4"
   }
 }

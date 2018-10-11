@@ -155,13 +155,13 @@ let indexLookup = (dataSuffix) => {
     fa =
         {
             index: 'fai',
-            isOptional: true
+            isOptional: false
         };
 
     fasta =
         {
             index: 'fai',
-            isOptional: true
+            isOptional: false
         };
 
     bam =

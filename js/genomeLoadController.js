@@ -49,7 +49,7 @@ class GenomeLoadController {
         this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
 
         doOK = function (fileLoadManager) {
-            okHandler(self, fileLoadManager);
+            return okHandler(self, fileLoadManager);
         };
 
         configureModal(this.urlWidget, $urlModal, doOK);
@@ -170,7 +170,7 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
 function okHandler(genomeLoadController, fileLoadManager) {
 
-    if (isValidGenomeConfiguration(fileLoadManager)) {
+    if (true === isValidGenomeConfiguration(fileLoadManager)) {
 
         genomeLoadController
             .genomeConfiguration(fileLoadManager)
@@ -180,6 +180,9 @@ function okHandler(genomeLoadController, fileLoadManager) {
                 loadGenome(genome);
             });
 
+        return true;
+    } else {
+        return false;
     }
 
 }
@@ -189,13 +192,13 @@ function isValidGenomeConfiguration(fileLoadManager) {
     let success = true;
 
     if (undefined === fileLoadManager.dictionary) {
-
+        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: no data loaded');
         success = false;
     } else if (undefined === fileLoadManager.dictionary.data) {
-
+        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing fasta URL');
         success = false;
-    } else if (undefined === fileLoadManager.dictionary.data && undefined === fileLoadManager.dictionary.index) {
-
+    } else if (undefined === fileLoadManager.dictionary.index) {
+        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing .fai URL');
         success = false;
     }
 

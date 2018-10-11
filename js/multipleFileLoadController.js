@@ -494,7 +494,7 @@ function dataPathIsMissingIndexPath(dataName, indexPaths) {
         }
 
     } else {
-        status = false;
+        status = true;
     }
 
     return status;

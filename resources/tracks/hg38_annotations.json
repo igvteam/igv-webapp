@@ -1,6 +1,6 @@
 {
 	"label": "Annotations",
-    "description": "Annotations - source <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a>",
+    "description": "Annotations from the <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a> and <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a>",
 	"link": "http://hgdownload.soe.ucsc.edu/downloads.html",
 	"tracks": [
 
@@ -22,6 +22,20 @@
 			"url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz",
 			"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz.tbi"
 
+		},
+		{
+			"name": "GC %",
+			"type": "wig",
+			"format": "bigwig",
+			"url": "http://hgdownload.soe.ucsc.edu/gbdb/hg38/bbi/gc5BaseBw/gc5Base.bw",
+			"min": 0,
+			"max": 100
+		},
+		{
+			"name": "Phastcons (20 way)",
+			"url": "https://data.broadinstitute.org/igvdata/annotations/hg38/hg38.phastCons20way.bw",
+			"type": "wig",
+			"format": "bigwig"
 		}
 
 	]

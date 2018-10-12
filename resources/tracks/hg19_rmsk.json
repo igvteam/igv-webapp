@@ -1,0 +1,78 @@
+{
+  "label": "Repeat Masker",
+  "description": "Repeat masker tracks from <a href=http://genomewiki.ucsc.edu/index.php/RepeatMasker>UCSC</a>",
+  "tracks": [
+    {
+      "name": "SINE",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/SINE.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/SINE.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "LINE",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/LINE.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/LINE.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "LTR",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/LTR.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/LTR.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "DNA",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/DNA.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/DNA.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Simple",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/Simple_repeat.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/Simple_repeat.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Low Complexity",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/Low_complexity.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/Low_complexity.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Satellite",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/Satellite.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/Satellite.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "RC",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/RC.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/RC.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "RNA",
+      "url": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/RNA.rmask.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/variations/RNA.rmask.gz.tbi",
+      "type": "annotation",
+      "format": "rmsk",
+      "visibilityWindow": 10000000
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "label": "Repeat Masker",
+  "description": "Repeat masker tracks from <a href=http://genomewiki.ucsc.edu/index.php/RepeatMasker>UCSC</a>",
+  "tracks": [
+    {
+      "name": "SINE",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/SINE.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/SINE.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "LINE",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/LINE.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/LINE.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "LTR",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/LTR.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/LTR.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "DNA",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/DNA.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/DNA.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Simple",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Simple_repeat.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Simple_repeat.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Low Complexity",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Low_complexity.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Low_complexity.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Satellite",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Satellite.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Satellite.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "RC",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/RC.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/RC.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "Retroposon",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Retroposon.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/Retroposon.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "RNA",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/RNA.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/RNA.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "rRNA",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/rRNA.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/rRNA.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "scRNA",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/scRNA.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/scRNA.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "snRNA",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/snRNA.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/snRNA.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "srpRNA",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/srpRNA.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/srpRNA.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    },
+    {
+      "name": "tRNA",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/tRNA.bed.gz",
+      "indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg38/rmsk/tRNA.bed.gz.tbi",
+      "type": "annotation",
+      "format": "bed",
+      "visibilityWindow": 10000000
+    }
+  ]
+}

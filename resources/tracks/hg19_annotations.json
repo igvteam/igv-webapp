@@ -1,6 +1,6 @@
 {
   "label": "Annotations",
-  "description": "Annotations - source <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a>",
+  "description": "Sources: <ul><li> <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a> </li> <li><a href=https://www.gencodegenes.org  target=_blank>GENCODE</a></li> <li><a href=http://www.internationalgenome.org/  target=_blank>1000 Genomes</a></li>",
   "tracks": [
     {
       "type": "annotation",
@@ -24,6 +24,13 @@
       "indexURL": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz.tbi?versionId=null",
       "visibilityWindow": 20000,
       "name": "1000 Genomes Sites"
+    },
+    {
+      "name": "CpG Islands",
+      "type": "annotation",
+      "format": "bed",
+      "indexed": false,
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg19/cpgIslands.hg19.bed"
     }
   ]
 }

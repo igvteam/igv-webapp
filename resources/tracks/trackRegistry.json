@@ -1,13 +1,14 @@
 {
-  "hg19" : [
+  "hg19": [
     "resources/tracks/hg19_annotations.json",
+    "resources/tracks/hg19_rmsk.json",
     "resources/tracks/hg19_platinum_genomes.json",
     "resources/tracks/hg19_encode.json",
     "@EXTRAS_hg19"
   ],
-
-  "hg38" : [
+  "hg38": [
     "resources/tracks/hg38_annotations.json",
+    "resources/tracks/hg38_rmsk.json",
     "resources/tracks/hg38_encode.json"
   ]
 }

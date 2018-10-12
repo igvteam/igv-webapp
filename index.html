@@ -103,8 +103,7 @@
                                 Local File ...
                             </div>
                             <div>
-                                <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file" multiple
-                                       style="display: none;">
+                                <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file" multiple style="display: none;">
                             </div>
                         </div>
                     </label>
@@ -201,35 +200,29 @@
             </div>
 
             <!-- Session -->
-            <div class="dropdown igv-app-site-widget" style="display: none">
+            <div class="dropdown igv-app-site-widget">
 
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                        id="igv-app-session-dropdown-button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="igv-app-session-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Session
                 </button>
 
                 <div class="dropdown-menu" aria-labelledby="igv-app-session-dropdown-button">
 
-                    <!-- local file -->
-                    <button id="igv-app-session-file-button" class="dropdown-item" type="button">
-                        <label for="igv-app-session-file-input">Local File</label>
-                        <input id="igv-app-session-file-input" name="igv-app-session-file-input" type="file">
-                    </button>
+                    <!-- load -->
+                    <label class="dropdown-item btn btn-default btn-file">
+                        <div class="igv-app-dropdown-item-cloud-storage">
+                            <div>
+                                Local File ...
+                            </div>
+                            <div>
+                                <input id="igv-app-load-session-file-input" type="file" name="file" style="display: none;">
+                            </div>
+                        </div>
+                    </label>
 
-                    <!-- URL -->
-                    <button class="dropdown-item" type="button" data-toggle="modal"
-                            data-target="#igv-app-session-url-modal">URL ...
-                    </button>
-
-                    <!-- Dropbox -->
-                    <button class="dropdown-item" type="button" data-toggle="modal"
-                            data-target="#igv-app-session-dropbox-modal">Dropbox ...
-                    </button>
-
-                    <!-- Google Drive -->
-                    <button class="dropdown-item" type="button" data-toggle="modal"
-                            data-target="#igv-app-session-google-drive-modal">Google Drive ...
+                    <!-- save -->
+                    <button id="igv-app-save-session-button" class="dropdown-item" type="button">
+                        Save
                     </button>
 
                 </div>

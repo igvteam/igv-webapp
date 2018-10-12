@@ -29,13 +29,13 @@ import MultipleFileLoadController from './multipleFileLoadController.js';
 import GenomeLoadController from './genomeLoadController.js';
 import TrackLoadController from './trackLoadController.js';
 import ShareController from './shareController.js';
-import SessionModalController from './sessionModalController.js';
+import SessionController from './sessionController.js';
 
 let trackLoadController;
 let multipleTrackFileLoader;
 let multipleGenomeFileLoader;
 let genomeLoadController;
-let sessionModalController;
+let sessionController;
 let shareController;
 let googleEnabled = false;
 
@@ -185,22 +185,15 @@ let initializationHelper = (browser, $container, options) => {
 
     trackLoadController = new TrackLoadController(browser, tlConfig);
 
-    // Session Modal Controller
-    /*
+    // Session Controller
     sessionConfig =
         {
-            $urlModal: $('#igv-app-session-url-modal'),
-            $dropboxModal: $('#igv-app-session-dropbox-modal'),
-            $googleDriveModal: $('#igv-app-session-google-drive-modal')
+            browser: browser,
+            $saveButton: $('#igv-app-save-session-button'),
+            $loadInput: $('#igv-app-load-session-file-input')
         };
-    sessionModalController = new SessionModalController(browser, sessionConfig);
 
-    $('#igv-app-session-file-input').on('change', (e) => {
-        let file;
-        file = e.target.files[ 0 ];
-        browser.loadSession(file);
-    });
-    */
+    sessionController = new SessionController(sessionConfig);
 
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');

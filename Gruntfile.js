@@ -23,6 +23,11 @@ module.exports = function (grunt) {
             config: {
                 src: 'igvwebConfig.js',
                 dest: 'dist/',
+            },
+            resources: {
+                expand: true,
+                src: 'resources/*',
+                dest: 'dist/'
             }
         },
 

@@ -8,7 +8,7 @@
       "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz",
       "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz.tbi",
       "name": "GENCODE genes v28",
-      "visibilityWindow": 10000000
+      "visibilityWindow": 20000000
     },
     {
       "name": "UCSC sno/miRNA ",
@@ -27,7 +27,7 @@
       "type": "annotation",
       "displayMode": "EXPANDED",
       "sourceType": "ucscservice",
-      "visibilityWindow": 1000000,
+      "visibilityWindow": 20000000,
       "source": {
         "url": "https://data.igv.org/ucsc",
         "db": "hg19",

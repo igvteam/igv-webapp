@@ -8,7 +8,7 @@
       "type": "annotation",
       "displayMode": "EXPANDED",
       "sourceType": "ucscservice",
-      "visibilityWindow": 2000000,
+      "visibilityWindow": 20000000,
       "source": {
         "url": "https://data.igv.org/ucsc",
         "db": "sacCer3",

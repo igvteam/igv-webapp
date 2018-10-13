@@ -4,19 +4,6 @@
   "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
-      "name": "NCBI RefSeq Genes",
-      "type": "annotation",
-      "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 20000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "ce11",
-        "method": "GET",
-        "tableName": "ncbiRefSeq"
-      }
-    },
-    {
       "name": "Ensembl Genes",
       "type": "annotation",
       "displayMode": "EXPANDED",
@@ -24,7 +11,7 @@
       "visibilityWindow": 20000000,
       "source": {
         "url": "https://data.igv.org/ucsc",
-        "db": "ce11",
+        "db": "rn6",
         "method": "GET",
         "tableName": "ensGene"
       }
@@ -34,10 +21,10 @@
       "type": "annotation",
       "displayMode": "EXPANDED",
       "sourceType": "ucscservice",
-      "visibilityWindow": 1000000,
+      "visibilityWindow": 100000,
       "source": {
         "url": "https://data.igv.org/ucsc",
-        "db": "ce11",
+        "db": "rn6",
         "method": "GET",
         "tableName": "rmsk"
       }

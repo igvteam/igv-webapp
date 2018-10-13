@@ -34,7 +34,7 @@
       "type": "annotation",
       "displayMode": "EXPANDED",
       "sourceType": "ucscservice",
-      "visibilityWindow": 100000,
+      "visibilityWindow": 1000000,
       "source": {
         "url": "https://data.igv.org/ucsc",
         "db": "danRer10",

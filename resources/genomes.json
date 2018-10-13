@@ -31,7 +31,8 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/refGene.sorted.txt.gz.tbi",
         "visibilityWindow": -1,
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "visibilityWindow": -1
       }
     ]
   },
@@ -48,7 +49,26 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/mm10/refGene.txt.gz",
         "order": 1000000,
         "removable": false,
-        "indexed": false
+        "indexed": false,
+        "visibilityWindow": -1
+      }
+    ]
+  },
+  {
+    "id": "rn6",
+    "name": "Rat (RGCS 6.0/rn6)",
+    "fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/rn6/rn6.fa",
+    "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/rn6/rn6.fa.fai",
+    "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/rn6/cytoBand.txt.gz",
+    "order": 1000000,
+    "tracks": [
+      {
+        "name": "Refseq Genes",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/rn6/refGene.txt.gz",
+        "order": 1000000,
+        "removable": false,
+        "indexed": false,
+        "visibilityWindow": -1
       }
     ]
   },
@@ -65,7 +85,8 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/danRer10/refGene.txt.gz",
         "order": 1000000,
         "removable": false,
-        "indexed": false
+        "indexed": false,
+        "visibilityWindow": -1
       }
     ]
   },
@@ -82,7 +103,8 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/danRer11/refGene.txt.gz",
         "order": 1000000,
         "removable": false,
-        "indexed": false
+        "indexed": false,
+        "visibilityWindow": -1
       }
     ]
   },
@@ -98,7 +120,8 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/dm6/refGene.txt.gz",
         "order": 1000000,
         "removable": false,
-        "indexed": false
+        "indexed": false,
+        "visibilityWindow": -1
       }
     ]
   },
@@ -114,7 +137,8 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/ce11/refGene.txt.gz",
         "order": 1000000,
         "removable": false,
-        "indexed": false
+        "indexed": false,
+        "visibilityWindow": -1
       }
     ]
   },
@@ -136,7 +160,8 @@
           "method": "GET",
           "tableName": "ensGene"
         },
-        "order": 100000
+        "order": 100000,
+        "visibilityWindow": -1
       }
     ]
   }

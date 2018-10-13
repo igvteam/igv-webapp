@@ -29,5 +29,8 @@
   ],
   "sacCer3": [
     "resources/tracks/sacCer3_annotations.json"
+  ],
+  "rn6": [
+    "resources/tracks/rn6_annotations.json"
   ]
 }

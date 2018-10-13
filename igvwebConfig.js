@@ -8,6 +8,8 @@ var igvwebConfig = {
 
     genomes: "resources/genomes.json",
 
+    embed: 'https://igv.org/web/test/embed.html',
+
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
     igvConfig:

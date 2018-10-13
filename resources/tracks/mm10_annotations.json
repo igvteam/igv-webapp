@@ -1,0 +1,46 @@
+{
+  "label": "Annotations",
+  "description": "Annotations from the <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a>",
+  "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+  "tracks": [
+    {
+      "name": "UCSC Genes",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "visibilityWindow": 2000000,
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "mm10",
+        "method": "GET",
+        "tableName": "knownGene"
+      }
+    },
+    {
+      "name": "Repeat Masker",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "visibilityWindow": 100000,
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "mm10",
+        "method": "GET",
+        "tableName": "rmsk"
+      }
+    },
+    {
+      "name": "Common SNPs (142)",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "visibilityWindow": 100000,
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "mm10",
+        "method": "GET",
+        "tableName": "snp142Common"
+      }
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "label": "Annotations",
+  "description": "Annotations from the <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a>",
+  "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+  "tracks": [
+    {
+      "name": "NCBI RefSeq Genes",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "visibilityWindow": 2000000,
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "sacCer3",
+        "method": "GET",
+        "tableName": "ncbiRefSeq"
+      }
+    },
+    {
+      "name": "Microsatellites",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "sacCer3",
+        "method": "GET",
+        "tableName": "microsat"
+      }
+    },
+    {
+      "name": "Simple Repeats",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "sacCer3",
+        "method": "GET",
+        "tableName": "simpleRepeat"
+      }
+    }
+  ]
+}

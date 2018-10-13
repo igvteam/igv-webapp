@@ -10,5 +10,24 @@
     "resources/tracks/hg38_annotations.json",
     "resources/tracks/hg38_rmsk.json",
     "resources/tracks/hg38_encode.json"
+  ],
+  "mm10": [
+    "resources/tracks/mm10_annotations.json",
+    "resources/tracks/mm10_encode.json"
+  ],
+  "danRer11": [
+    "resources/tracks/danRer11_annotations.json"
+  ],
+  "danRer10": [
+    "resources/tracks/danRer10_annotations.json"
+  ],
+  "dm6": [
+    "resources/tracks/dm6_annotations.json"
+  ],
+  "ce11": [
+    "resources/tracks/ce11_annotations.json"
+  ],
+  "sacCer3": [
+    "resources/tracks/sacCer3_annotations.json"
   ]
 }

@@ -1,42 +1,77 @@
 {
-	"label": "Annotations",
-    "description": "Annotations from the <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a> and <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a>",
-	"link": "http://hgdownload.soe.ucsc.edu/downloads.html",
-	"tracks": [
-
-		{
-			"name": "Gencode v28 Basic",
-			"type": "annotation",
-			"format": "gtf",
-			"displayMode": "EXPANDED",
-			"url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
-			"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
-			"visibilityWindow": 1000000
-		},
-		{
-			"name": "Common SNPs (150)",
-			"type": "snp",
-			"format": "snp",
-			"visibilityWindow": 10000,
-			"height": 30,
-			"url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz",
-			"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz.tbi"
-
-		},
-		{
-			"name": "GC %",
-			"type": "wig",
-			"format": "bigwig",
-			"url": "http://hgdownload.soe.ucsc.edu/gbdb/hg38/bbi/gc5BaseBw/gc5Base.bw",
-			"min": 0,
-			"max": 100
-		},
-		{
-			"name": "Phastcons (20 way)",
-			"url": "https://data.broadinstitute.org/igvdata/annotations/hg38/hg38.phastCons20way.bw",
-			"type": "wig",
-			"format": "bigwig"
-		}
-
-	]
+  "label": "Annotations",
+  "description": "Annotations from the <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a> and <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a>",
+  "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+  "tracks": [
+    {
+      "name": "Gencode v28 Basic",
+      "type": "annotation",
+      "format": "gtf",
+      "displayMode": "EXPANDED",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
+      "visibilityWindow": 1000000
+    },
+    {
+      "name": "UCSC sno/miRNA",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "hg38",
+        "method": "GET",
+        "tableName": "wgRna"
+      }
+    },
+    {
+      "name": "GWAS",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "visibilityWindow": 100000,
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "hg38",
+        "method": "GET",
+        "tableName": "gwasCatalog"
+      }
+    },
+    {
+      "name": "Common SNPs (150)",
+      "type": "snp",
+      "format": "snp",
+      "visibilityWindow": 10000,
+      "height": 30,
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz.tbi"
+    },
+    {
+      "name": "GC %",
+      "type": "wig",
+      "format": "bigwig",
+      "url": "http://hgdownload.soe.ucsc.edu/gbdb/hg38/bbi/gc5BaseBw/gc5Base.bw",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "CPG Islands",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "visibilityWindow": 2000000,
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "hg38",
+        "method": "GET",
+        "tableName": "cpgIslandExt"
+      }
+    },
+    {
+      "name": "Phastcons (20 way)",
+      "url": "https://data.broadinstitute.org/igvdata/annotations/hg38/hg38.phastCons20way.bw",
+      "type": "wig",
+      "format": "bigwig"
+    }
+  ]
 }

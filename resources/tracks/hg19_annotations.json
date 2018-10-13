@@ -1,6 +1,6 @@
 {
   "label": "Annotations",
-  "description": "Sources: <ul><li> <a href=http://hgdownload.soe.ucsc.edu/downloads.html target=_blank>UCSC Genome Browser</a> </li> <li><a href=https://www.gencodegenes.org  target=_blank>GENCODE</a></li> <li><a href=http://www.internationalgenome.org/  target=_blank>1000 Genomes</a></li>",
+  "description": "Sources: <ul><li> <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a> </li> <li><a href=https://www.gencodegenes.org  target=_blank>GENCODE</a></li> <li><a href=http://www.internationalgenome.org/  target=_blank>1000 Genomes</a></li>",
   "tracks": [
     {
       "type": "annotation",
@@ -9,6 +9,31 @@
       "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz.tbi",
       "name": "GENCODE genes v28",
       "visibilityWindow": 10000000
+    },
+    {
+      "name": "UCSC sno/miRNA ",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "hg19",
+        "method": "GET",
+        "tableName": "wgRna"
+      }
+    },
+    {
+      "name": "GWAS",
+      "type": "annotation",
+      "displayMode": "EXPANDED",
+      "sourceType": "ucscservice",
+      "visibilityWindow": 1000000,
+      "source": {
+        "url": "https://data.igv.org/ucsc",
+        "db": "hg19",
+        "method": "GET",
+        "tableName": "gwasCatalog"
+      }
     },
     {
       "name": "Common SNPs (150)",

@@ -6,7 +6,7 @@
 
 var igvwebConfig = {
 
-    genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
+    genomes: "resources/genomes.json",
 
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 

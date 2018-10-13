@@ -137,18 +137,15 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
         if (genomeDictionary.hasOwnProperty(key)) {
 
-            $button = createButton(key);
-
-            // prepend buttons relative to divider
+            $button = createButton(genomeDictionary[ key ].name);
             $button.insertBefore( $divider );
+            $button.data('id', key);
 
             $button.on('click', function () {
-                var key;
 
-                key = $(this).text();
-
-                if (key !== browser.genome.id) {
-                    loadGenome(genomeDictionary[ key ]);
+                const id = $(this).data('id');
+                if (id !== browser.genome.id) {
+                    loadGenome(genomeDictionary[ id ]);
                 }
 
             });
@@ -158,9 +155,8 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
     } // for (...)
 
     function createButton (title) {
-        var $button;
 
-        $button = $('<button>', { class:'dropdown-item', type:'button' });
+        let $button = $('<button>', { class:'dropdown-item', type:'button' });
         $button.text(title);
 
         return $button;

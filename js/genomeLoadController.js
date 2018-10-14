@@ -190,10 +190,10 @@ function isValidGenomeConfiguration(fileLoadManager) {
     if (undefined === fileLoadManager.dictionary) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: no data loaded');
         success = false;
-    } else if (undefined === fileLoadManager.dictionary.data) {
+    } else if (undefined === fileLoadManager.dictionary.data || "" === fileLoadManager.dictionary.data) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing fasta URL');
         success = false;
-    } else if (undefined === fileLoadManager.dictionary.index) {
+    } else if (undefined === fileLoadManager.dictionary.index || "" === fileLoadManager.dictionary.index) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing .fai URL');
         success = false;
     }

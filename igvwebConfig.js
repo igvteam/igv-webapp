@@ -10,11 +10,13 @@ var igvwebConfig = {
 
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
+    embedTarget: 'https://igv.org/web/test/embed.html',
+
     igvConfig:
         {
             queryParametersSupported: true,
             showChromosomeWidget: true,
-            embed: 'https://igv.org/web/test/embed.html',
+
             genome: "hg19",
             apiKey: "API_KEY"
         },

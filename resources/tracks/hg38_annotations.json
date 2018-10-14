@@ -13,29 +13,21 @@
       "visibilityWindow": 1000000
     },
     {
-      "name": "UCSC sno/miRNA",
+      "name": "UCSC sno/miRNA ",
       "type": "annotation",
+      "format": "wgRna",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "hg38",
-        "method": "GET",
-        "tableName": "wgRna"
-      }
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/wgRna.txt.gz",
+      "indexed": false
     },
     {
       "name": "GWAS",
       "type": "annotation",
+      "format": "gwasCatalog",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 20000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "hg38",
-        "method": "GET",
-        "tableName": "gwasCatalog"
-      }
+      "visibilityWindow": -1,
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gwasCatalog.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gwasCatalog.txt.gz.tbi"
     },
     {
       "name": "Common SNPs (150)",
@@ -47,25 +39,29 @@
       "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz.tbi"
     },
     {
+      "name": "Repeat Masker",
+      "type": "annotation",
+      "format": "rmsk",
+      "displayMode": "EXPANDED",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/rmsk.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/rmsk.txt.gz.tbi",
+      "visibilityWindow": 1000000
+    },
+    {
       "name": "GC %",
       "type": "wig",
       "format": "bigwig",
-      "url": "http://hgdownload.soe.ucsc.edu/gbdb/hg38/bbi/gc5BaseBw/gc5Base.bw",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gc5Base.bw",
       "min": 0,
       "max": 100
     },
     {
-      "name": "CPG Islands",
+      "name": "CpG Islands",
       "type": "annotation",
+      "format": "cpgIslandExt",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 2000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "hg38",
-        "method": "GET",
-        "tableName": "cpgIslandExt"
-      }
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
+      "indexed": false
     },
     {
       "name": "Phastcons (20 way)",

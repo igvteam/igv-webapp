@@ -6,28 +6,27 @@
     {
       "name": "Ensembl Genes",
       "type": "annotation",
+      "format": "ensgene",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 20000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "rn6",
-        "method": "GET",
-        "tableName": "ensGene"
-      }
+      "url": "https://s3.amazonaws.com/igv.org.genomes/rn6/ensGene.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/rn6/ensGene.txt.gz.tbi",
+      "visibilityWindow": 20000000
     },
     {
       "name": "Repeat Masker",
       "type": "annotation",
+      "format": "rmsk",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 100000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "rn6",
-        "method": "GET",
-        "tableName": "rmsk"
-      }
+      "url": "https://s3.amazonaws.com/igv.org.genomes/rn6/rmsk.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/rn6/rmsk.txt.gz.tbi",
+      "visibilityWindow": 1000000
+    },
+    {
+      "name": "CpG Islands",
+      "type": "annotation",
+      "format": "cpgIslandExt",
+      "displayMode": "EXPANDED",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/rn6/cpgIslandExt.txt.gz"
     }
   ]
 }

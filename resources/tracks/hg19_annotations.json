@@ -13,27 +13,18 @@
     {
       "name": "UCSC sno/miRNA ",
       "type": "annotation",
+      "format": "wgRna",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "hg19",
-        "method": "GET",
-        "tableName": "wgRna"
-      }
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/wgRna.txt.gz"
     },
     {
       "name": "GWAS",
       "type": "annotation",
+      "format": "gwasCatalog",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 20000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "hg19",
-        "method": "GET",
-        "tableName": "gwasCatalog"
-      }
+      "visibilityWindow": -1,
+      "url" : "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gwasCatalog.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gwasCatalog.txt.gz.tbi"
     },
     {
       "name": "Common SNPs (150)",
@@ -45,17 +36,30 @@
       "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi"
     },
     {
+      "type": "variant",
+      "format": "vcf",
       "url": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz?versionId=null",
       "indexURL": "https://s3.amazonaws.com/1000genomes/release/20130502/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz.tbi?versionId=null",
       "visibilityWindow": 20000,
       "name": "1000 Genomes Sites"
     },
     {
+      "name": "Repeat Masker",
+      "type": "annotation",
+      "format": "rmsk",
+      "displayMode": "EXPANDED",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/rmsk.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/rmsk.txt.gz.tbi",
+      "visibilityWindow": 1000000
+    },
+    {
       "name": "CpG Islands",
       "type": "annotation",
-      "format": "bed",
-      "indexed": false,
-      "url": "https://data.broadinstitute.org/igvdata/annotations/hg19/cpgIslands.hg19.bed"
+      "format": "cpgIslandExt",
+      "displayMode": "EXPANDED",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
+      "indexed": false
+
     }
   ]
 }

@@ -225,7 +225,8 @@ let initializationHelper = (browser, $container, options) => {
             $embed_button: $('#igv-app-embed-button'),
             $qrcode_button: $('#igv-app-qrcode-button'),
             $embed_container: $('#igv-app-embed-container'),
-            $qrcode_image: $('#igv-app-qrcode-image')
+            $qrcode_image: $('#igv-app-qrcode-image'),
+            embedTarget: options.igvConfig.embed
         };
 
     shareController = new ShareController($container, browser, shareConfig);

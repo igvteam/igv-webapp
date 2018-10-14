@@ -8,14 +8,13 @@ var igvwebConfig = {
 
     genomes: "resources/genomes.json",
 
-    embed: 'https://igv.org/web/test/embed.html',
-
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
     igvConfig:
         {
             queryParametersSupported: true,
             showChromosomeWidget: true,
+            embed: 'https://igv.org/web/test/embed.html',
             genome: "hg19",
             apiKey: "API_KEY"
         },

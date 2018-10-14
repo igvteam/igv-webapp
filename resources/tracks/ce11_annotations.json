@@ -4,43 +4,16 @@
   "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
-      "name": "NCBI RefSeq Genes",
-      "type": "annotation",
-      "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 20000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "ce11",
-        "method": "GET",
-        "tableName": "ncbiRefSeq"
-      }
-    },
-    {
-      "name": "Ensembl Genes",
-      "type": "annotation",
-      "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 20000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "ce11",
-        "method": "GET",
-        "tableName": "ensGene"
-      }
-    },
-    {
       "name": "Repeat Masker",
       "type": "annotation",
+      "format": "rmsk"
+    },
+    {
+      "name": "CpG Islands",
+      "type": "annotation",
+      "format": "cpgIslandExt",
       "displayMode": "EXPANDED",
-      "sourceType": "ucscservice",
-      "visibilityWindow": 1000000,
-      "source": {
-        "url": "https://data.igv.org/ucsc",
-        "db": "ce11",
-        "method": "GET",
-        "tableName": "rmsk"
-      }
+      "url": "https://s3.amazonaws.com/igv.org.genomes/ce11/cpgIslandExt.txt.gz"
     }
   ]
 }

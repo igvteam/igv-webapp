@@ -1,14 +1,12 @@
 {
   "hg19": [
     "resources/tracks/hg19_annotations.json",
-    "resources/tracks/hg19_rmsk.json",
     "resources/tracks/hg19_platinum_genomes.json",
     "resources/tracks/hg19_encode.json",
     "@EXTRAS_hg19"
   ],
   "hg38": [
     "resources/tracks/hg38_annotations.json",
-    "resources/tracks/hg38_rmsk.json",
     "resources/tracks/hg38_encode.json"
   ],
   "mm10": [
@@ -26,9 +24,6 @@
   ],
   "ce11": [
     "resources/tracks/ce11_annotations.json"
-  ],
-  "sacCer3": [
-    "resources/tracks/sacCer3_annotations.json"
   ],
   "rn6": [
     "resources/tracks/rn6_annotations.json"

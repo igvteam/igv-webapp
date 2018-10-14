@@ -151,17 +151,10 @@
       {
         "name": "Ensembl Genes",
         "type": "annotation",
+        "format": "ensgene",
         "displayMode": "EXPANDED",
-        "sourceType": "ucscservice",
-        "visibilityWindow": 2000000,
-        "source": {
-          "url": "https://data.igv.org/ucsc",
-          "db": "sacCer3",
-          "method": "GET",
-          "tableName": "ensGene"
-        },
-        "order": 100000,
-        "visibilityWindow": -1
+        "url": "https://s3.amazonaws.com/igv.org.genomes/sacCer3/ensGene.txt.gz",
+        "indexed": false
       }
     ]
   }

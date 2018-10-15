@@ -118,11 +118,18 @@ class FileLoadManager {
             _isIndexable,
             indexFileStatus;
 
+        if ("" === this.dictionary.data) {
+            this.dictionary.data = undefined;
+        }
+
+        if ("" === this.dictionary.index) {
+            this.dictionary.index = undefined;
+        }
+
         if (undefined === this.dictionary.data) {
             this.fileLoadWidget.presentErrorMessage('Error: No data file');
             return undefined;
         } else {
-
 
             if (true === isJSON(this.dictionary.data)) {
                 return this.dictionary.data;

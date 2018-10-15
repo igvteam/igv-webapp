@@ -22,7 +22,7 @@
  */
 
 
-import {bitlyShortener, googleShortener} from "./urlShortener";
+import {bitlyShortener, googleShortener} from "./urlShortener.js";
 
 let urlShortener;
 

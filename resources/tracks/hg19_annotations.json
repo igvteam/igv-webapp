@@ -1,6 +1,6 @@
 {
   "label": "Annotations",
-  "description": "Sources:  <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a>, <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a><, <a href=http://www.internationalgenome.org/  target=_blank>1000 Genomes</a><",
+  "description": "Sources:  <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a>, <a href=https://civicdb.org/home/ target=_blank>CIViC: Clinical Interpretations of Variants in Cancer</a>, <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a><, <a href=http://www.internationalgenome.org/  target=_blank>1000 Genomes</a><",
   "tracks": [
     {
       "type": "annotation",
@@ -60,6 +60,14 @@
       "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
       "indexed": false
 
+    },
+    {
+      "type": "annotation",
+      "sourceType": "civic-ws",
+      "url": "https://civicdb.org/api",
+      "name": "CIViC",
+      "indexed": false,
+      "queryable": false
     }
   ]
 }

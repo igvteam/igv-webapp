@@ -39,17 +39,16 @@ are customizable.
 * genomes - url to a file containing a list of genome configuration objects.  This list populates the Genomes 
 pulldown menu.  See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome-2.0) for a description of 
 the genome configuration object.  For an example see 
-the [defult genome list](https://s3.amazonaws.com/igv.org.genomes/genomes.json).
+the default genome list in ```resources/genomes```.
 
-
-* trackRegistryFile - url to a file configurating the Track pulldown.  Use this to define custom load menus.   For an example see the default configuration
-at _resources/tracks/trackRegistry.json_.  See [Track Registry](#track-registry) below for more details on the file formats.
+* trackRegistryFile - url to a file configurating the Track pulldown.  Use this to define custom load menus.  The file contains
+a json object with genomeIDs as keys and an array of URLs to json files defining menu entries in the _Load Tracks_ pulldown.
+For an example see the default configuration at ```resources/tracks/trackRegistry.json```.    Further details on the track menu configuration are available [below](###-track-registry).
 
 * igvConfg - an igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0) for details.
 The property **apiKey** is optional. Setting a value will enable access to public Google resources.
 See [Google Support](https://support.google.com/googleapi/answer/6158862?hl=en) for instructions
 on obtaining an API key.  
-
 
 * clientId - a Google clientId, used to enable OAuth for the Google picker and access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for

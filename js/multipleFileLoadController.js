@@ -404,8 +404,7 @@ function getIndexURL(indexValue) {
 
 function getIndexPaths(dataPathNames, indexPathCandidates) {
     let list,
-        indexPaths,
-        dev_null;
+        indexPaths;
 
     // add info about presence and requirement (or not) of an index path
     list = Object
@@ -427,8 +426,7 @@ function getIndexPaths(dataPathNames, indexPathCandidates) {
         })
         .filter(function (indexObject) {
 
-            // prune the optional and missing index files for data files
-            // that don't require and index file
+            // prune optional AND missing index files
             if (1 === Object.keys(indexObject).length) {
 
                 let obj;
@@ -478,7 +476,14 @@ function dataPathIsMissingIndexPath(dataName, indexPaths) {
     let status,
         aa;
 
-    if (indexPaths && indexPaths[ dataName ]) {
+    // if index for data is not in indexPaths it has been culled
+    // because it is optional AND missing
+    if (undefined === indexPaths[ dataName ]) {
+
+        status = false;
+    }
+
+    else if (indexPaths && indexPaths[ dataName ]) {
 
         aa = indexPaths[ dataName ][ 0 ];
         if (1 === indexPaths[ dataName ].length) {

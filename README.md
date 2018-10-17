@@ -43,7 +43,7 @@ the default genome list in ```resources/genomes```.
 
 * trackRegistryFile - url to a file configurating the Track pulldown.  Use this to define custom load menus.  The file contains
 a json object with genomeIDs as keys and an array of URLs to json files defining menu entries in the _Load Tracks_ pulldown.
-For an example see the default configuration at ```resources/tracks/trackRegistry.json```.    Further details on the track menu configuration are available [below](###-track-registry).
+For an example see the default configuration at ```resources/tracks/trackRegistry.json```.    Further details on the track menu configuration are available [below](#track-registry).
 
 * igvConfg - an igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0) for details.
 The property **apiKey** is optional. Setting a value will enable access to public Google resources.

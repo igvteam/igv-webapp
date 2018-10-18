@@ -24,7 +24,7 @@
       "sourceType": "civic-ws",
       "url": "https://civicdb.org/api",
       "name": "CIViC",
-      "displayMode": "collapsed",
+      "displayMode": "SQUISHED",
       "indexed": false,
       "queryable": false
     }

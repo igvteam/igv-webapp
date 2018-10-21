@@ -1,12 +1,14 @@
 # IGV Web App
 
-This is the source code for the IGV web application. 
-It is based on the igv.js embeddable interactive genome visualization
-component developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team.
+igv-webapp is a pure-client "genome browser" application based [igv.js](https://github.com/igvteam/igv.js).  It is developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team.
 
 ## Requirements
 - Node >= v8.11.4
 - NPM >= v5.6.0
+
+## Supported Browsers
+
+igv-webapp and igv.js require a modern web browser with support for Javascript ECMAScript 2015. We test on the latest versions of Chrome, Safari, Firefox, and Edge. Internet Explorer (IE) is not supported.
 
 ## Installation
 * Clone this repository

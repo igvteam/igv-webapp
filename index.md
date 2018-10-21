@@ -3,7 +3,7 @@
 
 ### 1. Open the IGV-Web app
 
-In a web browser, navigate to <https://igv.org/app>.  
+In a [web browser](#supported-browsers), navigate to <https://igv.org/app>.  
 
 ### 2. Load a reference genome
 IGV displays data mapped to the genomic coordinates of a reference genome. When the IGV-Web page first loads, it will load the default reference genome **hg19**. To load a different genome, click on the `Genome` dropdown menu and either select from the list of pre-defined genomes, or use one of the options to load a genome sequence file that you specify.
@@ -157,7 +157,7 @@ The gear menu for sequence tracks includes two options:
 * **Sequence translation.** Click on `Three-frame Translate` to display a 3-band track that shows a 3-frame translation of the amino acid sequence for the corresponding nucleotide sequence. The translation is shown for the current strand. Amino acids are displayed as blocks colored in alternating shades of gray. Methionines are colored green, and all stop codons are colored red. When you zoom all the way in, the amino acid symbols will appear. Click on `Close Translation` to collapse the track to display the sequence only.
 ![](./assets/images/Sequence3FrameTranslate.png)
 
-### Supported browsers
+# Supported browsers
 
 IGV-Web and igv.js require a modern web browser with support for Javascript ECMAScript 2015.   We test on the latest versions of Chrome, Safari, Firefox, and Edge.   Internet Explorer (IE) is not supported.
 

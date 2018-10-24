@@ -46,10 +46,11 @@ class ShareController {
 
             const session = igv.browser.compressedSession();
 
-            // Embeddable snippet
-            const snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, session);
-            shareConfig.$embed_container.find('textarea').val(snippet);
-            shareConfig.$embed_container.find('textarea').get(0).select();
+            if (shareConfig.embedTarget) {
+                const snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, session);
+                shareConfig.$embed_container.find('textarea').val(snippet);
+                shareConfig.$embed_container.find('textarea').get(0).select();
+            }
 
             shortSessionURL(href, session)
 
@@ -108,23 +109,30 @@ class ShareController {
             }
         });
 
-        shareConfig.$embed_container.find('button').on('click', function (e) {
-            var success;
+        if (undefined === shareConfig.embedTarget) {
 
-            shareConfig.$embed_container.find('textarea').get(0).select();
-            success = document.execCommand('copy');
+            shareConfig.$embed_button.hide();
+        } else {
 
-            if (success) {
-                shareConfig.$modal.modal('hide');
-            } else {
-                console.log('fail!');
-            }
-        });
+            shareConfig.$embed_container.find('button').on('click', function (e) {
+                var success;
 
-        shareConfig.$embed_button.on('click', function (e) {
-            shareConfig.$qrcode_image.hide();
-            shareConfig.$embed_container.toggle();
-        });
+                shareConfig.$embed_container.find('textarea').get(0).select();
+                success = document.execCommand('copy');
+
+                if (success) {
+                    shareConfig.$modal.modal('hide');
+                } else {
+                    console.log('fail!');
+                }
+            });
+
+            shareConfig.$embed_button.on('click', function (e) {
+                shareConfig.$qrcode_image.hide();
+                shareConfig.$embed_container.toggle();
+            });
+
+        }
 
         shareConfig.$qrcode_button.on('click', function (e) {
             shareConfig.$embed_container.hide();

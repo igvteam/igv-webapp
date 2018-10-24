@@ -222,10 +222,10 @@ let initializationHelper = (browser, $container, options) => {
             $copy_link_button: $('#igv-app-copy-link-button'),
             $tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
             $email_button: $('#igv-app-email-button'),
-            $embed_button: $('#igv-app-embed-button'),
             $qrcode_button: $('#igv-app-qrcode-button'),
-            $embed_container: $('#igv-app-embed-container'),
             $qrcode_image: $('#igv-app-qrcode-image'),
+            $embed_container: $('#igv-app-embed-container'),
+            $embed_button: $('#igv-app-embed-button'),
             embedTarget: options.embedTarget
         };
 

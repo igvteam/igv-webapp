@@ -91,8 +91,7 @@
                     Genome
                 </button>
 
-                <div id="igv-app-genome-dropdown-menu" class="dropdown-menu"
-                     aria-labelledby="igv-app-genome-dropdown-button">
+                <div id="igv-app-genome-dropdown-menu" class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
 
                     <div id="igv-app-genome-dropdown-divider" class="dropdown-divider"></div>
 
@@ -111,8 +110,7 @@
                     <!-- Dropbox -->
                     <button class="dropdown-item" type="button">
 
-                        <div id="igv-app-dropdown-dropbox-genome-file-button"
-                             class="igv-app-dropdown-item-cloud-storage">
+                        <div id="igv-app-dropdown-dropbox-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
 
                             <div>Dropbox</div>
                             <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
@@ -124,8 +122,7 @@
 
                     <!-- Google Drive -->
                     <button class="dropdown-item" type="button">
-                        <div id="igv-app-dropdown-google-drive-genome-file-button"
-                             class="igv-app-dropdown-item-cloud-storage">
+                        <div id="igv-app-dropdown-google-drive-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
                             <div>Google Drive</div>
                             <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
@@ -133,8 +130,7 @@
                     </button>
 
                     <!-- URL -->
-                    <button class="dropdown-item" type="button" data-toggle="modal"
-                            data-target="#igv-app-genome-from-url-modal">URL ...
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">URL ...
                     </button>
 
                 </div>
@@ -208,23 +204,57 @@
 
                 <div class="dropdown-menu" aria-labelledby="igv-app-session-dropdown-button">
 
-                    <!-- load -->
+                    <!-- Load local session file -->
                     <label class="dropdown-item btn btn-default btn-file">
                         <div class="igv-app-dropdown-item-cloud-storage">
                             <div>
                                 Local File ...
                             </div>
                             <div>
-                                <input id="igv-app-load-session-file-input" type="file" name="file" style="display: none;">
+                                <input id="igv-app-dropdown-local-session-file-input" type="file" name="file" style="display: none;">
                             </div>
                         </div>
                     </label>
 
+<<<<<<< HEAD
                     <div class="dropdown-divider"></div>
 
                     <!-- save -->
                     <button id="igv-app-save-session-button" class="dropdown-item" type="button">
                         Save
+=======
+                    <!-- Load Dropbox hosted session file -->
+                    <button class="dropdown-item" type="button">
+
+                        <div id="igv-app-dropdown-dropbox-session-file-button" class="igv-app-dropdown-item-cloud-storage">
+
+                            <div>Dropbox</div>
+                            <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
+                            <div>...</div>
+
+                        </div>
+
+                    </button>
+
+                    <!-- Load Google Drive hosted session file -->
+                    <button class="dropdown-item" type="button">
+                        <div id="igv-app-dropdown-google-drive-session-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div>Google Drive</div>
+                            <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                            <div>...</div>
+                        </div>
+                    </button>
+
+                    <!-- Load session URL -->
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">Load URL ...
+                    </button>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Save local session file -->
+                    <button id="igv-app-save-session-button" class="dropdown-item" type="button">
+                        Save Local File ...
+>>>>>>> session load/save build out.
                     </button>
 
                 </div>
@@ -258,8 +288,7 @@
     </div>
 
     <!-- Multiple File Load Modal -->
-    <div id="igv-app-multiple-file-load-modal" class="modal" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-multiple-file-load-modal-label" aria-hidden="true">
+    <div id="igv-app-multiple-file-load-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="igv-app-multiple-file-load-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -349,8 +378,7 @@
     </div>
 
     <!-- Genome from URL -->
-    <div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
+    <div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -411,15 +439,14 @@
     </div>
 
     <!-- Session from URL -->
-    <div id="igv-app-session-url-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-session-url-modal-label" aria-hidden="true">
+    <div id="igv-app-session-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-from-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <div id="igv-app-session-url-modal-label" class="modal-title">Load Session URL</div>
+                    <div id="igv-app-session-from-url-modal-label" class="modal-title">Session URL</div>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -432,7 +459,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-sm btn-secondary">OK</button>
                 </div>
 
             </div>

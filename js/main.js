@@ -34,6 +34,7 @@ import SessionController from './sessionController.js';
 let trackLoadController;
 let multipleTrackFileLoader;
 let multipleGenomeFileLoader;
+let multipleSessionFileLoader;
 let genomeLoadController;
 let sessionController;
 let shareController;
@@ -95,7 +96,8 @@ let initializationHelper = (browser, $container, options) => {
         glConfig,
         shareConfig,
         $igv_app_dropdown_google_drive_track_file_button,
-        $igv_app_dropdown_google_drive_genome_file_button;
+        $igv_app_dropdown_google_drive_genome_file_button,
+        $igv_app_dropdown_google_drive_session_file_button;
 
     appFooterImageHoverBehavior($('#igv-app-ucsd-logo').find('img'));
     appFooterImageHoverBehavior($('#igv-app-broad-logo').find('img'));
@@ -153,8 +155,8 @@ let initializationHelper = (browser, $container, options) => {
         };
     genomeLoadController = new GenomeLoadController(browser, glConfig);
 
-    genomeLoadController.getAppLaunchGenomes()
-
+    genomeLoadController
+        .getAppLaunchGenomes()
         .then((dictionary) => {
 
             if (dictionary) {
@@ -185,19 +187,40 @@ let initializationHelper = (browser, $container, options) => {
 
     trackLoadController = new TrackLoadController(browser, tlConfig);
 
+    $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
+    if (!googleEnabled) {
+        $igv_app_dropdown_google_drive_session_file_button.parent().hide();
+    }
+
     // Session Controller
-    sessionConfig =
+    const msflConfig =
         {
-            browser: browser,
-            $saveButton: $('#igv-app-save-session-button'),
-            $loadInput: $('#igv-app-load-session-file-input')
+            sessionJSON: true,
+            $modal: $multipleFileLoadModal,
+            modalTitle: 'Session File Error',
+            $localFileInput: $('#igv-app-dropdown-local-session-file-input'),
+            $dropboxButton: $('#igv-app-dropdown-dropbox-session-file-button'),
+            // $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_session_file_button : undefined,
+            configurationHandler: MultipleFileLoadController.sessionConfigurator,
+            fileLoadHandler: (configurations) => { }
         };
 
-    sessionController = new SessionController(sessionConfig);
+    multipleSessionFileLoader = new MultipleFileLoadController(browser, msflConfig);
+
+    $('#igv-app-save-session-button').on('click', (e) => {
+
+        const json = browser.toJSON();
+        const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
+        const filename = 'igv-webapp-session.json';
+        igv.download(filename, data);
+    });
+
+    // Genome Modal Controller
+    sessionController = new SessionController({ browser: browser, $urlModal: $('#igv-app-session-from-url-modal') });
+
 
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
-
 
     let urlShortenerFn;
     if (options.urlShortener) {

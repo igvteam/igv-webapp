@@ -1,17 +1,22 @@
+import FileLoadWidget from "./fileLoadWidget";
+import FileLoadManager from "./fileLoadManager";
+import {configureModal} from "./utils";
+
 class SessionController {
 
-    constructor({ browser, $saveButton, $loadInput }) {
+    constructor ({ browser, $urlModal }) {
 
-        this.browser = browser;
+        let urlConfig =
+            {
+                dataTitle: 'Session',
+                $widgetParent: $urlModal.find('.modal-body'),
+                mode: 'url'
+            };
 
-        let self = this;
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
 
-        $saveButton.on('click', (e) => {
-            self.save();
-        });
-
-        $loadInput.on('change', (e) => {
-            self.load(e);
+        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
+            return true;
         });
 
     }
@@ -21,11 +26,6 @@ class SessionController {
         const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
         const filename = 'igv-webapp-session.json';
         igv.download(filename, data);
-    }
-
-    load(e){
-        let file = e.target.files[ 0 ];
-        this.browser.loadSession(file);
     }
 
 }

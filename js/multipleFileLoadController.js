@@ -29,6 +29,7 @@ class MultipleFileLoadController {
     constructor (browser, config) {
 
         this.browser = browser;
+        this.config = config;
 
         this.fileLoadHander = config.fileLoadHandler;
         this.configurationHandler = config.configurationHandler;
@@ -62,16 +63,22 @@ class MultipleFileLoadController {
         this.$modal_body.empty();
 
         // accumulate JSON retrieval promises
-        jsonRetrievalTasks = paths
-            .filter((path) => ('json' === getExtension(path)))
+        let jsonPaths = paths.filter((path) => ('json' === getExtension(path)) );
+        let remainingPaths;
+        if (jsonPaths) {
+            remainingPaths = paths.filter((path) => ('json' !== getExtension(path)) )
+        } else {
+            remainingPaths = paths;
+        }
+
+        jsonRetrievalTasks = jsonPaths
             .map((path) => {
-                let url;
-                url = (path.google_url || path);
-                return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
+                let url = (path.google_url || path);
+                return { name: getFilename(path), promise: true === self.config.sessionJSON ? self.browser.loadSession(url) : igv.xhr.loadJson(url)}
             });
 
         // data (non-JSON)
-        dataPaths = paths
+        dataPaths = remainingPaths
             .filter((path) => (isKnownFileExtension( getExtension(path) )))
             .reduce(function(accumulator, path) {
                 accumulator[ getFilename(path) ] = (path.google_url || path);
@@ -79,7 +86,7 @@ class MultipleFileLoadController {
             }, {});
 
         // index paths (potentials)
-        indexPathCandidates = paths
+        indexPathCandidates = remainingPaths
             .filter((path) => isValidIndexExtension( getExtension(path) ))
             .reduce(function(accumulator, path) {
                 accumulator[ getFilename(path) ] = (path.google_url || path);
@@ -126,7 +133,22 @@ class MultipleFileLoadController {
             }, []);
 
         if (jsonRetrievalTasks.length > 0) {
-            this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+
+            if (true === this.config.sessionJSON) {
+
+                Promise
+                    .all(jsonRetrievalTasks.map((task) => (task.promise)))
+                    .then(function (ignore) {
+                        console.log('gone baby gone');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            } else {
+                this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+            }
+
         } else {
 
             if (configurations.length > 0) {
@@ -382,6 +404,9 @@ class MultipleFileLoadController {
 
     }
 
+    static sessionConfigurator(dataKey, dataValue, indexPaths) {
+        return { session: dataValue };
+    }
 }
 
 function getIndexURL(indexValue) {

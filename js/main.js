@@ -200,7 +200,7 @@ let initializationHelper = (browser, $container, options) => {
             modalTitle: 'Session File Error',
             $localFileInput: $('#igv-app-dropdown-local-session-file-input'),
             $dropboxButton: $('#igv-app-dropdown-dropbox-session-file-button'),
-            // $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_session_file_button : undefined,
+            $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_session_file_button : undefined,
             configurationHandler: MultipleFileLoadController.sessionConfigurator,
             fileLoadHandler: (configurations) => { }
         };
@@ -215,7 +215,7 @@ let initializationHelper = (browser, $container, options) => {
         igv.download(filename, data);
     });
 
-    // Genome Modal Controller
+    // Session Controller
     sessionController = new SessionController({ browser: browser, $urlModal: $('#igv-app-session-from-url-modal') });
 
 

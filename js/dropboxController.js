@@ -45,7 +45,7 @@ class DropboxController {
                 mode: 'localFile'
             };
 
-        this.fileLoadWidget = new FileLoadWidget(widgetConfig, new FileLoadManager());
+        this.fileLoadWidget = new FileLoadWidget(widgetConfig, new FileLoadManager({}));
 
         this.fileLoadWidget.customizeLayout(function ($parent) {
 

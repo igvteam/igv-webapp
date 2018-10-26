@@ -14,9 +14,15 @@ class SessionController {
                 dataOnly: true
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        let config =
+            {
+                sessionJSON: true
+            };
+
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager(config));
 
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
+            browser.loadSession( fileLoadManager.dictionary.data );
             return true;
         });
 

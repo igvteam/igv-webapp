@@ -28,9 +28,15 @@ import { isJSON } from './utils.js';
 
 class FileLoadManager {
     
-    constructor () {
+    constructor ({ sessionJSON }) {
 
         this.dictionary = {};
+
+        if (undefined === sessionJSON) {
+            this.sessionJSON = false;
+        } else {
+            this.sessionJSON = sessionJSON;
+        }
 
         this.keyToIndexExtension =
             {

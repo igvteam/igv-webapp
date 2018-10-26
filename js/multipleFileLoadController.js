@@ -71,6 +71,10 @@ class MultipleFileLoadController {
             remainingPaths = paths;
         }
 
+        if(undefined === self.config.sessionJSON) {
+            self.config.sessionJSON = false;
+        }
+
         jsonRetrievalTasks = jsonPaths
             .map((path) => {
                 let url = (path.google_url || path);

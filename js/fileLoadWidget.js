@@ -34,6 +34,10 @@ class FileLoadWidget {
 
         this.config = config;
 
+        if (undefined === this.config.dataOnly) {
+            this.config.dataOnly = false;
+        }
+
         this.config.dataTitle = config.dataTitle || 'Data';
         this.config.indexTitle = config.indexTitle || 'Index';
 
@@ -52,7 +56,8 @@ class FileLoadWidget {
                 {
                     doURL: false,
                     dataTitle: config.dataTitle + ' file',
-                    indexTitle: config.indexTitle + ' file'
+                    indexTitle: config.indexTitle + ' file',
+                    dataOnly: this.config.dataOnly
                 };
         } else {
 
@@ -61,7 +66,8 @@ class FileLoadWidget {
                 {
                     doURL: true,
                     dataTitle: config.dataTitle + ' URL',
-                    indexTitle: config.indexTitle + ' URL'
+                    indexTitle: config.indexTitle + ' URL',
+                    dataOnly: this.config.dataOnly
                 };
         }
 
@@ -136,6 +142,10 @@ class FileLoadWidget {
             this.createURLContainer($input_data_row, 'igv-flw-data-url', false);
         } else {
             this.createLocalFileContainer($input_data_row, 'igv-flw-local-data-file', false);
+        }
+
+        if (true === config.dataOnly) {
+            return;
         }
 
         // index

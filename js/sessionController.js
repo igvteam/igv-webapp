@@ -10,7 +10,8 @@ class SessionController {
             {
                 dataTitle: 'Session',
                 $widgetParent: $urlModal.find('.modal-body'),
-                mode: 'url'
+                mode: 'url',
+                dataOnly: true
             };
 
         this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());

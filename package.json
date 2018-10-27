@@ -10,8 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/igvteam/igv-webapp.git"
   },
-  "author": "Douglass Turner and Jim Robinson",
-  "license": "ISC",
+  "author": "Douglass Turner",
+  "contributors": ["Jim Robinson"],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/igvteam/igv-webapp/issues"
   },

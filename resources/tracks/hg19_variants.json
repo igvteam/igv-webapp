@@ -23,8 +23,9 @@
       "type": "annotation",
       "sourceType": "civic-ws",
       "url": "https://civicdb.org/api",
-      "name": "CIViC",
+      "name": "CIViC Variants",
       "displayMode": "SQUISHED",
+      "height": 150,
       "indexed": false,
       "queryable": false
     }

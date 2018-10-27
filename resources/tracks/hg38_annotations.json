@@ -1,6 +1,6 @@
 {
   "label": "Annotations",
-  "description": "Annotations from the <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a> and <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a>",
+  "description": "Annotations from the <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a> , <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a>, and <a href=https://www.ensembl.org/downloads.html target=_blank>Ensembl</a>",
   "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
@@ -8,8 +8,18 @@
       "type": "annotation",
       "format": "gtf",
       "displayMode": "EXPANDED",
+      "height": 300,
       "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
       "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
+      "visibilityWindow": 1000000
+    },
+    {
+      "name": "Ensembl v90",
+      "format": "gff3",
+      "displayMode": "expanded",
+      "height": 300,
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/Homo_sapiens.GRCh38.94.chr.gff3.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/Homo_sapiens.GRCh38.94.chr.gff3.gz.tbi",
       "visibilityWindow": 1000000
     },
     {

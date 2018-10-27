@@ -31,6 +31,10 @@ class MultipleFileLoadController {
         this.browser = browser;
         this.config = config;
 
+        if(undefined === this.config.isSessionFile) {
+            this.config.isSessionFile = false;
+        }
+
         this.fileLoadHander = config.fileLoadHandler;
         this.configurationHandler = config.configurationHandler;
 
@@ -65,6 +69,24 @@ class MultipleFileLoadController {
         // discard current contents of modal body
         this.$modal_body.empty();
 
+        if (true === this.config.isSessionFile) {
+
+            let extension = getExtension(paths[0]);
+            let filename = getFilename(paths[0]);
+
+            if (filename === extension) {
+                alert('ERROR: Invalid session file: ' + filename);
+                return;
+            }
+
+            const extensions = new Set(['json', 'xml']);
+            if (false === extensions.has(extension)) {
+                alert('ERROR: Invalid session file extension: .' + extension);
+                return;
+            }
+
+        }
+
         // accumulate JSON retrieval promises
         let jsonPaths = paths.filter((path) => ('json' === getExtension(path)) );
         let remainingPaths;
@@ -72,10 +94,6 @@ class MultipleFileLoadController {
             remainingPaths = paths.filter((path) => ('json' !== getExtension(path)) )
         } else {
             remainingPaths = paths;
-        }
-
-        if(undefined === self.config.isSessionFile) {
-            self.config.isSessionFile = false;
         }
 
         jsonRetrievalTasks = jsonPaths

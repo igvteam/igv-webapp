@@ -10,7 +10,7 @@ var igvwebConfig = {
 
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
-    embedTarget: 'https://igv.org/web/test/embed.html',
+    embedTarget: 'https://igv.org/web/release/2.0.1/embed.html',
 
     igvConfig:
         {
@@ -21,8 +21,11 @@ var igvwebConfig = {
             apiKey: "API_KEY"
         },
 
+    // Supply a Google client id to enable the Google file picker in the load menus.  This is optional
     clientId: "CLIENT_ID",
 
+    // Provide a URL shorterner function or object.   This is optional.  If not supplied sharable URLs will not
+    // be shortened but will be usable.
     urlShortener: {
         provider: "bitly",
         apiKey: "BITLY_TOKEN"

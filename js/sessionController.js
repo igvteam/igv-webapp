@@ -1,6 +1,6 @@
-import FileLoadWidget from "./fileLoadWidget";
-import FileLoadManager from "./fileLoadManager";
-import {configureModal} from "./utils";
+import FileLoadWidget from "./fileLoadWidget.js";
+import FileLoadManager from "./fileLoadManager.js";
+import {configureModal} from "./utils.js";
 
 class SessionController {
 
@@ -13,13 +13,8 @@ class SessionController {
                 mode: 'url',
                 dataOnly: true
             };
-
-        let config =
-            {
-                sessionJSON: true
-            };
-
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager(config));
+        
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({ sessionJSON: true }));
 
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
             browser.loadSession( fileLoadManager.dictionary.data );

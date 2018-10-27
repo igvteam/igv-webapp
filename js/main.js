@@ -208,7 +208,6 @@ let initializationHelper = (browser, $container, options) => {
     // Session Controller
     sessionController = new SessionController({ browser: browser, $urlModal: $('#igv-app-session-from-url-modal') });
 
-
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
 

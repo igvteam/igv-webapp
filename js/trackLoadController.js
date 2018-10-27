@@ -46,7 +46,7 @@ class TrackLoadController {
                 mode: 'url',
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({}));
         configureModal(this.urlWidget, $urlModal);
 
         this.updateTrackMenus(browser.genome.id);

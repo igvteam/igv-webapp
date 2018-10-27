@@ -46,7 +46,7 @@ class GenomeLoadController {
                 mode: 'url'
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({}));
 
         doOK = function (fileLoadManager) {
             return okHandler(self, fileLoadManager);

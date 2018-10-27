@@ -28,9 +28,15 @@ import { isJSON } from './utils.js';
 
 class FileLoadManager {
     
-    constructor () {
+    constructor ({ sessionJSON }) {
 
         this.dictionary = {};
+
+        if (undefined === sessionJSON) {
+            this.sessionJSON = false;
+        } else {
+            this.sessionJSON = sessionJSON;
+        }
 
         this.keyToIndexExtension =
             {
@@ -188,15 +194,20 @@ class FileLoadManager {
 
         if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
 
-            igv.xhr
-                .loadJson(path)
-                .then(function (json) {
-                    self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
+            if (true === this.sessionJSON) {
+                this.dictionary.data = path;
+            } else {
+                igv.xhr
+                    .loadJson(path)
+                    .then(function (json) {
+                        self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
 
-                })
-                .catch(function (e) {
-                    self.fileLoadWidget.presentErrorMessage('Error: Invalid JSON.');
-                });
+                    })
+                    .catch(function (e) {
+                        self.fileLoadWidget.presentErrorMessage('Error: Invalid JSON.');
+                    });
+
+            }
 
         } else {
             this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;

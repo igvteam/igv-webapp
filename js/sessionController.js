@@ -1,32 +1,74 @@
+import FileLoadWidget from "./fileLoadWidget.js";
+import FileLoadManager from "./fileLoadManager.js";
+import {configureModal} from "./utils.js";
+
 class SessionController {
 
-    constructor({ browser, $saveButton, $loadInput }) {
+    constructor ({ browser, $urlModal, $saveButton, $saveModal }) {
 
-        this.browser = browser;
+        let urlConfig =
+            {
+                dataTitle: 'Load Session',
+                $widgetParent: $urlModal.find('.modal-body'),
+                mode: 'url',
+                dataOnly: true
+            };
+        
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({ sessionJSON: true }));
 
-        let self = this;
+        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
+            browser.loadSession( fileLoadManager.dictionary.data );
+            return true;
+        });
+
+        configureSaveModal(browser, $saveModal);
 
         $saveButton.on('click', (e) => {
-            self.save();
-        });
-
-        $loadInput.on('change', (e) => {
-            self.load(e);
+            $saveModal.modal();
         });
 
     }
 
-    save(){
-        const json = this.browser.toJSON();
-        const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
-        const filename = 'igv-webapp-session.json';
-        igv.download(filename, data);
-    }
 
-    load(e){
-        let file = e.target.files[ 0 ];
-        this.browser.loadSession(file);
-    }
+}
+
+function configureSaveModal(browser, $modal){
+
+    let $input = $modal.find('input');
+
+    // upper dismiss - x - button
+    let $dismiss = $modal.find('.modal-header button:nth-child(1)');
+    $dismiss.on('click', function () {
+        $input.val('');
+        $modal.modal('hide');
+    });
+
+    // lower dismiss - close - button
+    $dismiss = $modal.find('.modal-footer button:nth-child(1)');
+    $dismiss.on('click', function () {
+        $input.val('');
+        $modal.modal('hide');
+    });
+
+    // ok - button
+    let $ok = $modal.find('.modal-footer button:nth-child(2)');
+
+    $ok.on('click', function () {
+
+        let filename = $input.val();
+        $input.val('');
+
+        $modal.modal('hide');
+
+        if (undefined === filename || '' === filename) {
+            // do nothing
+        } else {
+            const json = browser.toJSON();
+            const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
+            igv.download(filename, data);
+        }
+
+    });
 
 }
 

@@ -18,6 +18,7 @@ var igvwebConfig = {
             showChromosomeWidget: true,
 
             genome: "hg19",
+
             apiKey: "API_KEY"
         },
 
@@ -28,6 +29,7 @@ var igvwebConfig = {
     // be shortened but will be usable.
     urlShortener: {
         provider: "bitly",
+
         apiKey: "BITLY_TOKEN"
     }
 
@@ -36,5 +38,6 @@ var igvwebConfig = {
     //     apiKey: "API_KEY"
     // }
 
-}
+};
+
 

@@ -40,7 +40,10 @@ class MultipleFileLoadController {
 
         this.createLocalInput(config.$localFileInput);
 
-        this.createDropboxButton(config.$dropboxButton);
+        if (undefined === config.multipleFileSelection) {
+            config.multipleFileSelection = true;
+        }
+        this.createDropboxButton(config.$dropboxButton, config.multipleFileSelection);
 
         if (config.$googleDriveButton) {
             this.createGoogleDriveButton(config.$googleDriveButton);
@@ -182,7 +185,7 @@ class MultipleFileLoadController {
 
     }
 
-    createDropboxButton($dropboxButton) {
+    createDropboxButton($dropboxButton, multipleFileSelection) {
         let self = this;
 
         $dropboxButton.on('click', function () {
@@ -193,7 +196,7 @@ class MultipleFileLoadController {
                     success: (dbFiles) => (self.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
                     cancel: function() { },
                     linkType: "preview",
-                    multiselect: true,
+                    multiselect: multipleFileSelection,
                     folderselect: false,
                 };
 

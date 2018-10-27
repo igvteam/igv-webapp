@@ -197,16 +197,15 @@ let initializationHelper = (browser, $container, options) => {
 
     multipleFileSessionController = new MultipleFileLoadController(browser, multileFileSessionConfig);
 
-    $('#igv-app-save-session-button').on('click', (e) => {
-
-        const json = browser.toJSON();
-        const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
-        const filename = 'igv-webapp-session.json';
-        igv.download(filename, data);
-    });
-
     // Session Controller
-    sessionController = new SessionController({ browser: browser, $urlModal: $('#igv-app-session-from-url-modal') });
+    const sessionConfig =
+        {
+            browser: browser,
+            $urlModal: $('#igv-app-session-from-url-modal'),
+            $saveButton: $('#igv-app-save-session-button'),
+            $saveModal: $('#igv-app-session-save-modal')
+        };
+    sessionController = new SessionController(sessionConfig);
 
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');

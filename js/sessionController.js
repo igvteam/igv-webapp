@@ -1,6 +1,7 @@
 import FileLoadWidget from "./fileLoadWidget.js";
 import FileLoadManager from "./fileLoadManager.js";
 import {configureModal} from "./utils.js";
+import {getExtension} from "./utils";
 
 class SessionController {
 
@@ -30,6 +31,7 @@ class SessionController {
     }
 
 
+
 }
 
 function configureSaveModal(browser, $modal){
@@ -55,13 +57,19 @@ function configureSaveModal(browser, $modal){
 
     $ok.on('click', function () {
 
+        $modal.modal('hide');
+
         let filename = $input.val();
         $input.val('');
 
-        $modal.modal('hide');
+        const extensions = new Set(['json', 'xml']);
 
         if (undefined === filename || '' === filename) {
+
             filename = $input.attr('placeholder');
+        } else if (false === extensions.has( getExtension( filename ) )) {
+            
+            filename = filename + '.json';
         }
 
         const json = browser.toJSON();

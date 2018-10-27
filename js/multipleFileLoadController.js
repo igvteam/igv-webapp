@@ -63,6 +63,7 @@ class MultipleFileLoadController {
             indexPaths,
             indexPathNameSet,
             indexPathNamesLackingDataPaths,
+            sessionRetrievalTasks,
             jsonRetrievalTasks,
             configurations;
 
@@ -74,17 +75,36 @@ class MultipleFileLoadController {
             let extension = getExtension(paths[0]);
             let filename = getFilename(paths[0]);
 
+            // hack'ish test for lack of suffix
             if (filename === extension) {
                 alert('ERROR: Invalid session file: ' + filename);
                 return;
             }
 
             const extensions = new Set(['json', 'xml']);
+
             if (false === extensions.has(extension)) {
                 alert('ERROR: Invalid session file extension: .' + extension);
                 return;
             }
 
+            sessionRetrievalTasks = paths
+                .filter((path) => (true === extensions.has( getExtension(path) )) )
+                .map((path) => {
+                    let url = (path.google_url || path);
+                    return { name: getFilename(path), promise: self.browser.loadSession(url)}
+                });
+
+            Promise
+                .all(sessionRetrievalTasks.map((task) => (task.promise)))
+                .then(function (ignore) {
+                    console.log('gone baby gone');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            return;
         }
 
         // accumulate JSON retrieval promises
@@ -99,7 +119,7 @@ class MultipleFileLoadController {
         jsonRetrievalTasks = jsonPaths
             .map((path) => {
                 let url = (path.google_url || path);
-                return { name: getFilename(path), promise: true === self.config.isSessionFile ? self.browser.loadSession(url) : igv.xhr.loadJson(url)}
+                return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
             });
 
         // data (non-JSON)
@@ -159,20 +179,7 @@ class MultipleFileLoadController {
 
         if (jsonRetrievalTasks.length > 0) {
 
-            if (true === this.config.isSessionFile) {
-
-                Promise
-                    .all(jsonRetrievalTasks.map((task) => (task.promise)))
-                    .then(function (ignore) {
-                        console.log('gone baby gone');
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-
-            } else {
-                this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
-            }
+            this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
 
         } else {
 

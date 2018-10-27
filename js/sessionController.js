@@ -38,24 +38,7 @@ function configureSaveModal(browser, $modal){
 
     let $input = $modal.find('input');
 
-    // upper dismiss - x - button
-    let $dismiss = $modal.find('.modal-header button:nth-child(1)');
-    $dismiss.on('click', function () {
-        $input.val('');
-        $modal.modal('hide');
-    });
-
-    // lower dismiss - close - button
-    $dismiss = $modal.find('.modal-footer button:nth-child(1)');
-    $dismiss.on('click', function () {
-        $input.val('');
-        $modal.modal('hide');
-    });
-
-    // ok - button
-    let $ok = $modal.find('.modal-footer button:nth-child(2)');
-
-    $ok.on('click', function () {
+    let okHandler = () => {
 
         $modal.modal('hide');
 
@@ -68,7 +51,7 @@ function configureSaveModal(browser, $modal){
 
             filename = $input.attr('placeholder');
         } else if (false === extensions.has( getExtension( filename ) )) {
-            
+
             filename = filename + '.json';
         }
 
@@ -76,7 +59,31 @@ function configureSaveModal(browser, $modal){
         const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
         igv.download(filename, data);
 
+    };
 
+    // ok - button
+    let $ok = $modal.find('.modal-footer button:nth-child(2)');
+
+    $ok.on('click', okHandler);
+
+    $input.on('keyup', (e) => {
+        if (13 === e.keyCode) {
+            okHandler();
+        }
+    });
+
+    // upper dismiss - x - button
+    let $dismiss = $modal.find('.modal-header button:nth-child(1)');
+    $dismiss.on('click', function () {
+        $input.val('');
+        $modal.modal('hide');
+    });
+
+    // lower dismiss - close - button
+    $dismiss = $modal.find('.modal-footer button:nth-child(1)');
+    $dismiss.on('click', function () {
+        $input.val('');
+        $modal.modal('hide');
     });
 
 }

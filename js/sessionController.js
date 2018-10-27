@@ -13,7 +13,7 @@ class SessionController {
                 mode: 'url',
                 dataOnly: true
             };
-        
+
         this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({ sessionJSON: true }));
 
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
@@ -61,12 +61,13 @@ function configureSaveModal(browser, $modal){
         $modal.modal('hide');
 
         if (undefined === filename || '' === filename) {
-            // do nothing
-        } else {
-            const json = browser.toJSON();
-            const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
-            igv.download(filename, data);
+            filename = $input.attr('placeholder');
         }
+
+        const json = browser.toJSON();
+        const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
+        igv.download(filename, data);
+
 
     });
 

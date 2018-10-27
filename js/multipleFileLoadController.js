@@ -170,9 +170,12 @@ class MultipleFileLoadController {
         $input.on('change', function () {
 
             if (true === MultipleFileLoadController.isValidLocalFileInput($(this))) {
-                let input;
-                input = $(this).get(0);
-                self.ingestPaths(Array.from(input.files));
+
+                let input = $(this).get(0);
+                let list = Array.from(input.files);
+                input.value = '';
+
+                self.ingestPaths(list);
             }
 
         });

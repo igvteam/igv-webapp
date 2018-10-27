@@ -46,7 +46,7 @@ class MultipleFileLoadController {
         this.createDropboxButton(config.$dropboxButton, config.multipleFileSelection);
 
         if (config.$googleDriveButton) {
-            this.createGoogleDriveButton(config.$googleDriveButton);
+            this.createGoogleDriveButton(config.$googleDriveButton, config.multipleFileSelection);
         }
 
     }
@@ -74,14 +74,14 @@ class MultipleFileLoadController {
             remainingPaths = paths;
         }
 
-        if(undefined === self.config.sessionJSON) {
-            self.config.sessionJSON = false;
+        if(undefined === self.config.isSessionFile) {
+            self.config.isSessionFile = false;
         }
 
         jsonRetrievalTasks = jsonPaths
             .map((path) => {
                 let url = (path.google_url || path);
-                return { name: getFilename(path), promise: true === self.config.sessionJSON ? self.browser.loadSession(url) : igv.xhr.loadJson(url)}
+                return { name: getFilename(path), promise: true === self.config.isSessionFile ? self.browser.loadSession(url) : igv.xhr.loadJson(url)}
             });
 
         // data (non-JSON)
@@ -141,7 +141,7 @@ class MultipleFileLoadController {
 
         if (jsonRetrievalTasks.length > 0) {
 
-            if (true === this.config.sessionJSON) {
+            if (true === this.config.isSessionFile) {
 
                 Promise
                     .all(jsonRetrievalTasks.map((task) => (task.promise)))
@@ -204,14 +204,14 @@ class MultipleFileLoadController {
         });
     }
 
-    createGoogleDriveButton($button) {
+    createGoogleDriveButton($button, multipleFileSelection) {
 
         let self = this,
             paths;
 
         $button.on('click', function () {
 
-            app_google.createDropdownButtonPicker(function (googleDriveResponses) {
+            app_google.createDropdownButtonPicker(multipleFileSelection, (googleDriveResponses) => {
                 paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
                 self.ingestPaths(paths);
             });

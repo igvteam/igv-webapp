@@ -12,6 +12,18 @@ $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 60px;
 $igv-app-logo-container-width: 20%;
 
+#igv-app-session-save-modal {
+
+  .modal-body {
+    div {
+      color: $igv-app-dark-color;
+      margin-top: 8px;
+      margin-left: 8px;
+      font-size: .75rem;
+    }
+  }
+}
+
 .modal-title {
 
   display: flex;

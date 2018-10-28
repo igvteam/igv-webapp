@@ -31,6 +31,10 @@ class MultipleFileLoadController {
         this.browser = browser;
         this.config = config;
 
+        if(undefined === this.config.isSessionFile) {
+            this.config.isSessionFile = false;
+        }
+
         this.fileLoadHander = config.fileLoadHandler;
         this.configurationHandler = config.configurationHandler;
 
@@ -40,10 +44,13 @@ class MultipleFileLoadController {
 
         this.createLocalInput(config.$localFileInput);
 
-        this.createDropboxButton(config.$dropboxButton);
+        if (undefined === config.multipleFileSelection) {
+            config.multipleFileSelection = true;
+        }
+        this.createDropboxButton(config.$dropboxButton, config.multipleFileSelection);
 
         if (config.$googleDriveButton) {
-            this.createGoogleDriveButton(config.$googleDriveButton);
+            this.createGoogleDriveButton(config.$googleDriveButton, config.multipleFileSelection);
         }
 
     }
@@ -56,11 +63,49 @@ class MultipleFileLoadController {
             indexPaths,
             indexPathNameSet,
             indexPathNamesLackingDataPaths,
+            sessionRetrievalTasks,
             jsonRetrievalTasks,
             configurations;
 
         // discard current contents of modal body
         this.$modal_body.empty();
+
+        if (true === this.config.isSessionFile) {
+
+            let extension = getExtension(paths[0]);
+            let filename = getFilename(paths[0]);
+
+            // hack'ish test for lack of suffix
+            if (filename === extension) {
+                alert('ERROR: Invalid session file: ' + filename);
+                return;
+            }
+
+            const extensions = new Set(['json', 'xml']);
+
+            if (false === extensions.has(extension)) {
+                alert('ERROR: Invalid session file extension: .' + extension);
+                return;
+            }
+
+            sessionRetrievalTasks = paths
+                .filter((path) => (true === extensions.has( getExtension(path) )) )
+                .map((path) => {
+                    let url = (path.google_url || path);
+                    return { name: getFilename(path), promise: self.browser.loadSession(url)}
+                });
+
+            Promise
+                .all(sessionRetrievalTasks.map((task) => (task.promise)))
+                .then(function (ignore) {
+                    console.log('gone baby gone');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            return;
+        }
 
         // accumulate JSON retrieval promises
         let jsonPaths = paths.filter((path) => ('json' === getExtension(path)) );
@@ -71,14 +116,10 @@ class MultipleFileLoadController {
             remainingPaths = paths;
         }
 
-        if(undefined === self.config.sessionJSON) {
-            self.config.sessionJSON = false;
-        }
-
         jsonRetrievalTasks = jsonPaths
             .map((path) => {
                 let url = (path.google_url || path);
-                return { name: getFilename(path), promise: true === self.config.sessionJSON ? self.browser.loadSession(url) : igv.xhr.loadJson(url)}
+                return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
             });
 
         // data (non-JSON)
@@ -138,20 +179,7 @@ class MultipleFileLoadController {
 
         if (jsonRetrievalTasks.length > 0) {
 
-            if (true === this.config.sessionJSON) {
-
-                Promise
-                    .all(jsonRetrievalTasks.map((task) => (task.promise)))
-                    .then(function (ignore) {
-                        console.log('gone baby gone');
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-
-            } else {
-                this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
-            }
+            this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
 
         } else {
 
@@ -182,7 +210,7 @@ class MultipleFileLoadController {
 
     }
 
-    createDropboxButton($dropboxButton) {
+    createDropboxButton($dropboxButton, multipleFileSelection) {
         let self = this;
 
         $dropboxButton.on('click', function () {
@@ -193,7 +221,7 @@ class MultipleFileLoadController {
                     success: (dbFiles) => (self.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
                     cancel: function() { },
                     linkType: "preview",
-                    multiselect: true,
+                    multiselect: multipleFileSelection,
                     folderselect: false,
                 };
 
@@ -201,14 +229,14 @@ class MultipleFileLoadController {
         });
     }
 
-    createGoogleDriveButton($button) {
+    createGoogleDriveButton($button, multipleFileSelection) {
 
         let self = this,
             paths;
 
         $button.on('click', function () {
 
-            app_google.createDropdownButtonPicker(function (googleDriveResponses) {
+            app_google.createDropdownButtonPicker(multipleFileSelection, (googleDriveResponses) => {
                 paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
                 self.ingestPaths(paths);
             });

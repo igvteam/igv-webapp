@@ -86,8 +86,7 @@
             <!-- Genome -->
             <div class="dropdown igv-app-site-widget">
 
-                <button id="igv-app-genome-dropdown-button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                        type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button id="igv-app-genome-dropdown-button" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Genome
                 </button>
 
@@ -108,7 +107,7 @@
                     </label>
 
                     <!-- Dropbox -->
-                    <button class="dropdown-item" type="button">
+                    <div class="dropdown-item">
 
                         <div id="igv-app-dropdown-dropbox-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
 
@@ -118,16 +117,16 @@
 
                         </div>
 
-                    </button>
+                    </div>
 
                     <!-- Google Drive -->
-                    <button class="dropdown-item" type="button">
+                    <div class="dropdown-item">
                         <div id="igv-app-dropdown-google-drive-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
                             <div>Google Drive</div>
                             <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
                         </div>
-                    </button>
+                    </div>
 
                     <!-- URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">URL ...
@@ -142,7 +141,7 @@
 
                 <button id="igv-track-dropdown-button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
                         type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Load Track
+                    Tracks
                 </button>
 
                 <div id="igv-app-track-dropdown-menu" class="dropdown-menu"
@@ -164,8 +163,7 @@
                     <!-- Dropbox -->
                     <div class="dropdown-item">
 
-                        <div id="igv-app-dropdown-dropbox-track-file-button"
-                             class="igv-app-dropdown-item-cloud-storage">
+                        <div id="igv-app-dropdown-dropbox-track-file-button" class="igv-app-dropdown-item-cloud-storage">
 
                             <div>Dropbox</div>
                             <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
@@ -177,8 +175,7 @@
 
                     <!-- Google Drive -->
                     <div class="dropdown-item">
-                        <div id="igv-app-dropdown-google-drive-track-file-button"
-                             class="igv-app-dropdown-item-cloud-storage">
+                        <div id="igv-app-dropdown-google-drive-track-file-button" class="igv-app-dropdown-item-cloud-storage">
                             <div>Google Drive</div>
                             <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
@@ -217,7 +214,7 @@
                     </label>
 
                     <!-- Load Dropbox hosted session file -->
-                    <button class="dropdown-item" type="button">
+                    <div class="dropdown-item">
 
                         <div id="igv-app-dropdown-dropbox-session-file-button" class="igv-app-dropdown-item-cloud-storage">
 
@@ -227,16 +224,16 @@
 
                         </div>
 
-                    </button>
+                    </div>
 
                     <!-- Load Google Drive hosted session file -->
-                    <button class="dropdown-item" type="button">
+                    <div class="dropdown-item">
                         <div id="igv-app-dropdown-google-drive-session-file-button" class="igv-app-dropdown-item-cloud-storage">
                             <div>Google Drive</div>
                             <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                             <div>...</div>
                         </div>
-                    </button>
+                    </div>
 
                     <!-- Load session URL -->
                     <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">Load URL ...
@@ -438,7 +435,12 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <div id="igv-app-session-save-modal-label" class="modal-title">Save Session</div>
+
+                    <div id="igv-app-session-save-modal-label" class="modal-title">
+                        <div>
+                            Save Session File
+                        </div>
+                    </div>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -446,7 +448,12 @@
                 </div>
 
                 <div class="modal-body">
-                    <input class="form-control" type="text" placeholder="Enter File Name">
+                    <input class="form-control" type="text" placeholder="igv-app-session.json">
+
+                    <div>
+                        Enter session filename with .json suffix
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">
@@ -482,70 +489,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-sm btn-secondary">OK</button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Session from Dropbox -->
-    <div id="igv-app-session-dropbox-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-session-dropbox-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <div id="igv-app-session-dropbox-modal-label" class="modal-title">Load Session From Dropbox</div>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Session from Google Drive -->
-    <div id="igv-app-session-google-drive-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-session-google-drive-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <div id="igv-app-session-google-drive-modal-label" class="modal-title">Load Session From Google
-                        Drive
-                    </div>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
                 </div>
 
             </div>

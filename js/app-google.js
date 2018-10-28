@@ -77,58 +77,7 @@ let postInit = () => {
 
 };
 
-let createPicker = (fileLoadManager, $modal, $filenameContainer, isIndexFile, filePickerHandler) => {
-
-    getAccessToken()
-        .then((accessToken) => {
-            updateSignInStatus(true);
-            return Promise.resolve(accessToken);
-        })
-        .then((accessToken) => {
-
-            let view,
-                teamView;
-
-            view = new google.picker.DocsView(google.picker.ViewId.DOCS);
-            view.setIncludeFolders(true);
-
-            teamView = new google.picker.DocsView(google.picker.ViewId.DOCS);
-            teamView.setEnableTeamDrives(true);
-            teamView.setIncludeFolders(true);
-
-            if (accessToken) {
-
-                picker = new google.picker
-                    .PickerBuilder()
-                    .setOAuthToken(igv.oauth.google.access_token)
-                    .addView(view)
-                    .addView(teamView)
-                    .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
-                    .setCallback(function (data) {
-                        if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-                            let response;
-
-                            response = pickerCallback(data);
-
-                            filePickerHandler(fileLoadManager, $modal, response, $filenameContainer, isIndexFile);
-
-                        }
-                    })
-                    .build();
-
-                picker.setVisible(true);
-            } else {
-                igv.browser.presentAlert("Sign into Google before using picker");
-            }
-        })
-        .catch(function (error) {
-            console.log(error)
-        });
-
-
-};
-
-let createDropdownButtonPicker = (filePickerHandler) => {
+let createDropdownButtonPicker = (multipleFileSelection, filePickerHandler) => {
 
     getAccessToken()
         .then(function (accessToken) {
@@ -155,15 +104,20 @@ let createDropdownButtonPicker = (filePickerHandler) => {
                     .addView(view)
                     .addView(teamView)
                     .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
-                    .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
                     .setCallback(function (data) {
                         if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
                             filePickerHandler(data[google.picker.Response.DOCUMENTS]);
                         }
-                    })
-                    .build();
+                    });
+
+                if (true === multipleFileSelection) {
+                    picker.enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                }
+
+                picker.build();
 
                 picker.setVisible(true);
+
             } else {
                 igv.browser.presentAlert("Sign into Google before using picker");
             }
@@ -239,4 +193,4 @@ let updateSignInStatus = (signInStatus) => {
 };
 
 
-export { init, postInit, createPicker, createDropdownButtonPicker };
+export { init, postInit, createDropdownButtonPicker };

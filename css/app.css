@@ -252,15 +252,21 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
-#igv-app-generic-track-select-modal-label {
+#igv-app-session-save-modal .modal-body div {
+  color: #5f5f5f;
+  margin-top: 8px;
+  margin-left: 8px;
+  font-size: .75rem; }
+
+.modal-title {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: flex-start; }
-  #igv-app-generic-track-select-modal-label div:first-child {
+  .modal-title div:first-child {
     font-size: 1.5rem; }
-  #igv-app-generic-track-select-modal-label div:last-child {
+  .modal-title div:last-child {
     font-size: 01.0rem; }
 
 .igv-app-html {

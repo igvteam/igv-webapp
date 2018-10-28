@@ -28,14 +28,14 @@ import { isJSON } from './utils.js';
 
 class FileLoadManager {
     
-    constructor ({ sessionJSON }) {
+    constructor ({ isSessionFile }) {
 
         this.dictionary = {};
 
-        if (undefined === sessionJSON) {
-            this.sessionJSON = false;
+        if (undefined === isSessionFile) {
+            this.isSessionFile = false;
         } else {
-            this.sessionJSON = sessionJSON;
+            this.isSessionFile = isSessionFile;
         }
 
         this.keyToIndexExtension =
@@ -194,7 +194,7 @@ class FileLoadManager {
 
         if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
 
-            if (true === this.sessionJSON) {
+            if (true === this.isSessionFile) {
                 this.dictionary.data = path;
             } else {
                 igv.xhr

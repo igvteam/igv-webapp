@@ -36,14 +36,18 @@ class SessionController {
 
 function configureSaveModal(browser, $modal){
 
+    const input_default_value = 'igv-app-session.json';
+    
     let $input = $modal.find('input');
+
+    $input.val(input_default_value);
 
     let okHandler = () => {
 
         $modal.modal('hide');
 
         let filename = $input.val();
-        $input.val('');
+        $input.val(input_default_value);
 
         const extensions = new Set(['json', 'xml']);
 
@@ -75,14 +79,14 @@ function configureSaveModal(browser, $modal){
     // upper dismiss - x - button
     let $dismiss = $modal.find('.modal-header button:nth-child(1)');
     $dismiss.on('click', function () {
-        $input.val('');
+        $input.val(input_default_value);
         $modal.modal('hide');
     });
 
     // lower dismiss - close - button
     $dismiss = $modal.find('.modal-footer button:nth-child(1)');
     $dismiss.on('click', function () {
-        $input.val('');
+        $input.val(input_default_value);
         $modal.modal('hide');
     });
 

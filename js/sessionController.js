@@ -59,7 +59,13 @@ function configureSaveModal(browser, $modal){
             filename = filename + '.json';
         }
 
-        const json = browser.toJSON();
+
+        // Pretty JSON output
+        let obj = JSON.parse(browser.toJSON());
+        const json = JSON.stringify(obj, null, '\t');
+
+        // const json = browser.toJSON();
+
         const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
         igv.download(filename, data);
 

@@ -61,7 +61,7 @@ function configureSaveModal(browser, $modal){
 
 
         // Pretty JSON output
-        let obj = JSON.parse(browser.toJSON());
+        let obj = Jbrowser.toJSON();
         const json = JSON.stringify(obj, null, '\t');
 
         // const json = browser.toJSON();

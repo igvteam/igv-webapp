@@ -93,6 +93,8 @@ let initializationHelper = (browser, $container, options) => {
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
+    createSaveSVGHandler($('#igv-app-save-svg-button'), browser);
+
     let $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
     let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
@@ -276,6 +278,15 @@ let createAppBookmarkHandler = ($bookmark_button) => {
         str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
         blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
         alert(blurb);
+    });
+
+};
+
+let createSaveSVGHandler = ($save_svg_button, browser) => {
+
+    $save_svg_button.on('click', (e) => {
+        console.log('save svg');
+        browser.renderSVG();
     });
 
 };

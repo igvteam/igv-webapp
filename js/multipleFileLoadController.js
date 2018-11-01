@@ -35,6 +35,10 @@ class MultipleFileLoadController {
             this.config.isSessionFile = false;
         }
 
+        if (undefined === this.config.multipleFileSelection) {
+            this.config.multipleFileSelection = true;
+        }
+
         this.fileLoadHander = config.fileLoadHandler;
         this.configurationHandler = config.configurationHandler;
 
@@ -44,9 +48,6 @@ class MultipleFileLoadController {
 
         this.createLocalInput(config.$localFileInput);
 
-        if (undefined === config.multipleFileSelection) {
-            config.multipleFileSelection = true;
-        }
         this.createDropboxButton(config.$dropboxButton, config.multipleFileSelection);
 
         if (config.$googleDriveButton) {

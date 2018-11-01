@@ -124,7 +124,6 @@ let initializationHelper = (browser, $container, options) => {
             $modal: $multipleFileLoadModal,
             modalTitle: 'Genome File Error',
             $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
-            multipleFileSelection: false,
             $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
             configurationHandler: MultipleFileLoadController.genomeConfigurator,

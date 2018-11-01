@@ -98,23 +98,35 @@ let createDropdownButtonPicker = (multipleFileSelection, filePickerHandler) => {
 
             if (accessToken) {
 
-                picker = new google.picker
-                    .PickerBuilder()
-                    .setOAuthToken(igv.oauth.google.access_token)
-                    .addView(view)
-                    .addView(teamView)
-                    .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
-                    .setCallback(function (data) {
-                        if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
-                            filePickerHandler(data[google.picker.Response.DOCUMENTS]);
-                        }
-                    });
+                if (multipleFileSelection) {
+                    picker = new google.picker.PickerBuilder()
+                        .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                        .setOAuthToken(igv.oauth.google.access_token)
+                        .addView(view)
+                        .addView(teamView)
+                        .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
+                        .setCallback(function (data) {
+                            if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                                filePickerHandler(data[google.picker.Response.DOCUMENTS]);
+                            }
+                        })
+                        .build();
 
-                if (true === multipleFileSelection) {
-                    picker.enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                } else {
+                    picker = new google.picker.PickerBuilder()
+                        .disableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                        .setOAuthToken(igv.oauth.google.access_token)
+                        .addView(view)
+                        .addView(teamView)
+                        .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
+                        .setCallback(function (data) {
+                            if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+                                filePickerHandler(data[google.picker.Response.DOCUMENTS]);
+                            }
+                        })
+                        .build();
+
                 }
-
-                picker.build();
 
                 picker.setVisible(true);
 

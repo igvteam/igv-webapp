@@ -30,6 +30,7 @@ import GenomeLoadController from './genomeLoadController.js';
 import TrackLoadController from './trackLoadController.js';
 import ShareController from './shareController.js';
 import SessionController from './sessionController.js';
+import SVGController from './svgController.js';
 
 let trackLoadController;
 let multipleFileTrackController;
@@ -37,6 +38,7 @@ let multipleFileGenomeController;
 let multipleFileSessionController;
 let genomeLoadController;
 let sessionController;
+let svgController;
 let shareController;
 let googleEnabled = false;
 
@@ -92,8 +94,6 @@ let initializationHelper = (browser, $container, options) => {
     appFooterImageHoverBehavior($('#igv-app-broad-logo').find('img'));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
-
-    createSaveSVGHandler($('#igv-app-save-svg-button'), browser);
 
     let $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
@@ -210,6 +210,14 @@ let initializationHelper = (browser, $container, options) => {
         };
     sessionController = new SessionController(sessionConfig);
 
+    // SVG Controller
+    const svgConfig =
+        {
+            browser: browser,
+            $saveModal: $('#igv-app-svg-save-modal')
+        };
+    svgController = new SVGController(svgConfig);
+
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
 
@@ -278,15 +286,6 @@ let createAppBookmarkHandler = ($bookmark_button) => {
         str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
         blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
         alert(blurb);
-    });
-
-};
-
-let createSaveSVGHandler = ($save_svg_button, browser) => {
-
-    $save_svg_button.on('click', (e) => {
-        console.log('save svg');
-        browser.renderSVG();
     });
 
 };

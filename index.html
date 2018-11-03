@@ -21,9 +21,7 @@
     <link rel="stylesheet" href="css/app.css">
 
     <!-- IGV JS-->
-    <!--<script src='https://igv.org/web/release/2.0.1/dist/igv.min.js'></script>-->
-    <!--<script src='https://igv.org/web/test/dist/igv.js'></script>-->
-    <script src='js/igv.js'></script>
+    <script src='https://igv.org/web/test/dist/igv.js'></script>
 
     <!-- Dropbox Chooser API-->
     <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
@@ -268,7 +266,7 @@
 
             <!-- Save SVG -->
             <div class="igv-app-site-widget">
-                <button class="btn btn-sm btn-outline-secondary" type="button" id="igv-app-save-svg-button">
+                <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="modal" data-target="#igv-app-svg-save-modal">
                     Save SVG
                 </button>
             </div>
@@ -437,7 +435,7 @@
     </div>
 
     <!-- Session save -->
-    <div id="igv-app-session-save-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-save-modal-label" aria-hidden="true">
+    <div id="igv-app-session-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-save-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -493,6 +491,46 @@
                 </div>
 
                 <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-secondary">OK</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SVG save -->
+    <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog" aria-labelledby="igv-app-svg-save-modal-label" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <div id="igv-app-svg-save-modal-label" class="modal-title">
+                        <div>
+                            Save SVG File
+                        </div>
+                    </div>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <input class="form-control" type="text" placeholder="igv-app.svg">
+
+                    <div>
+                        Enter filename with .svg suffix
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">

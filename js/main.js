@@ -30,6 +30,7 @@ import GenomeLoadController from './genomeLoadController.js';
 import TrackLoadController from './trackLoadController.js';
 import ShareController from './shareController.js';
 import SessionController from './sessionController.js';
+import SVGController from './svgController.js';
 
 let trackLoadController;
 let multipleFileTrackController;
@@ -37,6 +38,7 @@ let multipleFileGenomeController;
 let multipleFileSessionController;
 let genomeLoadController;
 let sessionController;
+let svgController;
 let shareController;
 let googleEnabled = false;
 
@@ -207,6 +209,14 @@ let initializationHelper = (browser, $container, options) => {
             $saveModal: $('#igv-app-session-save-modal')
         };
     sessionController = new SessionController(sessionConfig);
+
+    // SVG Controller
+    const svgConfig =
+        {
+            browser: browser,
+            $saveModal: $('#igv-app-svg-save-modal')
+        };
+    svgController = new SVGController(svgConfig);
 
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');

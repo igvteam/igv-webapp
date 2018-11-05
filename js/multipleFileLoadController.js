@@ -147,6 +147,7 @@ class MultipleFileLoadController {
                 let input;
                 input = $(this).get(0);
                 self.ingestPaths(Array.from(input.files));
+                $input[0].value=""
             }
 
         });

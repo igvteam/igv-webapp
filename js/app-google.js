@@ -82,7 +82,7 @@ let createDropdownButtonPicker = (multipleFileSelection, filePickerHandler) => {
     getAccessToken()
         .then(function (accessToken) {
             updateSignInStatus(true);
-            return Promise.resolve(accessToken);
+            return accessToken;
         })
         .then(function (accessToken) {
 

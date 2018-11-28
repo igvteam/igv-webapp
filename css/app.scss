@@ -12,6 +12,58 @@ $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 60px;
 $igv-app-logo-container-width: 20%;
 
+.btn-secondary {
+  color: #fff;
+  background-color: $igv-app-dark-color;
+  border-color: $igv-app-dark-color;
+}
+
+.navbar {
+  padding: unset;
+
+  padding-right: 1rem;
+
+  .navbar-brand {
+    padding-top: unset;
+    padding-bottom: unset;
+  }
+
+}
+
+.igv-app-modal-button-container {
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-left: 32px;
+  height: 100%;
+
+}
+
+.igv-app-footer-logo-container {
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  height: 100%;
+
+  div {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  div:first-child {
+    margin-left: 16px;
+    margin-right: 8px;
+  }
+}
+
 .igv-app-file-save-modal {
 
   .modal-body {
@@ -101,6 +153,11 @@ $igv-app-logo-container-width: 20%;
 }
 
 .igv-app-navbar-text {
+  color: white;
+  font-size: 14px;
+}
+
+.igv-app-footer-text {
   color: $igv-app-medium-color;
   font-size: 16px;
 }

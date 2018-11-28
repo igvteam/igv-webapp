@@ -252,6 +252,41 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
+.btn-secondary {
+  color: #fff;
+  background-color: #5f5f5f;
+  border-color: #5f5f5f; }
+
+.navbar {
+  padding: unset;
+  padding-right: 1rem; }
+  .navbar .navbar-brand {
+    padding-top: unset;
+    padding-bottom: unset; }
+
+.igv-app-modal-button-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 32px;
+  height: 100%; }
+
+.igv-app-footer-logo-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%; }
+  .igv-app-footer-logo-container div {
+    margin-left: 8px;
+    margin-right: 8px; }
+  .igv-app-footer-logo-container div:first-child {
+    margin-left: 16px;
+    margin-right: 8px; }
+
 .igv-app-file-save-modal .modal-body div {
   color: #5f5f5f;
   margin-top: 8px;
@@ -307,6 +342,10 @@ a#igv-app-email-button:active {
   background-color: #5f5f5f; }
 
 .igv-app-navbar-text {
+  color: white;
+  font-size: 14px; }
+
+.igv-app-footer-text {
   color: #a6a6a6;
   font-size: 16px; }
 
@@ -314,8 +353,8 @@ a#igv-app-email-button:active {
   float: left;
   margin-left: 4px;
   margin-right: 32px;
-  margin-top: 16px;
-  margin-bottom: 16px; }
+  margin-top: 12px;
+  margin-bottom: 8px; }
 
 #igv-app-encode-modal .modal-dialog {
   max-width: 75%; }

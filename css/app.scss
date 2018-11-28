@@ -41,6 +41,16 @@ $igv-app-logo-container-width: 20%;
   margin-left: 32px;
   height: 100%;
 
+  .btn {
+    color: white;
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  .btn:hover {
+    border-color: white;
+  }
+
 }
 
 .igv-app-footer-logo-container {

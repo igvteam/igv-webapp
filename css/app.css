@@ -272,6 +272,12 @@ a#igv-app-email-button:active {
   align-items: center;
   margin-left: 32px;
   height: 100%; }
+  .igv-app-modal-button-container .btn {
+    color: white;
+    background-color: transparent;
+    border-color: transparent; }
+  .igv-app-modal-button-container .btn:hover {
+    border-color: white; }
 
 .igv-app-footer-logo-container {
   display: flex;

@@ -9,7 +9,7 @@ $igv-app-dark-dark-color: #373737;
 $igv-app-hover-color: #0f0f0f;
 $igv-app-padding-width: 8px;
 $igv-app-genome-load-widget-height: 200px;
-$igv-app-footer-height: 60px;
+$igv-app-footer-height: 48px;
 $igv-app-logo-container-width: 20%;
 
 .btn-secondary {
@@ -51,27 +51,6 @@ $igv-app-logo-container-width: 20%;
     border-color: white;
   }
 
-}
-
-.igv-app-footer-logo-container {
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-
-  height: 100%;
-
-  div {
-    margin-left: 8px;
-    margin-right: 8px;
-  }
-
-  div:first-child {
-    margin-left: 16px;
-    margin-right: 8px;
-  }
 }
 
 .igv-app-file-save-modal {
@@ -147,6 +126,45 @@ $igv-app-logo-container-width: 20%;
 
   }
 
+}
+
+.igv-app-footer-logo-container {
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  div:first-child {
+    margin-left: 16px;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:hover {
+      font-weight: bold;
+    }
+  }
+
+  div:last-child {
+
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      margin-right: 16px;
+    }
+  }
 }
 
 .igv-app-modal-position {

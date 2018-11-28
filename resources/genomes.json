@@ -50,7 +50,7 @@
         "order": 1000000,
         "removable": false,
         "indexed": false,
-        "visibilityWindow": -1
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -68,7 +68,7 @@
         "order": 1000000,
         "removable": false,
         "indexed": false,
-        "visibilityWindow": -1
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -86,7 +86,7 @@
         "order": 1000000,
         "removable": false,
         "indexed": false,
-        "visibilityWindow": -1
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -104,7 +104,7 @@
         "order": 1000000,
         "removable": false,
         "indexed": false,
-        "visibilityWindow": -1
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -121,7 +121,7 @@
         "order": 1000000,
         "removable": false,
         "indexed": false,
-        "visibilityWindow": -1
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -138,7 +138,7 @@
         "order": 1000000,
         "removable": false,
         "indexed": false,
-        "visibilityWindow": -1
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -154,7 +154,8 @@
         "format": "ensgene",
         "displayMode": "EXPANDED",
         "url": "https://s3.amazonaws.com/igv.org.genomes/sacCer3/ensGene.txt.gz",
-        "indexed": false
+        "indexed": false,
+        "supportsWholeGenome": false
       }
     ]
   }

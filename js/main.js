@@ -90,8 +90,8 @@ let main = ($container, config) => {
 
 let initializationHelper = (browser, $container, options) => {
 
-    appFooterImageHoverBehavior($('#igv-app-ucsd-logo').find('img'));
-    appFooterImageHoverBehavior($('#igv-app-broad-logo').find('img'));
+    // appFooterImageHoverBehavior($('#igv-app-ucsd-logo').find('img'));
+    // appFooterImageHoverBehavior($('#igv-app-broad-logo').find('img'));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 

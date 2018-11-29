@@ -12,12 +12,6 @@ $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 48px;
 $igv-app-logo-container-width: 20%;
 
-.btn-secondary {
-  color: #fff;
-  background-color: $igv-app-dark-color;
-  border-color: $igv-app-dark-color;
-}
-
 .navbar {
   padding: unset;
 
@@ -41,14 +35,14 @@ $igv-app-logo-container-width: 20%;
   margin-left: 32px;
   height: 100%;
 
-  .btn {
-    color: white;
-    background-color: transparent;
-    border-color: transparent;
+  .nav-link {
+    color: #dfdfdf;
+    text-decoration: none;
   }
 
-  .btn:hover {
-    border-color: white;
+  .nav-link:hover {
+    color: white;
+    text-decoration: none;
   }
 
 }
@@ -101,30 +95,7 @@ $igv-app-logo-container-width: 20%;
   color: white;
 
   line-height: $igv-app-footer-height;
-  background-color: $igv-app-medium-color;
-
-  .col {
-    width: $igv-app-logo-container-width;
-    max-width: $igv-app-logo-container-width;
-  }
-
-  .col:nth-child(1) {
-    background-color: transparent;
-  }
-
-  .col:nth-child(2) {
-    background-color: transparent;
-  }
-
-  .col:nth-child(3) {
-    color: rgba(255, 255, 255, 0.51);
-    font-size: 10px;
-    width: calc(100% - #{$igv-app-logo-container-width});
-    max-width: calc(100% - #{$igv-app-logo-container-width});
-
-    background-color: transparent;
-
-  }
+  background-color: transparent;
 
 }
 
@@ -142,12 +113,8 @@ $igv-app-logo-container-width: 20%;
     margin-left: 16px;
 
     a {
-      color: white;
+      color: $igv-app-dark-color;
       text-decoration: none;
-    }
-
-    a:hover {
-      font-weight: bold;
     }
   }
 
@@ -183,11 +150,6 @@ $igv-app-logo-container-width: 20%;
 .igv-app-navbar-text {
   color: white;
   font-size: 14px;
-}
-
-.igv-app-footer-text {
-  color: $igv-app-medium-color;
-  font-size: 16px;
 }
 
 .igv-app-site-widget {

@@ -299,30 +299,26 @@ a#igv-app-email-button:active {
   bottom: 0;
   width: 100%;
   height: 48px;
-  color: white;
   line-height: 48px;
-  background-color: transparent; }
-
-.igv-app-footer-logo-container {
-  height: 100%;
+  color: white;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center; }
-  .igv-app-footer-logo-container div:first-child {
+  .igv-app-footer div:first-child {
     margin-left: 16px; }
-    .igv-app-footer-logo-container div:first-child a {
+    .igv-app-footer div:first-child a {
       color: #5f5f5f;
       text-decoration: none; }
-  .igv-app-footer-logo-container div:last-child {
+  .igv-app-footer div:last-child {
     height: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center; }
-    .igv-app-footer-logo-container div:last-child div {
+    .igv-app-footer div:last-child div {
       margin-right: 16px; }
 
 .igv-app-modal-position {
@@ -457,7 +453,24 @@ label.dropdown-item {
   background-color: white; }
 
 @media (max-width: 576px) {
-  .igv-app-footer-logo-container {
-    display: none; } }
+  .igv-app-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center; }
+    .igv-app-footer div:first-child {
+      margin-left: 16px; }
+      .igv-app-footer div:first-child a {
+        color: #5f5f5f;
+        text-decoration: none; }
+    .igv-app-footer div:last-child {
+      display: none; } }
 
 /*# sourceMappingURL=app.css.map */

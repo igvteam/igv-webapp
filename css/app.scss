@@ -85,16 +85,8 @@ $igv-app-logo-container-width: 20%;
   width: 100%;
   height: $igv-app-footer-height;
 
-  color: white;
-
   line-height: $igv-app-footer-height;
-  background-color: transparent;
-
-}
-
-.igv-app-footer-logo-container {
-
-  height: 100%;
+  color: white;
 
   display: flex;
   flex-direction: row;
@@ -104,7 +96,6 @@ $igv-app-logo-container-width: 20%;
 
   div:first-child {
     margin-left: 16px;
-
     a {
       color: $igv-app-dark-color;
       text-decoration: none;
@@ -124,6 +115,7 @@ $igv-app-logo-container-width: 20%;
     div {
       margin-right: 16px;
     }
+
   }
 }
 
@@ -325,8 +317,32 @@ label.dropdown-item {
 
 @media (max-width: 576px) {
 
-  .igv-app-footer-logo-container {
-    display: none;
-  }
+  .igv-app-footer {
+    position: absolute;
+    bottom: 0;
 
+    width: 100%;
+    height: $igv-app-footer-height;
+
+    line-height: $igv-app-footer-height;
+    color: white;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+
+    div:first-child {
+      margin-left: 16px;
+      a {
+        color: $igv-app-dark-color;
+        text-decoration: none;
+      }
+    }
+
+    div:last-child {
+      display: none;
+    }
+  }
 }

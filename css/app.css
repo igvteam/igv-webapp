@@ -253,11 +253,7 @@ a#igv-app-email-button:active {
   float: left; }
 
 .navbar {
-  padding: unset;
-  padding-right: 1rem; }
-  .navbar .navbar-brand {
-    padding-top: unset;
-    padding-bottom: unset; }
+  background-color: #5f5f5f; }
 
 .igv-app-modal-button-container {
   display: flex;
@@ -459,5 +455,9 @@ label.dropdown-item {
 .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container:hover {
   cursor: pointer;
   background-color: white; }
+
+@media (max-width: 576px) {
+  .igv-app-footer-logo-container {
+    display: none; } }
 
 /*# sourceMappingURL=app.css.map */

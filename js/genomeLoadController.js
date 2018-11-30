@@ -32,14 +32,10 @@ class GenomeLoadController {
 
     constructor (browser, { $urlModal, genomes }) {
 
-        let self = this,
-            urlConfig,
-            doOK;
-
         this.genomes = genomes;
 
         // URL
-        urlConfig =
+        let urlConfig =
             {
                 dataTitle: 'Genome',
                 $widgetParent: $urlModal.find('.modal-body'),
@@ -48,11 +44,10 @@ class GenomeLoadController {
 
         this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({}));
 
-        doOK = function (fileLoadManager) {
-            return okHandler(self, fileLoadManager);
-        };
-
-        configureModal(this.urlWidget, $urlModal, doOK);
+        let self = this;
+        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
+            return okHandler.call(self, fileLoadManager)
+        });
 
     }
 
@@ -164,11 +159,11 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
 }
 
-function okHandler(genomeLoadController, fileLoadManager) {
+function okHandler(fileLoadManager) {
 
     if (true === isValidGenomeConfiguration(fileLoadManager)) {
 
-        genomeLoadController
+        this
             .genomeConfiguration(fileLoadManager)
             .then(function (obj) {
                 let genome;
@@ -193,6 +188,8 @@ function isValidGenomeConfiguration(fileLoadManager) {
     } else if (undefined === fileLoadManager.dictionary.data || "" === fileLoadManager.dictionary.data) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing fasta URL');
         success = false;
+    } else if (fileLoadManager.dictionary.data && true === isJSON(fileLoadManager.dictionary.data)) {
+        success = true;
     } else if (undefined === fileLoadManager.dictionary.index || "" === fileLoadManager.dictionary.index) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing .fai URL');
         success = false;

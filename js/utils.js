@@ -119,6 +119,7 @@ let configureModal = (fileLoadWidget, $modal, okHandler = undefined) => {
     $ok.on('click', function () {
 
         let status = true;
+
         if (okHandler) {
             status = okHandler(fileLoadWidget.fileLoadManager);
         } else {
@@ -201,4 +202,6 @@ let indexLookup = (dataSuffix) => {
 
 };
 
-export { isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, isJSON, configureModal, loadGenome };
+let isPromise = (obj) => { return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function'; };
+
+export { isPromise, isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, isJSON, configureModal, loadGenome };

@@ -25,6 +25,7 @@
  */
 
 import { isJSON } from './utils.js';
+import {isPromise} from "./utils";
 
 class FileLoadManager {
     
@@ -187,21 +188,20 @@ class FileLoadManager {
     }
 
     ingestPath (path, isIndexFile) {
-        let self = this,
-            extension;
 
-        extension = igv.getExtension({ url: path });
+        let extension = igv.getExtension({ url: path });
+        let key = true === isIndexFile ? 'index' : 'data';
 
         if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
 
             if (true === this.isSessionFile) {
                 this.dictionary.data = path;
             } else {
+                let self = this;
                 igv.xhr
                     .loadJson(path)
                     .then(function (json) {
-                        self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
-
+                        self.dictionary[ key ] = json;
                     })
                     .catch(function (e) {
                         self.fileLoadWidget.presentErrorMessage('Error: Invalid JSON.');

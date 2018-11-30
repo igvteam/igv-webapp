@@ -57,225 +57,236 @@
 
 <body class="igv-app-body-footerized">
 
-<nav class="navbar navbar-dark igv-app-background-dark justify-content-between">
-    <div class="navbar-brand">
-        <a class="nav-link igv-app-navbar-text" href="https://www.igv.org" target="_blank">
-            <img src="img/igv-logo-cooked-40x40.png" width="40" height="40" class="d-inline-block align-center" alt="">
-        </a>
-    </div>
-    <ul class="navbar-nav">
-        <!--        <li class="nav-item">
-                    <a class="nav-link igv-app-navbar-text" href="https://www.igv.org" target="_blank">
-                        igv.org
+<nav class="navbar py-0 navbar-expand-sm navbar-dark justify-content-between">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#igv-app-navbar-navigation" aria-controls="igv-app-navbar-navigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="igv-app-navbar-navigation" class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+
+            <li class="nav-item px-2">
+
+                <!-- Genome -->
+                <div class="dropdown">
+
+                    <a id="igv-app-genome-dropdown-button" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Genome
                     </a>
-                </li>-->
+
+                    <div id="igv-app-genome-dropdown-menu" class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
+
+                        <div id="igv-app-genome-dropdown-divider" class="dropdown-divider"></div>
+
+                        <!-- local file -->
+                        <label class="dropdown-item btn btn-default btn-file">
+                            <div class="igv-app-dropdown-item-cloud-storage">
+                                <div>
+                                    Local File ...
+                                </div>
+                                <div>
+                                    <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file" multiple style="display: none;">
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Dropbox -->
+                        <div class="dropdown-item">
+
+                            <div id="igv-app-dropdown-dropbox-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
+
+                                <div>Dropbox</div>
+                                <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
+                                <div>...</div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Google Drive -->
+                        <div class="dropdown-item">
+                            <div id="igv-app-dropdown-google-drive-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
+                                <div>Google Drive</div>
+                                <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                                <div>...</div>
+                            </div>
+                        </div>
+
+                        <!-- URL -->
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">URL ...
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </li>
+
+            <li class="nav-item px-2">
+
+                <!-- Tracks -->
+                <div id="igv-app-track-dropdown" class="dropdown">
+
+                    <a id="igv-track-dropdown-button" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tracks
+                    </a>
+
+                    <div id="igv-app-track-dropdown-menu" class="dropdown-menu"
+                         aria-labelledby="igv-app-track-dropdown-button">
+
+                        <!-- local file -->
+                        <label class="dropdown-item btn btn-default btn-file">
+                            <div class="igv-app-dropdown-item-cloud-storage">
+                                <div>
+                                    Local File ...
+                                </div>
+                                <div>
+                                    <input id="igv-app-dropdown-local-track-file-input" type="file" name="file" multiple
+                                           style="display: none;">
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Dropbox -->
+                        <div class="dropdown-item">
+
+                            <div id="igv-app-dropdown-dropbox-track-file-button" class="igv-app-dropdown-item-cloud-storage">
+
+                                <div>Dropbox</div>
+                                <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
+                                <div>...</div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Google Drive -->
+                        <div class="dropdown-item">
+                            <div id="igv-app-dropdown-google-drive-track-file-button" class="igv-app-dropdown-item-cloud-storage">
+                                <div>Google Drive</div>
+                                <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                                <div>...</div>
+                            </div>
+                        </div>
+
+                        <!-- URL -->
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-track-from-url-modal">URL ...
+                        </button>
+
+                        <div id="igv-app-annotations-section" class="dropdown-divider"></div>
+
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item px-2">
+
+                <!-- Session -->
+                <div class="dropdown">
+
+                    <a id="igv-app-session-dropdown-button" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Session
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="igv-app-session-dropdown-button">
+
+                        <!-- Load local session file -->
+                        <label class="dropdown-item btn btn-default btn-file">
+                            <div class="igv-app-dropdown-item-cloud-storage">
+                                <div>
+                                    Local File ...
+                                </div>
+                                <div>
+                                    <input id="igv-app-dropdown-local-session-file-input" type="file" name="file" style="display: none;">
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Load Dropbox hosted session file -->
+                        <div class="dropdown-item">
+
+                            <div id="igv-app-dropdown-dropbox-session-file-button" class="igv-app-dropdown-item-cloud-storage">
+
+                                <div>Dropbox</div>
+                                <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
+                                <div>...</div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Load Google Drive hosted session file -->
+                        <div class="dropdown-item">
+                            <div id="igv-app-dropdown-google-drive-session-file-button" class="igv-app-dropdown-item-cloud-storage">
+                                <div>Google Drive</div>
+                                <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                                <div>...</div>
+                            </div>
+                        </div>
+
+                        <!-- Load session URL -->
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">Load URL ...
+                        </button>
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- Save local session file -->
+                        <button id="igv-app-save-session-button" class="dropdown-item" type="button">
+                            Save Local File ...
+                        </button>
+
+                    </div>
+
+                </div>
+            </li>
+
+            <li class="nav-item px-2">
+
+                <!-- Share (generate URL) -->
+                <div class="">
+                    <a id="igv-app-share-button" class="nav-link" href="#" data-toggle="modal" data-target="#igv-app-share-modal">
+                        Share
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item px-2">
+
+                <!-- Bookmark -->
+                <div class="">
+                    <a id="igv-app-bookmark-button" class="nav-link" href="#">
+                        Bookmark
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item px-2">
+
+                <!-- Save SVG -->
+                <div class="">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#igv-app-svg-save-modal">
+                        Save SVG
+                    </a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link igv-app-navbar-text" href="https://igvteam.github.io/igv-webapp/" target="_blank">
+            <a class="nav-link" href="https://igvteam.github.io/igv-webapp/" target="_blank">
                 Help
             </a>
         </li>
     </ul>
 
+
 </nav>
 
 <main role="main" class="container-fluid">
-
-    <!-- Modal presentation buttons -->
-    <div class="row">
-
-        <div class="col-sm">
-
-            <!-- Genome -->
-            <div class="dropdown igv-app-site-widget">
-
-                <button id="igv-app-genome-dropdown-button" class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Genome
-                </button>
-
-                <div id="igv-app-genome-dropdown-menu" class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
-
-                    <div id="igv-app-genome-dropdown-divider" class="dropdown-divider"></div>
-
-                    <!-- local file -->
-                    <label class="dropdown-item btn btn-default btn-file">
-                        <div class="igv-app-dropdown-item-cloud-storage">
-                            <div>
-                                Local File ...
-                            </div>
-                            <div>
-                                <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file" multiple style="display: none;">
-                            </div>
-                        </div>
-                    </label>
-
-                    <!-- Dropbox -->
-                    <div class="dropdown-item">
-
-                        <div id="igv-app-dropdown-dropbox-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
-
-                            <div>Dropbox</div>
-                            <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
-                            <div>...</div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Google Drive -->
-                    <div class="dropdown-item">
-                        <div id="igv-app-dropdown-google-drive-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
-                            <div>Google Drive</div>
-                            <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
-                            <div>...</div>
-                        </div>
-                    </div>
-
-                    <!-- URL -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">URL ...
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- Tracks -->
-            <div id="igv-app-track-dropdown" class="dropdown igv-app-site-widget">
-
-                <button id="igv-track-dropdown-button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                        type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Tracks
-                </button>
-
-                <div id="igv-app-track-dropdown-menu" class="dropdown-menu"
-                     aria-labelledby="igv-app-track-dropdown-button">
-
-                    <!-- local file -->
-                    <label class="dropdown-item btn btn-default btn-file">
-                        <div class="igv-app-dropdown-item-cloud-storage">
-                            <div>
-                                Local File ...
-                            </div>
-                            <div>
-                                <input id="igv-app-dropdown-local-track-file-input" type="file" name="file" multiple
-                                       style="display: none;">
-                            </div>
-                        </div>
-                    </label>
-
-                    <!-- Dropbox -->
-                    <div class="dropdown-item">
-
-                        <div id="igv-app-dropdown-dropbox-track-file-button" class="igv-app-dropdown-item-cloud-storage">
-
-                            <div>Dropbox</div>
-                            <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
-                            <div>...</div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Google Drive -->
-                    <div class="dropdown-item">
-                        <div id="igv-app-dropdown-google-drive-track-file-button" class="igv-app-dropdown-item-cloud-storage">
-                            <div>Google Drive</div>
-                            <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
-                            <div>...</div>
-                        </div>
-                    </div>
-
-                    <!-- URL -->
-                    <button class="dropdown-item" type="button" data-toggle="modal"
-                            data-target="#igv-app-track-from-url-modal">URL ...
-                    </button>
-
-                    <div id="igv-app-annotations-section" class="dropdown-divider"></div>
-
-                </div>
-            </div>
-
-            <!-- Session -->
-            <div class="dropdown igv-app-site-widget">
-
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="igv-app-session-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Session
-                </button>
-
-                <div class="dropdown-menu" aria-labelledby="igv-app-session-dropdown-button">
-
-                    <!-- Load local session file -->
-                    <label class="dropdown-item btn btn-default btn-file">
-                        <div class="igv-app-dropdown-item-cloud-storage">
-                            <div>
-                                Local File ...
-                            </div>
-                            <div>
-                                <input id="igv-app-dropdown-local-session-file-input" type="file" name="file" style="display: none;">
-                            </div>
-                        </div>
-                    </label>
-
-                    <!-- Load Dropbox hosted session file -->
-                    <div class="dropdown-item">
-
-                        <div id="igv-app-dropdown-dropbox-session-file-button" class="igv-app-dropdown-item-cloud-storage">
-
-                            <div>Dropbox</div>
-                            <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
-                            <div>...</div>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Load Google Drive hosted session file -->
-                    <div class="dropdown-item">
-                        <div id="igv-app-dropdown-google-drive-session-file-button" class="igv-app-dropdown-item-cloud-storage">
-                            <div>Google Drive</div>
-                            <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
-                            <div>...</div>
-                        </div>
-                    </div>
-
-                    <!-- Load session URL -->
-                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">Load URL ...
-                    </button>
-
-                    <div class="dropdown-divider"></div>
-
-                    <!-- Save local session file -->
-                    <button id="igv-app-save-session-button" class="dropdown-item" type="button">
-                        Save Local File ...
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- Share (generate URL) -->
-            <div class="igv-app-site-widget">
-                <button id="igv-app-share-button" class="btn btn-sm btn-outline-secondary" type="button"
-                        data-toggle="modal" data-target="#igv-app-share-modal">Share
-                </button>
-            </div>
-
-            <!-- Bookmark -->
-            <div class="igv-app-site-widget">
-                <button class="btn btn-sm btn-outline-secondary" type="button" id="igv-app-bookmark-button">
-                    Bookmark
-                </button>
-            </div>
-
-            <!-- Save SVG -->
-            <div class="igv-app-site-widget">
-                <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="modal" data-target="#igv-app-svg-save-modal">
-                    Save SVG
-                </button>
-            </div>
-
-        </div>
-
-    </div>
 
     <!-- App container -->
     <div class="row">
@@ -624,22 +635,29 @@
 
 </main>
 
-<footer class="igv-app-footer igv-app-background-dark">
+<footer class="igv-app-footer">
 
-    <div class="d-flex align-items-center">
+    <div>
+        <a href="https://www.igv.org" target="_blank">
+            <img src="img/igv-logo-cooked-40x40.png" width="32" height="32">&nbsp;&nbsp;igv.org
+        </a>
+    </div>
 
-        <div id="igv-app-ucsd-logo" class="col">
-            <a class="ml-4" href="https://ucsd.edu/" title="University of California at San Diego" target="_blank">
-                <img src="img/ucsd-logo.png" width="164" height="32" alt="University of California at San Diego">
-            </a>
-        </div>
-
-        <div id="igv-app-broad-logo" class="col">
-            <a class="ml-4" href="https://www.broadinstitute.org" title="Broad Institute home page" target="_blank">
-                <img src="img/broad-institute-logo.png" width="127" height="32" alt="Broad Institute logo">
-            </a>
+    <div>
+        <div>
+            <div id="igv-app-ucsd-logo">
+                <a href="https://ucsd.edu/" target="_blank" title="University of California at San Diego">
+                    <img src="img/ucsd-logo.svg" width="123" height="24" alt="University of California at San Diego">
+                </a>
+            </div>
+            <div id="igv-app-broad-logo">
+                <a href="https://www.broadinstitute.org" target="_blank" title="Broad Institute home page">
+                    <img src="img/broad-institute-logo.svg" width="95" height="24" alt="Broad Institute logo">
+                </a>
+            </div>
         </div>
     </div>
+
 </footer>
 
 <!-- Do not remove the bundle comment below -- its used by the grunt build -->

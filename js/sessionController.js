@@ -1,7 +1,7 @@
 import FileLoadWidget from "./fileLoadWidget.js";
 import FileLoadManager from "./fileLoadManager.js";
 import {configureModal} from "./utils.js";
-import {getExtension} from "./utils";
+import {getExtension, loadGenome} from "./utils";
 
 class SessionController {
 
@@ -18,8 +18,17 @@ class SessionController {
         this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({ sessionJSON: true }));
 
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-            browser.loadSession( fileLoadManager.dictionary.data );
-            return true;
+
+            fileLoadManager.ingestPaths();
+
+            if (fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
+                browser.loadSession( fileLoadManager.dictionary.data );
+                return true;
+            } else {
+                fileLoadManager.fileLoadWidget.presentErrorMessage('Error: invalid session file');
+                return false;
+            }
+
         });
 
         configureSaveModal(browser, $saveModal);

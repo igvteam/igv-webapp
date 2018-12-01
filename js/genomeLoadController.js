@@ -94,56 +94,6 @@ class GenomeLoadController {
 
 }
 
-export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
-
-    var $divider,
-        $button;
-
-    // discard all buttons preceeding the divider div
-    $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
-    $divider.prevAll().remove();
-
-    for (let key in genomeDictionary) {
-
-        if (genomeDictionary.hasOwnProperty(key)) {
-
-            $button = createButton(genomeDictionary[ key ].name);
-            $button.insertBefore( $divider );
-            $button.data('id', key);
-
-            $button.on('click', function () {
-
-                const id = $(this).data('id');
-                if (id !== browser.genome.id) {
-                    loadGenome(genomeDictionary[ id ]);
-                }
-
-            });
-
-        } // if (...)
-
-    } // for (...)
-
-    function createButton (title) {
-
-        let $button = $('<button>', { class:'dropdown-item', type:'button' });
-        $button.text(title);
-
-        return $button;
-    }
-
-}
-
-function genomeConfiguration (fileLoadManager) {
-
-    if (fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
-        return fileLoadManager.dictionary.data;
-    } else {
-        return { fastaURL: fileLoadManager.dictionary.data, indexURL: fileLoadManager.dictionary.index };
-    }
-
-}
-
 function okHandler(fileLoadManager) {
 
     fileLoadManager.ingestPaths();
@@ -189,6 +139,46 @@ function isValidGenomeConfiguration(fileLoadManager) {
     }
 
     return success;
+
+}
+
+export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
+
+    var $divider,
+        $button;
+
+    // discard all buttons preceeding the divider div
+    $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
+    $divider.prevAll().remove();
+
+    for (let key in genomeDictionary) {
+
+        if (genomeDictionary.hasOwnProperty(key)) {
+
+            $button = createButton(genomeDictionary[ key ].name);
+            $button.insertBefore( $divider );
+            $button.data('id', key);
+
+            $button.on('click', function () {
+
+                const id = $(this).data('id');
+                if (id !== browser.genome.id) {
+                    loadGenome(genomeDictionary[ id ]);
+                }
+
+            });
+
+        } // if (...)
+
+    } // for (...)
+
+    function createButton (title) {
+
+        let $button = $('<button>', { class:'dropdown-item', type:'button' });
+        $button.text(title);
+
+        return $button;
+    }
 
 }
 

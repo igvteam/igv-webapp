@@ -90,9 +90,6 @@ let main = ($container, config) => {
 
 let initializationHelper = (browser, $container, options) => {
 
-    // appFooterImageHoverBehavior($('#igv-app-ucsd-logo').find('img'));
-    // appFooterImageHoverBehavior($('#igv-app-broad-logo').find('img'));
-
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
     let $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
@@ -245,33 +242,6 @@ let initializationHelper = (browser, $container, options) => {
         };
 
     shareController = new ShareController($container, browser, shareConfig);
-
-};
-
-let appFooterImageHoverBehavior = ($img) => {
-
-    $img.hover(() => {
-            let src,
-                replacement;
-
-            src = $img.attr('src');
-
-            replacement = src.replace(/\.svg/, '-hover.svg');
-
-            $img.attr('src', replacement );
-        },
-        () => {
-
-            let src,
-                replacement;
-
-            src = $img.attr('src');
-
-            replacement = src.replace(/-hover\.svg/, '.svg');
-
-            $img.attr('src', replacement );
-
-        });
 
 };
 

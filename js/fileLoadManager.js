@@ -56,11 +56,14 @@ class FileLoadManager {
     
     okHandler () {
 
+        this.ingestPaths();
+
         let obj = this.trackLoadConfiguration();
 
         if (obj) {
 
             let extension = igv.getExtension({ url: obj.url });
+            let self = this;
 
             if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
 
@@ -68,15 +71,18 @@ class FileLoadManager {
                     .loadJson(obj.url)
                     .then(function (data) {
                         igv.browser.loadTrackList([data]);
+                        self.fileLoadWidget.dismissErrorMessage();
                     });
+
             } else {
+
                 extractName(obj)
                     .then(function (name) {
                         obj.filename = obj.name = name;
                         igv.browser.loadTrackList( [ obj ] );
+                        self.fileLoadWidget.dismissErrorMessage();
                     })
                     .catch(function (error) {
-                        // Ignore errors extracting the name
                         console.error(error);
                         igv.browser.loadTrackList( [ obj ] );
                     });
@@ -94,40 +100,14 @@ class FileLoadManager {
         this.ingestPath(path, isIndexFile);
     }
 
-    didDragDrop (dataTransfer) {
-        var files;
-
-        files = dataTransfer.files;
-
-        return (files && files.length > 0);
-    }
-    
-    dragDropHandler (dataTransfer, isIndexFile) {
-        var url,
-            files,
-            isValid;
-
-        url = dataTransfer.getData('text/uri-list');
-        files = dataTransfer.files;
-
-        if (files && files.length > 0) {
-            this.ingestPath(files[ 0 ], isIndexFile);
-        } else if (url && '' !== url) {
-            this.ingestPath(url, isIndexFile);
-        }
-
+    ingestPaths() {
+        this.ingestPath(this.fileLoadWidget.$inputData.val(), false);
+        this.ingestPath(this.fileLoadWidget.$inputIndex.val(), true);
     }
 
-    indexName () {
-        return itemName(this.dictionary.index);
-    }
-
-    dataName () {
-        return itemName(this.dictionary.data);
-    }
-
-    reset () {
-        this.dictionary = {};
+    ingestPath (path, isIndexFile) {
+        let key = true === isIndexFile ? 'index' : 'data';
+        this.dictionary[ key ] = path;
     }
 
     trackLoadConfiguration () {
@@ -206,9 +186,40 @@ class FileLoadManager {
 
     }
 
-    ingestPath (path, isIndexFile) {
-        let key = true === isIndexFile ? 'index' : 'data';
-        this.dictionary[ key ] = path;
+    didDragDrop (dataTransfer) {
+        var files;
+
+        files = dataTransfer.files;
+
+        return (files && files.length > 0);
+    }
+    
+    dragDropHandler (dataTransfer, isIndexFile) {
+        var url,
+            files,
+            isValid;
+
+        url = dataTransfer.getData('text/uri-list');
+        files = dataTransfer.files;
+
+        if (files && files.length > 0) {
+            this.ingestPath(files[ 0 ], isIndexFile);
+        } else if (url && '' !== url) {
+            this.ingestPath(url, isIndexFile);
+        }
+
+    }
+
+    indexName () {
+        return itemName(this.dictionary.index);
+    }
+
+    dataName () {
+        return itemName(this.dictionary.data);
+    }
+
+    reset () {
+        this.dictionary = {};
     }
 
     isAnIndexFile(fileOrURL) {

@@ -92,31 +92,6 @@ class GenomeLoadController {
 
     }
 
-    genomeConfiguration (fileLoadManager) {
-
-        let self = this,
-            obj;
-
-        if (true === isJSON(fileLoadManager.dictionary.data)) {
-            obj = {};
-            obj[ 'noname' ] = fileLoadManager.dictionary.data;
-
-            return Promise.resolve(obj);
-
-        } else {
-
-            obj = {};
-            obj[ 'noname' ] =
-                {
-                    fastaURL: fileLoadManager.dictionary.data,
-                    indexURL: fileLoadManager.dictionary.index
-                };
-
-            return Promise.resolve(obj);
-        }
-
-    }
-
 }
 
 export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
@@ -159,17 +134,35 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
 }
 
+function genomeConfiguration (fileLoadManager) {
+
+    if (fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
+        return fileLoadManager.dictionary.data;
+    } else {
+        return { fastaURL: fileLoadManager.dictionary.data, indexURL: fileLoadManager.dictionary.index };
+    }
+
+}
+
 function okHandler(fileLoadManager) {
+
+    fileLoadManager.ingestPaths();
 
     if (true === isValidGenomeConfiguration(fileLoadManager)) {
 
-        this
-            .genomeConfiguration(fileLoadManager)
-            .then(function (obj) {
-                let genome;
-                genome = Object.values(obj).pop();
-                loadGenome(genome);
-            });
+        if (fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
+
+            igv.xhr
+                .loadJson(fileLoadManager.dictionary.data)
+                .then(function (genome) {
+                    loadGenome(genome);
+                });
+
+        } else {
+            loadGenome({ fastaURL: fileLoadManager.dictionary.data, indexURL: fileLoadManager.dictionary.index });
+        }
+
+        fileLoadManager.fileLoadWidget.dismissErrorMessage();
 
         return true;
     } else {
@@ -188,7 +181,7 @@ function isValidGenomeConfiguration(fileLoadManager) {
     } else if (undefined === fileLoadManager.dictionary.data || "" === fileLoadManager.dictionary.data) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing fasta URL');
         success = false;
-    } else if (fileLoadManager.dictionary.data && true === isJSON(fileLoadManager.dictionary.data)) {
+    } else if (fileLoadManager.dictionary.data && true === fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
         success = true;
     } else if (undefined === fileLoadManager.dictionary.index || "" === fileLoadManager.dictionary.index) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing .fai URL');

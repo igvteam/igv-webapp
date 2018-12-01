@@ -62,10 +62,9 @@ class FileLoadManager {
 
         if (obj) {
 
-            let extension = igv.getExtension({ url: obj.url });
             let self = this;
 
-            if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
+            if (true === this.isJSONExtension( igv.getExtension({ url: obj.url }) )) {
 
                 igv.xhr
                     .loadJson(obj.url)
@@ -134,11 +133,8 @@ class FileLoadManager {
             return undefined;
         } else {
 
-            extension = igv.getExtension({ url: this.dictionary.data });
-
-            if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
+            if (true === this.isJSONExtension( igv.getExtension({ url: this.dictionary.data }) )) {
                 return { url: this.dictionary.data, indexURL: undefined }
-
             }
 
             if (this.dictionary.index) {
@@ -210,6 +206,9 @@ class FileLoadManager {
 
     }
 
+    isJSONExtension (extension) {
+        return 'json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))
+    }
     indexName () {
         return itemName(this.dictionary.index);
     }

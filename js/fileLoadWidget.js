@@ -171,12 +171,6 @@ class FileLoadWidget {
         $input = $('<input>', { type:'text', placeholder:(true === isIndexFile ? 'Enter index URL' : 'Enter data URL') });
         $parent.append($input);
 
-        if (true === isIndexFile) {
-            self.fileLoadManager.$inputIndex = $input;
-        } else {
-            self.fileLoadManager.$inputData = $input;
-        }
-
         $input.on('focus', function () {
             self.dismissErrorMessage();
         });

@@ -57,18 +57,31 @@ class FileLoadManager {
     okHandler () {
 
         let obj = this.trackLoadConfiguration();
+
         if (obj) {
 
-            extractName(obj)
-                .then(function (name) {
-                    obj.filename = obj.name = name;
-                    igv.browser.loadTrackList( [ obj ] );
-                })
-                .catch(function (error) {
-                    // Ignore errors extracting the name
-                    console.error(error);
-                    igv.browser.loadTrackList( [ obj ] );
-                });
+            let extension = igv.getExtension({ url: obj.url });
+
+            if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
+
+                igv.xhr
+                    .loadJson(obj.url)
+                    .then(function (data) {
+                        igv.browser.loadTrackList([data]);
+                    });
+            } else {
+                extractName(obj)
+                    .then(function (name) {
+                        obj.filename = obj.name = name;
+                        igv.browser.loadTrackList( [ obj ] );
+                    })
+                    .catch(function (error) {
+                        // Ignore errors extracting the name
+                        console.error(error);
+                        igv.browser.loadTrackList( [ obj ] );
+                    });
+
+            }
 
             return true;
         } else {
@@ -129,6 +142,9 @@ class FileLoadManager {
             this.dictionary.data = undefined;
         }
 
+        // hack for Dropbox URLs with ?dl crap appended.
+        this.dictionary.data = this.dictionary.data.split('?').shift();
+
         if ("" === this.dictionary.index) {
             this.dictionary.index = undefined;
         }
@@ -138,8 +154,11 @@ class FileLoadManager {
             return undefined;
         } else {
 
-            if (true === isJSON(this.dictionary.data)) {
-                return this.dictionary.data;
+            extension = igv.getExtension({ url: this.dictionary.data });
+
+            if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
+                return { url: this.dictionary.data, indexURL: undefined }
+
             }
 
             if (this.dictionary.index) {
@@ -188,31 +207,8 @@ class FileLoadManager {
     }
 
     ingestPath (path, isIndexFile) {
-
-        let extension = igv.getExtension({ url: path });
         let key = true === isIndexFile ? 'index' : 'data';
-
-        if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
-
-            if (true === this.isSessionFile) {
-                this.dictionary.data = path;
-            } else {
-                let self = this;
-                igv.xhr
-                    .loadJson(path)
-                    .then(function (json) {
-                        self.dictionary[ key ] = json;
-                    })
-                    .catch(function (e) {
-                        self.fileLoadWidget.presentErrorMessage('Error: Invalid JSON.');
-                    });
-
-            }
-
-        } else {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;
-        }
-
+        this.dictionary[ key ] = path;
     }
 
     isAnIndexFile(fileOrURL) {

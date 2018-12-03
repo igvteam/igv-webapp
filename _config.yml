@@ -1,6 +1,6 @@
 theme: jekyll-theme-leap-day
 title: IGV-Web Documentation
-description: www.igv.org/app
+description: igv.org/app
 show_downloads: false
 github:
   is_project_page: false

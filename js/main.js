@@ -21,6 +21,7 @@
  *
  */
 
+import { getExtension } from './utils.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';
@@ -107,6 +108,8 @@ let initializationHelper = (browser, $container, options) => {
             $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined,
             configurationHandler: MultipleFileLoadController.trackConfigurator,
+            jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
+            pathValidator: MultipleFileLoadController.trackPathValidator,
             fileLoadHandler: (configurations) => {
                 browser.loadTrackList( configurations );
             }
@@ -126,18 +129,11 @@ let initializationHelper = (browser, $container, options) => {
             $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
             configurationHandler: MultipleFileLoadController.genomeConfigurator,
+            jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
+            pathValidator: MultipleFileLoadController.genomePathValidator,
             fileLoadHandler: (configurations) => {
-
                 let config = configurations[ 0 ];
-
-                if ('fa' !== igv.getExtension({ url: config.fastaURL })) {
-                    igv.browser.presentAlert("Invalid fasta URL");
-                } else if (undefined === config.indexURL) {
-                    igv.browser.presentAlert("Missing index URL");
-                } else {
-                    loadGenome(config);
-                }
-
+                loadGenome(config);
             }
         };
 
@@ -200,7 +196,7 @@ let initializationHelper = (browser, $container, options) => {
             $dropboxButton: $('#igv-app-dropdown-dropbox-session-file-button'),
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_session_file_button : undefined,
             configurationHandler: MultipleFileLoadController.sessionConfigurator,
-            fileLoadHandler: (configurations) => { }
+            jsonFileValidator: MultipleFileLoadController.sessionJSONValidator
         };
 
     multipleFileSessionController = new MultipleFileLoadController(browser, multileFileSessionConfig);

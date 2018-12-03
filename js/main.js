@@ -127,9 +127,17 @@ let initializationHelper = (browser, $container, options) => {
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
             configurationHandler: MultipleFileLoadController.genomeConfigurator,
             fileLoadHandler: (configurations) => {
-                let config;
-                config = configurations[ 0 ];
-                loadGenome(config);
+
+                let config = configurations[ 0 ];
+
+                if ('fa' !== igv.getExtension({ url: config.fastaURL })) {
+                    igv.browser.presentAlert("Invalid fasta URL");
+                } else if (undefined === config.indexURL) {
+                    igv.browser.presentAlert("Missing index URL");
+                } else {
+                    loadGenome(config);
+                }
+
             }
         };
 

@@ -43,7 +43,7 @@ class MultipleFileLoadController {
         this.configurationHandler = config.configurationHandler;
 
         this.$modal = config.$modal;
-        this.$modal.find('.modal-title').text( config.modalTitle );
+        // this.$modal.find('.modal-title').text( this.config.modalTitle );
         this.$modal_body = this.$modal.find('.modal-body');
 
         this.createLocalInput(config.$localFileInput);
@@ -359,6 +359,8 @@ class MultipleFileLoadController {
 
             header = '<div> The following files were not loaded ...</div>';
             markup.unshift(header);
+
+            this.$modal.find('.modal-title').text( this.config.modalTitle );
             this.$modal_body.append(markup.join(''));
             this.$modal.modal('show');
         }

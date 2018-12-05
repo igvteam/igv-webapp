@@ -17,6 +17,10 @@ $igv-app-logo-container-width: 20%;
   background-color: $igv-app-dark-color;
 }
 
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+
 .igv-app-modal-button-container {
 
   display: flex;

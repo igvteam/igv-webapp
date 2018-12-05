@@ -262,7 +262,7 @@ function extractName(config) {
         tmp = extractQuery(config.url);
         id = tmp["id"];
 
-        return igv.Google.getDriveFileInfo(config.url)
+        return igv.google.getDriveFileInfo(config.url)
             .then(function (json) {
                 return json.originalFilename || json.name;
             })

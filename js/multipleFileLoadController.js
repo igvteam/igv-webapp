@@ -154,10 +154,10 @@ class MultipleFileLoadController {
         }
 
         // validate data paths (non-JSON)
-        let candidates = remainingPaths.map(path => getExtension(path));
+        let extensions = remainingPaths.map(path => getExtension(path));
 
-        if (candidates.length > 0) {
-            let results = candidates.map((object) => self.pathValidator( Object.keys(object).pop() ));
+        if (extensions.length > 0) {
+            let results = extensions.map((extension) => self.pathValidator( extension ));
 
             if (results.length > 0) {
 
@@ -218,7 +218,7 @@ class MultipleFileLoadController {
                 return accumulator;
             }, []);
 
-        if (jsonPromises.length > 0) {
+        if (jsonPaths.length > 0) {
 
             this.jsonRetrievalSerial(jsonPromises, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
 

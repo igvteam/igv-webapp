@@ -21,7 +21,7 @@ class SessionController {
 
             fileLoadManager.ingestPaths();
 
-            if (fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
+            if (fileLoadManager.isJSONExtension(getExtension(fileLoadManager.dictionary.data))) {
                 browser.loadSession( fileLoadManager.dictionary.data );
                 return true;
             } else {

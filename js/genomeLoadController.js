@@ -27,6 +27,7 @@
 import { loadGenome, isJSON, configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
+import {getExtension} from "./utils";
 
 class GenomeLoadController {
 
@@ -100,7 +101,7 @@ function okHandler(fileLoadManager) {
 
     if (true === isValidGenomeConfiguration(fileLoadManager)) {
 
-        if (fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
+        if (fileLoadManager.isJSONExtension(getExtension(fileLoadManager.dictionary.data))) {
 
             igv.xhr
                 .loadJson(fileLoadManager.dictionary.data)

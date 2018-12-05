@@ -24,8 +24,7 @@
  * THE SOFTWARE.
  */
 
-import { isJSON } from './utils.js';
-import {isPromise} from "./utils";
+import { getExtension } from "./utils.js";
 
 class FileLoadManager {
     
@@ -64,32 +63,33 @@ class FileLoadManager {
 
             let self = this;
 
-            if (true === this.isJSONExtension( igv.getExtension({ url: obj.url }) )) {
+            FileLoadManager.extractName(obj)
+                .then(function (name) {
 
-                igv.xhr
-                    .loadJson(obj.url)
-                    .then(function (data) {
-                        igv.browser.loadTrackList([data]);
-                        self.fileLoadWidget.dismissErrorMessage();
-                    });
+                    if (true === self.isJSONExtension( getExtension(name) )) {
 
-            } else {
+                        igv.xhr
+                            .loadJson(obj.url)
+                            .then(function (json) {
+                                json.filename = json.name = name;
+                                igv.browser.loadTrackList([json]);
+                            });
 
-                extractName(obj)
-                    .then(function (name) {
+                    } else {
                         obj.filename = obj.name = name;
                         igv.browser.loadTrackList( [ obj ] );
-                        self.fileLoadWidget.dismissErrorMessage();
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                        igv.browser.loadTrackList( [ obj ] );
-                    });
+                    }
 
-            }
+                    self.fileLoadWidget.dismissErrorMessage();
+                })
+                .catch(function (error) {
+                    console.error(error);
+                    igv.browser.loadTrackList( [ obj ] );
+                });
 
             return true;
         } else {
+
             return false;
         }
 
@@ -247,81 +247,34 @@ class FileLoadManager {
 
     }
 
+    static extractName(config) {
+
+        if (undefined === config.name && igv.isString(config.url) && config.url.includes("drive.google.com")) {
+
+            return igv.google
+                .getDriveFileInfo(config.url)
+                .then(json => json.originalFilename || json.name)
+
+        } else {
+            return Promise.resolve(undefined === config.name ? extractFilename(config.url) : config.name);
+        }
+
+        function extractFilename (urlOrFile) {
+            if (igv.isFilePath(urlOrFile)) {
+                return urlOrFile.name;
+            } else {
+                const str = urlOrFile.split('?').shift();
+                const idx = urlOrFile.lastIndexOf("/");
+                return idx > 0 ? str.substring(idx + 1) : str;
+            }
+        }
+
+    }
+
 }
 
 function itemName (item) {
     return igv.isFilePath(item) ? item.name : item;
-}
-
-function extractName(config) {
-
-    var tmp,
-        id;
-
-    if (config.name === undefined && igv.isString(config.url) && config.url.includes("drive.google.com")) {
-        tmp = extractQuery(config.url);
-        id = tmp["id"];
-
-        return igv.google.getDriveFileInfo(config.url)
-            .then(function (json) {
-                return json.originalFilename || json.name;
-            })
-    } else {
-        if (config.name === undefined) {
-            return Promise.resolve(extractFilename(config.url));
-        } else {
-            return Promise.resolve(config.name);
-        }
-    }
-
-    function extractFilename (urlOrFile) {
-        var idx,
-            str;
-
-        if (igv.isFilePath(urlOrFile)) {
-            return urlOrFile.name;
-        } else {
-
-            str = urlOrFile.split('?').shift();
-            idx = urlOrFile.lastIndexOf("/");
-
-            return idx > 0 ? str.substring(idx + 1) : str;
-        }
-    }
-
-    function extractQuery (uri) {
-        var i1,
-            i2,
-            i,
-            j,
-            s,
-            query,
-            tokens;
-
-        query = {};
-        i1 = uri.indexOf("?");
-        i2 = uri.lastIndexOf("#");
-
-        if (i1 >= 0) {
-            if (i2 < 0) i2 = uri.length;
-
-            for (i = i1 + 1; i < i2;) {
-
-                j = uri.indexOf("&", i);
-                if (j < 0) j = i2;
-
-                s = uri.substring(i, j);
-                tokens = s.split("=", 2);
-                if (tokens.length === 2) {
-                    query[tokens[0]] = tokens[1];
-                }
-
-                i = j + 1;
-            }
-        }
-        return query;
-    }
-
 }
 
 export default FileLoadManager;

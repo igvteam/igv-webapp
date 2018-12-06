@@ -101,13 +101,11 @@ function okHandler(fileLoadManager) {
 
     if (true === isValidGenomeConfiguration(fileLoadManager)) {
 
-        if (fileLoadManager.isJSONExtension(getExtension(fileLoadManager.dictionary.data))) {
+        if ('json' === getExtension(fileLoadManager.dictionary.data)) {
 
             igv.xhr
                 .loadJson(fileLoadManager.dictionary.data)
-                .then(function (genome) {
-                    loadGenome(genome);
-                });
+                .then(genome => loadGenome(genome));
 
         } else {
             loadGenome({ fastaURL: fileLoadManager.dictionary.data, indexURL: fileLoadManager.dictionary.index });
@@ -132,7 +130,7 @@ function isValidGenomeConfiguration(fileLoadManager) {
     } else if (undefined === fileLoadManager.dictionary.data || "" === fileLoadManager.dictionary.data) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing fasta URL');
         success = false;
-    } else if (fileLoadManager.dictionary.data && true === fileLoadManager.isJSONExtension(igv.getExtension({ url: fileLoadManager.dictionary.data }))) {
+    } else if (fileLoadManager.dictionary.data && 'json' === getExtension(fileLoadManager.dictionary.data)) {
         success = true;
     } else if (undefined === fileLoadManager.dictionary.index || "" === fileLoadManager.dictionary.index) {
         fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing .fai URL');

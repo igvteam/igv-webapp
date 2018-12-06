@@ -66,11 +66,11 @@ class FileLoadManager {
             FileLoadManager.extractName(obj)
                 .then(function (name) {
 
-                    if (true === self.isJSONExtension( getExtension(name) )) {
+                    if ('json' === getExtension(name)) {
 
                         igv.xhr
                             .loadJson(obj.url)
-                            .then(function (json) {
+                            .then((json) => {
                                 json.filename = json.name = name;
                                 igv.browser.loadTrackList([json]);
                             });
@@ -82,9 +82,8 @@ class FileLoadManager {
 
                     self.fileLoadWidget.dismissErrorMessage();
                 })
-                .catch(function (error) {
-                    console.error(error);
-                    igv.browser.loadTrackList( [ obj ] );
+                .catch((error) => {
+                    igv.browser.presentAlert(error);
                 });
 
             return true;

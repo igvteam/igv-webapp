@@ -116,6 +116,19 @@ let initializationHelper = (browser, $container, options) => {
         };
     multipleFileTrackController = new MultipleFileLoadController(browser, multipleFileTrackConfig);
 
+    // Track load controller configuration
+    const trackLoadConfig =
+        {
+            trackRegistryFile: options.trackRegistryFile,
+            $urlModal: $('#igv-app-track-from-url-modal'),
+            $encodeModal: $('#igv-app-encode-modal'),
+            $dropdownMenu: $('#igv-app-track-dropdown-menu'),
+            $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
+            uberFileLoader: multipleFileTrackController
+        };
+
+    trackLoadController = new TrackLoadController(browser, trackLoadConfig);
+
     let $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
     if (!googleEnabled) {
         $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
@@ -143,7 +156,8 @@ let initializationHelper = (browser, $container, options) => {
     const genomeLoadConfig =
         {
             $urlModal: $('#igv-app-genome-from-url-modal'),
-            genomes: options.genomes
+            genomes: options.genomes,
+            uberFileLoader: multipleFileGenomeController
         };
 
     genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
@@ -168,25 +182,13 @@ let initializationHelper = (browser, $container, options) => {
             }
         });
 
-    // Track load controller configuration
-    const trackLoadConfig =
-        {
-            trackRegistryFile: options.trackRegistryFile,
-            $urlModal: $('#igv-app-track-from-url-modal'),
-            $encodeModal: $('#igv-app-encode-modal'),
-            $dropdownMenu: $('#igv-app-track-dropdown-menu'),
-            $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
-        };
-
-    trackLoadController = new TrackLoadController(browser, trackLoadConfig);
-
     let $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
     if (!googleEnabled) {
         $igv_app_dropdown_google_drive_session_file_button.parent().hide();
     }
 
     // Multiple File Session Controller
-    const multileFileSessionConfig =
+    const multipleFileSessionConfig =
         {
             isSessionFile: true,
             $modal: $multipleFileLoadModal,
@@ -199,7 +201,7 @@ let initializationHelper = (browser, $container, options) => {
             jsonFileValidator: MultipleFileLoadController.sessionJSONValidator
         };
 
-    multipleFileSessionController = new MultipleFileLoadController(browser, multileFileSessionConfig);
+    multipleFileSessionController = new MultipleFileLoadController(browser, multipleFileSessionConfig);
 
     // Session Controller
     const sessionConfig =
@@ -207,7 +209,8 @@ let initializationHelper = (browser, $container, options) => {
             browser: browser,
             $urlModal: $('#igv-app-session-from-url-modal'),
             $saveButton: $('#igv-app-save-session-button'),
-            $saveModal: $('#igv-app-session-save-modal')
+            $saveModal: $('#igv-app-session-save-modal'),
+            uberFileLoader: multipleFileSessionController
         };
     sessionController = new SessionController(sessionConfig);
 

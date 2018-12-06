@@ -29,7 +29,7 @@ import ModalTable from './modalTable.js';
 
 class TrackLoadController {
 
-    constructor(browser, {trackRegistryFile, $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal}) {
+    constructor(browser, {trackRegistryFile, $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
 
         let urlConfig;
 
@@ -46,8 +46,11 @@ class TrackLoadController {
                 mode: 'url',
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({}));
-        configureModal(this.urlWidget, $urlModal);
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
+            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+            return true;
+        });
 
         this.updateTrackMenus(browser.genome.id);
 

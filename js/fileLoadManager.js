@@ -28,74 +28,31 @@ import { getExtension } from "./utils.js";
 
 class FileLoadManager {
     
-    constructor ({ isSessionFile }) {
-
+    constructor () {
         this.dictionary = {};
-
-        if (undefined === isSessionFile) {
-            this.isSessionFile = false;
-        } else {
-            this.isSessionFile = isSessionFile;
-        }
-
-        this.keyToIndexExtension =
-            {
-                bam: { extension: 'bai', optional: false },
-                any: { extension: 'idx', optional: true  },
-                gz: { extension: 'tbi', optional: true  }
-            };
-
-        this.indexExtensionToKey = {
-            bai: 'bam',
-            idx: 'any',
-            tbi: 'gz'
-        }
-
-    }
-    
-    okHandler () {
-
-        this.ingestPaths();
-
-        let obj = this.trackLoadConfiguration();
-
-        if (obj) {
-
-            let self = this;
-
-            FileLoadManager.extractName(obj)
-                .then(function (name) {
-
-                    if ('json' === getExtension(name)) {
-
-                        igv.xhr
-                            .loadJson(obj.url)
-                            .then((json) => {
-                                json.filename = json.name = name;
-                                igv.browser.loadTrackList([json]);
-                            });
-
-                    } else {
-                        obj.filename = obj.name = name;
-                        igv.browser.loadTrackList( [ obj ] );
-                    }
-
-                    self.fileLoadWidget.dismissErrorMessage();
-                })
-                .catch((error) => {
-                    igv.browser.presentAlert(error);
-                });
-
-            return true;
-        } else {
-
-            return false;
-        }
-
     }
 
     inputHandler (path, isIndexFile) {
         this.ingestPath(path, isIndexFile);
+    }
+
+    getPaths() {
+
+        let paths = [];
+
+        this.ingestPaths();
+
+        if (this.dictionary) {
+
+            if (this.dictionary.data) {
+                paths.push(this.dictionary.data);
+            }
+            if (this.dictionary.index) {
+                paths.push(this.dictionary.index);
+            }
+        }
+
+        return paths;
     }
 
     ingestPaths() {
@@ -111,79 +68,6 @@ class FileLoadManager {
     ingestPath (path, isIndexFile) {
         let key = true === isIndexFile ? 'index' : 'data';
         this.dictionary[ key ] = path;
-    }
-
-    trackLoadConfiguration () {
-        var extension,
-            key,
-            config,
-            _isIndexFile,
-            _isIndexable,
-            indexFileStatus;
-
-        if ("" === this.dictionary.data) {
-            this.dictionary.data = undefined;
-        }
-
-        // hack for Dropbox URLs with ?dl crap appended.
-        this.dictionary.data = this.dictionary.data.split('?').shift();
-
-        if ("" === this.dictionary.index) {
-            this.dictionary.index = undefined;
-        }
-
-        if (undefined === this.dictionary.data) {
-            this.fileLoadWidget.presentErrorMessage('Error: No data file');
-            return undefined;
-        } else {
-
-            if (true === this.isJSONExtension( igv.getExtension({ url: this.dictionary.data }) )) {
-                return { url: this.dictionary.data, indexURL: undefined }
-            }
-
-            if (this.dictionary.index) {
-                _isIndexFile = this.isAnIndexFile(this.dictionary.index);
-                if (false === _isIndexFile) {
-                    this.fileLoadWidget.presentErrorMessage('Error: index file is not valid.');
-                    return undefined;
-                }
-            }
-
-            _isIndexable = this.isIndexable(this.dictionary.data);
-
-            extension = igv.getExtension({ url: this.dictionary.data });
-
-            key = (this.keyToIndexExtension[ extension ]) ? extension : 'any';
-
-            indexFileStatus = this.keyToIndexExtension[ key ];
-
-            if (true === _isIndexable && false === indexFileStatus.optional) {
-
-                if (undefined === this.dictionary.index) {
-                    this.fileLoadWidget.presentErrorMessage('Error: index file must be provided.');
-                    return undefined;
-
-                } else {
-                    return { url: this.dictionary.data, indexURL: this.dictionary.index }
-                }
-
-            } else {
-
-                config =
-                    {
-                        url: this.dictionary.data,
-                        indexURL: this.dictionary.index || undefined
-                    };
-
-                if (undefined === this.dictionary.index) {
-                    config.indexed = false;
-                }
-
-                return config;
-            }
-
-        }
-
     }
 
     didDragDrop (dataTransfer) {
@@ -210,9 +94,6 @@ class FileLoadManager {
 
     }
 
-    isJSONExtension (extension) {
-        return 'json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))
-    }
     indexName () {
         return itemName(this.dictionary.index);
     }
@@ -223,51 +104,6 @@ class FileLoadManager {
 
     reset () {
         this.dictionary = {};
-    }
-
-    isAnIndexFile(fileOrURL) {
-        let extension;
-
-        extension = igv.getExtension({ url: fileOrURL });
-        return this.indexExtensionToKey.hasOwnProperty(extension);
-
-    }
-
-    isIndexable(fileOrURL) {
-
-        let extension;
-
-        if (true === this.isAnIndexFile(fileOrURL)) {
-            return false;
-        } else {
-            extension = igv.getExtension({ url: fileOrURL });
-            return (extension !== 'wig' && extension !== 'seg');
-        }
-
-    }
-
-    static extractName(config) {
-
-        if (undefined === config.name && igv.isString(config.url) && config.url.includes("drive.google.com")) {
-
-            return igv.google
-                .getDriveFileInfo(config.url)
-                .then(json => json.originalFilename || json.name)
-
-        } else {
-            return Promise.resolve(undefined === config.name ? extractFilename(config.url) : config.name);
-        }
-
-        function extractFilename (urlOrFile) {
-            if (igv.isFilePath(urlOrFile)) {
-                return urlOrFile.name;
-            } else {
-                const str = urlOrFile.split('?').shift();
-                const idx = urlOrFile.lastIndexOf("/");
-                return idx > 0 ? str.substring(idx + 1) : str;
-            }
-        }
-
     }
 
 }

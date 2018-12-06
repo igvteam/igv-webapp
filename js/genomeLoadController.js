@@ -31,7 +31,7 @@ import {getExtension} from "./utils";
 
 class GenomeLoadController {
 
-    constructor (browser, { $urlModal, genomes }) {
+    constructor (browser, { $urlModal, genomes, uberFileLoader }) {
 
         this.genomes = genomes;
 
@@ -43,11 +43,12 @@ class GenomeLoadController {
                 mode: 'url'
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({}));
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
 
         let self = this;
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-            return okHandler.call(self, fileLoadManager)
+            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+            return true;
         });
 
     }
@@ -92,52 +93,6 @@ class GenomeLoadController {
         }
 
     }
-
-}
-
-function okHandler(fileLoadManager) {
-
-    fileLoadManager.ingestPaths();
-
-    if (true === isValidGenomeConfiguration(fileLoadManager)) {
-
-        if ('json' === getExtension(fileLoadManager.dictionary.data)) {
-
-            igv.xhr
-                .loadJson(fileLoadManager.dictionary.data)
-                .then(genome => loadGenome(genome));
-
-        } else {
-            loadGenome({ fastaURL: fileLoadManager.dictionary.data, indexURL: fileLoadManager.dictionary.index });
-        }
-
-        fileLoadManager.fileLoadWidget.dismissErrorMessage();
-
-        return true;
-    } else {
-        return false;
-    }
-
-}
-
-function isValidGenomeConfiguration(fileLoadManager) {
-
-    let success = true;
-
-    if (undefined === fileLoadManager.dictionary) {
-        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: no data loaded');
-        success = false;
-    } else if (undefined === fileLoadManager.dictionary.data || "" === fileLoadManager.dictionary.data) {
-        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing fasta URL');
-        success = false;
-    } else if (fileLoadManager.dictionary.data && 'json' === getExtension(fileLoadManager.dictionary.data)) {
-        success = true;
-    } else if (undefined === fileLoadManager.dictionary.index || "" === fileLoadManager.dictionary.index) {
-        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing .fai URL');
-        success = false;
-    }
-
-    return success;
 
 }
 

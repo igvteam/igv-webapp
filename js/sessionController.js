@@ -5,7 +5,7 @@ import {getExtension, loadGenome} from "./utils";
 
 class SessionController {
 
-    constructor ({ browser, $urlModal, $saveButton, $saveModal }) {
+    constructor ({ browser, $urlModal, $saveButton, $saveModal, uberFileLoader }) {
 
         let urlConfig =
             {
@@ -15,20 +15,11 @@ class SessionController {
                 dataOnly: true
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({ sessionJSON: true }));
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
 
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-
-            fileLoadManager.ingestPaths();
-
-            if (fileLoadManager.isJSONExtension(getExtension(fileLoadManager.dictionary.data))) {
-                browser.loadSession( fileLoadManager.dictionary.data );
-                return true;
-            } else {
-                fileLoadManager.fileLoadWidget.presentErrorMessage('Error: invalid session file');
-                return false;
-            }
-
+            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+            return true;
         });
 
         configureSaveModal(browser, $saveModal);

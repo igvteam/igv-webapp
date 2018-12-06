@@ -74,11 +74,8 @@ let getIndexObjectWithDataName = (name) => {
 };
 
 let isKnownFileExtension = (extension) => {
-    let fasta,
-        union;
-
-    fasta = new Set(['fa', 'fasta']);
-    union = new Set([...(igv.knownFileExtensions), ...fasta]);
+    let fasta = new Set(['fa', 'fasta']);
+    let union = new Set([...(igv.knownFileExtensions), ...fasta]);
     return union.has(extension);
 };
 

@@ -72,7 +72,10 @@ class MultipleFileLoadController {
         let tmp = [];
         let googleDrivePaths = [];
         for (let path of paths) {
-            if (undefined === path.google_url && path.includes('drive.google.com')) {
+
+            if (igv.isFilePath(path)) {
+                tmp.push(path);
+            } else if (undefined === path.google_url && path.includes('drive.google.com')) {
                 const fileInfo = await igv.google.getDriveFileInfo(path);
                 googleDrivePaths.push({ name: fileInfo.name, google_url: path});
             } else {
@@ -525,7 +528,7 @@ class MultipleFileLoadController {
     }
 
     static trackPathValidator(extension) {
-        return igv.knownFileExtensions.has(extension);
+        return igv.knownFileExtensions.has(extension) || ('bai' === extension);
     }
 
 }

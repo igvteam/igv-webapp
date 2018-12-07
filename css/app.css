@@ -252,6 +252,9 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
+.dropdown-item {
+  cursor: pointer; }
+
 .navbar {
   background-color: #5f5f5f; }
 

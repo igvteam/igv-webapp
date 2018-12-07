@@ -12,10 +12,11 @@ $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 48px;
 $igv-app-logo-container-width: 20%;
 
-hr {
-  margin: unset;
-  border-top-color: #a2a2a2;
-}
+// TODO: This belongs in igvjs css
+//hr {
+//  margin: unset;
+//  border-top-color: #a2a2a2;
+//}
 
 .dropdown-item {
   cursor: pointer;

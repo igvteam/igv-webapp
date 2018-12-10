@@ -44,7 +44,7 @@ The available pre-defined track sources are listed at the bottom of the menu. Cl
  
 See information on the available [data sources](./dataSources.html). 
 
-> Note: The list of pre-defined track sources varies depending on the current reference genome. Some genomes do not come with any pre-defined tracks. See 
+> Note: The list of pre-defined track sources varies depending on the current reference genome. Some genomes do not come with any pre-defined tracks. 
 
 #### Loading a track file
 

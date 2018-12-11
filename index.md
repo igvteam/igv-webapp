@@ -8,7 +8,7 @@ In a [web browser](#supported-browsers), navigate to <https://igv.org/app>.
 ### 2. Load a reference genome
 IGV displays data mapped to the genomic coordinates of a reference genome. When the IGV-Web page first loads, it will load the default reference genome **hg19**. To load a different genome, click on the `Genome` dropdown menu and either select from the list of pre-defined genomes, or use one of the options to load a genome sequence file that you specify.
 
-> Note: You must first load the reference genome, before loading data tracks. Switching genomes will clear out any loaded tracks.
+> **Note:** You must first load the reference genome, before loading data tracks. Switching genomes will clear out any loaded tracks.
 
 
 #### Selecting a pre-defined genome
@@ -131,7 +131,7 @@ To remove a track from the IGV browser, click on the gear icon to the right of t
 
 > **Note:** Removing a track does not just hide the track. If you want to show it again you must reload the data file.  
 
-Refreshing the page at www.igv.org/app will clear all loaded data and genomes and start a new session. Or if you launched IGV-Web from a saved session, refreshing the page will go back to the initial session state.
+Refreshing the page at igv.org/app will clear all loaded data and genomes and start a new session. Or if you launched IGV-Web from a saved session, refreshing the page will go back to the initial session state.
 
 ### Setting other attributes
 Clicking on a track's gear menu reveals a number of attributes, depending on the type of file that was loaded into the track. For example, for a track displaying paired-end sequence alignments from a BAM file, the menu includes an option `View as pairs`. In addition to `Remove track`, all tracks will include the menu items `Set track name` and `Set track height`.

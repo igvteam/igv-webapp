@@ -28,11 +28,11 @@ If you have a FASTA file of your reference genome sequence, you can load it usin
 
 Selecting the `URL` option will present a dialog to enter the full web link URL to the FASTA file and to the corresponding index file. For the other options, both the FASTA file and the index file must be selected from the file chooser that pops up.
 
-> Note: If you load a FASTA file for the reference genome, IGV cannot display the cytoband ideogram in the chromosome ruler or automatically load a corresponding gene annotation track. You can load a genome annotation file directly via the `Load Track` menu.
+> **Note:** A FASTA file only has the sequence data and IGV cannot display the cytoband ideogram in the chromosome ruler or automatically load a corresponding gene annotation track. You can load a genome annotation file directly via the `Load Track` menu.
 
 You will be prompted to sign into a Google account if you select the `Google Drive` option, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. 
 
-> Developers: Another option is to create and load a .json genome file, which can include references to a cytoband file and a default gene annotation track. See the [igv.js developer documentation](https://github.com/igvteam/igv.js/wiki/Reference-Genome-2.0).
+> **Developers:** Another option is to create and load a .json genome file, which can include references to a cytoband file and a default gene annotation track. See the [igv.js developer documentation](https://github.com/igvteam/igv.js/wiki/Reference-Genome-2.0).
 
 ### 3. Load data tracks
 
@@ -44,7 +44,7 @@ The available pre-defined track sources are listed at the bottom of the menu. Cl
  
 See information on the available [data sources](./dataSources.html). 
 
-> Note: The list of pre-defined track sources varies depending on the current reference genome. Some genomes do not come with any pre-defined tracks. 
+> **Note:** The list of pre-defined track sources varies depending on the current reference genome. Some genomes do not come with any pre-defined tracks. 
 
 #### Loading a track file
 
@@ -55,19 +55,19 @@ To load track data from a file, use one of the options in the top part of the me
 * `Google Drive`
 * `URL`
 
-Selecting the `URL` option will present a dialog to enter the full web link URL to one data file and the corresponding index file if there is one. For the other options, a file chooser pops up and you can select files for mulitple tracks, along with the corresponding index files. 
+Selecting the `URL` option will present a dialog to enter the full web link URL to one data file and the corresponding index file, if there is one. For the other options, a file chooser pops up and you can select files for mulitple tracks, along with the corresponding index files. 
 
 You will be prompted to sign into a Google account if you select the `Google Drive` option, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. 
 
 See information on supported [file types](./fileFormats.html). 
 
-> Note: Make sure to load only data files that correspond to the current reference genome. In general, a genomic data file does not include information about the genome it aligns to, which means IGV cannot automatically check if they match.
+> **Note:** Make sure to load only data files that correspond to the current reference genome. In general, a genomic data file does not include information about the genome it aligns to, which means IGV cannot automatically check if they match.
 
 ### 4. Navigate
 
-IGV provides several navigation controls for setting the genomic region in view. A ruler indicating the extent of the region in view is displayed below the toolbar, and the size of the region and its genomic coordinates are displayed in the toolbar.
+IGV-Web provides several navigation controls for specifying the genomic region to view. A ruler indicating the extent of the current region is displayed below the toolbar, and the size of the region and its genomic coordinates are displayed in the toolbar.
 
-* **Select a chromosome.** The chromosome dropdown menu in the IGV toolbar includes an entry for every chromosome or contig in the current reference genome. Selecting a chromosome from the menu will set the view to include the whole chromosome. The ruler also includes a cytoband ideogram if you selected one of the pre-defined reference genomes.
+* **Select a chromosome.** The chromosome dropdown menu in the toolbar includes an entry for every chromosome or contig in the current reference genome. Selecting a chromosome from the menu will set the view to include the whole chromosome. The ruler also includes a cytoband ideogram if you selected one of the pre-defined reference genomes.
 ![](./assets/images/ToolbarRulerChr1.png)
 
 * **Select chromosome "all"**. At the top of the list of chromosomes in the dropdown menu there is also the special entry `all` to view the whole genome, with all the chromosomes layed out side-by-side. 
@@ -104,7 +104,7 @@ To bookmark the current state of the IGV page in your browser, first click on th
 To create a web link URL that will open the IGV-Web app with all the same data tracks and settings as the current session, click on the `Share` button. A dialog will pop up and display a short URL that encodes the current state of the IGV session.
 
 * Use the `COPY` button to copy the URL to the clipboard and paste it wherever you want for safe keeping. 
-* Alternatively, the `Tweet` and `EMAIL` buttons provide a shortcut for sending the URL to others. 
+* Alternatively, the `Tweet` and `EMAIL` buttons provide shortcuts for sending the URL to others. 
 * The `EMBED` button generates an HTML code snippet that can be used to add the session to a web page. 
 * The `QR CODE` button generates a QR two-dimenionsal barcode for the URL.
 
@@ -115,7 +115,7 @@ To restore a session from URL, paste it into a browser address bar, or click on 
 
 Be aware that a session includes pointers to the data files for any loaded tracks. So to fully restore a session, you must have access to the same files that were loaded when the session was saved.
 
-> Note: Due to security restrictions on web browsers, if you loaded any files from the local file system, IGV cannot automatically load them for you when you restore the session **even if you run the session in the same environment on the same computer** where you saved the session. The app will warn you if a restored session includes pointers to local files.
+> **Note:** Due to security restrictions on web browsers, if you loaded any files from the local file system, IGV cannot automatically load them for you when you restore the session **even if you run the session in the same environment on the same computer** where you saved the session. The app will warn you if a restored session includes pointers to local files.
 
 
 # More about tracks
@@ -129,14 +129,12 @@ When you load a track it will be added to the bottom of the IGV track panel. To 
 
 To remove a track from the IGV browser, click on the gear icon to the right of the track and select `Remove track` from the menu that pops up. 
 
-> Note: Removing a track does not just hide the track. If you want to show it again you must reload the data.  
+> **Note:** Removing a track does not just hide the track. If you want to show it again you must reload the data file.  
 
-Refreshing the page at www.igv.org/app will clear all loaded data and genomes and start a new session.
+Refreshing the page at www.igv.org/app will clear all loaded data and genomes and start a new session. Or if you launched IGV-Web from a saved session, refreshing the page will go back to the initial session state.
 
 ### Setting other attributes
-Clicking on a track's gear menu reveals a number of attributes, depending on the data type of file that was loaded into the track. In addition to `Remove track`, the gear menu for all tracks will include `Set track name` and `Set track height`.
-
-### The track popup menu
+Clicking on a track's gear menu reveals a number of attributes, depending on the type of file that was loaded into the track. For example, for a track displaying paired-end sequence alignments from a BAM file, the menu includes an option `View as pairs`. In addition to `Remove track`, all tracks will include the menu items `Set track name` and `Set track height`.
 
 # The sequence track
 
@@ -159,5 +157,5 @@ The gear menu for sequence tracks includes two options:
 
 # Supported browsers
 
-IGV-Web and igv.js require a modern web browser with support for Javascript ECMAScript 2015.   We test on the latest versions of Chrome, Safari, Firefox, and Edge.   Internet Explorer (IE) is not supported.
+IGV-Web requires a modern web browser with support for Javascript ECMAScript 2015. We test on the latest versions of Chrome, Safari, Firefox, and Edge. Internet Explorer (IE) is not supported.
 

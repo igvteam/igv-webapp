@@ -77,7 +77,7 @@ class MultipleFileLoadController {
                 tmp.push(path);
             } else if (undefined === path.google_url && path.includes('drive.google.com')) {
                 const fileInfo = await igv.google.getDriveFileInfo(path);
-                googleDrivePaths.push({ name: fileInfo.name, google_url: path});
+                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, google_url: path});
             } else {
                 tmp.push(path);
             }
@@ -117,7 +117,7 @@ class MultipleFileLoadController {
                 let path = jsonPaths.pop();
 
                 if (path.google_url) {
-                    this.browser.loadSession({ url:path.google_url, name:path.name });
+                    this.browser.loadSession({ url:path.google_url, filename:path.name });
                 } else {
                     this.browser.loadSession(path);
                 }
@@ -273,6 +273,7 @@ class MultipleFileLoadController {
                     .map((response) => {
                         let result =
                             {
+                                filename: response.name,
                                 name: response.name,
                                 google_url: response.url
                             };

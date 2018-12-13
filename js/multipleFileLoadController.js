@@ -31,10 +31,6 @@ class MultipleFileLoadController {
         this.browser = browser;
         this.config = config;
 
-        if(undefined === this.config.isSessionFile) {
-            this.config.isSessionFile = false;
-        }
-
         if (undefined === this.config.multipleFileSelection) {
             this.config.multipleFileSelection = true;
         }
@@ -110,7 +106,6 @@ class MultipleFileLoadController {
                 return;
             }
 
-
             // Handle Session file. There can only be ONE.
             const json = jsons.pop();
             if (true === MultipleFileLoadController.sessionJSONValidator(json)) {
@@ -128,7 +123,7 @@ class MultipleFileLoadController {
                     }
                     this.browser.loadSession(o);
                 }
-                
+
                 return;
             }
 
@@ -147,6 +142,23 @@ class MultipleFileLoadController {
             return;
         }
 
+
+        // Isolate XML paths. We only care about one and we assume it is a session path
+        let xmlPaths = remainingPaths.filter(path => 'xml' === getExtension(path) );
+
+        if (xmlPaths.length > 0) {
+            let path = xmlPaths.pop();
+            let o = {};
+            o.filename = getFilename(path);
+            if (true === igv.isFilePath(path)) {
+                o.file = path;
+            } else {
+                o.url = path.google_url || path;
+            }
+            this.browser.loadSession(o);
+
+            return;
+        }
 
         // validate data paths (non-JSON)
         let extensions = remainingPaths.map(path => getExtension(path));

@@ -190,7 +190,6 @@ let initializationHelper = (browser, $container, options) => {
     // Multiple File Session Controller
     const multipleFileSessionConfig =
         {
-            isSessionFile: true,
             $modal: $multipleFileLoadModal,
             modalTitle: 'Session File Error',
             $localFileInput: $('#igv-app-dropdown-local-session-file-input'),

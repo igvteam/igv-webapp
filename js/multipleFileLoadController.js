@@ -119,7 +119,14 @@ class MultipleFileLoadController {
                 if (path.google_url) {
                     this.browser.loadSession({ url:path.google_url, filename:path.name });
                 } else {
-                    this.browser.loadSession(path);
+                    let o = {};
+                    o.filename = getFilename(path);
+                    if (true === igv.isFilePath(path)) {
+                        o.file = path;
+                    } else {
+                        o.url = path;
+                    }
+                    this.browser.loadSession(o);
                 }
                 
                 return;

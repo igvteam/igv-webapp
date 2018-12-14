@@ -17,17 +17,25 @@ hr {
   border-top-color: #a2a2a2;
 }
 
-.dropdown-item {
-  cursor: pointer;
-}
-
 .navbar {
-  //height: 48px;
+  min-height: 32px;
   background-color: $igv-app-dark-color;
 }
 
-.navbar-dark .navbar-nav .nav-link {
-  color: white;
+ul.navbar-nav {
+  a {
+    color: white;
+    text-decoration: none;
+    outline: 0;
+  }
+
+  a:hover {
+    color: #dfdfdf;
+  }
+}
+
+.dropdown-item {
+  cursor: pointer;
 }
 
 .igv-app-modal-button-container {
@@ -40,16 +48,6 @@ hr {
 
   margin-left: 32px;
   height: 100%;
-
-  .nav-link {
-    color: #dfdfdf;
-    text-decoration: none;
-  }
-
-  .nav-link:hover {
-    color: white;
-    text-decoration: none;
-  }
 
 }
 

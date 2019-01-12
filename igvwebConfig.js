@@ -10,7 +10,7 @@ var igvwebConfig = {
 
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
-    embedTarget: 'https://igv.org/web/release/2.0.1/embed.html',
+    embedTarget: 'https://igv.org/web/release/2.2.0/embed.html',
 
     igvConfig:
         {

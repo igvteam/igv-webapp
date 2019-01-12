@@ -1,17 +1,17 @@
 {
-    "id": "mm10",
-    "name": "Mouse (GRCm38/mm10)",
-    "fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/mm10/mm10.fa",
-    "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/mm10/mm10.fa.fai",
-    "cytobandURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/mm10/cytoBandIdeo.txt.gz",
-    "order": "1000000",
-    "tracks": [
-      {
-        "name": "Refseq Genes",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/mm10/refGene.txt.gz",
-        "order": 1000000,
-        "indexed": false
-      }
-    ]
-  }
-  
+  "id": "mm10",
+  "name": "Mouse (GRCm38/mm10)",
+  "fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/mm10/mm10.fa",
+  "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/mm10/mm10.fa.fai",
+  "cytobandURL": "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/mm10/cytoBandIdeo.txt.gz",
+  "order": "1000000",
+  "tracks":
+  [
+    {
+      "name": "Refseq Genes",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/mm10/refGene.txt.gz",
+      "order": 1000000,
+      "indexed": false
+    }
+  ]
+}

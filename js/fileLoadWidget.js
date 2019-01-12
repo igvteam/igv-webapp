@@ -171,14 +171,20 @@ class FileLoadWidget {
         $input = $('<input>', { type:'text', placeholder:(true === isIndexFile ? 'Enter index URL' : 'Enter data URL') });
         $parent.append($input);
 
-        $input.on('focus', function () {
-            self.dismissErrorMessage();
-        });
+        if (isIndexFile) {
+            this.$inputIndex = $input;
+        } else {
+            this.$inputData = $input;
+        }
 
-        $input.on('change', function (e) {
-            self.dismissErrorMessage();
-            self.fileLoadManager.inputHandler($(this).val(), isIndexFile);
-        });
+        // $input.on('focus', function () {
+        //     self.dismissErrorMessage();
+        // });
+        //
+        // $input.on('change', function (e) {
+        //     self.dismissErrorMessage();
+        //     self.fileLoadManager.inputHandler($(this).val(), isIndexFile);
+        // });
 
         $parent
             .on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
@@ -194,8 +200,11 @@ class FileLoadWidget {
             })
             .on('drop', function (e) {
                 if (false === self.fileLoadManager.didDragDrop(e.originalEvent.dataTransfer)) {
+
                     self.fileLoadManager.dragDropHandler(e.originalEvent.dataTransfer, isIndexFile);
-                    $input.val(isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName());
+
+                    let value = isIndexFile ? self.fileLoadManager.indexName() : self.fileLoadManager.dataName();
+                    $input.val(value);
                 }
             });
 
@@ -241,7 +250,6 @@ class FileLoadWidget {
             self.dismissErrorMessage();
 
             self.fileLoadManager.inputHandler(e.target.files[ 0 ], isIndexFile);
-
             $file_name.text(e.target.files[ 0 ].name);
             $file_name.attr('title', e.target.files[ 0 ].name);
             $file_name.show();

@@ -1,11 +1,11 @@
 import FileLoadWidget from "./fileLoadWidget.js";
 import FileLoadManager from "./fileLoadManager.js";
 import {configureModal} from "./utils.js";
-import {getExtension} from "./utils";
+import {getExtension, loadGenome} from "./utils";
 
 class SessionController {
 
-    constructor ({ browser, $urlModal, $saveButton, $saveModal }) {
+    constructor ({ browser, $urlModal, $saveButton, $saveModal, uberFileLoader }) {
 
         let urlConfig =
             {
@@ -15,10 +15,10 @@ class SessionController {
                 dataOnly: true
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({ sessionJSON: true }));
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
 
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-            browser.loadSession( fileLoadManager.dictionary.data );
+            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
             return true;
         });
 

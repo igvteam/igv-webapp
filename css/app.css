@@ -252,8 +252,23 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
+hr {
+  margin: unset;
+  border-top-color: #a2a2a2; }
+
 .navbar {
+  min-height: 32px;
   background-color: #5f5f5f; }
+
+ul.navbar-nav a {
+  color: white;
+  text-decoration: none;
+  outline: 0; }
+ul.navbar-nav a:hover {
+  color: #dfdfdf; }
+
+.dropdown-item {
+  cursor: pointer; }
 
 .igv-app-modal-button-container {
   display: flex;
@@ -263,12 +278,6 @@ a#igv-app-email-button:active {
   align-items: center;
   margin-left: 32px;
   height: 100%; }
-  .igv-app-modal-button-container .nav-link {
-    color: #dfdfdf;
-    text-decoration: none; }
-  .igv-app-modal-button-container .nav-link:hover {
-    color: white;
-    text-decoration: none; }
 
 .igv-app-file-save-modal .modal-body div {
   color: #5f5f5f;

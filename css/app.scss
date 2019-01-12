@@ -12,9 +12,30 @@ $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 48px;
 $igv-app-logo-container-width: 20%;
 
+hr {
+  margin: unset;
+  border-top-color: #a2a2a2;
+}
+
 .navbar {
-  //height: 48px;
+  min-height: 32px;
   background-color: $igv-app-dark-color;
+}
+
+ul.navbar-nav {
+  a {
+    color: white;
+    text-decoration: none;
+    outline: 0;
+  }
+
+  a:hover {
+    color: #dfdfdf;
+  }
+}
+
+.dropdown-item {
+  cursor: pointer;
 }
 
 .igv-app-modal-button-container {
@@ -27,16 +48,6 @@ $igv-app-logo-container-width: 20%;
 
   margin-left: 32px;
   height: 100%;
-
-  .nav-link {
-    color: #dfdfdf;
-    text-decoration: none;
-  }
-
-  .nav-link:hover {
-    color: white;
-    text-decoration: none;
-  }
 
 }
 

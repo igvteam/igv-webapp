@@ -31,19 +31,16 @@ class MultipleFileLoadController {
         this.browser = browser;
         this.config = config;
 
-        if(undefined === this.config.isSessionFile) {
-            this.config.isSessionFile = false;
-        }
-
         if (undefined === this.config.multipleFileSelection) {
             this.config.multipleFileSelection = true;
         }
 
+        this.pathValidator = config.pathValidator;
+        this.jsonFileValidator = config.jsonFileValidator;
         this.fileLoadHander = config.fileLoadHandler;
         this.configurationHandler = config.configurationHandler;
 
         this.$modal = config.$modal;
-        this.$modal.find('.modal-title').text( config.modalTitle );
         this.$modal_body = this.$modal.find('.modal-body');
 
         this.createLocalInput(config.$localFileInput);
@@ -56,7 +53,7 @@ class MultipleFileLoadController {
 
     }
 
-    ingestPaths(paths) {
+    async ingestPaths(paths) {
 
         let self = this,
             dataPaths,
@@ -64,80 +61,130 @@ class MultipleFileLoadController {
             indexPaths,
             indexPathNameSet,
             indexPathNamesLackingDataPaths,
-            sessionRetrievalTasks,
-            jsonRetrievalTasks,
+            jsonPromises,
             configurations;
 
-        // discard current contents of modal body
-        this.$modal_body.empty();
+        // handle Google Drive paths (not already handled via Google Drive Picker)
+        let tmp = [];
+        let googleDrivePaths = [];
+        for (let path of paths) {
 
-        if (true === this.config.isSessionFile) {
-
-            let extension = getExtension(paths[0]);
-            let filename = getFilename(paths[0]);
-
-            // hack'ish test for lack of suffix
-            if (filename === extension) {
-                alert('ERROR: Invalid session file: ' + filename);
-                return;
+            if (igv.isFilePath(path)) {
+                tmp.push(path);
+            } else if (undefined === path.google_url && path.includes('drive.google.com')) {
+                const fileInfo = await igv.google.getDriveFileInfo(path);
+                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, google_url: path});
+            } else {
+                tmp.push(path);
             }
+        }
 
-            const extensions = new Set(['json', 'xml']);
+        paths = tmp.concat(googleDrivePaths);
 
-            if (false === extensions.has(extension)) {
-                alert('ERROR: Invalid session file extension: .' + extension);
-                return;
-            }
+        // isolate JSON paths
+        let jsonPaths = paths.filter(path => 'json' === getExtension(path) );
 
-            sessionRetrievalTasks = paths
-                .filter((path) => (true === extensions.has( getExtension(path) )) )
+        let remainingPaths;
+        if (jsonPaths.length > 0) {
+
+            // accumulate JSON retrieval Promises
+            jsonPromises = jsonPaths
                 .map((path) => {
                     let url = (path.google_url || path);
-                    return { name: getFilename(path), promise: self.browser.loadSession(url)}
+                    return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
                 });
 
-            Promise
-                .all(sessionRetrievalTasks.map((task) => (task.promise)))
-                .then(function (ignore) {
-                    console.log('gone baby gone');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            // validate JSON
+            const jsons = await Promise.all(jsonPromises.map(task => task.promise));
+            const booleans = jsons.map(json => self.jsonFileValidator(json));
+            const invalids = booleans
+                .map((boolean, index) => { return { isValid: boolean, path: jsonPaths[ index ] } })
+                .filter(o => false === o.isValid);
+
+            if (invalids.length > 0) {
+                this.presentInvalidFiles( invalids.map(o => o.path) );
+                return;
+            }
+
+            // Handle Session file. There can only be ONE.
+            const json = jsons.pop();
+            if (true === MultipleFileLoadController.sessionJSONValidator(json)) {
+                let path = jsonPaths.pop();
+
+                if (path.google_url) {
+                    this.browser.loadSession({ url:path.google_url, filename:path.name });
+                } else {
+                    let o = {};
+                    o.filename = getFilename(path);
+                    if (true === igv.isFilePath(path)) {
+                        o.file = path;
+                    } else {
+                        o.url = path;
+                    }
+                    this.browser.loadSession(o);
+                }
+
+                return;
+            }
+
+            // non-JSON paths
+            remainingPaths = paths.filter((path) => ('json' !== getExtension(path)) )
+
+        } else {
+
+            // there are no JSON paths
+            remainingPaths = paths;
+        }
+
+        // bail if no files
+        if (0 === jsonPaths.length && 0 === remainingPaths.length) {
+            igv.browser.presentAlert("ERROR: No valid data files submitted");
+            return;
+        }
+
+
+        // Isolate XML paths. We only care about one and we assume it is a session path
+        let xmlPaths = remainingPaths.filter(path => 'xml' === getExtension(path) );
+
+        if (xmlPaths.length > 0) {
+            let path = xmlPaths.pop();
+            let o = {};
+            o.filename = getFilename(path);
+            if (true === igv.isFilePath(path)) {
+                o.file = path;
+            } else {
+                o.url = path.google_url || path;
+            }
+            this.browser.loadSession(o);
 
             return;
         }
 
-        // accumulate JSON retrieval promises
-        let jsonPaths = paths.filter((path) => ('json' === getExtension(path)) );
-        let remainingPaths;
-        if (jsonPaths) {
-            remainingPaths = paths.filter((path) => ('json' !== getExtension(path)) )
-        } else {
-            remainingPaths = paths;
+        // validate data paths (non-JSON)
+        let extensions = remainingPaths.map(path => getExtension(path));
+
+        if (extensions.length > 0) {
+            let results = extensions.map((extension) => self.pathValidator( extension ));
+
+            if (results.length > 0) {
+
+                let invalid = results
+                    .map((boolean, index) => { return { isValid: boolean, path: remainingPaths[ index ] } })
+                    .filter(obj => false === obj.isValid);
+
+                if (invalid.length > 0) {
+                    this.presentInvalidFiles( invalid.map(o => o.path) );
+                    return;
+                }
+
+            }
         }
 
-        jsonRetrievalTasks = jsonPaths
-            .map((path) => {
-                let url = (path.google_url || path);
-                return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
-            });
+        // isolate data paths in dictionary
+        dataPaths = createDataPathDictionary(remainingPaths);
 
-        // data (non-JSON)
-        dataPaths = remainingPaths
-            .filter((path) => (isKnownFileExtension( getExtension(path) )))
-            .reduce(function(accumulator, path) {
-                accumulator[ getFilename(path) ] = (path.google_url || path);
-                return accumulator;
-            }, {});
-
-        // index paths (potentials)
-        indexPathCandidates = remainingPaths
-            .filter((path) => isValidIndexExtension( getExtension(path) ))
-            .reduce(function(accumulator, path) {
-                accumulator[ getFilename(path) ] = (path.google_url || path);
-                return accumulator;
-            }, {});
+        // isolate index path candidates in dictionary
+        indexPathCandidates = createIndexPathCandidateDictionary(remainingPaths);
 
         // identify index paths that are
         // 1) present
@@ -158,7 +205,7 @@ class MultipleFileLoadController {
 
         indexPathNamesLackingDataPaths = Object
             .keys(indexPathCandidates)
-            .reduce(function(accumulator, key) {
+            .reduce((accumulator, key) => {
 
                 if (false === indexPathNameSet.has(key)) {
                     accumulator.push(key);
@@ -169,7 +216,7 @@ class MultipleFileLoadController {
 
         configurations = Object
             .keys(dataPaths)
-            .reduce(function(accumulator, key) {
+            .reduce((accumulator, key) => {
 
                 if (false === dataPathIsMissingIndexPath(key, indexPaths) ) {
                     accumulator.push( self.configurationHandler(key, dataPaths[key], indexPaths) )
@@ -178,9 +225,9 @@ class MultipleFileLoadController {
                 return accumulator;
             }, []);
 
-        if (jsonRetrievalTasks.length > 0) {
+        if (jsonPaths.length > 0) {
 
-            this.jsonRetrievalSerial(jsonRetrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
+            this.jsonRetrievalSerial(jsonPromises, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths);
 
         } else {
 
@@ -238,7 +285,20 @@ class MultipleFileLoadController {
         $button.on('click', function () {
 
             app_google.createDropdownButtonPicker(multipleFileSelection, (googleDriveResponses) => {
-                paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
+
+                // paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
+
+                paths = googleDriveResponses
+                    .map((response) => {
+                        let result =
+                            {
+                                filename: response.name,
+                                name: response.name,
+                                google_url: response.url
+                            };
+
+                        return result;
+                    });
                 self.ingestPaths(paths);
             });
 
@@ -310,8 +370,6 @@ class MultipleFileLoadController {
                             .then((currentResult) => {
 
                                 successSet.add(task.name);
-
-                                console.log('parsed json file: ' + task.name);
                                 jsonConfigurations = [...chainResults, currentResult];
                                 return jsonConfigurations;
                             })
@@ -359,6 +417,9 @@ class MultipleFileLoadController {
 
             header = '<div> The following files were not loaded ...</div>';
             markup.unshift(header);
+
+            this.$modal.find('.modal-title').text( this.config.modalTitle );
+            this.$modal_body.empty();
             this.$modal_body.append(markup.join(''));
             this.$modal.modal('show');
         }
@@ -402,10 +463,30 @@ class MultipleFileLoadController {
         }
     }
 
+    presentInvalidFiles (paths) {
+
+        let markup = [];
+
+        let header = '<div> Invalid Files </div>';
+        markup.push(header);
+
+        for (let path of paths) {
+            let name = getFilename(path);
+            markup.push('<div><span>' + name + '</span>' + '</div>');
+        }
+
+        this.$modal.find('.modal-title').text( this.config.modalTitle );
+        this.$modal_body.empty();
+        this.$modal_body.append(markup.join(''));
+        this.$modal.modal('show');
+
+    }
+
     static isValidLocalFileInput($input) {
         return ($input.get(0).files && $input.get(0).files.length > 0);
     }
 
+    //
     static trackConfigurator(dataKey, dataValue, indexPaths) {
         let config;
 
@@ -443,6 +524,55 @@ class MultipleFileLoadController {
     static sessionConfigurator(dataKey, dataValue, indexPaths) {
         return { session: dataValue };
     }
+
+    //
+    static genomeJSONValidator(json) {
+        let candidateSet = new Set(Object.keys(json));
+        return candidateSet.has('fastaURL');
+    }
+
+    static sessionJSONValidator(json) {
+        let candidateSet = new Set(Object.keys(json));
+        return candidateSet.has('genome') || candidateSet.has('reference');
+    }
+
+    static trackJSONValidator(json) {
+        let candidateSet = new Set(Object.keys(json));
+        return candidateSet.has('url');
+    }
+
+    //
+    static genomePathValidator(extension) {
+        let referenceSet = new Set(['fai', 'fa', 'fasta']);
+        return referenceSet.has(extension);
+    }
+
+    static trackPathValidator(extension) {
+        return igv.knownFileExtensions.has(extension) || ('bai' === extension);
+    }
+
+}
+
+function createDataPathDictionary(paths) {
+
+    return paths
+        .filter((path) => (isKnownFileExtension( getExtension(path) )))
+        .reduce((accumulator, path) => {
+            accumulator[ getFilename(path) ] = (path.google_url || path);
+            return accumulator;
+        }, {});
+
+}
+
+function createIndexPathCandidateDictionary (paths) {
+
+    return paths
+        .filter((path) => isValidIndexExtension( getExtension(path) ))
+        .reduce(function(accumulator, path) {
+            accumulator[ getFilename(path) ] = (path.google_url || path);
+            return accumulator;
+        }, {});
+
 }
 
 function getIndexURL(indexValue) {

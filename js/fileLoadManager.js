@@ -24,60 +24,50 @@
  * THE SOFTWARE.
  */
 
-import { isJSON } from './utils.js';
+import { getExtension } from "./utils.js";
 
 class FileLoadManager {
     
-    constructor ({ isSessionFile }) {
-
+    constructor () {
         this.dictionary = {};
-
-        if (undefined === isSessionFile) {
-            this.isSessionFile = false;
-        } else {
-            this.isSessionFile = isSessionFile;
-        }
-
-        this.keyToIndexExtension =
-            {
-                bam: { extension: 'bai', optional: false },
-                any: { extension: 'idx', optional: true  },
-                gz: { extension: 'tbi', optional: true  }
-            };
-
-        this.indexExtensionToKey = {
-            bai: 'bam',
-            idx: 'any',
-            tbi: 'gz'
-        }
-
-    }
-    
-    okHandler () {
-
-        let obj = this.trackLoadConfiguration();
-        if (obj) {
-
-            extractName(obj)
-                .then(function (name) {
-                    obj.filename = obj.name = name;
-                    igv.browser.loadTrackList( [ obj ] );
-                })
-                .catch(function (error) {
-                    // Ignore errors extracting the name
-                    console.error(error);
-                    igv.browser.loadTrackList( [ obj ] );
-                });
-
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     inputHandler (path, isIndexFile) {
         this.ingestPath(path, isIndexFile);
+    }
+
+    getPaths() {
+
+        let paths = [];
+
+        this.ingestPaths();
+
+        if (this.dictionary) {
+
+            if (this.dictionary.data) {
+                paths.push(this.dictionary.data);
+            }
+            if (this.dictionary.index) {
+                paths.push(this.dictionary.index);
+            }
+        }
+
+        return paths;
+    }
+
+    ingestPaths() {
+        
+        this.ingestPath(this.fileLoadWidget.$inputData.val(), false);
+
+        if (this.fileLoadWidget.$inputIndex) {
+            this.ingestPath(this.fileLoadWidget.$inputIndex.val(), true);
+        }
+
+    }
+
+    ingestPath (path, isIndexFile) {
+        let key = true === isIndexFile ? 'index' : 'data';
+        this.dictionary[ key ] = path;
     }
 
     didDragDrop (dataTransfer) {
@@ -116,201 +106,10 @@ class FileLoadManager {
         this.dictionary = {};
     }
 
-    trackLoadConfiguration () {
-        var extension,
-            key,
-            config,
-            _isIndexFile,
-            _isIndexable,
-            indexFileStatus;
-
-        if ("" === this.dictionary.data) {
-            this.dictionary.data = undefined;
-        }
-
-        if ("" === this.dictionary.index) {
-            this.dictionary.index = undefined;
-        }
-
-        if (undefined === this.dictionary.data) {
-            this.fileLoadWidget.presentErrorMessage('Error: No data file');
-            return undefined;
-        } else {
-
-            if (true === isJSON(this.dictionary.data)) {
-                return this.dictionary.data;
-            }
-
-            if (this.dictionary.index) {
-                _isIndexFile = this.isAnIndexFile(this.dictionary.index);
-                if (false === _isIndexFile) {
-                    this.fileLoadWidget.presentErrorMessage('Error: index file is not valid.');
-                    return undefined;
-                }
-            }
-
-            _isIndexable = this.isIndexable(this.dictionary.data);
-
-            extension = igv.getExtension({ url: this.dictionary.data });
-
-            key = (this.keyToIndexExtension[ extension ]) ? extension : 'any';
-
-            indexFileStatus = this.keyToIndexExtension[ key ];
-
-            if (true === _isIndexable && false === indexFileStatus.optional) {
-
-                if (undefined === this.dictionary.index) {
-                    this.fileLoadWidget.presentErrorMessage('Error: index file must be provided.');
-                    return undefined;
-
-                } else {
-                    return { url: this.dictionary.data, indexURL: this.dictionary.index }
-                }
-
-            } else {
-
-                config =
-                    {
-                        url: this.dictionary.data,
-                        indexURL: this.dictionary.index || undefined
-                    };
-
-                if (undefined === this.dictionary.index) {
-                    config.indexed = false;
-                }
-
-                return config;
-            }
-
-        }
-
-    }
-
-    ingestPath (path, isIndexFile) {
-        let self = this,
-            extension;
-
-        extension = igv.getExtension({ url: path });
-
-        if ('json' === extension || (this.googlePickerFilename && ('json' === igv.getExtension({ url: this.googlePickerFilename })))) {
-
-            if (true === this.isSessionFile) {
-                this.dictionary.data = path;
-            } else {
-                igv.xhr
-                    .loadJson(path)
-                    .then(function (json) {
-                        self.dictionary[ true === isIndexFile ? 'index' : 'data' ] = json;
-
-                    })
-                    .catch(function (e) {
-                        self.fileLoadWidget.presentErrorMessage('Error: Invalid JSON.');
-                    });
-
-            }
-
-        } else {
-            this.dictionary[ true === isIndexFile ? 'index' : 'data' ] = path;
-        }
-
-    }
-
-    isAnIndexFile(fileOrURL) {
-        let extension;
-
-        extension = igv.getExtension({ url: fileOrURL });
-        return this.indexExtensionToKey.hasOwnProperty(extension);
-
-    }
-
-    isIndexable(fileOrURL) {
-
-        let extension;
-
-        if (true === this.isAnIndexFile(fileOrURL)) {
-            return false;
-        } else {
-            extension = igv.getExtension({ url: fileOrURL });
-            return (extension !== 'wig' && extension !== 'seg');
-        }
-
-    }
-
 }
 
 function itemName (item) {
     return igv.isFilePath(item) ? item.name : item;
-}
-
-function extractName(config) {
-
-    var tmp,
-        id;
-
-    if (config.name === undefined && igv.isString(config.url) && config.url.includes("drive.google.com")) {
-        tmp = extractQuery(config.url);
-        id = tmp["id"];
-
-        return igv.Google.getDriveFileInfo(config.url)
-            .then(function (json) {
-                return json.originalFilename || json.name;
-            })
-    } else {
-        if (config.name === undefined) {
-            return Promise.resolve(extractFilename(config.url));
-        } else {
-            return Promise.resolve(config.name);
-        }
-    }
-
-    function extractFilename (urlOrFile) {
-        var idx,
-            str;
-
-        if (igv.isFilePath(urlOrFile)) {
-            return urlOrFile.name;
-        } else {
-
-            str = urlOrFile.split('?').shift();
-            idx = urlOrFile.lastIndexOf("/");
-
-            return idx > 0 ? str.substring(idx + 1) : str;
-        }
-    }
-
-    function extractQuery (uri) {
-        var i1,
-            i2,
-            i,
-            j,
-            s,
-            query,
-            tokens;
-
-        query = {};
-        i1 = uri.indexOf("?");
-        i2 = uri.lastIndexOf("#");
-
-        if (i1 >= 0) {
-            if (i2 < 0) i2 = uri.length;
-
-            for (i = i1 + 1; i < i2;) {
-
-                j = uri.indexOf("&", i);
-                if (j < 0) j = i2;
-
-                s = uri.substring(i, j);
-                tokens = s.split("=", 2);
-                if (tokens.length === 2) {
-                    query[tokens[0]] = tokens[1];
-                }
-
-                i = j + 1;
-            }
-        }
-        return query;
-    }
-
 }
 
 export default FileLoadManager;

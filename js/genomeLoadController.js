@@ -27,32 +27,29 @@
 import { loadGenome, isJSON, configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
+import {getExtension} from "./utils";
 
 class GenomeLoadController {
 
-    constructor (browser, { $urlModal, genomes }) {
-
-        let self = this,
-            urlConfig,
-            doOK;
+    constructor (browser, { $urlModal, genomes, uberFileLoader }) {
 
         this.genomes = genomes;
 
         // URL
-        urlConfig =
+        let urlConfig =
             {
                 dataTitle: 'Genome',
                 $widgetParent: $urlModal.find('.modal-body'),
                 mode: 'url'
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager({}));
+        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
 
-        doOK = function (fileLoadManager) {
-            return okHandler(self, fileLoadManager);
-        };
-
-        configureModal(this.urlWidget, $urlModal, doOK);
+        let self = this;
+        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
+            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+            return true;
+        });
 
     }
 
@@ -97,31 +94,6 @@ class GenomeLoadController {
 
     }
 
-    genomeConfiguration (fileLoadManager) {
-
-        let self = this,
-            obj;
-
-        if (true === isJSON(fileLoadManager.dictionary.data)) {
-            obj = {};
-            obj[ 'noname' ] = fileLoadManager.dictionary.data;
-
-            return Promise.resolve(obj);
-
-        } else {
-
-            obj = {};
-            obj[ 'noname' ] =
-                {
-                    fastaURL: fileLoadManager.dictionary.data,
-                    indexURL: fileLoadManager.dictionary.index
-                };
-
-            return Promise.resolve(obj);
-        }
-
-    }
-
 }
 
 export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
@@ -161,44 +133,6 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
         return $button;
     }
-
-}
-
-function okHandler(genomeLoadController, fileLoadManager) {
-
-    if (true === isValidGenomeConfiguration(fileLoadManager)) {
-
-        genomeLoadController
-            .genomeConfiguration(fileLoadManager)
-            .then(function (obj) {
-                let genome;
-                genome = Object.values(obj).pop();
-                loadGenome(genome);
-            });
-
-        return true;
-    } else {
-        return false;
-    }
-
-}
-
-function isValidGenomeConfiguration(fileLoadManager) {
-
-    let success = true;
-
-    if (undefined === fileLoadManager.dictionary) {
-        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: no data loaded');
-        success = false;
-    } else if (undefined === fileLoadManager.dictionary.data || "" === fileLoadManager.dictionary.data) {
-        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing fasta URL');
-        success = false;
-    } else if (undefined === fileLoadManager.dictionary.index || "" === fileLoadManager.dictionary.index) {
-        fileLoadManager.fileLoadWidget.presentErrorMessage('Error: missing .fai URL');
-        success = false;
-    }
-
-    return success;
 
 }
 

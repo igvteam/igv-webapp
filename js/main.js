@@ -21,6 +21,7 @@
  *
  */
 
+import { getExtension } from './utils.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';
@@ -90,9 +91,6 @@ let main = ($container, config) => {
 
 let initializationHelper = (browser, $container, options) => {
 
-    // appFooterImageHoverBehavior($('#igv-app-ucsd-logo').find('img'));
-    // appFooterImageHoverBehavior($('#igv-app-broad-logo').find('img'));
-
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
     let $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
@@ -110,11 +108,26 @@ let initializationHelper = (browser, $container, options) => {
             $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined,
             configurationHandler: MultipleFileLoadController.trackConfigurator,
+            jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
+            pathValidator: MultipleFileLoadController.trackPathValidator,
             fileLoadHandler: (configurations) => {
                 browser.loadTrackList( configurations );
             }
         };
     multipleFileTrackController = new MultipleFileLoadController(browser, multipleFileTrackConfig);
+
+    // Track load controller configuration
+    const trackLoadConfig =
+        {
+            trackRegistryFile: options.trackRegistryFile,
+            $urlModal: $('#igv-app-track-from-url-modal'),
+            $encodeModal: $('#igv-app-encode-modal'),
+            $dropdownMenu: $('#igv-app-track-dropdown-menu'),
+            $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
+            uberFileLoader: multipleFileTrackController
+        };
+
+    trackLoadController = new TrackLoadController(browser, trackLoadConfig);
 
     let $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
     if (!googleEnabled) {
@@ -129,9 +142,10 @@ let initializationHelper = (browser, $container, options) => {
             $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
             configurationHandler: MultipleFileLoadController.genomeConfigurator,
+            jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
+            pathValidator: MultipleFileLoadController.genomePathValidator,
             fileLoadHandler: (configurations) => {
-                let config;
-                config = configurations[ 0 ];
+                let config = configurations[ 0 ];
                 loadGenome(config);
             }
         };
@@ -142,7 +156,8 @@ let initializationHelper = (browser, $container, options) => {
     const genomeLoadConfig =
         {
             $urlModal: $('#igv-app-genome-from-url-modal'),
-            genomes: options.genomes
+            genomes: options.genomes,
+            uberFileLoader: multipleFileGenomeController
         };
 
     genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
@@ -167,27 +182,14 @@ let initializationHelper = (browser, $container, options) => {
             }
         });
 
-    // Track load controller configuration
-    const trackLoadConfig =
-        {
-            trackRegistryFile: options.trackRegistryFile,
-            $urlModal: $('#igv-app-track-from-url-modal'),
-            $encodeModal: $('#igv-app-encode-modal'),
-            $dropdownMenu: $('#igv-app-track-dropdown-menu'),
-            $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
-        };
-
-    trackLoadController = new TrackLoadController(browser, trackLoadConfig);
-
     let $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
     if (!googleEnabled) {
         $igv_app_dropdown_google_drive_session_file_button.parent().hide();
     }
 
     // Multiple File Session Controller
-    const multileFileSessionConfig =
+    const multipleFileSessionConfig =
         {
-            isSessionFile: true,
             $modal: $multipleFileLoadModal,
             modalTitle: 'Session File Error',
             $localFileInput: $('#igv-app-dropdown-local-session-file-input'),
@@ -195,10 +197,10 @@ let initializationHelper = (browser, $container, options) => {
             $dropboxButton: $('#igv-app-dropdown-dropbox-session-file-button'),
             $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_session_file_button : undefined,
             configurationHandler: MultipleFileLoadController.sessionConfigurator,
-            fileLoadHandler: (configurations) => { }
+            jsonFileValidator: MultipleFileLoadController.sessionJSONValidator
         };
 
-    multipleFileSessionController = new MultipleFileLoadController(browser, multileFileSessionConfig);
+    multipleFileSessionController = new MultipleFileLoadController(browser, multipleFileSessionConfig);
 
     // Session Controller
     const sessionConfig =
@@ -206,7 +208,8 @@ let initializationHelper = (browser, $container, options) => {
             browser: browser,
             $urlModal: $('#igv-app-session-from-url-modal'),
             $saveButton: $('#igv-app-save-session-button'),
-            $saveModal: $('#igv-app-session-save-modal')
+            $saveModal: $('#igv-app-session-save-modal'),
+            uberFileLoader: multipleFileSessionController
         };
     sessionController = new SessionController(sessionConfig);
 
@@ -245,33 +248,6 @@ let initializationHelper = (browser, $container, options) => {
         };
 
     shareController = new ShareController($container, browser, shareConfig);
-
-};
-
-let appFooterImageHoverBehavior = ($img) => {
-
-    $img.hover(() => {
-            let src,
-                replacement;
-
-            src = $img.attr('src');
-
-            replacement = src.replace(/\.svg/, '-hover.svg');
-
-            $img.attr('src', replacement );
-        },
-        () => {
-
-            let src,
-                replacement;
-
-            src = $img.attr('src');
-
-            replacement = src.replace(/-hover\.svg/, '.svg');
-
-            $img.attr('src', replacement );
-
-        });
 
 };
 

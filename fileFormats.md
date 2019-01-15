@@ -6,7 +6,7 @@
 * bigbed
 * bedgraph
 * bigwig
-* fasta (for reference genome seqence)
+* fasta (for reference genome sequence)
 * gff3
 * gtf
 * tdf

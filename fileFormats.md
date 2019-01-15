@@ -1,17 +1,17 @@
 ### Supported file formats
 
-* fasta
+* bam
 * bed
 * bedpe
-* gff3
-* gtf
-* wig
+* bigbed
 * bedgraph
 * bigwig
-* bigbed
+* fasta (for reference genome seqence)
+* gff3
+* gtf
 * tdf
 * vcf
-* bam
+* wig
 
 ### Index file formats
 
@@ -19,7 +19,7 @@ Index files are required for bam files, and strongly recommended for any text fi
 
 * bam:  "bai" index files  (reference samtools, igvtools)
 * fasta: "fai" index files  (reference samtools, igvtools)
-* vcf, bed, gff3, gtf, bedgraph:  ".gz.tbi"  tabix index files
-* vcf, bed, gff3, gtf:  IGV/tribble ".idx" index files.  
+* bed, bedgraph, gff3, gtf, vcf:  ".gz.tbi"  tabix index files
+* bed, gff3, gtf, vcf:  IGV/tribble ".idx" index files.  
 
 

@@ -21,7 +21,6 @@
  *
  */
  
-import igv from './igv.esm.min.js';
 import { trackLoadController } from './main.js';
 
 let isValidIndexExtension = (path) => {

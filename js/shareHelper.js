@@ -21,11 +21,9 @@
  *
  */
 
-import igv from './igv.esm.min.js';
 import {bitlyShortener, googleShortener} from "./urlShortener";
 
 let urlShortener;
-
 
 export function setURLShortener(obj) {
 

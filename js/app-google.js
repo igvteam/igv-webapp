@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  *
  */
-import igv from './igv.esm.min.js';
 
 let picker;
 

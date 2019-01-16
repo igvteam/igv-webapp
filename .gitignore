@@ -4,8 +4,6 @@
 /.idea/
 /node_modules/
 /build/
-js/igv.esm.js
-js/igv.esm.min.js
 /js/igv.js
 /js/igv.min.js
 /dist/

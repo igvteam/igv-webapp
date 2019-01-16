@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+import igv from './igv.esm.min.js';
 import { getExtension } from "./utils.js";
 
 class FileLoadManager {

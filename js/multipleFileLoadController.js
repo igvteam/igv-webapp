@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  */
-
+import igv from './igv.esm.min.js';
 import * as app_google from './app-google.js';
 import { getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 
@@ -548,7 +548,7 @@ class MultipleFileLoadController {
     }
 
     static trackPathValidator(extension) {
-        return igv.knownFileExtensions.has(extension) || ('bai' === extension);
+        return igv.knownFileExtensions.has(extension) || ('crai' === extension) || ('bai' === extension);
     }
 
 }

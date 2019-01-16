@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  */
-
+import igv from './igv.esm.min.js';
 import {shortSessionURL} from './shareHelper.js';
 import {QRCode} from './qrcode';
 

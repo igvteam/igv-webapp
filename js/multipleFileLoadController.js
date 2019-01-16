@@ -548,7 +548,7 @@ class MultipleFileLoadController {
     }
 
     static trackPathValidator(extension) {
-        return igv.knownFileExtensions.has(extension) || ('bai' === extension);
+        return igv.knownFileExtensions.has(extension) || ('crai' === extension) || ('bai' === extension);
     }
 
 }

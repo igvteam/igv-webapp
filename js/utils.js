@@ -25,7 +25,7 @@ import { trackLoadController } from './main.js';
 
 let isValidIndexExtension = (path) => {
     let set;
-    set = new Set(['fai', 'bai', 'tbi', 'idx']);
+    set = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
     return set.has(getExtension(path));
 };
 
@@ -149,6 +149,7 @@ let indexLookup = (dataSuffix) => {
     let fa,
         fasta,
         bam,
+        cram,
         gz,
         any,
         lut;
@@ -171,6 +172,13 @@ let indexLookup = (dataSuffix) => {
             isOptional: false
         };
 
+
+    cram =
+        {
+            index: 'crai',
+            isOptional: false
+        };
+
     gz =
         {
             index: 'tbi',
@@ -188,6 +196,7 @@ let indexLookup = (dataSuffix) => {
             fa: fa,
             fasta: fasta,
             bam: bam,
+            cram: cram,
             gz: gz
         };
 

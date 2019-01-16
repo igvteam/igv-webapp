@@ -20,7 +20,8 @@
  * THE SOFTWARE.
  *
  */
-import igv from './igv.esm.min.js';
+
+import igv from 'https://igv.org/web/test/dist/igv.esm.min.js';
 import * as app_google from './app-google.js';
 import { getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 

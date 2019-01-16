@@ -21,7 +21,7 @@
  *
  */
 
-import igv from './igv.esm.min.js';
+import igv from 'https://igv.org/web/test/dist/igv.esm.min.js';
 import { getExtension } from './utils.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';

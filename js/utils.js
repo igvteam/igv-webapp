@@ -56,7 +56,7 @@ let getIndexObjectWithDataName = (name) => {
     indexObject[aa].isOptional = lookup.isOptional;
 
 
-    if ('bam' === extension) {
+    if ('bam' === extension || 'cram' === extension) {
         let bb,
             parts;
 

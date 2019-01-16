@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  *
  */
+
 import igv from './igv.esm.min.js';
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';

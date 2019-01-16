@@ -23,6 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 import igv from './igv.esm.min.js';
 import { loadGenome, isJSON, configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';

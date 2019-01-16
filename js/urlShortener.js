@@ -20,7 +20,9 @@
  * THE SOFTWARE.
  *
  */
+
 import igv from './igv.esm.min.js';
+
 export function bitlyShortener(accessToken) {
 
     if (!accessToken || accessToken === "BITLY_TOKEN") {

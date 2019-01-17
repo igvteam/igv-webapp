@@ -24,10 +24,9 @@
  * THE SOFTWARE.
  */
 
-import { loadGenome, isJSON, configureModal } from './utils.js';
+import { loadGenome, configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import {getExtension} from "./utils";
 
 class GenomeLoadController {
 

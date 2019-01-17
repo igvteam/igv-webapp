@@ -20,9 +20,9 @@
  * THE SOFTWARE.
  *
  */
- 
+
 import {shortSessionURL} from './shareHelper.js';
-import {QRCode} from './qrcode';
+import {QRCode} from './qrcode.js';
 
 class ShareController {
 

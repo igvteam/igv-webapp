@@ -20,11 +20,10 @@
  * THE SOFTWARE.
  *
  */
- 
+
 import FileLoadWidget from "./fileLoadWidget.js";
 import FileLoadManager from "./fileLoadManager.js";
-import {configureModal} from "./utils.js";
-import {getExtension, loadGenome} from "./utils";
+import {configureModal, getExtension } from "./utils.js";
 
 class SessionController {
 

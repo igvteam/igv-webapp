@@ -24,6 +24,8 @@
 import * as app_google from './app-google.js';
 import { getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 
+const indexableFormats = new Set(["bed", "gff", "gtf", "gff3", "bedgraph"])
+
 class MultipleFileLoadController {
 
     constructor (browser, config) {
@@ -490,16 +492,25 @@ class MultipleFileLoadController {
     static trackConfigurator(dataKey, dataValue, indexPaths) {
         let config;
 
+
+
         config =
             {
                 name: dataKey,
                 filename:dataKey,
-
                 format: igv.inferFileFormat(dataKey),
-
                 url: dataValue,
                 indexURL: getIndexURL(indexPaths[ dataKey ])
             };
+
+        const indexURL = getIndexURL(indexPaths[ dataKey ]);
+        if(indexURL) {
+            config.indexURL = indexURL
+        } else {
+            if(indexableFormats.has(config.format)) {
+                config.indexed = false
+            }
+        }
 
         igv.inferTrackTypes(config);
 

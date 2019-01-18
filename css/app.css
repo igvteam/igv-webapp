@@ -274,7 +274,8 @@ ul.navbar-nav a:hover {
   color: #dfdfdf; }
 
 .dropdown-item {
-  cursor: pointer; }
+  cursor: pointer;
+  width: auto; }
 
 .igv-app-modal-button-container {
   display: flex;

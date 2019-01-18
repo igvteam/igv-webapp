@@ -252,6 +252,9 @@ a#igv-app-email-button:active {
 .igv-app-social-button {
   float: left; }
 
+body {
+  padding-top: 48px; }
+
 #igv-main.container-fluid {
   width: unset; }
 

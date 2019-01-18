@@ -22,9 +22,9 @@
  */
 
 import * as app_google from './app-google.js';
-import { getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
+import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 
-const indexableFormats = new Set(["bed", "gff", "gtf", "gff3", "bedgraph"])
+const indexableFormats = new Set(["bed", "gff", "gtf", "gff3", "bedgraph"]);
 
 class MultipleFileLoadController {
 
@@ -559,7 +559,7 @@ class MultipleFileLoadController {
     }
 
     static trackPathValidator(extension) {
-        return igv.knownFileExtensions.has(extension) || ('crai' === extension) || ('bai' === extension);
+        return igv.knownFileExtensions.has(extension) || validIndexExtensionSet.has(extension);
     }
 
 }

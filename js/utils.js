@@ -20,13 +20,13 @@
  * THE SOFTWARE.
  *
  */
- 
-import { trackLoadController } from './main.js';
 
+import { trackLoadController } from './main.js';
+let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
 let isValidIndexExtension = (path) => {
-    let set;
-    set = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
-    return set.has(getExtension(path));
+    // let set;
+    // set = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
+    return validIndexExtensionSet.has(getExtension(path));
 };
 
 let getIndexObjectWithDataName = (name) => {
@@ -208,6 +208,4 @@ let indexLookup = (dataSuffix) => {
 
 };
 
-let isPromise = (obj) => { return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function'; };
-
-export { isPromise, isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, isJSON, configureModal, loadGenome };
+export { validIndexExtensionSet, isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, configureModal, loadGenome };

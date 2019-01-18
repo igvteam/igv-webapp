@@ -11,6 +11,11 @@ $igv-app-padding-width: 8px;
 $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 48px;
 $igv-app-logo-container-width: 20%;
+$igv-header-height: 48px;
+
+body {
+  padding-top: $igv-header-height;
+}
 
 #igv-main.container-fluid {
   width: unset;
@@ -22,7 +27,7 @@ hr {
 }
 
 .navbar {
-  min-height: 32px;
+  min-height: $igv-header-height;
   background-color: $igv-app-dark-color;
 }
 
@@ -40,6 +45,7 @@ ul.navbar-nav {
 
 .dropdown-item {
   cursor: pointer;
+  width: auto;
 }
 
 .igv-app-modal-button-container {

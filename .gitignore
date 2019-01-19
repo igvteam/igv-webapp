@@ -6,5 +6,6 @@
 /build/
 /js/igv.js
 /js/igv.min.js
-/dist/
 
+/igvjs/
+/index-dev.html

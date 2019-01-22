@@ -21,9 +21,9 @@
     <link rel="stylesheet" href="css/app.css">
 
     <!-- IGV JS-->
-    <script src="https://igv.org/web/test/dist/igv.min.js"></script>
-    <!-- <script src='https://cdn.jsdelivr.net/npm/igv@2.2.0/dist/igv.min.js'></script> -->
-     <!--<script src='js/igv.js'></script>-->
+    <script src='https://cdn.jsdelivr.net/npm/igv@2.2.1/dist/igv.min.js'></script>
+    <!--<script src="https://igv.org/web/test/dist/igv.min.js"></script>-->
+    <!--<script src='js/igv.js'></script>-->
 
 
     <!-- Dropbox Chooser API-->
@@ -76,7 +76,8 @@
                         Genome
                     </a>
 
-                    <div id="igv-app-genome-dropdown-menu" class="dropdown-menu" aria-labelledby="igv-app-genome-dropdown-button">
+                    <div id="igv-app-genome-dropdown-menu" class="dropdown-menu"
+                         aria-labelledby="igv-app-genome-dropdown-button">
 
                         <div id="igv-app-genome-dropdown-divider" class="dropdown-divider"></div>
 
@@ -87,7 +88,8 @@
                                     Local File ...
                                 </div>
                                 <div>
-                                    <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file" multiple style="display: none;">
+                                    <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file"
+                                           multiple style="display: none;">
                                 </div>
                             </div>
                         </label>
@@ -95,7 +97,8 @@
                         <!-- Dropbox -->
                         <div class="dropdown-item">
 
-                            <div id="igv-app-dropdown-dropbox-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-dropbox-genome-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
 
                                 <div>Dropbox</div>
                                 <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
@@ -107,7 +110,8 @@
 
                         <!-- Google Drive -->
                         <div class="dropdown-item">
-                            <div id="igv-app-dropdown-google-drive-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-google-drive-genome-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
                                 <div>Google Drive</div>
                                 <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                                 <div>...</div>
@@ -115,7 +119,8 @@
                         </div>
 
                         <!-- URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">URL ...
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-genome-from-url-modal">URL ...
                         </button>
 
                     </div>
@@ -152,7 +157,8 @@
                         <!-- Dropbox -->
                         <div class="dropdown-item">
 
-                            <div id="igv-app-dropdown-dropbox-track-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-dropbox-track-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
 
                                 <div>Dropbox</div>
                                 <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
@@ -164,7 +170,8 @@
 
                         <!-- Google Drive -->
                         <div class="dropdown-item">
-                            <div id="igv-app-dropdown-google-drive-track-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-google-drive-track-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
                                 <div>Google Drive</div>
                                 <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                                 <div>...</div>
@@ -200,7 +207,8 @@
                                     Local File ...
                                 </div>
                                 <div>
-                                    <input id="igv-app-dropdown-local-session-file-input" type="file" name="file" style="display: none;">
+                                    <input id="igv-app-dropdown-local-session-file-input" type="file" name="file"
+                                           style="display: none;">
                                 </div>
                             </div>
                         </label>
@@ -208,7 +216,8 @@
                         <!-- Load Dropbox hosted session file -->
                         <div class="dropdown-item">
 
-                            <div id="igv-app-dropdown-dropbox-session-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-dropbox-session-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
 
                                 <div>Dropbox</div>
                                 <div><img src="img/dropbox-dropdown-menu-item.png" width="18" height="18"></div>
@@ -220,7 +229,8 @@
 
                         <!-- Load Google Drive hosted session file -->
                         <div class="dropdown-item">
-                            <div id="igv-app-dropdown-google-drive-session-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-google-drive-session-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
                                 <div>Google Drive</div>
                                 <div><img src="img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
                                 <div>...</div>
@@ -228,7 +238,8 @@
                         </div>
 
                         <!-- Load session URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">Load URL ...
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-session-from-url-modal">Load URL ...
                         </button>
 
                         <div class="dropdown-divider"></div>
@@ -298,7 +309,8 @@
     </div>
 
     <!-- Multiple File Load Modal -->
-    <div id="igv-app-multiple-file-load-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="igv-app-multiple-file-load-modal-label" aria-hidden="true">
+    <div id="igv-app-multiple-file-load-modal" class="modal" tabindex="-1" role="dialog"
+         aria-labelledby="igv-app-multiple-file-load-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -388,7 +400,8 @@
     </div>
 
     <!-- Genome from URL -->
-    <div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
+    <div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -449,7 +462,8 @@
     </div>
 
     <!-- Session save -->
-    <div id="igv-app-session-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-save-modal-label" aria-hidden="true">
+    <div id="igv-app-session-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog"
+         aria-labelledby="igv-app-session-save-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -489,7 +503,8 @@
     </div>
 
     <!-- Session from URL -->
-    <div id="igv-app-session-from-url-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-session-from-url-modal-label" aria-hidden="true">
+    <div id="igv-app-session-from-url-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="igv-app-session-from-url-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -519,7 +534,8 @@
     </div>
 
     <!-- SVG save -->
-    <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog" aria-labelledby="igv-app-svg-save-modal-label" aria-hidden="true">
+    <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog"
+         aria-labelledby="igv-app-svg-save-modal-label" aria-hidden="true">
 
         <div class="modal-dialog modal-lg" role="document">
 
@@ -559,7 +575,8 @@
     </div>
 
     <!-- Share URL Modal -->
-    <div id="igv-app-share-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-share-input-modal-label" aria-hidden="true">
+    <div id="igv-app-share-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="igv-app-share-input-modal-label" aria-hidden="true">
 
         <div class="modal-dialog" role="document">
 

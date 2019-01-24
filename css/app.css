@@ -277,6 +277,12 @@ ul.navbar-nav a:hover {
   cursor: pointer;
   width: auto; }
 
+#igv-app-session-save-modal .modal-body {
+  padding: 2rem; }
+
+#igv-app-svg-save-modal .modal-body {
+  padding: 2rem; }
+
 .igv-app-modal-button-container {
   display: flex;
   flex-direction: row;

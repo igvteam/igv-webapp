@@ -154,7 +154,7 @@ The track gear menu provide two different options for expanding the display to s
 
 
 
-# Saving and Restoring IGV Sessions
+# Saving Sessions
 IGV-Web has a number of options for saving the state of your IGV session: you can save a file in IGV session format, bookmark the page in your browser, or create a web link URL that you can share with others. 
 
 Be aware that the saved state of an IGV session includes pointers to the data files for any loaded tracks. So to fully restore the state, you must have access to the same files that were loaded when the IGV session was saved.

@@ -10,7 +10,7 @@ layout: default
 
 **ENCODE:** [ENCODE project page](https://www.encodeproject.org/)
 
-**Annotations:** [UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
+**Annotations:** [UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html), [GENCODE](https://www.gencodegenes.org)
 
 **Variants:** [UCSC Genome Browser](https://genome.ucsc.edu), [CIViC: Clinical Interpretations of Variants in Cancer](https://civicdb.org)
 

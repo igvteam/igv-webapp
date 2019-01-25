@@ -16,7 +16,7 @@
 
 ### Index file formats
 
-Index files are required for bam files, and strongly recommended for any text file over 2MB in size.  
+Index files are required for bam and cram files, and strongly recommended for any text file over 2MB in size.  
 
 * bam:  "bai" index files  (reference samtools, igvtools)
 * cram: "crai" index files 

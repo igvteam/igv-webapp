@@ -176,7 +176,7 @@ To restore a session from a saved file, click on the `Session` dropdown menu and
 
 Selecting the `URL` option will present a dialog to enter the full web link URL to the session file. For the other options, a file chooser pops up. If you select the `Google Drive` option, you will be prompted to sign into a Google account, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. 
 
-### Session files from IGV-Desktop
+#### Session files from IGV-Desktop
 Session files that were saved from the Java desktop version of IGV can also be loaded into IGV-Web via the `Session` dropdown menu. However, IGV-Desktop supports more features and file types than the IGV-Web app, and so the session may not be completely restored. Also note that session files saved in IGV-Web currently cannot be loaded into IGV-Desktop.
 
 ### Bookmarks

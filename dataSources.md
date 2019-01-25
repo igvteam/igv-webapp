@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Data Sources
+# Pre-defined Tracks - Data Sources
 
 [back](./)
 
@@ -12,10 +12,12 @@ layout: default
 
 **Annotations:** [UCSC Genome Browser](http://hgdownload.soe.ucsc.edu/downloads.html)
 
+**Variants:** [UCSC Genome Browser](https://genome.ucsc.edu), [CIViC: Clinical Interpretations of Variants in Cancer](https://civicdb.org)
+
 **GTEx:** [GTEx portal](https://www.gtexportal.org/home/)
 
 **cBio:** [cBio Portal for Cancer Genomics](http://www.cbioportal.org/)
 
-**1000 Genomes:** [IGSR: The International Genome Sample Resource](http://www.internationalgenome.org/ "Home")
+**1000 Genomes (1KG):** [IGSR: The International Genome Sample Resource](http://www.internationalgenome.org/ "Home")
 
 **Platinum Genomes:** [Illumina Platinum Genomes](https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes)

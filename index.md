@@ -141,7 +141,7 @@ The sequence track cannot be removed, but it can be dragged to a different posit
 
 If you load a reference genome from the list of hosted genomes provided in the `Genome` menu, a special gene annotation track is also automatically loaded. For most of the hosted genomes, these annotations are from NCBI's Reference Sequence Database (RefSeq). You cannot remove this track, but it will be automatically unloaded if you select a different reference genome.
 
-When you load a data track, it will be positioned just above this gene annotation track. So by default, the gene annotations are always displayed at the bottom. You can however move the track by dragging it to a different position, just like any other track. 
+When you load a data track, it will be positioned just above this gene annotation track. So by default, the gene annotations are always displayed at the bottom. You can however move the gene annotation track at any time by dragging it to a different position, just like any other track. 
 
 By default, the annotations are displayed in a compact mode, where overlapping transcripts are collapsed into a single line:
 ![](./assets/images/GenesCollapsed.png)

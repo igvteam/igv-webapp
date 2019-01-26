@@ -100,7 +100,6 @@ IGV-Web provides several navigation controls for specifying the genomic region t
 
 # More about tracks
 
-
 ![](./assets/images/Track.png)
 
 

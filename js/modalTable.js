@@ -41,21 +41,21 @@ class ModalTable {
 
         this.doBuildTable = true;
 
-        this.$spinner = $('<div>');
+        this.$spinner = $('<div class="igv-viewport-spinner">');
         this.$table.append(this.$spinner);
+        this.stopSpinner();
 
-        this.$faSpinner = igv.createIcon("spinner");
-        this.$spinner.append(this.$faSpinner);
+        this.$spinner.append(igv.createIcon("spinner"));
     }
 
     startSpinner() {
-        this.$faSpinner.addClass("fa5-spin");
+        this.$spinner.addClass("fa5-spin");
         this.$spinner.show();
     }
 
     stopSpinner() {
         this.$spinner.hide();
-        this.$faSpinner.addClass("fa5-spin");
+        this.$spinner.addClass("fa5-spin");
     }
 
     didFailToRetrieveData() {

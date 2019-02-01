@@ -31,25 +31,11 @@ class EncodeDataSource {
     }
 
     async retrieveData(genomeID, filter) {
-
         let url = "https://s3.amazonaws.com/igv.org.app/encode/" + genomeID + ".txt.gz";
-
         let data = await igv.xhr.loadString(url, {});
         let records = await parseTabData(data, filter);
         records.sort(encodeSort);
         return records;
-
-        // return igv.xhr
-        //
-        //     .loadString(url, {})
-        //     .then(function (data) {
-        //         return parseTabData(data, filter);
-        //     })
-        //     .then(function (records) {
-        //         records.sort(encodeSort);
-        //         return Promise.resolve(records);
-        //     });
-
     };
 
     tableData (data) {

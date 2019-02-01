@@ -58,30 +58,24 @@ class ModalTable {
         this.$spinner.addClass("fa5-spin");
     }
 
-    didFailToRetrieveData() {
-        this.stopSpinner();
-        this.buildTable(false);
-    }
+    async linearizedLoadData(genomeId) {
 
-    promisifiedLoadData(genomeId) {
+        let assembly = ModalTable.getAssembly( genomeId);
 
-        var self = this,
-            assembly;
+        if (undefined === assembly) {
+            return undefined;
+        }
 
-        assembly = ModalTable.getAssembly( genomeId);
+        try {
+            return this.datasource.retrieveData(assembly, (record) => {
+                // Filter bigBed records for now
+                return 'bigbed' !== record["Format"].toLowerCase();
+            });
 
-        if (assembly) {
-
-            return this.datasource
-                .retrieveData(assembly, function (record) {
-                    // Filter bigBed records for now
-                    return record["Format"].toLowerCase() !== "bigbed";
-                })
-                .catch(function (e) {
-                    self.didFailToRetrieveData();
-                });
-        } else {
-            return Promise.resolve(undefined);
+        } catch(error) {
+            this.stopSpinner();
+            this.buildTable(false);
+            alert(error);
         }
 
     }

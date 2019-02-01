@@ -23,31 +23,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
- 
+
 class EncodeDataSource {
 
     constructor (columnFormat) {
         this.columnFormat = columnFormat;
     }
 
-    retrieveData(genomeID, filter) {
+    async retrieveData(genomeID, filter) {
 
-        var assembly;
+        let url = "https://s3.amazonaws.com/igv.org.app/encode/" + genomeID + ".txt.gz";
 
-        assembly = genomeID;
+        let data = await igv.xhr.loadString(url, {});
+        let records = await parseTabData(data, filter);
+        records.sort(encodeSort);
+        return records;
 
-        let url = "https://s3.amazonaws.com/igv.org.app/encode/" + assembly + ".txt.gz";
-
-        return igv.xhr
-
-            .loadString(url, {})
-            .then(function (data) {
-                return parseTabData(data, filter);
-            })
-            .then(function (records) {
-                records.sort(encodeSort);
-                return Promise.resolve(records);
-            });
+        // return igv.xhr
+        //
+        //     .loadString(url, {})
+        //     .then(function (data) {
+        //         return parseTabData(data, filter);
+        //     })
+        //     .then(function (records) {
+        //         records.sort(encodeSort);
+        //         return Promise.resolve(records);
+        //     });
 
     };
 

@@ -46,6 +46,24 @@ class ModalTable {
         this.stopSpinner();
 
         this.$spinner.append(igv.createIcon("spinner"));
+
+        let self = this;
+
+        config.$modalTopCloseButton.on('click', function () {
+            self.stopSpinner();
+            $('tr.selected').removeClass('selected');
+        });
+
+        config.$modalBottomCloseButton.on('click', function () {
+            self.stopSpinner();
+            $('tr.selected').removeClass('selected');
+        });
+
+        config.$modal.on('hidden.bs.modal', function (e) {
+            self.stopSpinner();
+            $('tr.selected').removeClass('selected');
+
+        });
     }
 
     startSpinner() {
@@ -82,8 +100,6 @@ class ModalTable {
 
     buildTableWithData(data) {
         this.datasource.data = data;
-
-        this.startSpinner();
         this.buildTable(true);
     }
 
@@ -91,18 +107,17 @@ class ModalTable {
 
         var self = this;
 
+        this.startSpinner();
+        
         if (true === success) {
 
             this.config.$modal.on('shown.bs.modal', function (e) {
 
                 if (true === self.doBuildTable) {
                     self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
-
-                    self.stopSpinner();
-
                     self.doBuildTable = false;
                 }
-
+                self.stopSpinner();
             });
 
             this.config.$modalGoButton.on('click', function () {
@@ -118,13 +133,15 @@ class ModalTable {
 
         }
 
-        this.config.$modalTopCloseButton.on('click', function () {
-            $('tr.selected').removeClass('selected');
-        });
-
-        this.config.$modalBottomCloseButton.on('click', function () {
-            $('tr.selected').removeClass('selected');
-        });
+        // this.config.$modalTopCloseButton.on('click', function () {
+        //     self.stopSpinner();
+        //     $('tr.selected').removeClass('selected');
+        // });
+        //
+        // this.config.$modalBottomCloseButton.on('click', function () {
+        //     self.stopSpinner();
+        //     $('tr.selected').removeClass('selected');
+        // });
 
     }
 

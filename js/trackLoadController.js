@@ -216,7 +216,7 @@ class TrackLoadController {
 
                     m.encodeTable = self.createEncodeTable(m.genomeID);
 
-                    return m.encodeTable.promisifiedLoadData(genomeID)
+                    return m.encodeTable.linearizedLoadData(genomeID)
 
                         .then(function (tableData) {
                             m.data = tableData;

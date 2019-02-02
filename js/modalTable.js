@@ -41,55 +41,65 @@ class ModalTable {
 
         this.doBuildTable = true;
 
-        this.$spinner = $('<div>');
+        this.$spinner = $('<div class="igv-viewport-spinner">');
         this.$table.append(this.$spinner);
+        this.stopSpinner();
 
-        this.$faSpinner = igv.createIcon("spinner");
-        this.$spinner.append(this.$faSpinner);
+        this.$spinner.append(igv.createIcon("spinner"));
+
+        let self = this;
+
+        config.$modalTopCloseButton.on('click', function () {
+            self.stopSpinner();
+            $('tr.selected').removeClass('selected');
+        });
+
+        config.$modalBottomCloseButton.on('click', function () {
+            self.stopSpinner();
+            $('tr.selected').removeClass('selected');
+        });
+
+        config.$modal.on('hidden.bs.modal', function (e) {
+            self.stopSpinner();
+            $('tr.selected').removeClass('selected');
+
+        });
     }
 
     startSpinner() {
-        this.$faSpinner.addClass("fa5-spin");
+        this.$spinner.addClass("fa5-spin");
         this.$spinner.show();
     }
 
     stopSpinner() {
         this.$spinner.hide();
-        this.$faSpinner.addClass("fa5-spin");
+        this.$spinner.addClass("fa5-spin");
     }
 
-    didFailToRetrieveData() {
-        this.stopSpinner();
-        this.buildTable(false);
-    }
+    async linearizedLoadData(genomeId) {
 
-    promisifiedLoadData(genomeId) {
+        let assembly = ModalTable.getAssembly( genomeId);
 
-        var self = this,
-            assembly;
+        if (undefined === assembly) {
+            return undefined;
+        }
 
-        assembly = ModalTable.getAssembly( genomeId);
+        try {
+            return this.datasource.retrieveData(assembly, (record) => {
+                // Filter bigBed records for now
+                return 'bigbed' !== record["Format"].toLowerCase();
+            });
 
-        if (assembly) {
-
-            return this.datasource
-                .retrieveData(assembly, function (record) {
-                    // Filter bigBed records for now
-                    return record["Format"].toLowerCase() !== "bigbed";
-                })
-                .catch(function (e) {
-                    self.didFailToRetrieveData();
-                });
-        } else {
-            return Promise.resolve(undefined);
+        } catch(error) {
+            this.stopSpinner();
+            this.buildTable(false);
+            alert(error);
         }
 
     }
 
     buildTableWithData(data) {
         this.datasource.data = data;
-
-        this.startSpinner();
         this.buildTable(true);
     }
 
@@ -97,18 +107,17 @@ class ModalTable {
 
         var self = this;
 
+        this.startSpinner();
+        
         if (true === success) {
 
             this.config.$modal.on('shown.bs.modal', function (e) {
 
                 if (true === self.doBuildTable) {
                     self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
-
-                    self.stopSpinner();
-
                     self.doBuildTable = false;
                 }
-
+                self.stopSpinner();
             });
 
             this.config.$modalGoButton.on('click', function () {
@@ -124,13 +133,15 @@ class ModalTable {
 
         }
 
-        this.config.$modalTopCloseButton.on('click', function () {
-            $('tr.selected').removeClass('selected');
-        });
-
-        this.config.$modalBottomCloseButton.on('click', function () {
-            $('tr.selected').removeClass('selected');
-        });
+        // this.config.$modalTopCloseButton.on('click', function () {
+        //     self.stopSpinner();
+        //     $('tr.selected').removeClass('selected');
+        // });
+        //
+        // this.config.$modalBottomCloseButton.on('click', function () {
+        //     self.stopSpinner();
+        //     $('tr.selected').removeClass('selected');
+        // });
 
     }
 

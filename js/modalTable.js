@@ -85,10 +85,7 @@ class ModalTable {
         }
 
         try {
-            return this.datasource.retrieveData(assembly, (record) => {
-                // Filter bigBed records for now
-                return 'bigbed' !== record["Format"].toLowerCase();
-            });
+            return this.datasource.retrieveData(assembly);
 
         } catch(error) {
             this.stopSpinner();
@@ -175,10 +172,7 @@ class ModalTable {
                 scrollCollapse: true
             };
 
-        console.log('ModalTable.tableWithDataAndColumns ' + tableData.length + ' rows ...');
         this.$dataTables = this.$table.dataTable(config);
-        console.log('... tableWithDataAndColumns done');
-
         this.$table.find('tbody').on('click', 'tr', function () {
 
             if ($(this).hasClass('selected')) {

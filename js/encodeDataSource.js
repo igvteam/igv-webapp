@@ -26,27 +26,27 @@
 
 class EncodeDataSource {
 
-    constructor (columnFormat) {
-        this.columnFormat = columnFormat;
+    constructor(columns) {
+        this.columns = columns;
+
+        this.filter =  (record) => {return 'bigbed' !== record["Format"].toLowerCase();}
     }
 
     async retrieveData(genomeID, filter) {
         let url = "https://s3.amazonaws.com/igv.org.app/encode/" + genomeID + ".txt.gz";
         let data = await igv.xhr.loadString(url, {});
-        let records = await parseTabData(data, filter);
+        let records = await parseTabData(data, this.filter);
         records.sort(encodeSort);
         return records;
     };
 
-    tableData (data) {
+    tableData(data) {
         var self = this,
             mapped;
 
         mapped = data.map(function (row) {
 
-            let displayKeys = self.columnFormat.map(function (col) {
-                return Object.keys(col)[0];
-            });
+            let displayKeys = self.columns;
 
             return displayKeys.map(function (key) {
                 return row[key];
@@ -56,23 +56,19 @@ class EncodeDataSource {
         return mapped;
     }
 
-    tableColumns () {
+    tableColumns() {
 
         var columns;
 
-        columns = this.columnFormat.map(function (obj) {
-            var key,
-                val;
-
-            key = Object.keys(obj)[0];
-            val = obj[key];
-            return { title: key, width: val }
+        columns = this.columns.map(function (key) {
+            const title = columnName(key);
+            return {title: title}
         });
 
         return columns;
     }
 
-    dataAtRowIndex (data, index) {
+    dataAtRowIndex(data, index) {
 
 
         let row = data[index];
@@ -126,12 +122,12 @@ class EncodeDataSource {
         function getFormat(row) {
 
             let format = row['Format'],
-                outputType = row['Output Type'],
-                assayType = row['Assay Type'];
+                outputType = row['OutputType'],
+                assayType = row['AssayType'];
 
             if (format === 'bedpe' && outputType && outputType.includes('domain')) {
                 return 'bedpe-domain';
-            } else if(format === 'tsv' && outputType.includes("interaction") && assayType.toLowerCase() === 'hic') {
+            } else if (format === 'tsv' && outputType.includes("interaction") && assayType.toLowerCase() === 'hic') {
                 return "bedpe-loop";
             }
 
@@ -147,34 +143,40 @@ function parseTabData(data, filter) {
 
     if (!data) return null;
 
-    var dataWrapper,
-        line;
+    const dataWrapper = igv.getDataWrapper(data);
 
-    dataWrapper = igv.getDataWrapper(data);
+    const records = [];
 
-    let records = [];
+    const headerLine = dataWrapper.nextLine().split("\t");
 
-    dataWrapper.nextLine();  // Skip header
+    // Search for HREF column
+    let hrefColumn = headerLine.findIndex(v => v === "HREF")
+    if (hrefColumn < 0) {
+        throw Error("No HREF column found.")
+    }
+
+    let line;
     while (line = dataWrapper.nextLine()) {
 
-        let tokens = line.split("\t");
-        let record = {
-            "Assembly": tokens[1],
-            "ExperimentID": tokens[0],
-            "Experiment": tokens[0].substr(13).replace("/", ""),
-            "Cell Type": tokens[2],
-            "Assay Type": tokens[3],
-            "Target": tokens[4],
-            "Format": tokens[8],
-            "Output Type": tokens[7],
-            "Lab": tokens[9],
-            "url": "https://www.encodeproject.org" + tokens[10],
-            "Bio Rep": tokens[5],
-            "Tech Rep": tokens[6]
-        };
+        const tokens = line.split("\t");
+
+        if (tokens.length !== headerLine.length) {
+            throw Error("Invalid table.  # of values != # of headers")
+        }
+
+        const record = {}
+        for (let i = 0; i < headerLine.length; i++) {
+            if (i !== hrefColumn) {
+                const label = headerLine[i]
+                record[label] = tokens[i]
+
+            }
+        }
+        record["url"] = "https://www.encodeproject.org" + tokens[hrefColumn]
+
         constructName(record);
 
-        if(filter === undefined || filter(record)) {
+        if (filter === undefined || filter(record)) {
             records.push(record);
         }
     }
@@ -184,22 +186,22 @@ function parseTabData(data, filter) {
 
 function constructName(record) {
 
-    let name = record["Cell Type"] || "";
+    let name = record["CellType"] || "";
 
     if (record["Target"]) {
         name += " " + record["Target"];
     }
-    if (record["Assay Type"].toLowerCase() !== "chip-seq") {
-        name += " " + record["Assay Type"];
+    if (record["AssayType"].toLowerCase() !== "chip-seq") {
+        name += " " + record["AssayType"];
     }
-    if (record["Bio Rep"]) {
-        name += " " + record["Bio Rep"];
+    if (record["BioRep"]) {
+        name += " " + record["BioRep"];
     }
-    if (record["Tech Rep"]) {
-        name += (record["Bio Rep"] ? ":" : " 0:") + record["Tech Rep"];
+    if (record["TechRep"]) {
+        name += (record["BioRep"] ? ":" : " 0:") + record["TechRep"];
     }
 
-    name += " " + record["Output Type"];
+    name += " " + record["OutputType"];
 
     name += " " + record["Experiment"];
 
@@ -215,10 +217,10 @@ function encodeSort(a, b) {
         tt1,
         tt2;
 
-    aa1 = a['Assay Type'];
-    aa2 = b['Assay Type'];
-    cc1 = a['Cell Type'];
-    cc2 = b['Cell Type'];
+    aa1 = a['AssayType'];
+    aa2 = b['AssayType'];
+    cc1 = a['CellType'];
+    cc2 = b['CellType'];
     tt1 = a['Target'];
     tt2 = b['Target'];
 
@@ -243,6 +245,10 @@ function encodeSort(a, b) {
             return 1;
         }
     }
+}
+
+function columnName(token) {
+    return token.replace(/([A-Z])/g, ' $1')
 }
 
 export default EncodeDataSource;

@@ -84,21 +84,10 @@ class TrackLoadController {
 
         const browser = this.browser;
 
-        const columnFormat =
-            [
-                {'Cell Type': '10%'},
-                {'Target': '10%'},
-                {'Assay Type': '10%'},
-                {'Output Type': '20%'},
-                {'Bio Rep': '5%'},
-                {'Tech Rep': '5%'},
-                {'Format': '5%'},
-                {'Experiment': '10%'},
-                {'Lab': '20%'}
+        const columns =['CellType', 'Target', 'AssayType', 'OutputType', 'BioRep', 'TechRep',
+            'Format', 'Experiment', 'Accession', 'Lab'];
 
-            ];
-
-        const encodeDatasource = new EncodeDataSource(columnFormat);
+        const encodeDatasource = new EncodeDataSource(columns);
 
         const encodeTableConfig =
             {

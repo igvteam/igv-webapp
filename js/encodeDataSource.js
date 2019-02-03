@@ -29,7 +29,7 @@ class EncodeDataSource {
     constructor(columns) {
         this.columns = columns;
 
-        this.filter =  (record) => {return 'bigbed' !== record["Format"].toLowerCase();}
+        this.filter =  undefined //(record) => {return 'bigbed' !== record["Format"].toLowerCase();}
     }
 
     async retrieveData(genomeID, filter) {

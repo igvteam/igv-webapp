@@ -187,8 +187,7 @@ To restore a bookmarked session, use your browser's mechanism for going back to 
 To create a web link URL that will open the IGV-Web app with all the same data tracks and settings as the current session, click on `Share` in the menu bar. A dialog will pop up and display a short URL that encodes the current state of the IGV session.
 
 * Use the `COPY` button to copy the URL to the clipboard and paste it wherever you want for safe keeping. 
-* Alternatively, the `Tweet` and `EMAIL` buttons provide shortcuts for sending the
-*  URL to others. 
+* Alternatively, the `Tweet` and `EMAIL` buttons provide shortcuts for sending the URL to others. 
 * The `EMBED` button generates an HTML code snippet that can be used to add the session to a web page. 
 * The `QR CODE` button generates a QR two-dimenionsal barcode for the URL.
 

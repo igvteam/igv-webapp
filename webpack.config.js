@@ -4,8 +4,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports =
     {
         mode: 'none',
-        entry: ['babel-polyfill', './build/js/app.js'],
-        // entry: './build/js/app.js',
+        // entry: ['babel-polyfill', './build/js/app.js'],
+        entry: './build/js/app.js',
         output:
             {
                 path: path.resolve(__dirname, 'dist'),

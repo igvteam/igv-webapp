@@ -53,18 +53,10 @@ module.exports = function (grunt) {
         clean: ['build']
     });
 
-
-
-
-    //load the copy module
-    grunt.loadNpmTasks('grunt-contrib-copy');
-
-    //register the build task
-
-
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('default', ['copy', 'inject-apikeys', 'webpack:prod', 'string-replace:dist', 'clean']);
 

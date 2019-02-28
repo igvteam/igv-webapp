@@ -1,4 +1,12 @@
 
+# About IGV-Web
+
+IGV-Web is a web application for exploring genomic datasets. Data can be loaded directly from a user’s local file system, or via URL from web servers and cloud providers. The application runs only in the web browser and no data is ever uploaded to the host site.
+
+IGV-Web is developed by the same team that develops the IGV desktop application. Links to all versions of IGV can be found at <https://igv.org>.
+
+> **Developers:** IGV-Web is implemented using igv.js, our JavaScript component for embedding IGV in web pages. All IGV code is open source and available at <https://github.com/igvteam>
+
 # Quick Start
 
 ### 1. Open the IGV-Web app

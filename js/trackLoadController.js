@@ -216,8 +216,8 @@ class TrackLoadController {
 
                 else if ("GTEX" === m.type) {
 
-                    return igv.GtexUtils.getTissueInfo(m.genomeID)
-
+                    return igv.GtexUtils
+                        .getTissueInfo(m.genomeID)
                         .then(function (info) {
 
                             m.tracks = info.tissueSummary.map((tissue) => {

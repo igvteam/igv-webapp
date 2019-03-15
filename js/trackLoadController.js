@@ -56,26 +56,26 @@ class TrackLoadController {
 
     }
 
-    getTrackRegistry() {
+    async getTrackRegistry() {
 
         const self = this;
 
         if (this.trackRegistry) {
-            return Promise.resolve(this.trackRegistry);
-        }
-        else if (this.trackRegistryFile) {
-            return igv.xhr.loadJson(this.trackRegistryFile)
+            return this.trackRegistry;
+        } else if (this.trackRegistryFile) {
 
-                .then(function (registry) {
-                    self.trackRegistry = registry;
-                    return registry;
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    return {};
-                })
+            let registry = undefined;
+
+            try {
+                registry = await igv.xhr.loadJson(this.trackRegistryFile);
+            } catch(err) {
+                console.error(error);
+            }
+
+            return registry;
+
         } else {
-            return {};
+            return undefined;
         }
 
     }
@@ -107,7 +107,7 @@ class TrackLoadController {
 
     };
 
-    updateTrackMenus(genomeID) {
+    async updateTrackMenus(genomeID) {
 
         const id_prefix = 'genome_specific_';
 
@@ -119,124 +119,138 @@ class TrackLoadController {
         const $found = self.$dropdownMenu.find(searchString);
         $found.remove();
 
-        const root = 'resources/tracks';
-        const trackRegistryFile = root + '/' + genomeID + '_' + 'tracks.txt';
+        self.trackRegistry = await this.getTrackRegistry();
 
-        this.getTrackRegistry()
+        if (undefined === self.trackRegistry) {
+            console.log("Info -- No track registry file  (config.trackRegistryFile)");
+            return;
+        }
 
-            .then(function (registry) {
+        const paths = self.trackRegistry[ genomeID ];
 
-                if (!registry) {
-                    console.log("Info -- No track registry file  (config.trackRegistryFile)");
-                    return;
+        if (undefined === paths) {
+            console.log("No tracks defined for: " + genomeID);
+            return;
+        }
+
+        let results = [];
+        for (let path of paths.filter( (path) => ( !path.startsWith("@EXTRA") ) ) ) {
+
+            try {
+                const result = await igv.xhr.loadJson((path));
+                results.push(result);
+            } catch(err) {
+                console.error(err);
+            }
+
+        }
+
+        const set = new Set([ 'ENCODE', 'GTEX' ]);
+        let configurations = results.filter((c) => { return !set.has(c.type) });
+
+        let encodeConfiguration = results.filter((c) => { return 'ENCODE' === c.type });
+        if (encodeConfiguration) {
+
+            encodeConfiguration = encodeConfiguration.pop();
+            encodeConfiguration.encodeTable = self.createEncodeTable(encodeConfiguration.genomeID);
+
+            try {
+                encodeConfiguration.data = await encodeConfiguration.encodeTable.linearizedLoadData(encodeConfiguration.genomeID);
+                configurations.push(encodeConfiguration);
+            } catch(err) {
+                console.error(err);
+            }
+
+        }
+
+        let gtexConfiguration = results.filter((c) => { return 'GTEX' === c.type });
+        if (gtexConfiguration) {
+
+            gtexConfiguration = gtexConfiguration.pop();
+            try {
+
+                const info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.genomeID);
+                gtexConfiguration.tracks = info.tissueSummary.map((tissue) => { return igv.GtexUtils.trackConfiguration(tissue) });
+                configurations.push(gtexConfiguration);
+            } catch(err) {
+                console.error(err);
+            }
+
+        }
+
+        for (let config of configurations) {
+
+            const $button = $('<button>', {class: 'dropdown-item', type: 'button'});
+            const str = config.label + ' ...';
+            $button.text(str);
+
+            const id = id_prefix + config.label.toLowerCase().split(' ').join('_');
+            $button.attr('id', id);
+
+            $button.insertAfter($divider);
+
+            $button.on('click', () => {
+                let markup;
+
+                markup = '<div>' + config.label + '</div>';
+                if (config.description) {
+                    markup += '<div>' + config.description + '</div>';
                 }
 
-                const paths = registry[genomeID];
+                self.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
 
-                if (!paths) {
-                    console.log("No tracks defined for: " + genomeID);
-                    return;
+                if ('ENCODE' === config.type) {
+
+                    config.encodeTable.buildTableWithData(config.data);
+                    config.encodeTable.$modal.modal('show');
+
+                } else {
+
+                    configureModalSelectList(self.$modal, config.tracks, config.label);
+                    self.$modal.modal('show');
                 }
 
-                const promiseTasks = paths
-                    .filter((path) => (!path.startsWith("@EXTRA")))
-                    .map((path) => (igv.xhr.loadJson((path))))
-                    .reverse();
 
-                Promise
-
-                    .all(promiseTasks)
-
-                    .then((results) => {
-
-                        Promise.all(getMenuConfigurations(results))
-
-                            .then(function (menuItemConfigurations) {
-
-
-                                menuItemConfigurations.forEach((config) => {
-
-                                    const $button = $('<button>', {class: 'dropdown-item', type: 'button'});
-                                    const str = config.label + ' ...';
-                                    $button.text(str);
-
-                                    const id = id_prefix + config.label.toLowerCase().split(' ').join('_');
-                                    $button.attr('id', id);
-
-                                    $button.insertAfter($divider);
-
-                                    $button.on('click', function () {
-                                        let markup;
-
-                                        markup = '<div>' + config.label + '</div>';
-                                        if (config.description) {
-                                            markup += '<div>' + config.description + '</div>';
-                                        }
-
-                                        self.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
-
-                                        if ('ENCODE' === config.type) {
-
-                                            config.encodeTable.buildTableWithData(config.data);
-                                            config.encodeTable.$modal.modal('show');
-
-                                        } else {
-
-                                            configureModalSelectList(self.$modal, config.tracks, config.label);
-                                            self.$modal.modal('show');
-                                        }
-
-
-                                    });
-                                });
-                            });
-                    })
-
-            })
-            .catch((error) => {
-                console.log('ERROR ' + error.message)
             });
 
-        function getMenuConfigurations(config) {
-
-            return config.map((m) => {
-
-                if ("ENCODE" === m.type) {
-
-                    m.encodeTable = self.createEncodeTable(m.genomeID);
-
-                    return m.encodeTable.linearizedLoadData(genomeID)
-
-                        .then(function (tableData) {
-                            m.data = tableData;
-                            return m;
-
-                        });
-                }
-
-                else if ("GTEX" === m.type) {
-
-                    return igv.GtexUtils
-                        .getTissueInfo(m.genomeID)
-                        .then(function (info) {
-
-                            m.tracks = info.tissueSummary.map((tissue) => {
-                                return igv.GtexUtils.trackConfiguration(tissue)
-                            });
-
-                            return m;
-                        });
-                }
-
-                else {
-                    return Promise.resolve(m);
-                }
-            });
         }
 
     };
 
 
+}
+
+function getMenuConfigurations(config) {
+
+    return config.map((item) => {
+
+        if ("ENCODE" === item.type) {
+
+            item.encodeTable = self.createEncodeTable(item.genomeID);
+
+            return item.encodeTable
+                .linearizedLoadData(genomeID)
+                .then((tableData) => {
+                    item.data = tableData;
+                    return item;
+                });
+
+        } else if ("GTEX" === item.type) {
+
+            return igv.GtexUtils
+                .getTissueInfo(item.genomeID)
+                .then(function (info) {
+
+                    item.tracks = info.tissueSummary.map((tissue) => {
+                        return igv.GtexUtils.trackConfiguration(tissue)
+                    });
+
+                    return item;
+                });
+        } else {
+            return Promise.resolve(item);
+        }
+    });
 }
 
 

@@ -155,6 +155,10 @@ class TrackLoadController {
             encodeConfiguration.encodeTable = self.createEncodeTable(encodeConfiguration.genomeID);
 
             try {
+
+                // TESTING
+                // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
+
                 encodeConfiguration.data = await encodeConfiguration.encodeTable.linearizedLoadData(encodeConfiguration.genomeID);
                 configurations.push(encodeConfiguration);
             } catch(err) {
@@ -168,6 +172,9 @@ class TrackLoadController {
 
             gtexConfiguration = gtexConfiguration.pop();
             try {
+
+                // TESTING
+                // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
 
                 const info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.genomeID);
                 gtexConfiguration.tracks = info.tissueSummary.map((tissue) => { return igv.GtexUtils.trackConfiguration(tissue) });

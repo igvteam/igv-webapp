@@ -160,7 +160,7 @@ class TrackLoadController {
         let configurations = results.filter((c) => { return !set.has(c.type) });
 
         let encodeConfiguration = results.filter((c) => { return 'ENCODE' === c.type });
-        if (encodeConfiguration) {
+        if (encodeConfiguration && encodeConfiguration.length > 0) {
 
             encodeConfiguration = encodeConfiguration.pop();
             encodeConfiguration.encodeTable = self.createEncodeTable(encodeConfiguration.genomeID);
@@ -179,7 +179,7 @@ class TrackLoadController {
         }
 
         let gtexConfiguration = results.filter((c) => { return 'GTEX' === c.type });
-        if (gtexConfiguration) {
+        if (gtexConfiguration && gtexConfiguration.length > 0) {
 
             gtexConfiguration = gtexConfiguration.pop();
             try {

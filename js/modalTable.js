@@ -36,34 +36,35 @@ const ModalTable = function (config) {
     this.browserHandler = config.browserHandler;
 
     teardownModalDOM(config);
+
+    // spinner
+    this.$spinner = config.$modalBody.find('#igv-encode-spinner');
+
+    // table
     this.$table = $('<table cellpadding="0" cellspacing="0" border="0" class="display"></table>');
-    config.$modalBody.append(this.$table);
-    this.doRetrieveData = true;
+    config.$modalBody.find('#igv-encode-datatable').append(this.$table);
+
     this.doBuildTable = true;
 
-    this.$spinner = $('<div>');
-    this.$table.append(this.$spinner);
-
-    this.$spinner.append($('<i class="fa fa-lg fa-spinner fa-spin"></i>'));
 };
 
-function teardownModalDOM(configuration) {
+function teardownModalDOM(config) {
 
     var list;
 
     list =
         [
-            configuration.$modal,
-            configuration.$modalTopCloseButton,
-            configuration.$modalBottomCloseButton,
-            configuration.$modalGoButton
+            config.$modal,
+            config.$modalTopCloseButton,
+            config.$modalBottomCloseButton,
+            config.$modalGoButton
         ];
 
     list.forEach(function ($e) {
         $e.unbind();
     });
 
-    configuration.$modalBody.empty();
+    config.$modalBody.find('#igv-encode-datatable').empty();
 }
 
 function getSelectedTableRowsData($rows) {
@@ -100,7 +101,6 @@ ModalTable.prototype.hidePresentationButton = function () {
 };
 
 ModalTable.prototype.willRetrieveData = function () {
-    //this.startSpinner();
     $('#hic-encode-modal-button').hide();
     $('#hic-encode-loading').show();
 
@@ -146,7 +146,9 @@ ModalTable.prototype.buildTable = function (success) {
 
     if (true === success) {
 
-        this.startSpinner();
+        if (true === this.doBuildTable) {
+            this.startSpinner();
+        }
 
         this.config.$modal.on('shown.bs.modal', (e) => {
 
@@ -182,10 +184,7 @@ ModalTable.prototype.buildTable = function (success) {
 
 ModalTable.prototype.tableWithDataAndColumns = function (tableData, tableColumns) {
 
-    var config;
-
-    // this.stopSpinner();
-    config =
+    const config =
         {
             data: tableData,
             columns: tableColumns,

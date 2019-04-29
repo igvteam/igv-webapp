@@ -29,39 +29,28 @@ const EncodeDataSource = function (columnFormat) {
     this.columnFormat = columnFormat;
 };
 
-EncodeDataSource.prototype.retrieveData = function (genomeID, filter) {
+EncodeDataSource.prototype.retrieveData = async function (genomeID, filter) {
 
-    var self = this,
-        assembly;
+    const url = "https://s3.amazonaws.com/igv.org.app/encode/" + genomeID + ".txt.gz";
 
-    assembly = genomeID;
+    let data;
+    try {
 
-    let url = "https://s3.amazonaws.com/igv.org.app/encode/" + assembly + ".txt.gz";
+        data = await igv.xhr.loadString(url, {});
 
-    return igv.xhr
+        const records = parseTabData(data, filter);
+        records.sort(encodeSort);
+        return records;
 
-        .loadString(url, {})
-        .then(function (data) {
-            return parseTabData(data, filter);
-        })
-        .then(function (records) {
-            records.sort(encodeSort);
-            return Promise.resolve(records);
-        });
+    } catch (e) {
 
-    // .loadJson(urlString(assembly), {})
-    // .then(function(json){
-    //     return parseJSONData(json, assembly, self.fileFormats);
-    // })
-    // .then(function (data) {
-    //     data.sort(encodeSort);
-    //     return Promise.resolve(data);
-    // });
+        console.error(e);
+        return undefined;
+    }
+
 };
 
 function parseTabData(data, filter) {
-
-    if (!data) return null;
 
     var dataWrapper,
         line;

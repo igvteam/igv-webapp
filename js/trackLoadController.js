@@ -24,7 +24,7 @@
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import EncodeDataSource from './encodeDataSource.js';
+import EncodeDataSource from './encode.js';
 import ModalTable from './modalTable.js';
 
 class TrackLoadController {
@@ -84,10 +84,21 @@ class TrackLoadController {
 
         const browser = this.browser;
 
-        const columns =['CellType', 'Target', 'AssayType', 'OutputType', 'BioRep', 'TechRep',
-            'Format', 'Experiment', 'Accession', 'Lab'];
+        const columnFormat =
+            [
+                {title: 'Cell Type', width: '7%'},
+                {title: 'Target', width: '8%'},
+                {title: 'Assay Type', width: '20%'},
+                {title: 'Output Type', width: '20%'},
+                {title: 'Bio Rep', width: '5%'},
+                {title: 'Tech Rep', width: '5%'},
+                {title: 'Format', width: '5%'},
+                {title: 'Experiment', width: '7%'},
+                {title: 'Accession', width: '8%'},
+                {title: 'Lab', width: '20%'}
+            ];
 
-        const encodeDatasource = new EncodeDataSource(columns);
+        const encodeDatasource = new EncodeDataSource(columnFormat);
 
         const encodeTableConfig =
             {

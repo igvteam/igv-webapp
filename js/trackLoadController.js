@@ -24,12 +24,13 @@
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import EncodeDataSource from './encodeDataSource.js';
+import EncodeDataSource from './encode.js';
 import ModalTable from './modalTable.js';
+import MultipleFileLoadController from "./multipleFileLoadController.js";
 
 class TrackLoadController {
 
-    constructor(browser, {trackRegistryFile, $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
+    constructor({ browser, trackRegistryFile, $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
 
         let urlConfig;
 
@@ -84,10 +85,21 @@ class TrackLoadController {
 
         const browser = this.browser;
 
-        const columns =['CellType', 'Target', 'AssayType', 'OutputType', 'BioRep', 'TechRep',
-            'Format', 'Experiment', 'Accession', 'Lab'];
+        const columnFormat =
+            [
+                {title: 'Cell Type', width: '7%'},
+                {title: 'Target', width: '8%'},
+                {title: 'Assay Type', width: '20%'},
+                {title: 'Output Type', width: '20%'},
+                {title: 'Bio Rep', width: '5%'},
+                {title: 'Tech Rep', width: '5%'},
+                {title: 'Format', width: '5%'},
+                {title: 'Experiment', width: '7%'},
+                {title: 'Accession', width: '8%'},
+                {title: 'Lab', width: '20%'}
+            ];
 
-        const encodeDatasource = new EncodeDataSource(columns);
+        const encodeDatasource = new EncodeDataSource(columnFormat);
 
         const encodeTableConfig =
             {
@@ -149,7 +161,7 @@ class TrackLoadController {
         let configurations = results.filter((c) => { return !set.has(c.type) });
 
         let encodeConfiguration = results.filter((c) => { return 'ENCODE' === c.type });
-        if (encodeConfiguration) {
+        if (encodeConfiguration && encodeConfiguration.length > 0) {
 
             encodeConfiguration = encodeConfiguration.pop();
             encodeConfiguration.encodeTable = self.createEncodeTable(encodeConfiguration.genomeID);
@@ -159,7 +171,7 @@ class TrackLoadController {
                 // TESTING
                 // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
 
-                encodeConfiguration.data = await encodeConfiguration.encodeTable.linearizedLoadData(encodeConfiguration.genomeID);
+                encodeConfiguration.data = await encodeConfiguration.encodeTable.loadData(encodeConfiguration.genomeID);
                 configurations.push(encodeConfiguration);
             } catch(err) {
                 console.error(err);
@@ -168,7 +180,7 @@ class TrackLoadController {
         }
 
         let gtexConfiguration = results.filter((c) => { return 'GTEX' === c.type });
-        if (gtexConfiguration) {
+        if (gtexConfiguration && gtexConfiguration.length > 0) {
 
             gtexConfiguration = gtexConfiguration.pop();
             try {
@@ -208,8 +220,8 @@ class TrackLoadController {
 
                 if ('ENCODE' === config.type) {
 
-                    config.encodeTable.buildTableWithData(config.data);
-                    config.encodeTable.$modal.modal('show');
+                    config.encodeTable.buildTable(true);
+                    config.encodeTable.config.$modal.modal('show');
 
                 } else {
 
@@ -227,39 +239,34 @@ class TrackLoadController {
 
 }
 
-function getMenuConfigurations(config) {
+export const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDriveButton }) => {
 
-    return config.map((item) => {
+    const multipleFileTrackConfig =
+        {
+            $modal: $('#igv-app-multiple-file-load-modal'),
+            modalTitle: 'Track File Error',
+            $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
+            $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
+            $googleDriveButton,
+            configurationHandler: MultipleFileLoadController.trackConfigurator,
+            jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
+            pathValidator: MultipleFileLoadController.trackPathValidator,
+            fileLoadHandler: (configurations) => {
+                browser.loadTrackList( configurations );
+            }
+        };
 
-        if ("ENCODE" === item.type) {
+    return {
+        browser,
+        trackRegistryFile,
+        $urlModal: $('#igv-app-track-from-url-modal'),
+        $encodeModal: $('#igv-app-encode-modal'),
+        $dropdownMenu: $('#igv-app-track-dropdown-menu'),
+        $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
+        uberFileLoader: new MultipleFileLoadController(browser, multipleFileTrackConfig)
+    }
 
-            item.encodeTable = self.createEncodeTable(item.genomeID);
-
-            return item.encodeTable
-                .linearizedLoadData(genomeID)
-                .then((tableData) => {
-                    item.data = tableData;
-                    return item;
-                });
-
-        } else if ("GTEX" === item.type) {
-
-            return igv.GtexUtils
-                .getTissueInfo(item.genomeID)
-                .then(function (info) {
-
-                    item.tracks = info.tissueSummary.map((tissue) => {
-                        return igv.GtexUtils.trackConfiguration(tissue)
-                    });
-
-                    return item;
-                });
-        } else {
-            return Promise.resolve(item);
-        }
-    });
-}
-
+};
 
 function configureModalSelectList($modal, configurations, promiseTaskName) {
 

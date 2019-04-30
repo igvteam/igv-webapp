@@ -24,203 +24,47 @@
  * THE SOFTWARE.
  */
 
-class ModalTable {
+/**
+ * Created by dat on 4/18/17.
+ */
 
-    constructor (config) {
 
-        this.config = config;
-        this.datasource = config.datasource;
-        this.browserHandler = config.browserHandler;
+const ModalTable = function (config) {
 
-        teardownModalDOM(config);
+    this.config = config;
+    this.datasource = config.datasource;
+    this.browserHandler = config.browserHandler;
 
-        this.$table = $('<table cellpadding="0" cellspacing="0" border="0" class="display"></table>');
-        config.$modalBody.append(this.$table);
+    teardownModalDOM(config);
 
-        this.$modal = config.$modal;
+    // spinner
+    this.$spinner = config.$modalBody.find('#igv-encode-spinner');
 
-        this.doBuildTable = true;
+    // table
+    this.$table = $('<table cellpadding="0" cellspacing="0" border="0" class="display"></table>');
+    config.$modalBody.find('#igv-encode-datatable').append(this.$table);
 
-        this.$spinner = $('<div class="igv-viewport-spinner">');
-        this.$table.append(this.$spinner);
-        this.stopSpinner();
+    this.doBuildTable = true;
 
-        this.$spinner.append(igv.createIcon("spinner"));
+};
 
-        let self = this;
-
-        config.$modalTopCloseButton.on('click', function () {
-            self.stopSpinner();
-            $('tr.selected').removeClass('selected');
-        });
-
-        config.$modalBottomCloseButton.on('click', function () {
-            self.stopSpinner();
-            $('tr.selected').removeClass('selected');
-        });
-
-        config.$modal.on('hidden.bs.modal', function (e) {
-            self.stopSpinner();
-            $('tr.selected').removeClass('selected');
-
-        });
-    }
-
-    startSpinner() {
-        this.$spinner.addClass("fa5-spin");
-        this.$spinner.show();
-    }
-
-    stopSpinner() {
-        this.$spinner.hide();
-        this.$spinner.addClass("fa5-spin");
-    }
-
-    async linearizedLoadData(genomeId) {
-
-        let assembly = ModalTable.getAssembly( genomeId);
-
-        if (undefined === assembly) {
-            return undefined;
-        }
-
-        try {
-            return this.datasource.retrieveData(assembly);
-
-        } catch(error) {
-            this.stopSpinner();
-            this.buildTable(false);
-            alert(error);
-        }
-
-    }
-
-    buildTableWithData(data) {
-        this.datasource.data = data;
-        this.buildTable(true);
-    }
-
-    buildTable(success) {
-
-        var self = this;
-
-        this.startSpinner();
-        
-        if (true === success) {
-
-            this.config.$modal.on('shown.bs.modal', function (e) {
-
-                if (true === self.doBuildTable) {
-                    self.tableWithDataAndColumns(self.datasource.tableData(self.datasource.data), self.datasource.tableColumns());
-                    self.doBuildTable = false;
-                }
-                self.stopSpinner();
-            });
-
-            this.config.$modalGoButton.on('click', function () {
-                var selected;
-
-                selected = getSelectedTableRowsData.call(self, self.$dataTables.$('tr.selected'));
-
-                if (selected) {
-                    self.browserHandler(selected);
-                }
-
-            });
-
-        }
-
-        // this.config.$modalTopCloseButton.on('click', function () {
-        //     self.stopSpinner();
-        //     $('tr.selected').removeClass('selected');
-        // });
-        //
-        // this.config.$modalBottomCloseButton.on('click', function () {
-        //     self.stopSpinner();
-        //     $('tr.selected').removeClass('selected');
-        // });
-
-    }
-
-    tableWithDataAndColumns(tableData, tableColumns) {
-
-        var config;
-
-        config =
-            {
-                data: tableData,
-                columns: tableColumns,
-
-                // autoWidth: false,
-                autoWidth: true,
-
-                paging: true,
-
-                lengthMenu:
-                    [
-                        100,
-                        250,
-                        500,
-                        750,
-                        1000
-                    ],
-                pageLength: 1000,
-
-                scrollX: true,
-                scrollY: '400px',
-                scroller: true,
-                scrollCollapse: true
-            };
-
-        this.$dataTables = this.$table.dataTable(config);
-        this.$table.find('tbody').on('click', 'tr', function () {
-
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-            } else {
-                $(this).addClass('selected');
-            }
-
-        });
-
-    }
-
-    static getAssembly(genomeID) {
-        let lut,
-            assembly;
-
-        lut =
-            {
-                dm3: 'dm3',
-                mm10: 'mm10',
-                hg19: 'hg19',
-                hg38: 'GRCh38'
-            };
-
-        assembly = lut[ genomeID ];
-
-        return assembly;
-    }
-
-}
-
-function teardownModalDOM(configuration) {
+function teardownModalDOM(config) {
 
     var list;
 
     list =
         [
-            configuration.$modal,
-            configuration.$modalTopCloseButton,
-            configuration.$modalBottomCloseButton,
-            configuration.$modalGoButton
+            config.$modal,
+            config.$modalTopCloseButton,
+            config.$modalBottomCloseButton,
+            config.$modalGoButton
         ];
 
-    list.forEach( function ($e) {
+    list.forEach(function ($e) {
         $e.unbind();
     });
 
-    configuration.$modalBody.empty();
+    config.$modalBody.find('#igv-encode-datatable').empty();
 }
 
 function getSelectedTableRowsData($rows) {
@@ -235,12 +79,156 @@ function getSelectedTableRowsData($rows) {
         $rows.removeClass('selected');
 
         dt = self.$table.DataTable();
-        $rows.each(function() {
-            result.push( self.datasource.dataAtRowIndex(self.datasource.data, dt.row(this).index()) );
+        $rows.each(function () {
+            result.push(self.datasource.dataAtRowIndex(self.datasource.data, dt.row(this).index()));
         });
     }
 
     return result.length > 0 ? result : undefined;
 }
 
-export default ModalTable;
+ModalTable.prototype.startSpinner = function () {
+    this.$spinner.show();
+};
+
+ModalTable.prototype.stopSpinner = function () {
+    this.$spinner.hide();
+};
+
+ModalTable.prototype.hidePresentationButton = function () {
+    this.config.$modalPresentationButton.addClass('igv-app-disabled');
+    this.config.$modalPresentationButton.text('Genome not supported by ENCODE');
+};
+
+ModalTable.prototype.willRetrieveData = function () {
+    $('#hic-encode-modal-button').hide();
+    $('#hic-encode-loading').show();
+
+};
+
+ModalTable.prototype.didRetrieveData = function () {
+    $('#hic-encode-modal-button').show();
+    $('#hic-encode-loading').hide();
+};
+
+ModalTable.prototype.didFailToRetrieveData = function () {
+    this.stopSpinner();
+    this.buildTable(false);
+};
+
+ModalTable.prototype.loadData = async function (genomeId) {
+
+    this.willRetrieveData();
+
+    const assembly = ModalTable.getAssembly(genomeId);
+
+    if (assembly) {
+
+        try {
+
+            this.datasource.data = await this.datasource.retrieveData(assembly, (record) => { return record["Format"].toLowerCase() === "bigwig"; });
+
+            this.doRetrieveData = false;
+            this.didRetrieveData();
+
+            this.buildTable(true);
+
+        } catch (e) {
+            console.error(e);
+            this.didFailToRetrieveData();
+        }
+
+    }
+
+};
+
+ModalTable.prototype.buildTable = function (success) {
+
+    if (true === success) {
+
+        if (true === this.doBuildTable) {
+            this.startSpinner();
+        }
+
+        this.config.$modal.on('shown.bs.modal', (e) => {
+
+            if (true === this.doBuildTable) {
+                this.tableWithDataAndColumns(this.datasource.tableData(this.datasource.data), this.datasource.tableColumns());
+                this.stopSpinner();
+                this.doBuildTable = false;
+            }
+
+        });
+
+        this.config.$modalGoButton.on('click', (e) => {
+
+            const selected = getSelectedTableRowsData.call(this, this.$dataTables.$('tr.selected'));
+
+            if (selected) {
+                this.browserHandler(selected);
+            }
+
+        });
+
+    }
+
+    this.config.$modalTopCloseButton.on('click', function () {
+        $('tr.selected').removeClass('selected');
+    });
+
+    this.config.$modalBottomCloseButton.on('click', function () {
+        $('tr.selected').removeClass('selected');
+    });
+
+};
+
+ModalTable.prototype.tableWithDataAndColumns = function (tableData, tableColumns) {
+
+    const config =
+        {
+            data: tableData,
+            columns: tableColumns,
+
+            autoWidth: false,
+
+            paging: true,
+
+            scrollX: true,
+            scrollY: '400px',
+            scroller: true,
+            scrollCollapse: true
+        };
+
+    this.$dataTables = this.$table.dataTable(config);
+
+    this.$table.find('tbody').on('click', 'tr', function () {
+
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            $(this).addClass('selected');
+        }
+
+    });
+
+};
+
+ModalTable.getAssembly = function (genomeID) {
+    let lut,
+        assembly;
+
+    lut =
+        {
+            dm3: 'dm3',
+            mm10: 'mm10',
+            hg19: 'hg19',
+            hg38: 'GRCh38'
+        };
+
+    assembly = lut[genomeID];
+
+    return assembly;
+};
+
+
+export default ModalTable

@@ -4,7 +4,7 @@
   "description": "igv web app",
   "main": "app.js",
   "scripts": {
-    "start": "http-server dist"
+    "start": "http-server -a localhost dist"
   },
   "repository": {
     "type": "git",

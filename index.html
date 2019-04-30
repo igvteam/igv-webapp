@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 
     <!-- Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
@@ -22,18 +22,15 @@
 
     <!-- IGV JS-->
     <script src='https://cdn.jsdelivr.net/npm/igv@2.2.8/dist/igv.min.js'></script>
-    <!--<script src="https://igv.org/web/test/dist/igv.min.js"></script>-->
-    
+
     <!-- Dropbox Chooser API-->
     <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
             data-app-key="8glijwyao9fq8we"></script>
 
     <!-- Bootstrap 4 and Dependancies -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <!-- Datatables JS -->
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -45,7 +42,6 @@
     <script src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     <!-- IGV web config object -- plain old javascript -->
-
 
     <script type="text/javascript" src="igvwebConfig.js"></script>
 
@@ -366,15 +362,15 @@
 
     </div>
 
-    <!-- Track from ENCODE Table -->
-    <div id="igv-app-encode-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="igv-app-encode-modal-label" aria-hidden="true">
+    <!-- ENCODE Modal -->
+    <div id="igv-app-encode-modal" class="modal fade">
 
         <div class="modal-dialog modal-xl">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <div id="igv-app-encode-modal-label" class="modal-title">ENCODE</div>
+                    <div class="modal-title">ENCODE</div>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -383,6 +379,16 @@
                 </div>
 
                 <div class="modal-body">
+
+                    <div id="igv-encode-spinner-container">
+                        <div id="igv-encode-spinner" class="spinner-border" style="display: none;">
+                            <!-- spinner -->
+                        </div>
+                    </div>
+
+                    <div id="igv-encode-datatable">
+
+                    </div>
                 </div>
 
                 <div class="modal-footer">

@@ -16,10 +16,11 @@ var igvwebConfig = {
         {
             queryParametersSupported: true,
             showChromosomeWidget: true,
-
+            showSVGSaveButton: false,
             genome: "hg19",
 
-            apiKey: "API_KEY"
+            // Supply a Google API key to access public Google resources.  This is optional.
+            apiKey: "ABCD"
         },
 
     // Supply a Google client id to enable the Google file picker in the load menus.  This is optional

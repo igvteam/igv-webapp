@@ -4,6 +4,12 @@
   "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
+      "name": "NCBI RefSeq",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/danRer11/GRCz11.gtf.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/danRer11/GRCz11.gtf.gz.tbi",
+      "visibilityWindow": 20000000
+    }
+    {
       "name": "Ensembl Genes",
       "type": "annotation",
       "format": "ensgene",
@@ -28,6 +34,5 @@
       "displayMode": "EXPANDED",
       "url": "https://s3.amazonaws.com/igv.org.genomes/danRer11/cpgIslandExt.txt.gz"
     }
-
   ]
 }

@@ -20,7 +20,7 @@ var igvwebConfig = {
             genome: "hg19",
 
             // Supply a Google API key to access public Google resources.  This is optional.
-            apiKey: "ABCD"
+            apiKey: "API_KEY"
         },
 
     // Supply a Google client id to enable the Google file picker in the load menus.  This is optional

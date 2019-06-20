@@ -16,7 +16,7 @@ var igvwebConfig = {
         {
             queryParametersSupported: true,
             showChromosomeWidget: true,
-            showSVGSaveButton: false,
+            showSVGButton: false,
             genome: "hg19",
 
             // Supply a Google API key to access public Google resources.  This is optional.

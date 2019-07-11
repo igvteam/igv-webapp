@@ -10,7 +10,7 @@ var igvwebConfig = {
 
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
-    embedTarget: 'https://igv.org/web/release/2.2.0/embed.html',
+    embedTarget: 'https://igv.org/web/release/2.2.13/embed.html',
 
     igvConfig:
         {
@@ -27,17 +27,12 @@ var igvwebConfig = {
     clientId: "CLIENT_ID",
 
     // Provide a URL shorterner function or object.   This is optional.  If not supplied sharable URLs will not
-    // be shortened but will be usable.
+    // be shortened.
     urlShortener: {
         provider: "bitly",
-
         apiKey: "BITLY_TOKEN"
     }
 
-    // urlShortener: {
-    //     provider: "google",
-    //     apiKey: "API_KEY"
-    // }
 
 };
 

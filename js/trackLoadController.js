@@ -30,7 +30,7 @@ import MultipleFileLoadController from "./multipleFileLoadController.js";
 
 class TrackLoadController {
 
-    constructor({ browser, trackRegistryFile, $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
+    constructor({browser, trackRegistryFile, $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
 
         let urlConfig;
 
@@ -69,7 +69,7 @@ class TrackLoadController {
 
             try {
                 registry = await igv.xhr.loadJson(this.trackRegistryFile);
-            } catch(err) {
+            } catch (err) {
                 console.error(error);
             }
 
@@ -138,7 +138,7 @@ class TrackLoadController {
             return;
         }
 
-        const paths = self.trackRegistry[ genomeID ];
+        const paths = self.trackRegistry[genomeID];
 
         if (undefined === paths) {
             console.log("No tracks defined for: " + genomeID);
@@ -146,57 +146,59 @@ class TrackLoadController {
         }
 
         let results = [];
-        for (let path of paths.filter( (path) => ( !path.startsWith("@EXTRA") ) ) ) {
+        for (let path of paths) {
 
             try {
                 const result = await igv.xhr.loadJson((path));
                 results.push(result);
-            } catch(err) {
+            } catch (err) {
                 console.error(err);
             }
 
         }
 
-        const set = new Set([ 'ENCODE', 'GTEX' ]);
-        let configurations = results.filter((c) => { return !set.has(c.type) });
+        let configurations = [];
 
-        let encodeConfiguration = results.filter((c) => { return 'ENCODE' === c.type });
-        if (encodeConfiguration && encodeConfiguration.length > 0) {
+        for (let r of results) {
 
-            encodeConfiguration = encodeConfiguration.pop();
-            encodeConfiguration.encodeTable = self.createEncodeTable(encodeConfiguration.genomeID);
+            if ('ENCODE' === r.type) {
 
-            try {
+                let encodeConfiguration = r;
 
-                // TESTING
-                // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
+                encodeConfiguration.encodeTable = self.createEncodeTable(encodeConfiguration.genomeID);
 
-                encodeConfiguration.data = await encodeConfiguration.encodeTable.loadData(encodeConfiguration.genomeID);
-                configurations.push(encodeConfiguration);
-            } catch(err) {
-                console.error(err);
+                try {
+                    encodeConfiguration.data = await encodeConfiguration.encodeTable.loadData(encodeConfiguration.genomeID);
+                    configurations.push(encodeConfiguration);
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            else if ('GTEX' === r.type) {
+                let gtexConfiguration = r;
+                try {
+
+                    // TESTING
+                    // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
+
+                    const info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.genomeID);
+                    gtexConfiguration.tracks = info.tissueInfo.map((tissue) => {
+                        return igv.GtexUtils.trackConfiguration(tissue)
+                    });
+                    configurations.push(gtexConfiguration);
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            else {
+                configurations.push(r);
             }
 
         }
 
-        let gtexConfiguration = results.filter((c) => { return 'GTEX' === c.type });
-        if (gtexConfiguration && gtexConfiguration.length > 0) {
-
-            gtexConfiguration = gtexConfiguration.pop();
-            try {
-
-                // TESTING
-                // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
-
-                const info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.genomeID);
-                gtexConfiguration.tracks = info.tissueInfo.map((tissue) => { return igv.GtexUtils.trackConfiguration(tissue) });
-                configurations.push(gtexConfiguration);
-            } catch(err) {
-                console.error(err);
-            }
-
-        }
-
+        configurations = configurations.reverse()
         for (let config of configurations) {
 
             const $button = $('<button>', {class: 'dropdown-item', type: 'button'});
@@ -239,7 +241,7 @@ class TrackLoadController {
 
 }
 
-export const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDriveButton }) => {
+export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $googleDriveButton}) => {
 
     const multipleFileTrackConfig =
         {
@@ -252,7 +254,7 @@ export const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $g
             jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
             pathValidator: MultipleFileLoadController.trackPathValidator,
             fileLoadHandler: (configurations) => {
-                browser.loadTrackList( configurations );
+                browser.loadTrackList(configurations);
             }
         };
 

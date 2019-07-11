@@ -4,7 +4,6 @@
     "resources/tracks/hg19_variants.json",
     "resources/tracks/hg19_encode.json",
     "resources/tracks/hg19_gtex.json",
-    "@EXTRAS_hg19",
     "resources/tracks/hg19_platinum_genomes.json",
     "resources/tracks/hg19_tutorials.json"
   ],

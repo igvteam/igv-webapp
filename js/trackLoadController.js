@@ -182,7 +182,7 @@ class TrackLoadController {
                     // TESTING
                     // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
 
-                    const info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.genomeID);
+                    const info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.datasetId);
                     gtexConfiguration.tracks = info.tissueInfo.map((tissue) => {
                         return igv.GtexUtils.trackConfiguration(tissue)
                     });

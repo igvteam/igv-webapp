@@ -14,6 +14,7 @@ var igvwebConfig = {
 
     igvConfig:
         {
+            genomeList: "resources/genomes.json",
             queryParametersSupported: true,
             showChromosomeWidget: true,
             showSVGButton: false,

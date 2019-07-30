@@ -22,7 +22,10 @@ cd ./igv-webapp
 * Install
 ````
 npm install
-grunt
+````
+* Build
+````
+npm run build
 ````
 ## Run the app
 ````

@@ -24,6 +24,7 @@
  * THE SOFTWARE.
  */
 
+import igv from "../vendor/igv.esm.min.js";
 
 const EncodeDataSource = function (columnFormat) {
     this.columnFormat = columnFormat;
@@ -33,20 +34,21 @@ EncodeDataSource.prototype.retrieveData = async function (genomeID, filter) {
 
     const url = "https://s3.amazonaws.com/igv.org.app/encode/" + genomeID + ".txt.gz";
 
-    let data;
+    let data = undefined;
     try {
+        data = await igv.xhr.loadString(url);
+    } catch (e) {
+        console.error(e);
+    }
 
-        data = await igv.xhr.loadString(url, {});
-
+    if (data) {
         const records = parseTabData(data, filter);
         records.sort(encodeSort);
         return records;
-
-    } catch (e) {
-
-        console.error(e);
+    } else {
         return undefined;
     }
+
 
 };
 

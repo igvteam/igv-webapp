@@ -21,6 +21,8 @@
  *
  */
 
+import igv from "../vendor/igv.esm.min.js";
+
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
@@ -59,21 +61,23 @@ class TrackLoadController {
 
     async getTrackRegistry() {
 
-        const self = this;
-
         if (this.trackRegistry) {
             return this.trackRegistry;
         } else if (this.trackRegistryFile) {
 
-            let registry = undefined;
+            let response = undefined;
 
             try {
-                registry = await igv.xhr.loadJson(this.trackRegistryFile);
-            } catch (err) {
-                console.error(error);
+                response = await fetch(this.trackRegistryFile);
+            } catch (e) {
+                console.error(e);
             }
 
-            return registry;
+            if (response) {
+                return await response.json();
+            } else {
+                return undefined;
+            }
 
         } else {
             return undefined;
@@ -145,25 +149,27 @@ class TrackLoadController {
             return;
         }
 
-        let results = [];
-        for (let path of paths) {
+        let responses = [];
+        try {
+            responses = await Promise.all( paths.map( path => fetch(path) ) )
+        } catch (e) {
+            console.error(e);
+        }
 
-            try {
-                const result = await igv.xhr.loadJson((path));
-                results.push(result);
-            } catch (err) {
-                console.error(err);
-            }
-
+        let jsons = [];
+        try {
+            jsons = await Promise.all( responses.map( response => response.json() ) )
+        } catch (e) {
+            console.error(e);
         }
 
         let configurations = [];
 
-        for (let r of results) {
+        for (let json of jsons) {
 
-            if ('ENCODE' === r.type) {
+            if ('ENCODE' === json.type) {
 
-                let encodeConfiguration = r;
+                let encodeConfiguration = json;
 
                 encodeConfiguration.encodeTable = self.createEncodeTable(encodeConfiguration.genomeID);
 
@@ -175,12 +181,9 @@ class TrackLoadController {
                 }
             }
 
-            else if ('GTEX' === r.type) {
-                let gtexConfiguration = r;
+            else if ('GTEX' === json.type) {
+                let gtexConfiguration = json;
                 try {
-
-                    // TESTING
-                    // await igv.xhr.loadJson('http://www.nothingtoseehere.com', {});
 
                     const info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.datasetId);
                     gtexConfiguration.tracks = info.tissueInfo.map((tissue) => {
@@ -193,7 +196,7 @@ class TrackLoadController {
             }
 
             else {
-                configurations.push(r);
+                configurations.push(json);
             }
 
         }
@@ -227,7 +230,7 @@ class TrackLoadController {
 
                 } else {
 
-                    configureModalSelectList(self.$modal, config.tracks, config.label);
+                    configureModalSelectList(self.browser, self.$modal, config.tracks, config.label);
                     self.$modal.modal('show');
                 }
 
@@ -270,7 +273,7 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
 
 };
 
-function configureModalSelectList($modal, configurations, promiseTaskName) {
+function configureModalSelectList(browser, $modal, configurations, promiseTaskName) {
 
     let $select,
         $option;
@@ -313,7 +316,7 @@ function configureModalSelectList($modal, configurations, promiseTaskName) {
             trackConfiguration = $option.data('track');
             $option.removeAttr("selected");
 
-            igv.browser.loadTrack(trackConfiguration);
+            browser.loadTrack(trackConfiguration);
 
         }
 

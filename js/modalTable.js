@@ -125,18 +125,17 @@ ModalTable.prototype.loadData = async function (genomeId) {
     if (assembly) {
 
         try {
-
-            this.datasource.data = await this.datasource.retrieveData(assembly, (record) => { return record["Format"].toLowerCase() === "bigwig"; });
-
-            this.doRetrieveData = false;
-            this.didRetrieveData();
-
-            this.buildTable(true);
-
+            this.datasource.data = await this.datasource.retrieveData(assembly, record => "bigwig" === record["Format"].toLowerCase());
         } catch (e) {
             console.error(e);
             this.didFailToRetrieveData();
         }
+
+        this.doRetrieveData = false;
+        this.didRetrieveData();
+
+        this.buildTable(true);
+
 
     }
 

@@ -64,15 +64,9 @@ class GenomeLoadController {
         }
 
         else {
-            path = this.genomes;
-
-            return igv.xhr
-
-                .loadJson(path, {})
-
-                .then(function (result) {
-
-                    return buildDictionary(result);
+            return fetch(this.genomes)
+                .then(response => {
+                    return buildDictionary(response.json());
                 });
         }
 

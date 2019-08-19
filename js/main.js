@@ -21,7 +21,8 @@
  *
  */
 
-import { getExtension } from './utils.js';
+import igv from "../vendor/igv.esm.min.js";
+
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';
@@ -53,25 +54,18 @@ let main = ($container, config) => {
             {
                 callback: () => {
 
-                    app_google
+                    (async () => {
 
-                        .init(config.clientId)
+                        let ignore = await app_google.init(config.clientId);
+                        let browser = await igv.createBrowser($container.get(0), config.igvConfig);
 
-                        .then((ignore) => {
+                        googleEnabled = true;
+                        app_google.postInit();
+                        initializationHelper(browser, $container, config);
+                    })();
 
-                            return igv.createBrowser($container.get(0), config.igvConfig);
-                        })
-
-                        .then((browser) => {
-
-                            googleEnabled = true;
-
-                            app_google.postInit();
-
-                            initializationHelper(browser, $container, config);
-                        });
                 },
-                onerror: (error) => {
+                onerror: error => {
                     console.log('gapi.client:auth2 - failed to load!');
                     console.error(error);
                     initializationHelper(browser, $container, config);
@@ -82,12 +76,11 @@ let main = ($container, config) => {
 
     } else {
 
-        igv
-            .createBrowser($container.get(0), config.igvConfig)
+        (async () => {
+            let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+            initializationHelper(browser, $container, config);
+        })();
 
-            .then((browser) => {
-                initializationHelper(browser, $container, config);
-            });
     }
 };
 

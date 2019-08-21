@@ -3,8 +3,8 @@
   top: -1000px;
   left: -1000px;
   z-index: 1024;
-  width: 512px;
-  height: 512px;
+  width: 320px;
+  height: 250px;
   border-color: #a09fa0;
   background-color: #ffffff;
   user-select: none; }
@@ -12,11 +12,12 @@
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 0.125rem;
-    width: 100%; }
-    .card .card-body .spacewalk_card_drag_container {
+    padding: unset;
+    width: 100%;
+    height: 100%; }
+    .card .card-body > .igv-webapp-alert-drag-container {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
@@ -24,22 +25,22 @@
       align-items: center;
       width: 100%;
       height: 32px;
-      background-color: transparent; }
-      .card .card-body .spacewalk_card_drag_container i {
+      background-color: white; }
+      .card .card-body > .igv-webapp-alert-drag-container i {
         cursor: grab;
         color: #6e6e6e;
         display: block; }
-      .card .card-body .spacewalk_card_drag_container i:first-child {
+      .card .card-body > .igv-webapp-alert-drag-container i:first-child {
         cursor: unset;
         color: transparent;
         background-color: transparent; }
-      .card .card-body .spacewalk_card_drag_container i:last-child {
+      .card .card-body > .igv-webapp-alert-drag-container i:last-child {
         cursor: pointer;
         margin-right: 8px; }
-
-#igv-webapp-alertpanel.card {
-  width: 300px;
-  height: 128px; }
+    .card .card-body > #igv-webapp-alertpanel-card-body-content {
+      width: 100%;
+      height: 218px;
+      background-color: #5ea4e0; }
 
 .igv-file-load-widget-container {
   position: relative;

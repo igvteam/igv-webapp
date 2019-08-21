@@ -17,7 +17,7 @@ class Panel {
             this.layout(xFunction, yFunction);
         }
 
-        const $drag_handle = this.$panel.find('.spacewalk_card_drag_container');
+        const $drag_handle = this.$panel.find('.igv-webapp-alert-drag-container');
         makeDraggable(panel, $drag_handle.get(0));
 
         const str = `resize.panel-${ igv.guid() }.igv-web-app`;

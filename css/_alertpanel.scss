@@ -1,8 +1,8 @@
 
-// panel template
-$spacewalk_tool_panel_width: 512px;
-$spacewalk_tool_panel_height: 512px;
-$spacewalk_card_drag_container_height: 32px;
+// alert panel template
+$igv-webapp-alert-panel-width: 320px;
+$igv-webapp-alert-panel-height: 250px;
+$igv-webapp-alert-drag-container-height: 32px;
 
 .card {
   position: absolute;
@@ -11,8 +11,8 @@ $spacewalk_card_drag_container_height: 32px;
 
   z-index: 1024;
 
-  width: $spacewalk_tool_panel_width;
-  height: $spacewalk_tool_panel_height;
+  width: $igv-webapp-alert-panel-width;
+  height: $igv-webapp-alert-panel-height;
 
   border-color: $spacewalk_aluminum;
   background-color: $spacewalk_snow;
@@ -24,14 +24,15 @@ $spacewalk_card_drag_container_height: 32px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 
-    padding: 0.125rem;
+    padding: unset;
 
     width: 100%;
+    height: 100%;
 
-    .spacewalk_card_drag_container {
+    >.igv-webapp-alert-drag-container {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
@@ -39,8 +40,9 @@ $spacewalk_card_drag_container_height: 32px;
       align-items: center;
 
       width: 100%;
-      height: $spacewalk_card_drag_container_height;
-      background-color: transparent;
+      height: $igv-webapp-alert-drag-container-height;
+
+      background-color: white;
 
       i {
         cursor: grab;
@@ -60,6 +62,13 @@ $spacewalk_card_drag_container_height: 32px;
       }
     }
 
+    >#igv-webapp-alertpanel-card-body-content {
+      width: 100%;
+      height: $igv-webapp-alert-panel-height - $igv-webapp-alert-drag-container-height;
+      background-color: #5ea4e0;
+    }
+
   }
 
 }
+

@@ -1,3 +1,42 @@
+.card {
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+  z-index: 1024;
+  width: 512px;
+  height: 512px;
+  border-color: #a09fa0;
+  background-color: #ffffff;
+  user-select: none; }
+  .card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.125rem;
+    width: 100%; }
+    .card .card-body .spacewalk_card_drag_container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 32px;
+      background-color: transparent; }
+      .card .card-body .spacewalk_card_drag_container i {
+        cursor: grab;
+        color: #6e6e6e;
+        display: block; }
+      .card .card-body .spacewalk_card_drag_container i:first-child {
+        cursor: unset;
+        color: transparent;
+        background-color: transparent; }
+      .card .card-body .spacewalk_card_drag_container i:last-child {
+        cursor: pointer;
+        margin-right: 8px; }
+
 .igv-file-load-widget-container {
   position: relative;
   border-color: transparent;

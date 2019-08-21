@@ -20,14 +20,8 @@
     <!-- APP CSS -->
     <link rel="stylesheet" href="css/app.css">
 
-    <!-- IGV JS-->
-<!--    &lt;!&ndash;<script src='https://cdn.jsdelivr.net/npm/igv@2.2.15/dist/igv.min.js'></script>&ndash;&gt;-->
-<!--    <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>-->
-<!--    &lt;!&ndash;<script src="http://localhost/igv-web/dist/igv.min.js"></script>&ndash;&gt;-->
-
     <!-- Dropbox Chooser API-->
-    <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
-            data-app-key="8glijwyao9fq8we"></script>
+    <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8glijwyao9fq8we"></script>
 
     <!-- Bootstrap 4 and Dependancies -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -300,6 +294,25 @@
     <div class="row">
         <div class="col-sm">
             <div id="igv-app-container">
+
+                <!-- color ramp panel -->
+                <div id="spacewalk_color_ramp_panel" class="card">
+
+                    <div id="spacewalk_color_ramp_widget_container" class="card-body">
+
+                        <div class="spacewalk_card_drag_container">
+                            <i class="fas fa-square-full"></i>
+                            <i class="fas fa-sm fa-grip-horizontal"></i>
+                            <i class="fas fa-times-circle" data-target="spacewalk_ui_manager_ui_controls_color_ramp"></i>
+                        </div>
+
+                        <div id="spacewalk_color_ramp_canvas_container">
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

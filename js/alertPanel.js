@@ -1,6 +1,6 @@
 import Panel from './panel.js';
 
-class ColorRampPanel extends Panel {
+class AlertPanel extends Panel {
 
     constructor({ $container, panel, isHidden }) {
 
@@ -19,14 +19,14 @@ class ColorRampPanel extends Panel {
 
 }
 
-export const colorRampPanelConfigurator = ({ $container }) => {
+export const alertPanelConfigurator = ({$container}) => {
 
     return {
         $container,
-        panel: $('#spacewalk_color_ramp_panel').get(0),
+        panel: $('#igv-webapp-alertpanel').get(0),
         isHidden: false
     };
 
 };
 
-export default ColorRampPanel;
+export default AlertPanel;

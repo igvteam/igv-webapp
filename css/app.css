@@ -37,6 +37,10 @@
         cursor: pointer;
         margin-right: 8px; }
 
+#igv-webapp-alertpanel.card {
+  width: 300px;
+  height: 128px; }
+
 .igv-file-load-widget-container {
   position: relative;
   border-color: transparent;

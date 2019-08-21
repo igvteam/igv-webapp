@@ -35,7 +35,7 @@ import { trackLoadControllerConfigurator } from './trackLoadController.js';
 import ShareController from './shareController.js';
 import SessionController from './sessionController.js';
 import SVGController from './svgController.js';
-import ColorRampPanel, { colorRampPanelConfigurator } from "./colorRampPanel.js";
+import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 
 let trackLoadController;
 let multipleFileTrackController;
@@ -46,7 +46,7 @@ let sessionController;
 let svgController;
 let shareController;
 let googleEnabled = false;
-let colorRampPanel;
+let alertPanel;
 
 let main = ($container, config) => {
 
@@ -88,7 +88,7 @@ let main = ($container, config) => {
 
 let initializationHelper = (browser, $container, options) => {
 
-    colorRampPanel = new ColorRampPanel( colorRampPanelConfigurator({ $container }) );
+    alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 

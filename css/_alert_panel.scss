@@ -1,0 +1,17 @@
+
+$igv-webapp-alertpanel_width: 300px;
+$igv-webapp-alertpanel_height: 128px;
+
+#igv-webapp-alertpanel.card {
+
+  width: $igv-webapp-alertpanel_width;
+  height: $igv-webapp-alertpanel_height;
+
+  #igv-webapp-alertpanel-card-body.card-body {
+
+    #igv-webapp-alertpanel-card-body-content {
+
+    }
+  }
+
+}

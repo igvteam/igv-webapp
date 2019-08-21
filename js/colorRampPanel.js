@@ -9,7 +9,8 @@ class ColorRampPanel extends Panel {
         };
 
         const yFunction = (ch, h) => {
-            return (ch - h) / 2;
+            // return (ch - h) / 2;
+            return 64;
         };
 
         super({ $container, panel, isHidden, xFunction, yFunction });

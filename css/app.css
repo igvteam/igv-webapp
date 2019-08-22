@@ -18,7 +18,7 @@
     width: 100%;
     height: 100%;
     border-radius: inherit; }
-    .card .card-body > .igv-webapp-panel-drag-container {
+    .card .card-body .igv-webapp-panel-drag-container {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
@@ -29,23 +29,24 @@
       background-color: white;
       border-top-left-radius: inherit;
       border-top-right-radius: inherit; }
-      .card .card-body > .igv-webapp-panel-drag-container i {
+      .card .card-body .igv-webapp-panel-drag-container i {
         cursor: grab;
         color: #6e6e6e;
         display: block; }
-      .card .card-body > .igv-webapp-panel-drag-container i:first-child {
+      .card .card-body .igv-webapp-panel-drag-container i:first-child {
         cursor: unset;
         color: transparent;
         background-color: transparent; }
-      .card .card-body > .igv-webapp-panel-drag-container i:last-child {
+      .card .card-body .igv-webapp-panel-drag-container i:last-child {
         cursor: pointer;
         margin-right: 8px; }
-    .card .card-body > #igv-webapp-panel-content-container {
-      width: 100%;
-      height: 168px;
-      background-color: #5ea4e0;
-      border-bottom-left-radius: inherit;
-      border-bottom-right-radius: inherit; }
+
+#igv-webapp-alert-panel-content-container {
+  width: 100%;
+  height: 168px;
+  background-color: #5ea4e0;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit; }
 
 .igv-file-load-widget-container {
   position: relative;

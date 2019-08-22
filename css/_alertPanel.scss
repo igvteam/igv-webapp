@@ -1,0 +1,9 @@
+#igv-webapp-alert-panel-content-container {
+  width: 100%;
+  height: $igv-webapp-panel-height - $igv-webapp-panel-drag-container-height;
+  background-color: #5ea4e0;
+
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+
+}

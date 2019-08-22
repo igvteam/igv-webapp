@@ -35,6 +35,7 @@
     "@babel/preset-env": "^7.5.5",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.0.4",
+    "data-modal": "github:igvteam/data-modal",
     "grunt-contrib-clean": "^2.0.0",
     "npm": "^6.10.2",
     "to": "^0.2.9",

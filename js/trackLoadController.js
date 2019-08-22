@@ -25,22 +25,23 @@ import igv from "../vendor/igv.esm.min.js";
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import EncodeDataSource from './encode.js';
-import ModalTable from './modalTable.js';
+import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
+import ModalTable from '../node_modules/data-modal/js/modalTable.js'
 import MultipleFileLoadController from "./multipleFileLoadController.js";
 import {alertPanel} from "./main.js";
 
 class TrackLoadController {
 
-    constructor({browser, trackRegistryFile, $urlModal, $encodeModal, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
+    constructor({browser, trackRegistryFile, $urlModal, encodeModalTable, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
 
         let urlConfig;
 
-        this.trackRegistryFile = trackRegistryFile;
         this.browser = browser;
-        this.$modal = $genericTrackSelectModal;
+        this.trackRegistryFile = trackRegistryFile;
+        this.trackRegistry = undefined;
+        this.encodeModalTable = encodeModalTable;
         this.$dropdownMenu = $dropdownMenu;
-        this.$encodeModal = $encodeModal;
+        this.$modal = $genericTrackSelectModal;
 
         // URL
         urlConfig =
@@ -85,42 +86,9 @@ class TrackLoadController {
 
     }
 
-    createEncodeTable() {
-
-        const browser = this.browser;
-
-        const columnFormat =
-            [
-                {title: 'Cell Type', width: '7%'},
-                {title: 'Target', width: '8%'},
-                {title: 'Assay Type', width: '20%'},
-                {title: 'Output Type', width: '20%'},
-                {title: 'Bio Rep', width: '5%'},
-                {title: 'Tech Rep', width: '5%'},
-                {title: 'Format', width: '5%'},
-                {title: 'Experiment', width: '7%'},
-                {title: 'Accession', width: '8%'},
-                {title: 'Lab', width: '20%'}
-            ];
-
-        const encodeDatasource = new EncodeDataSource(columnFormat);
-
-        const encodeTableConfig =
-            {
-                $modal: this.$encodeModal,
-                $modalBody: this.$encodeModal.find('.modal-body'),
-                $modalTopCloseButton: this.$encodeModal.find('.modal-header button:nth-child(1)'),
-                $modalBottomCloseButton: this.$encodeModal.find('.modal-footer button:nth-child(1)'),
-                $modalGoButton: this.$encodeModal.find('.modal-footer button:nth-child(2)'),
-                datasource: encodeDatasource,
-                browserHandler: (trackConfigurations) => {
-                    browser.loadTrackList(trackConfigurations);
-                }
-            };
-
-        return new ModalTable(encodeTableConfig);
-
-
+    createEncodeTable(genomeID) {
+        const datasource = new EncodeDataSource(genomeID);
+        this.encodeModalTable.setDatasource(datasource)
     };
 
     updateTrackMenus(genomeID) {
@@ -173,47 +141,38 @@ class TrackLoadController {
                 alertPanel.presentAlert(e.message);
             }
 
-            let configurations = [];
+            let buttonConfigurations = [];
 
             for (let json of jsons) {
 
                 if ('ENCODE' === json.type) {
 
-                    let encodeConfiguration = json;
+                    this.createEncodeTable(json.genomeID);
+                    buttonConfigurations.push(json);
 
-                    encodeConfiguration.encodeTable = this.createEncodeTable(encodeConfiguration.genomeID);
+                } else if ('GTEX' === json.type) {
 
-                    try {
-                        encodeConfiguration.data = await encodeConfiguration.encodeTable.loadData(encodeConfiguration.genomeID);
-                        configurations.push(encodeConfiguration);
-                    } catch (e) {
-                        alertPanel.presentAlert(e.message);
-                    }
-                }
-
-                else if ('GTEX' === json.type) {
-
-                    let gtexConfiguration = json;
                     let info = undefined;
                     try {
-                        info = await igv.GtexUtils.getTissueInfo(gtexConfiguration.datasetId);
+                        info = await igv.GtexUtils.getTissueInfo(json.datasetId);
                     } catch (e) {
                         alertPanel.presentAlert(e.message);
                     }
 
                     if (info) {
-                        gtexConfiguration.tracks = info.tissueInfo.map(tissue => igv.GtexUtils.trackConfiguration(tissue));
-                        configurations.push(gtexConfiguration);
+                        json.tracks = info.tissueInfo.map(tissue => igv.GtexUtils.trackConfiguration(tissue));
+                        buttonConfigurations.push(json);
                     }
 
                 } else {
-                    configurations.push(json);
+                    buttonConfigurations.push(json);
                 }
+
 
             }
 
-            configurations = configurations.reverse();
-            for (let config of configurations) {
+            buttonConfigurations = buttonConfigurations.reverse();
+            for (let config of buttonConfigurations) {
 
                 const $button = $('<button>', {class: 'dropdown-item', type: 'button'});
                 const str = config.label + ' ...';
@@ -225,26 +184,26 @@ class TrackLoadController {
                 $button.insertAfter($divider);
 
                 $button.on('click', () => {
-                    let markup;
-
-                    markup = '<div>' + config.label + '</div>';
-                    if (config.description) {
-                        markup += '<div>' + config.description + '</div>';
-                    }
-
-                    this.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
 
                     if ('ENCODE' === config.type) {
 
-                        config.encodeTable.buildTable(true);
-                        config.encodeTable.config.$modal.modal('show');
+                        this.encodeModalTable.$modal.modal('show');
 
                     } else {
 
-                        configureModalSelectList(this.browser, this.$modal, config.tracks, config.label);
-                        this.$modal.modal('show');
-                    }
+                        let markup = '<div>' + config.label + '</div>';
 
+                        if (config.description) {
+                            markup += '<div>' + config.description + '</div>';
+                        }
+
+                        this.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
+
+                        configureModalSelectList(this.browser, this.$modal, config.tracks);
+
+                        this.$modal.modal('show');
+
+                    }
 
                 });
 
@@ -254,6 +213,55 @@ class TrackLoadController {
 
     };
 
+
+}
+
+function configureModalSelectList(browser, $modal, configurations) {
+
+    let $select,
+        $option;
+
+    $modal.find('select').remove();
+
+    $select = $('<select>', {class: 'form-control'});
+    $modal.find('.form-group').append($select);
+
+    $option = $('<option>', {text: 'Select...'});
+    $select.append($option);
+
+    $option.attr('selected', 'selected');
+    $option.val(undefined);
+
+    configurations.reduce(($accumulator, configuration) => {
+
+            $option = $('<option>', {value: configuration.name, text: configuration.name});
+            $select.append($option);
+
+            $option.data('track', configuration);
+
+            $accumulator.append($option);
+
+            return $accumulator;
+        }, $select);
+
+    $select.on('change', () => {
+
+        let $option = $select.find('option:selected');
+        const value = $option.val();
+
+        if ('' === value) {
+            // do nothing
+        } else {
+
+            $option.removeAttr("selected");
+
+            const configuration = $option.data('track');
+            browser.loadTrack(configuration);
+        }
+
+        $modal.modal('hide');
+
+    });
 
 }
 
@@ -274,69 +282,29 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
             }
         };
 
+    const encodeModalTableConfig =
+        {
+            id: "igv-app-encode-modal",
+            title: "ENCODE",
+            selectHandler: trackConfigurations => {
+
+                (async (config) => {
+                    await browser.loadTrackList( config )
+                })(trackConfigurations);
+
+            }
+        };
+
     return {
         browser,
         trackRegistryFile,
         $urlModal: $('#igv-app-track-from-url-modal'),
-        $encodeModal: $('#igv-app-encode-modal'),
+        encodeModalTable: new ModalTable(encodeModalTableConfig),
         $dropdownMenu: $('#igv-app-track-dropdown-menu'),
         $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
         uberFileLoader: new MultipleFileLoadController(browser, multipleFileTrackConfig)
     }
 
 };
-
-function configureModalSelectList(browser, $modal, configurations, promiseTaskName) {
-
-    let $select,
-        $option;
-
-    $modal.find('select').remove();
-
-    $select = $('<select>', {class: 'form-control'});
-    $modal.find('.form-group').append($select);
-
-    $option = $('<option>', {text: 'Select...'});
-    $select.append($option);
-
-    $option.attr('selected', 'selected');
-    $option.val(undefined);
-
-    configurations
-        .reduce(function ($accumulator, trackConfiguration) {
-
-            $option = $('<option>', {value: trackConfiguration.name, text: trackConfiguration.name});
-            $select.append($option);
-
-            $option.data('track', trackConfiguration);
-
-            $accumulator.append($option);
-
-            return $accumulator;
-        }, $select);
-
-    $select.on('change', function (e) {
-        let $option,
-            trackConfiguration,
-            value;
-
-        $option = $(this).find('option:selected');
-        value = $option.val();
-
-        if ('' === value) {
-            // do nothing
-        } else {
-            trackConfiguration = $option.data('track');
-            $option.removeAttr("selected");
-
-            browser.loadTrack(trackConfiguration);
-
-        }
-
-        $modal.modal('hide');
-
-    });
-
-}
 
 export default TrackLoadController;

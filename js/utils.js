@@ -21,8 +21,11 @@
  *
  */
 
+import igv from "../vendor/igv.esm.min.js";
 import { trackLoadController, alertPanel } from './main.js';
+
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
+
 let isValidIndexExtension = (path) => {
     // let set;
     // set = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
@@ -134,14 +137,24 @@ let configureModal = (fileLoadWidget, $modal, okHandler = undefined) => {
 
 let loadGenome = (genome) => {
 
-    igv.browser
-        .loadGenome(genome)
-        .then(function (genome) {
-            trackLoadController.updateTrackMenus(genome.id);
-        })
-        .catch(function (error) {
-            alertPanel.presentAlert(error);
-        });
+    (async (genome) => {
+
+        let g = undefined;
+        try {
+            g = await igv.browser.loadGenome(genome);
+        } catch (e) {
+            alertPanel.presentAlert(e.message);
+        }
+
+        if (g) {
+            trackLoadController.updateTrackMenus(g.id);
+        } else {
+            const e = new Error(`Unable to load genome ${ genome.name }`);
+            alertPanel.presentAlert(e.message);
+            throw e;
+        }
+
+    })(genome);
 
 };
 

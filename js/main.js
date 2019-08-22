@@ -164,26 +164,20 @@ let initializationHelper = (browser, $container, options) => {
 
     genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
 
-    genomeLoadController
-        .getAppLaunchGenomes()
-        .then((dictionary) => {
+    let genomeDictionary = undefined;
+    (async () => {
+        try {
+            genomeDictionary = await genomeLoadController.getAppLaunchGenomes();
+        } catch (e) {
+            alertPanel.presentAlert(e.message)
+        }
 
-            if (dictionary) {
+        if (genomeDictionary) {
+            genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu: $('#igv-app-genome-dropdown-menu') });
+        }
 
-                let gdConfig =
-                    {
-                        browser: browser,
-                        genomeDictionary: dictionary,
-                        $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
-                    };
-
-                genomeDropdownLayout(gdConfig);
-            }
-            else {
-                // TODO -- hide Genomes button
-            }
-        });
-
+    })();
+    
     let $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
     if (!googleEnabled) {
         $igv_app_dropdown_google_drive_session_file_button.parent().hide();

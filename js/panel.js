@@ -7,15 +7,6 @@ class Panel {
 
         this.container = $container.get(0);
         this.$panel = $(panel);
-        this.isHidden = isHidden;
-        this.xFunction = xFunction;
-        this.yFunction = yFunction;
-
-        this.layoutState = undefined;
-
-        if (false === this.isHidden) {
-            this.layout(xFunction, yFunction);
-        }
 
         const $drag_handle = this.$panel.find('.igv-webapp-panel-drag-container');
         makeDraggable(panel, $drag_handle.get(0));
@@ -40,7 +31,27 @@ class Panel {
             this.isHidden = true;
         });
 
+
+        this.xFunction = xFunction;
+        this.yFunction = yFunction;
+
+        if (true === isHidden) {
+            this.dismissPanel();
+        } else {
+            this.presentPanel();
+        }
+
     }
+
+    presentPanel() {
+        this.layout(this.xFunction, this.yFunction);
+        this.isHidden = false;
+    };
+
+    dismissPanel() {
+        this.moveOffScreen();
+        this.isHidden = true;
+    };
 
     layout(xFunction, yFunction) {
 
@@ -55,24 +66,6 @@ class Panel {
 
     moveOffScreen() {
         this.$panel.offset( { left: -1000, top: -1000 } );
-    };
-
-    presentPanel() {
-
-        if (this.isHidden) {
-            this.layout(this.xFunction, this.yFunction);
-            this.isHidden = false;
-        }
-
-    };
-
-    dismissPanel() {
-
-        if (false === this.isHidden) {
-            this.moveOffScreen();
-            this.isHidden = true;
-        }
-
     };
 }
 

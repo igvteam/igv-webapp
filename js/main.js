@@ -268,4 +268,4 @@ let createAppBookmarkHandler = ($bookmark_button) => {
 
 };
 
-export { main, trackLoadController };
+export { main, trackLoadController, alertPanel };

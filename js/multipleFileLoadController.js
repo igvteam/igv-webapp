@@ -23,6 +23,7 @@
 
 import * as app_google from './app-google.js';
 import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
+import {alertPanel} from "./main.js";
 
 const indexableFormats = new Set(["bed", "gff", "gtf", "gff3", "bedgraph"]);
 
@@ -140,7 +141,7 @@ class MultipleFileLoadController {
 
         // bail if no files
         if (0 === jsonPaths.length && 0 === remainingPaths.length) {
-            igv.browser.presentAlert("ERROR: No valid data files submitted");
+            alertPanel.presentAlert("ERROR: No valid data files submitted");
             return;
         }
 

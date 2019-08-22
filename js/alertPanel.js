@@ -15,8 +15,13 @@ class AlertPanel extends Panel {
 
         super({ $container, panel, isHidden, xFunction, yFunction });
 
+        this.messageContainer = this.$panel.find('#igv-webapp-alert-panel-content-container');
     }
 
+    presentAlert(message) {
+        this.messageContainer.text(message);
+        super.presentPanel();
+    }
 }
 
 export const alertPanelConfigurator = ({$container}) => {
@@ -24,7 +29,7 @@ export const alertPanelConfigurator = ({$container}) => {
     return {
         $container,
         panel: $('#igv-webapp-alertpanel').get(0),
-        isHidden: false
+        isHidden: true
     };
 
 };

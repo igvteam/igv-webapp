@@ -21,7 +21,7 @@
  *
  */
 
-import { trackLoadController } from './main.js';
+import { trackLoadController, alertPanel } from './main.js';
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
 let isValidIndexExtension = (path) => {
     // let set;
@@ -140,7 +140,7 @@ let loadGenome = (genome) => {
             trackLoadController.updateTrackMenus(genome.id);
         })
         .catch(function (error) {
-            igv.browser.presentAlert(error);
+            alertPanel.presentAlert(error);
         });
 
 };

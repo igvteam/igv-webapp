@@ -21,6 +21,8 @@
  *
  */
 
+import {alertPanel} from "./main.js";
+
 let picker;
 
 let init = (clientId) => {
@@ -131,7 +133,7 @@ let createDropdownButtonPicker = (multipleFileSelection, filePickerHandler) => {
                 picker.setVisible(true);
 
             } else {
-                igv.browser.presentAlert("Sign into Google before using picker");
+                alertPanel.presentAlert("Sign into Google before using picker");
             }
         })
         .catch(function (error) {

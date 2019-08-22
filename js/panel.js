@@ -14,7 +14,11 @@ class Panel {
         const str = `resize.panel-${ igv.guid() }.igv-web-app`;
 
         $(window).on(str, () => {
-            this.layout(xFunction, yFunction);
+
+            if (false === this.isHidden) {
+                this.layout(xFunction, yFunction);
+            }
+
         });
 
         const $closer = this.$panel.find('i.fa-times-circle');

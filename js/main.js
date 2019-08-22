@@ -177,7 +177,7 @@ let initializationHelper = (browser, $container, options) => {
         }
 
     })();
-    
+
     let $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
     if (!googleEnabled) {
         $igv_app_dropdown_google_drive_session_file_button.parent().hide();

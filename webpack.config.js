@@ -35,7 +35,11 @@ module.exports =
         plugins:
             [
                 new CopyWebpackPlugin([
-                    { from:'css/app.css', to:'css' },
+                    { from:'css/**/*.css'   },
+                    { from:'css/webfonts/*' },
+
+                    // { from:'css/app.css', to:'css' },
+
                     { from:'img/*' },
                     { from:'resources/*/*' },
                     { from:'favicon.ico' }

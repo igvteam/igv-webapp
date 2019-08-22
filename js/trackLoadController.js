@@ -201,7 +201,7 @@ class TrackLoadController {
 
         }
 
-        configurations = configurations.reverse()
+        configurations = configurations.reverse();
         for (let config of configurations) {
 
             const $button = $('<button>', {class: 'dropdown-item', type: 'button'});

@@ -18,17 +18,9 @@ class Panel {
         });
 
         const $closer = this.$panel.find('i.fa-times-circle');
-        $closer.on(`click.${ igv.guid() }`, event => {
-
+        $closer.on(`click.igv-webapp.panel-${ igv.guid() }`, event => {
             event.stopPropagation();
-
-            const id = $closer.attr('data-target');
-            const selector = `#${ id }`;
-            const $input = $(selector);
-            $input.prop('checked', false);
-
-            this.moveOffScreen();
-            this.isHidden = true;
+            this.dismissPanel();
         });
 
 

@@ -21,6 +21,7 @@
  *
  */
 
+import igv from "../vendor/igv.esm.min.js";
 import {alertPanel} from "./main.js";
 
 let picker;

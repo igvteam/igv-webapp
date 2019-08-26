@@ -21,6 +21,7 @@
  *
  */
 
+import igv from "../vendor/igv.esm.min.js";
 import * as app_google from './app-google.js';
 import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";

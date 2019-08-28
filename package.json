@@ -29,7 +29,7 @@
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.5.5",
     "data-modal": "github:igvteam/data-modal",
-    "webpack": "^4.39.1",
+    "webpack": "^4.39.3",
     "webpack-cli": "^3.3.6"
   }
 }

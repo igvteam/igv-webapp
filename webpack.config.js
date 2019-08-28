@@ -8,8 +8,14 @@ const client_id_regex = /CLIENT_ID/gi;
 const api_key_regex = /API_KEY/gi;
 const bitly_token_regex = /BITLY_TOKEN/gi;
 
-module.exports =
-    {
+module.exports = env => {
+
+    const { production } = env;
+    const str = production || 'not_production';
+
+    console.log(`production ${ str }`);
+
+    return {
         mode: 'none',
         entry:
             {
@@ -66,4 +72,4 @@ module.exports =
 
             ]
     };
-
+};

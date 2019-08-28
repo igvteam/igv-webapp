@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "start": "http-server -a localhost dist",
-    "build": "webpack"
+    "build": "webpack",
+    "pro": "webpack",
+    "dev": "webpack --env.production"
   },
   "repository": {
     "type": "git",

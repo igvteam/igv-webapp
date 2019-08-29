@@ -7,9 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "http-server -a localhost dist",
-    "build": "webpack",
-    "pro": "webpack",
-    "dev": "webpack --env.production"
+    "build": "webpack --env.igvwebconfig=igvwebConfig.js",
+      "dev": "webpack --env.igvwebconfig=igvwebConfig-dev.js"
   },
   "repository": {
     "type": "git",

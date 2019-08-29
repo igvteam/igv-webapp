@@ -8,7 +8,7 @@
   "scripts": {
     "start": "http-server -a localhost dist",
     "build": "webpack --env.igvwebconfig=igvwebConfig.js",
-      "dev": "webpack --env.igvwebconfig=igvwebConfig-dev.js"
+    "dev": "webpack --env.igvwebconfig=igvwebConfig-dev.js"
   },
   "repository": {
     "type": "git",
@@ -19,18 +19,18 @@
   },
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
-    "babel-loader": "^8.0.5",
-    "copy-webpack-plugin": "^5.0.4",
-    "http-server": "^0.11.1"
-  },
-  "dependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
-    "@babel/polyfill": "^7.2.5",
+    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.5",
-    "data-modal": "github:igvteam/data-modal",
+    "babel-loader": "^8.0.5",
+    "copy-webpack-plugin": "^5.0.4",
+    "http-server": "^0.11.1",
     "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.7"
+  },
+  "dependencies": {
+    "data-modal": "github:igvteam/data-modal"
   }
 }

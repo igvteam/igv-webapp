@@ -1,0 +1,13 @@
+#igv-webapp-alert-panel-content-container {
+  width: 100%;
+  height: $igv-webapp-panel-height - $igv-webapp-panel-drag-container-height;
+  background-color: white;
+
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  padding: 0.75rem;
+}

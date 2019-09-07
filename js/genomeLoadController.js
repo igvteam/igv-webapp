@@ -27,6 +27,7 @@
 import { loadGenome, configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
+import {alertPanel} from "./main.js";
 
 class GenomeLoadController {
 
@@ -52,69 +53,71 @@ class GenomeLoadController {
 
     }
 
-    getAppLaunchGenomes () {
+    async getAppLaunchGenomes () {
 
-        let path;
-
-        if(!this.genomes) {
-            return Promise.resolve(undefined);
+        if(undefined === this.genomes) {
+            return undefined;
         }
+
         if(Array.isArray(this.genomes)) {
-            return Promise.resolve(buildDictionary(this.genomes));
-        }
+            return buildDictionary(this.genomes);
+        } else {
 
-        else {
-            path = this.genomes;
-
-            return igv.xhr
-
-                .loadJson(path, {})
-
-                .then(function (result) {
-
-                    return buildDictionary(result);
-                });
-        }
-
-        function buildDictionary(array) {
-
-            let dictionary;
-            dictionary = {};
-            if (true === Array.isArray(array)) {
-                array.forEach(function (json) {
-                    dictionary[ json.id ] = json;
-                });
-            } else {
-                dictionary[ array.id ] = array;
+            let response = undefined;
+            try {
+                response = await fetch(this.genomes);
+            } catch (e) {
+                alertPanel.presentAlert(e.message);
             }
 
-            return dictionary;
+            if (response) {
+                let json = await response.json();
+                return buildDictionary(json);
+            }
+
         }
 
     }
 
 }
 
+const buildDictionary = array => {
+
+    let dictionary = {};
+    if (true === Array.isArray(array)) {
+
+        for (let json of array) {
+            dictionary[ json.id ] = json;
+        }
+
+    } else {
+        dictionary[ array.id ] = array;
+    }
+
+    return dictionary;
+};
+
 export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
 
-    var $divider,
-        $button;
-
     // discard all buttons preceeding the divider div
-    $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
+    let $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
     $divider.prevAll().remove();
 
     for (let key in genomeDictionary) {
 
         if (genomeDictionary.hasOwnProperty(key)) {
 
-            $button = createButton(genomeDictionary[ key ].name);
-            $button.insertBefore( $divider );
+            let $button = createButton(genomeDictionary[ key ].name);
+            $button.insertBefore($divider);
+
             $button.data('id', key);
 
-            $button.on('click', function () {
+            const str = `click.genome-dropdown.${ key }`;
 
-                const id = $(this).data('id');
+            $button.on(str, () => {
+
+                const id = $button.data('id');
+
                 if (id !== browser.genome.id) {
                     loadGenome(genomeDictionary[ id ]);
                 }

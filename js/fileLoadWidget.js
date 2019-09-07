@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-import FileLoadManager from './fileLoadManager.js';
+import igv from '../node_modules/igv/dist/igv.esm.min.js';
 
 class FileLoadWidget {
 

@@ -21,7 +21,8 @@
  *
  */
 
-import { getExtension } from './utils.js';
+import igv from '../node_modules/igv/dist/igv.esm.min.js';
+
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';
@@ -34,6 +35,7 @@ import { trackLoadControllerConfigurator } from './trackLoadController.js';
 import ShareController from './shareController.js';
 import SessionController from './sessionController.js';
 import SVGController from './svgController.js';
+import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 
 let trackLoadController;
 let multipleFileTrackController;
@@ -44,6 +46,7 @@ let sessionController;
 let svgController;
 let shareController;
 let googleEnabled = false;
+let alertPanel;
 
 let main = ($container, config) => {
 
@@ -53,25 +56,18 @@ let main = ($container, config) => {
             {
                 callback: () => {
 
-                    app_google
+                    (async () => {
 
-                        .init(config.clientId)
+                        let ignore = await app_google.init(config.clientId);
+                        let browser = await igv.createBrowser($container.get(0), config.igvConfig);
 
-                        .then((ignore) => {
+                        googleEnabled = true;
+                        app_google.postInit();
+                        initializationHelper(browser, $container, config);
+                    })();
 
-                            return igv.createBrowser($container.get(0), config.igvConfig);
-                        })
-
-                        .then((browser) => {
-
-                            googleEnabled = true;
-
-                            app_google.postInit();
-
-                            initializationHelper(browser, $container, config);
-                        });
                 },
-                onerror: (error) => {
+                onerror: error => {
                     console.log('gapi.client:auth2 - failed to load!');
                     console.error(error);
                     initializationHelper(browser, $container, config);
@@ -82,16 +78,17 @@ let main = ($container, config) => {
 
     } else {
 
-        igv
-            .createBrowser($container.get(0), config.igvConfig)
+        (async () => {
+            let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+            initializationHelper(browser, $container, config);
+        })();
 
-            .then((browser) => {
-                initializationHelper(browser, $container, config);
-            });
     }
 };
 
 let initializationHelper = (browser, $container, options) => {
+
+    alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
@@ -167,25 +164,19 @@ let initializationHelper = (browser, $container, options) => {
 
     genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
 
-    genomeLoadController
-        .getAppLaunchGenomes()
-        .then((dictionary) => {
+    let genomeDictionary = undefined;
+    (async () => {
+        try {
+            genomeDictionary = await genomeLoadController.getAppLaunchGenomes();
+        } catch (e) {
+            alertPanel.presentAlert(e.message)
+        }
 
-            if (dictionary) {
+        if (genomeDictionary) {
+            genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu: $('#igv-app-genome-dropdown-menu') });
+        }
 
-                let gdConfig =
-                    {
-                        browser: browser,
-                        genomeDictionary: dictionary,
-                        $dropdown_menu: $('#igv-app-genome-dropdown-menu'),
-                    };
-
-                genomeDropdownLayout(gdConfig);
-            }
-            else {
-                // TODO -- hide Genomes button
-            }
-        });
+    })();
 
     let $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
     if (!googleEnabled) {
@@ -271,4 +262,4 @@ let createAppBookmarkHandler = ($bookmark_button) => {
 
 };
 
-export { main, trackLoadController };
+export { main, trackLoadController, alertPanel };

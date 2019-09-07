@@ -1,3 +1,56 @@
+.card {
+  position: absolute;
+  top: -1000px;
+  left: -1000px;
+  z-index: 1024;
+  width: 300px;
+  height: 200px;
+  border-color: #a09fa0;
+  background-color: #ffffff;
+  user-select: none; }
+  .card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: unset;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit; }
+    .card .card-body .igv-webapp-panel-drag-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 32px;
+      background-color: #d0d0d0;
+      border-top-left-radius: inherit;
+      border-top-right-radius: inherit; }
+      .card .card-body .igv-webapp-panel-drag-container i {
+        cursor: grab;
+        color: #6e6e6e;
+        display: block; }
+      .card .card-body .igv-webapp-panel-drag-container i:first-child {
+        cursor: unset;
+        color: transparent;
+        background-color: transparent; }
+      .card .card-body .igv-webapp-panel-drag-container i:last-child {
+        cursor: pointer;
+        margin-right: 8px; }
+
+#igv-webapp-alert-panel-content-container {
+  width: 100%;
+  height: 168px;
+  background-color: white;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  padding: 0.75rem; }
+
 .igv-file-load-widget-container {
   position: relative;
   border-color: transparent;

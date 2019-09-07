@@ -21,7 +21,10 @@
  *
  */
 
+import igv from '../node_modules/igv/dist/igv.esm.min.js';
+
 import {bitlyShortener, googleShortener} from "./urlShortener.js";
+import {alertPanel} from "./main.js";
 
 let urlShortener;
 
@@ -42,11 +45,11 @@ export function setURLShortener(obj) {
             fn = googleShortener(obj.apiKey);
         }
         else {
-            igv.browser.presentAlert("Unknown URL shortener provider: " + obj.provider);
+            alertPanel.presentAlert(`Unknown URL shortener provider: ${ obj.provider }`);
         }
     }
     else {
-        igv.browser.presentAlert("URL shortener object must either be an object specifying a provider and apiKey, or a function")
+        alertPanel.presentAlert("URL shortener object must either be an object specifying a provider and apiKey, or a function")
     }
 
     if (fn) {
@@ -69,7 +72,7 @@ export function sessionURL() {
     path = window.location.href.slice();
     idx = path.indexOf("?");
 
-    surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + igv.browser.compressedSession();
+    surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + igv.getBrowser().compressedSession();
 
     return surl;
 }

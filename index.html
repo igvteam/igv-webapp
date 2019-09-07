@@ -7,9 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta http-equiv=“Pragma” content=”no-cache”>
+    <meta http-equiv=“Expires” content=”-1″>
+    <meta http-equiv=“CACHE-CONTROL” content=”NO-CACHE”>
+
     <title>IGV</title>
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/fontawesome/all.css">
 
     <!-- Bootstrap 4 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -20,15 +27,8 @@
     <!-- APP CSS -->
     <link rel="stylesheet" href="css/app.css">
 
-    <!-- IGV JS-->
-    <script src='https://igv.org/web/release/2.2.16/dist/igv.min.js'></script>
-    <!--<script src='https://igv.org/web/release/2.2.16/dist/igv.min.js'></script>-->
-    <!--<script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>-->
-    <!--<script src="http://localhost/igv-web/dist/igv.min.js"></script>-->
-
     <!-- Dropbox Chooser API-->
-    <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs"
-            data-app-key="8glijwyao9fq8we"></script>
+    <script src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="8glijwyao9fq8we"></script>
 
     <!-- Bootstrap 4 and Dependancies -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -48,7 +48,6 @@
 
     <script type="text/javascript" src="igvwebConfig.js"></script>
 
-    <!-- Do not edit the script tag below in any way, even whitespace, without also updating Gruntfile.js -->
     <script type="module" src="js/app.js"></script>
 
 </head>
@@ -301,6 +300,25 @@
     <div class="row">
         <div class="col-sm">
             <div id="igv-app-container">
+
+                <!-- alert panel -->
+                <div id="igv-webapp-alertpanel" class="card">
+
+                    <div class="card-body">
+
+                        <div class="igv-webapp-panel-drag-container">
+                            <i class="fas fa-square-full"></i>
+                            <i class="fas fa-sm fa-grip-horizontal"></i>
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+
+                        <div id="igv-webapp-alert-panel-content-container">
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

@@ -21,9 +21,6 @@ module.exports = env => {
                 path: path.resolve(__dirname, 'dist'),
                 filename: '[name].js'
             },
-        externals:[
-            require('webpack-require-http')
-        ],
         module: {
             rules:
                 [

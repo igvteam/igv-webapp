@@ -21,7 +21,7 @@
  *
  */
 
-import igv from "../vendor/igv.esm.min.js";
+import igv from '../node_modules/igv/dist/igv.esm.min.js';
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';

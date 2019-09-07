@@ -21,7 +21,7 @@
  *
  */
 
-import igv from "../vendor/igv.esm.min.js";
+import igv from '../node_modules/igv/dist/igv.esm.min.js';
 
 export function bitlyShortener(accessToken) {
 

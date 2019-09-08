@@ -15,11 +15,9 @@ for (let a of args) {
         bitlyToken = a.substr(13);
     }
 }
-console.log(process.argv);
-
-let contents = fs.readFileSync('igvwebConfig.js', 'utf-8');
 
 if (bitlyToken || apiKey || clientId) {
+    let contents = fs.readFileSync('igvwebConfig.js', 'utf-8');
     if (bitlyToken) {
         contents = contents.replace('BITLY_TOKEN', bitlyToken);
     }
@@ -29,7 +27,5 @@ if (bitlyToken || apiKey || clientId) {
     if (clientId) {
         contents = contents.replace("CLIENT_ID", clientId);
     }
-
-    console.log(contents)
     fs.writeFileSync('igvwebConfig.js', contents, 'utf-8');
 }

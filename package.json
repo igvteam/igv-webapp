@@ -30,6 +30,6 @@
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "data-modal": "github:igvteam/data-modal",
-    "igv": "https://igv.org/web/release/2.3.0-rc1/igv-2.3.0-rc1.tgz"
+    "igv": "https://igv.org/web/release/2.3.0-rc2/igv-2.3.0-rc2.tgz"
   }
 }

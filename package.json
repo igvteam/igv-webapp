@@ -28,7 +28,6 @@
     "copy-webpack-plugin": "^5.0.4",
     "data-modal": "github:igvteam/data-modal",
     "http-server": "^0.11.1",
-    "igv": "https://igv.org/web/release/2.3.0-rc3/igv-2.3.0-rc3.tgz",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8"
   }

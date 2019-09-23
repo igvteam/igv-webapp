@@ -21,7 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.min.js';
+//import igv from '../node_modules/igv/dist/igv.esm.min.js';
 import { trackLoadController, alertPanel } from './main.js';
 
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);

@@ -1,4 +1,4 @@
-import igv from '../node_modules/igv/dist/igv.esm.min.js';
+//import igv from '../node_modules/igv/dist/igv.esm.min.js';
 import { makeDraggable} from "./draggable.js";
 
 class Panel {

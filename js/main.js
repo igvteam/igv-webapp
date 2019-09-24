@@ -60,7 +60,8 @@ let main = ($container, config) => {
 
                         let ignore = await app_google.init(config.clientId);
                         browser = await igv.createBrowser($container.get(0), config.igvConfig);
-
+                        //  global hack -- there is only 1 browser in this app
+                        igv.browser = browser;
                         googleEnabled = true;
                         app_google.postInit();
                         initializationHelper(browser, $container, config);

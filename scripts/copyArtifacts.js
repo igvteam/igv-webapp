@@ -2,7 +2,7 @@
 
 const fs = require('fs-extra');
 
-fs.copySync(__dirname + '/../igvWebConfig.js', __dirname + '/../dist/igvwebConfig.js');
+fs.copySync(__dirname + '/../igvwebConfig.js', __dirname + '/../dist/igvwebConfig.js');
 fs.copySync(__dirname + '/../css/app.css', __dirname + '/../dist/css/app.css');
 fs.copySync(__dirname + '/../css/webfonts', __dirname + '/../dist/css/webfonts');
 fs.copySync(__dirname + '/../css/fontawesome', __dirname + '/../dist/css/fontawesome');

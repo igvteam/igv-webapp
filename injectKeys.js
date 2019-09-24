@@ -1,5 +1,5 @@
+#!/usr/bin/env node
 // script for injecting api keys into igv web config
-
 const fs = require('fs');
 
 const args = process.argv;

@@ -38,7 +38,6 @@ import SVGController from './svgController.js';
 import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 
 let trackLoadController;
-let multipleFileTrackController;
 let multipleFileGenomeController;
 let multipleFileSessionController;
 let genomeLoadController;
@@ -52,6 +51,7 @@ let main = ($container, config) => {
 
     if (config.clientId && config.clientId !== "CLIENT_ID") {
 
+        let browser;
         const gapiConfig =
             {
                 callback: () => {
@@ -59,7 +59,7 @@ let main = ($container, config) => {
                     (async () => {
 
                         let ignore = await app_google.init(config.clientId);
-                        let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+                        browser = await igv.createBrowser($container.get(0), config.igvConfig);
 
                         googleEnabled = true;
                         app_google.postInit();

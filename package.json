@@ -7,8 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "http-server -a localhost dist",
-    "build": "webpack --env.igvwebconfig=igvwebConfig.js",
-    "dev": "webpack --env.igvwebconfig=igvwebConfig-dev.js"
+    "build": "node scripts/clean.js && rollup -c && node scripts/injectRuntime.js && node scripts/copyArtifacts.js"
   },
   "repository": {
     "type": "git",
@@ -19,16 +18,17 @@
   },
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
-    "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
-    "@babel/node": "^7.6.1",
     "@babel/plugin-transform-regenerator": "^7.4.5",
-    "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
-    "babel-loader": "^8.0.5",
-    "copy-webpack-plugin": "^5.0.4",
     "data-modal": "github:igvteam/data-modal",
+    "eslint": "^6.4.0",
+    "fs-extra": "^8.1.0",
     "http-server": "^0.11.1",
+    "rollup": "^1.21.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-strip": "^1.2.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8"
   }

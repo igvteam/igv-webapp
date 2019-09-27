@@ -27,7 +27,7 @@
 import { getExtension } from "./utils.js";
 
 class FileLoadManager {
-    
+
     constructor () {
         this.dictionary = {};
     }
@@ -56,7 +56,7 @@ class FileLoadManager {
     }
 
     ingestPaths() {
-        
+
         this.ingestPath(this.fileLoadWidget.$inputData.val(), false);
 
         if (this.fileLoadWidget.$inputIndex) {
@@ -67,7 +67,8 @@ class FileLoadManager {
 
     ingestPath (path, isIndexFile) {
         let key = true === isIndexFile ? 'index' : 'data';
-        this.dictionary[ key ] = path;
+
+        this.dictionary[ key ] = path.trim();
     }
 
     didDragDrop (dataTransfer) {
@@ -77,7 +78,7 @@ class FileLoadManager {
 
         return (files && files.length > 0);
     }
-    
+
     dragDropHandler (dataTransfer, isIndexFile) {
         var url,
             files,

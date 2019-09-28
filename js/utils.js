@@ -21,7 +21,7 @@
  *
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
+import igv from '../node_modules/igv/dist/igv.esm.js'
 import { trackLoadController, alertPanel } from './main.js';
 
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
@@ -159,58 +159,57 @@ let loadGenome = (genome) => {
 };
 
 let indexLookup = (dataSuffix) => {
-    let fa,
-        fasta,
-        bam,
-        cram,
-        gz,
-        any,
-        lut;
 
-    fa =
+    const fa =
         {
             index: 'fai',
             isOptional: false
         };
 
-    fasta =
+    const fasta =
         {
             index: 'fai',
             isOptional: false
         };
 
-    bam =
+    const bam =
         {
             index: 'bai',
             isOptional: false
         };
 
-
-    cram =
+    const cram =
         {
             index: 'crai',
             isOptional: false
         };
 
-    gz =
+    const gz =
         {
             index: 'tbi',
             isOptional: true
         };
 
-    any =
+    const bgz =
+        {
+            index: 'tbi',
+            isOptional: true
+        };
+
+    const any =
         {
             index: 'idx',
             isOptional: true
         };
 
-    lut =
+    const lut =
         {
-            fa: fa,
-            fasta: fasta,
-            bam: bam,
-            cram: cram,
-            gz: gz
+            fa,
+            fasta,
+            bam,
+            cram,
+            gz,
+            bgz
         };
 
     if (lut[dataSuffix]) {

@@ -21,7 +21,6 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js'
 import { trackLoadController, alertPanel } from './main.js';
 
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);

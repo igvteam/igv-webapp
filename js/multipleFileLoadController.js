@@ -26,7 +26,7 @@ import * as app_google from './app-google.js';
 import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";
 
-const indexableFormats = new Set(["bed", "gff", "gtf", "gff3", "bedgraph"]);
+const indexableFormats = new Set(["vcf", "bed", "gff", "gtf", "gff3", "bedgraph"]);
 
 class MultipleFileLoadController {
 

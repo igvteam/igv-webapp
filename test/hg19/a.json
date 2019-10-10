@@ -1,7 +1,7 @@
 {
 	"type": "bed",
-	"url": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
-	"indexURL": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
+	"url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
+	"indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
 	"name": "Gencode V18"
   }
   

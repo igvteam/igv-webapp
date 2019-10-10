@@ -13,7 +13,7 @@
       "type": "annotation",
       "format": "cpgIslandExt",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/ce11/cpgIslandExt.txt.gz"
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/cpgIslandExt.txt.gz"
     }
   ]
 }

@@ -12,8 +12,8 @@
     },
     {
       "name": "Heart SLC25A3",
-      "url": "https://s3.amazonaws.com/igv.org.test/data/cram/heart_slc25a3.cram",
-      "indexURL": "https://s3.amazonaws.com/igv.org.test/data/cram/heart_slc25a3.cram.crai"
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/cram/heart_slc25a3.cram",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/cram/heart_slc25a3.cram.crai"
     }
   ]
 }

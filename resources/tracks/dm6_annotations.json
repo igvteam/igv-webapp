@@ -8,8 +8,8 @@
       "type": "annotation",
       "format": "ensgene",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/dm6/ensGene.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/dm6/ensGene.txt.gz.tbi",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/ensGene.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/ensGene.txt.gz.tbi",
       "visibilityWindow": 20000000
     },
     {
@@ -17,8 +17,8 @@
       "type": "annotation",
       "format": "rmsk",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/dm6/rmsk.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/dm6/rmsk.txt.gz.tbi",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/rmsk.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/rmsk.txt.gz.tbi",
       "visibilityWindow": 1000000
     },
     {
@@ -26,7 +26,7 @@
       "type": "annotation",
       "format": "cpgIslandExt",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/dm6/cpgIslandExt.txt.gz"
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/cpgIslandExt.txt.gz"
     }
   ]
 }

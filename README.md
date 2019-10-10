@@ -75,7 +75,7 @@ instructions on obtaining a clienId.  OAuth requests from igv.js will include th
 
 var igvwebConfig = {
 
-    genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
+    genomes: "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/genomes.json",
 
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
@@ -133,8 +133,8 @@ For a complete description of track configuration objects see the [igv.js wiki](
   "tracks": [
 	{
 	  "type": "bed",
-	  "url": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
-	  "indexURL": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
+	  "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
+	  "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
 	  "name": "Gencode V18"
 	}]
 }

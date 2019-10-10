@@ -5,8 +5,8 @@
     {
       "type": "annotation",
       "format": "gtf",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz.tbi",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/annotations/gencode.v28lift37.basic.annotation.gtf.gz.tbi",
       "name": "GENCODE genes v28",
       "visibilityWindow": 20000000
     },
@@ -15,7 +15,7 @@
       "type": "annotation",
       "format": "wgRna",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/wgRna.txt.gz"
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/annotations/wgRna.txt.gz"
     },
     {
       "name": "GWAS",
@@ -23,8 +23,8 @@
       "format": "gwasCatalog",
       "displayMode": "EXPANDED",
       "visibilityWindow": -1,
-      "url" : "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gwasCatalog.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gwasCatalog.txt.gz.tbi"
+      "url" : "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/annotations/gwasCatalog.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/annotations/gwasCatalog.txt.gz.tbi"
     },
     {
       "name": "Common SNPs (150)",
@@ -32,16 +32,16 @@
       "format": "snp",
       "visibilityWindow": 10000,
       "height": 30,
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi"
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi"
     },
     {
       "name": "Repeat Masker",
       "type": "annotation",
       "format": "rmsk",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/rmsk.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/rmsk.txt.gz.tbi",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/rmsk.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/rmsk.txt.gz.tbi",
       "visibilityWindow": 1000000
     },
     {
@@ -49,7 +49,7 @@
       "type": "annotation",
       "format": "cpgIslandExt",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
       "indexed": false
 
     }

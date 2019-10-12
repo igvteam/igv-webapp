@@ -19,7 +19,7 @@
     },
     {
       "name": "Refseq Genes",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/refGene.txt.gz",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/refGene.txt.gz",
       "order": 1000000,
       "indexed": false,
       "sourceType": "file",

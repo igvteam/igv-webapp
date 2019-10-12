@@ -9,8 +9,8 @@
       "format": "gtf",
       "displayMode": "EXPANDED",
       "height": 300,
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
       "visibilityWindow": 1000000
     },
     {
@@ -18,8 +18,8 @@
       "format": "gff3",
       "displayMode": "expanded",
       "height": 300,
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/Homo_sapiens.GRCh38.94.chr.gff3.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/Homo_sapiens.GRCh38.94.chr.gff3.gz.tbi",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/Homo_sapiens.GRCh38.94.chr.gff3.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/Homo_sapiens.GRCh38.94.chr.gff3.gz.tbi",
       "visibilityWindow": 1000000
     },
     {
@@ -27,7 +27,7 @@
       "type": "annotation",
       "format": "wgRna",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/wgRna.txt.gz",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/wgRna.txt.gz",
       "indexed": false
     },
     {
@@ -36,8 +36,8 @@
       "format": "gwasCatalog",
       "displayMode": "EXPANDED",
       "visibilityWindow": -1,
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gwasCatalog.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gwasCatalog.txt.gz.tbi"
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/gwasCatalog.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/gwasCatalog.txt.gz.tbi"
     },
     {
       "name": "Common SNPs (150)",
@@ -45,23 +45,23 @@
       "format": "snp",
       "visibilityWindow": 10000,
       "height": 30,
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz.tbi"
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/snp150Common.txt.gz.tbi"
     },
     {
       "name": "Repeat Masker",
       "type": "annotation",
       "format": "rmsk",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/rmsk.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/rmsk.txt.gz.tbi",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/rmsk.txt.gz",
+      "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/rmsk.txt.gz.tbi",
       "visibilityWindow": 1000000
     },
     {
       "name": "GC %",
       "type": "wig",
       "format": "bigwig",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gc5Base.bw",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/annotations/gc5Base.bw",
       "min": 0,
       "max": 100
     },
@@ -70,7 +70,7 @@
       "type": "annotation",
       "format": "cpgIslandExt",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
+      "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
       "indexed": false
     },
     {

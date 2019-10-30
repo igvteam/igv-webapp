@@ -1,6 +1,6 @@
 # IGV Web App
 
-igv-webapp is a pure-client "genome browser" application based [igv.js](https://github.com/igvteam/igv.js).  It is developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team.
+igv-webapp is a pure-client "genome browser" application based on [igv.js](https://github.com/igvteam/igv.js).  It is developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team. You can use the app at igv.org/app, or follow the directions below to install your own.
 
 ## Requirements
 - Node >= v8.11.4

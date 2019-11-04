@@ -23,6 +23,7 @@
 
 import {shortSessionURL} from './shareHelper.js';
 import {QRCode} from './qrcode.js';
+import Globals from "./globals.js"
 
 class ShareController {
 
@@ -44,7 +45,7 @@ class ShareController {
                 href = href.substring(0, idx);
             }
 
-            const session = igv.browser.compressedSession();
+            const session = Globals.browser.compressedSession();
 
             if (shareConfig.embedTarget) {
                 const snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, session);

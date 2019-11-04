@@ -30,10 +30,8 @@ var igvwebConfig = {
     // Provide a URL shorterner function or object.   This is optional.  If not supplied sharable URLs will not
     // be shortened.
     urlShortener: {
-        provider: "bitly",
-        apiKey: "BITLY_TOKEN"
+        provider: "tinyURL"
     }
-
 
 };
 

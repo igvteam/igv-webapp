@@ -23,7 +23,7 @@
 
 //import igv from '../node_modules/igv/dist/igv.esm.min.js';
 
-import {bitlyShortener, googleShortener} from "./urlShortener.js";
+import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
 import {alertPanel} from "./main.js";
 
 let urlShortener;
@@ -31,24 +31,20 @@ let urlShortener;
 export function setURLShortener(obj) {
 
     let fn;
-
     if (typeof obj === "function") {
-
         fn = obj;
 
-    } else if (obj.provider && obj.apiKey) {
-
-        if ("bitly" === obj.provider) {
+    } else if (obj.provider) {
+        if ("tinyURL" === obj.provider) {
+            fn = tinyURLShortener(obj);
+        } else if ("bitly" === obj.provider && obj.apiKey) {
             fn = bitlyShortener(obj.apiKey);
-        }
-        else if ("google" === obj.provider) {
+        } else if ("google" === obj.provider && obj.apiKey) {
             fn = googleShortener(obj.apiKey);
+        } else {
+            alertPanel.presentAlert(`Unknown URL shortener provider: ${obj.provider}`);
         }
-        else {
-            alertPanel.presentAlert(`Unknown URL shortener provider: ${ obj.provider }`);
-        }
-    }
-    else {
+    } else {
         alertPanel.presentAlert("URL shortener object must either be an object specifying a provider and apiKey, or a function")
     }
 
@@ -88,8 +84,7 @@ export function shortSessionURL(base, session) {
 function shortenURL(url) {
     if (urlShortener) {
         return urlShortener.shortenURL(url);
-    }
-    else {
+    } else {
         return Promise.resolve(url);
     }
 }

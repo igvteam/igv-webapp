@@ -22,6 +22,7 @@
  */
 
 import { trackLoadController, alertPanel } from './main.js';
+import Globals from "./globals.js"
 
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
 
@@ -140,7 +141,7 @@ let loadGenome = (genome) => {
 
         let g = undefined;
         try {
-            g = await igv.browser.loadGenome(genome);
+            g = await Globals.browser.loadGenome(genome);
         } catch (e) {
             alertPanel.presentAlert(e.message);
         }

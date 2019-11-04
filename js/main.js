@@ -31,11 +31,11 @@ import MultipleFileLoadController from './multipleFileLoadController.js';
 import GenomeLoadController from './genomeLoadController.js';
 import TrackLoadController from './trackLoadController.js';
 import { trackLoadControllerConfigurator } from './trackLoadController.js';
-
 import ShareController from './shareController.js';
 import SessionController from './sessionController.js';
 import SVGController from './svgController.js';
 import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
+import Globals from "./globals.js"
 
 let trackLoadController;
 let multipleFileGenomeController;
@@ -61,7 +61,7 @@ let main = ($container, config) => {
                         let ignore = await app_google.init(config.clientId);
                         browser = await igv.createBrowser($container.get(0), config.igvConfig);
                         //  global hack -- there is only 1 browser in this app
-                        igv.browser = browser;
+                        Globals.browser = browser;
                         googleEnabled = true;
                         app_google.postInit();
                         initializationHelper(browser, $container, config);
@@ -81,6 +81,7 @@ let main = ($container, config) => {
 
         (async () => {
             let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+            Globals.browser = browser;
             initializationHelper(browser, $container, config);
         })();
 

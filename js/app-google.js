@@ -27,15 +27,13 @@ import {alertPanel} from "./main.js";
 
 let picker;
 
-let init = (clientId) => {
+function init(clientId) {
 
     let scope,
         config;
 
     scope =
         [
-            'https://www.googleapis.com/auth/cloud-platform',
-            'https://www.googleapis.com/auth/genomics',
             'https://www.googleapis.com/auth/devstorage.read_only',
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/drive.readonly'
@@ -48,11 +46,9 @@ let init = (clientId) => {
         };
 
     return gapi.client.init(config)
+}
 
-
-};
-
-let postInit = () => {
+function postInit() {
     let callback,
         onerror,
         config;
@@ -81,7 +77,7 @@ let postInit = () => {
 
 };
 
-let createDropdownButtonPicker = (multipleFileSelection, filePickerHandler) => {
+function createDropdownButtonPicker(multipleFileSelection, filePickerHandler) {
 
     getAccessToken()
         .then(function (accessToken) {
@@ -145,7 +141,7 @@ let createDropdownButtonPicker = (multipleFileSelection, filePickerHandler) => {
 
 };
 
-let signInHandler = () => {
+function signInHandler() {
 
     let scope,
         options;
@@ -176,7 +172,7 @@ let signInHandler = () => {
         })
 };
 
-let getAccessToken = () => {
+function getAccessToken() {
 
     if (igv.oauth.google.access_token) {
         return Promise.resolve(igv.oauth.google.access_token);
@@ -185,7 +181,7 @@ let getAccessToken = () => {
     }
 };
 
-let pickerCallback = (data) => {
+function pickerCallback(data) {
 
     let doc,
         obj,
@@ -204,9 +200,9 @@ let pickerCallback = (data) => {
     return obj;
 };
 
-let updateSignInStatus = (signInStatus) => {
+function updateSignInStatus(signInStatus) {
     // do nothing
 };
 
 
-export { init, postInit, createDropdownButtonPicker };
+export {init, postInit, createDropdownButtonPicker};

@@ -29,8 +29,7 @@ import { loadGenome } from './utils.js';
 import { genomeDropdownLayout } from './genomeLoadController.js';
 import MultipleFileLoadController from './multipleFileLoadController.js';
 import GenomeLoadController from './genomeLoadController.js';
-import TrackLoadController from './trackLoadController.js';
-import { trackLoadControllerConfigurator } from './trackLoadController.js';
+import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
 import ShareController from './shareController.js';
 import SessionController from './sessionController.js';
 import SVGController from './svgController.js';
@@ -46,7 +45,6 @@ let svgController;
 let shareController;
 let googleEnabled = false;
 let alertPanel;
-
 let main = ($container, config) => {
 
     if (config.clientId && config.clientId !== "CLIENT_ID") {
@@ -96,17 +94,18 @@ let initializationHelper = (browser, $container, options) => {
 
     let $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
-    let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
-    if (!googleEnabled) {
-        $igv_app_dropdown_google_drive_track_file_button.parent().hide();
+    let $trackLoadGoogleFilePickerButton = $('#igv-app-dropdown-google-drive-track-file-button');
+    if (false === googleEnabled) {
+        $trackLoadGoogleFilePickerButton.parent().hide();
     }
 
-    const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile: options.trackRegistryFile, $googleDriveButton }));
+    const $googleDriveButton = googleEnabled ? $trackLoadGoogleFilePickerButton : undefined;
+    const googleFilePickerHandler = googleEnabled ? app_google.createFilePickerHandler() : undefined;
+    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile: options.trackRegistryFile, $googleDriveButton, googleFilePickerHandler }));
 
-    let $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
-    if (!googleEnabled) {
-        $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
+    let $genomeGoogleFilePickerButton = $('#igv-app-dropdown-google-drive-genome-file-button');
+    if (false === googleEnabled) {
+        $genomeGoogleFilePickerButton.parent().hide();
     }
 
     // Genome Multiple File Load Controller
@@ -118,7 +117,8 @@ let initializationHelper = (browser, $container, options) => {
             $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
             multipleFileSelection: true,
             $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
-            $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
+            $googleDriveButton: googleEnabled ? $genomeGoogleFilePickerButton : undefined,
+            googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
             configurationHandler: MultipleFileLoadController.genomeConfigurator,
             jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
             pathValidator: MultipleFileLoadController.genomePathValidator,
@@ -154,9 +154,9 @@ let initializationHelper = (browser, $container, options) => {
 
     })();
 
-    let $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
-    if (!googleEnabled) {
-        $igv_app_dropdown_google_drive_session_file_button.parent().hide();
+    let $sessionGoogleFilePickerButton = $('#igv-app-dropdown-google-drive-session-file-button');
+    if (false === googleEnabled) {
+        $sessionGoogleFilePickerButton.parent().hide();
     }
 
     // Session Multiple File Load Controller
@@ -168,7 +168,8 @@ let initializationHelper = (browser, $container, options) => {
             $localFileInput: $('#igv-app-dropdown-local-session-file-input'),
             multipleFileSelection: false,
             $dropboxButton: $('#igv-app-dropdown-dropbox-session-file-button'),
-            $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_session_file_button : undefined,
+            $googleDriveButton: googleEnabled ? $sessionGoogleFilePickerButton : undefined,
+            googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
             configurationHandler: MultipleFileLoadController.sessionConfigurator,
             jsonFileValidator: MultipleFileLoadController.sessionJSONValidator,
             pathValidator: undefined,

@@ -77,6 +77,19 @@ function postInit() {
 
 };
 
+const createFilePickerHandler = () => {
+
+    return (multipleFileLoadController, multipleFileSelection) => {
+
+        createDropdownButtonPicker(multipleFileSelection, responses => {
+            const paths = responses.map(({ name, url: google_url }) => { return { filename: name, name, google_url }; });
+            multipleFileLoadController.ingestPaths(paths);
+        });
+
+    };
+
+};
+
 function createDropdownButtonPicker(multipleFileSelection, filePickerHandler) {
 
     getAccessToken()
@@ -205,4 +218,4 @@ function updateSignInStatus(signInStatus) {
 };
 
 
-export {init, postInit, createDropdownButtonPicker};
+export {init, postInit, createDropdownButtonPicker, createFilePickerHandler };

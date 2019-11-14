@@ -21,7 +21,6 @@
  *
  */
 
-import * as app_google from './app-google.js';
 import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";
 
@@ -29,7 +28,7 @@ const indexableFormats = new Set(["vcf", "bed", "gff", "gtf", "gff3", "bedgraph"
 
 class MultipleFileLoadController {
 
-    constructor ({ browser, $modal, modalTitle, $localFileInput, multipleFileSelection, $dropboxButton, $googleDriveButton, configurationHandler, jsonFileValidator, pathValidator, fileLoadHandler }) {
+    constructor ({ browser, $modal, modalTitle, $localFileInput, multipleFileSelection, $dropboxButton, $googleDriveButton, googleFilePickerHandler, configurationHandler, jsonFileValidator, pathValidator, fileLoadHandler }) {
 
         this.browser = browser;
 
@@ -42,8 +41,11 @@ class MultipleFileLoadController {
 
         this.createDropboxButton($dropboxButton, multipleFileSelection);
 
-        if ($googleDriveButton) {
-            this.createGoogleDriveButton($googleDriveButton, multipleFileSelection);
+        if ($googleDriveButton && googleFilePickerHandler) {
+
+            $googleDriveButton.on('click', () => {
+                googleFilePickerHandler(this, multipleFileSelection);
+            });
         }
 
         this.configurationHandler = configurationHandler;
@@ -276,35 +278,6 @@ class MultipleFileLoadController {
 
             Dropbox.choose( obj );
         });
-    }
-
-    createGoogleDriveButton($button, multipleFileSelection) {
-
-        let self = this,
-            paths;
-
-        $button.on('click', function () {
-
-            app_google.createDropdownButtonPicker(multipleFileSelection, (googleDriveResponses) => {
-
-                // paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
-
-                paths = googleDriveResponses
-                    .map((response) => {
-                        let result =
-                            {
-                                filename: response.name,
-                                name: response.name,
-                                google_url: response.url
-                            };
-
-                        return result;
-                    });
-                self.ingestPaths(paths);
-            });
-
-        });
-
     }
 
     jsonRetrievalParallel(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {

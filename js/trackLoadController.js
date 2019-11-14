@@ -265,7 +265,7 @@ function configureModalSelectList(browser, $modal, configurations) {
 
 }
 
-export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $googleDriveButton}) => {
+export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $googleDriveButton, googleFilePickerHandler }) => {
 
     const multipleFileLoadConfig =
         {
@@ -276,6 +276,7 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
             multipleFileSelection: true,
             $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
             $googleDriveButton,
+            googleFilePickerHandler,
             configurationHandler: MultipleFileLoadController.trackConfigurator,
             jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
             pathValidator: MultipleFileLoadController.trackPathValidator,
@@ -288,12 +289,8 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
         {
             id: "igv-app-encode-modal",
             title: "ENCODE",
-            selectHandler: trackConfigurations => {
-
-                (async (config) => {
-                    await browser.loadTrackList( config )
-                })(trackConfigurations);
-
+            selectHandler: async trackConfigurations => {
+                await browser.loadTrackList( trackConfigurations )
             }
         };
 

@@ -21,7 +21,6 @@
  *
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
 import * as app_google from './app-google.js';
 import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";
@@ -30,30 +29,28 @@ const indexableFormats = new Set(["vcf", "bed", "gff", "gtf", "gff3", "bedgraph"
 
 class MultipleFileLoadController {
 
-    constructor (browser, config) {
+    constructor ({ browser, $modal, modalTitle, $localFileInput, multipleFileSelection, $dropboxButton, $googleDriveButton, configurationHandler, jsonFileValidator, pathValidator, fileLoadHandler }) {
 
         this.browser = browser;
-        this.config = config;
 
-        if (undefined === this.config.multipleFileSelection) {
-            this.config.multipleFileSelection = true;
+        this.$modal = $modal;
+        this.$modal_body = $modal.find('.modal-body');
+
+        this.modalTitle = modalTitle;
+
+        this.createLocalInput($localFileInput);
+
+        this.createDropboxButton($dropboxButton, multipleFileSelection);
+
+        if ($googleDriveButton) {
+            this.createGoogleDriveButton($googleDriveButton, multipleFileSelection);
         }
 
-        this.pathValidator = config.pathValidator;
-        this.jsonFileValidator = config.jsonFileValidator;
-        this.fileLoadHander = config.fileLoadHandler;
-        this.configurationHandler = config.configurationHandler;
+        this.configurationHandler = configurationHandler;
+        this.jsonFileValidator = jsonFileValidator;
 
-        this.$modal = config.$modal;
-        this.$modal_body = this.$modal.find('.modal-body');
-
-        this.createLocalInput(config.$localFileInput);
-
-        this.createDropboxButton(config.$dropboxButton, config.multipleFileSelection);
-
-        if (config.$googleDriveButton) {
-            this.createGoogleDriveButton(config.$googleDriveButton, config.multipleFileSelection);
-        }
+        this.pathValidator = pathValidator;
+        this.fileLoadHander = fileLoadHandler;
 
     }
 
@@ -422,7 +419,7 @@ class MultipleFileLoadController {
             header = '<div> The following files were not loaded ...</div>';
             markup.unshift(header);
 
-            this.$modal.find('.modal-title').text( this.config.modalTitle );
+            this.$modal.find('.modal-title').text( this.modalTitle );
             this.$modal_body.empty();
             this.$modal_body.append(markup.join(''));
             this.$modal.modal('show');
@@ -479,7 +476,7 @@ class MultipleFileLoadController {
             markup.push('<div><span>' + name + '</span>' + '</div>');
         }
 
-        this.$modal.find('.modal-title').text( this.config.modalTitle );
+        this.$modal.find('.modal-title').text( this.modalTitle );
         this.$modal_body.empty();
         this.$modal_body.append(markup.join(''));
         this.$modal.modal('show');

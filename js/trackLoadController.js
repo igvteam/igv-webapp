@@ -267,11 +267,13 @@ function configureModalSelectList(browser, $modal, configurations) {
 
 export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $googleDriveButton}) => {
 
-    const multipleFileTrackConfig =
+    const multipleFileLoadConfig =
         {
+            browser,
             $modal: $('#igv-app-multiple-file-load-modal'),
             modalTitle: 'Track File Error',
             $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
+            multipleFileSelection: true,
             $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
             $googleDriveButton,
             configurationHandler: MultipleFileLoadController.trackConfigurator,
@@ -302,7 +304,7 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
         encodeModalTable: new ModalTable(encodeModalTableConfig),
         $dropdownMenu: $('#igv-app-track-dropdown-menu'),
         $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
-        uberFileLoader: new MultipleFileLoadController(browser, multipleFileTrackConfig)
+        uberFileLoader: new MultipleFileLoadController(multipleFileLoadConfig)
     }
 
 };

@@ -45,7 +45,7 @@ class TrackLoadController {
 
         urlConfig =
             {
-                $widgetParent: $urlModal.find('.modal-body'),
+                widgetParent: $urlModal.find('.modal-body').get(0),
                 dataTitle: undefined,
                 indexTitle: undefined,
                 mode: 'url',

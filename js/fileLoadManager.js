@@ -55,10 +55,10 @@ class FileLoadManager {
 
     ingestPaths() {
 
-        this.ingestPath(this.fileLoadWidget.$inputData.val(), false);
+        this.ingestPath(this.fileLoadWidget.inputData.value, false);
 
-        if (this.fileLoadWidget.$inputIndex) {
-            this.ingestPath(this.fileLoadWidget.$inputIndex.val(), true);
+        if (this.fileLoadWidget.inputIndex) {
+            this.ingestPath(this.fileLoadWidget.inputIndex.value, true);
         }
 
     }

@@ -33,7 +33,7 @@ class SessionController {
 
         let config =
             {
-                $widgetParent: $loadSessionModal.find('.modal-body'),
+                widgetParent: $loadSessionModal.find('.modal-body').get(0),
                 dataTitle: 'Load Session',
                 indexTitle: undefined,
                 mode: 'url',

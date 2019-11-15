@@ -40,7 +40,7 @@ class GenomeLoadController {
         // URL
         let config =
             {
-                $widgetParent: $urlModal.find('.modal-body'),
+                widgetParent: $urlModal.find('.modal-body').get(0),
                 dataTitle: 'Genome',
                 indexTitle: undefined,
                 mode: 'url',

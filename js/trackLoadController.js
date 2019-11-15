@@ -21,14 +21,14 @@
  *
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
+import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
+import ModalTable from '../node_modules/data-modal/js/modalTable.js'
+import {alertPanel} from "./main.js";
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
-import ModalTable from '../node_modules/data-modal/js/modalTable.js'
+import * as app_google from "./app-google.js";
 import MultipleFileLoadController from "./multipleFileLoadController.js";
-import {alertPanel} from "./main.js";
 
 class TrackLoadController {
 
@@ -265,25 +265,7 @@ function configureModalSelectList(browser, $modal, configurations) {
 
 }
 
-export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $googleDriveButton, googleFilePickerHandler }) => {
-
-    const multipleFileLoadConfig =
-        {
-            browser,
-            $modal: $('#igv-app-multiple-file-load-modal'),
-            modalTitle: 'Track File Error',
-            $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
-            multipleFileSelection: true,
-            $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-            $googleDriveButton,
-            googleFilePickerHandler,
-            configurationHandler: MultipleFileLoadController.trackConfigurator,
-            jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
-            pathValidator: MultipleFileLoadController.trackPathValidator,
-            fileLoadHandler: (configurations) => {
-                browser.loadTrackList(configurations);
-            }
-        };
+export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, multipleFileLoadConfig }) => {
 
     const encodeModalTableConfig =
         {
@@ -301,7 +283,32 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
         encodeModalTable: new ModalTable(encodeModalTableConfig),
         $dropdownMenu: $('#igv-app-track-dropdown-menu'),
         $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
-        uberFileLoader: new MultipleFileLoadController(multipleFileLoadConfig)
+        uberFileLoader: new MultipleFileLoadController(trackLoadMultipleFileLoadConfigurator(multipleFileLoadConfig))
+    }
+
+};
+
+const trackLoadMultipleFileLoadConfigurator = ({ browser, $modal, $localFileInput, $dropboxButton, googleEnabled, $googleDriveButton }) => {
+
+    if (false === googleEnabled) {
+        $googleDriveButton.parent().hide();
+    }
+
+    return {
+        browser,
+        $modal,
+        modalTitle: 'Track File Error',
+        $localFileInput,
+        multipleFileSelection: true,
+        $dropboxButton,
+        $googleDriveButton: googleEnabled ? $googleDriveButton : undefined,
+        googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
+        configurationHandler: MultipleFileLoadController.trackConfigurator,
+        jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
+        pathValidator: MultipleFileLoadController.trackPathValidator,
+        fileLoadHandler: (configurations) => {
+            browser.loadTrackList(configurations);
+        }
     }
 
 };

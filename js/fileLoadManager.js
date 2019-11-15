@@ -24,8 +24,6 @@
  * THE SOFTWARE.
  */
 
-import { getExtension } from "./utils.js";
-
 class FileLoadManager {
 
     constructor () {

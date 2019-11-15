@@ -21,9 +21,11 @@
  *
  */
 
+import {configureModal, getExtension } from "./utils.js";
 import FileLoadWidget from "./fileLoadWidget.js";
 import FileLoadManager from "./fileLoadManager.js";
-import {configureModal, getExtension } from "./utils.js";
+import * as app_google from "./app-google";
+import MultipleFileLoadController from "./multipleFileLoadController.js";
 
 class SessionController {
 
@@ -119,5 +121,28 @@ function configureSaveSessionModal(browser, $saveButton, $saveSessionModal){
     });
 
 }
+
+export const sessionMultipleFileLoadConfigurator = ({ browser, $modal, $localFileInput, $dropboxButton, googleEnabled, $googleDriveButton }) => {
+
+    if (false === googleEnabled) {
+        $googleDriveButton.parent().hide();
+    }
+
+    return {
+        browser,
+        $modal,
+        modalTitle: 'Session File Error',
+        $localFileInput,
+        multipleFileSelection: false,
+        $dropboxButton,
+        $googleDriveButton: googleEnabled ? $googleDriveButton : undefined,
+        googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
+        configurationHandler: MultipleFileLoadController.sessionConfigurator,
+        jsonFileValidator: MultipleFileLoadController.sessionJSONValidator,
+        pathValidator: undefined,
+        fileLoadHandler: undefined
+    }
+
+};
 
 export default SessionController;

@@ -24,10 +24,12 @@
  * THE SOFTWARE.
  */
 
+import {alertPanel} from "./main.js";
 import { loadGenome, configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import {alertPanel} from "./main.js";
+import * as app_google from "./app-google.js";
+import MultipleFileLoadController from "./multipleFileLoadController.js";
 
 class GenomeLoadController {
 
@@ -137,6 +139,32 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
     }
 
 }
+
+export const  genomeMultipleFileLoadConfigurator = ({ browser, $modal, $localFileInput, $dropboxButton, googleEnabled, $googleDriveButton }) => {
+
+    if (false === googleEnabled) {
+        $googleDriveButton.parent().hide();
+    }
+
+    return {
+        browser,
+        $modal,
+        modalTitle: 'Genome File Error',
+        $localFileInput,
+        multipleFileSelection: true,
+        $dropboxButton,
+        $googleDriveButton: googleEnabled ? $googleDriveButton : undefined,
+        googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
+        configurationHandler: MultipleFileLoadController.genomeConfigurator,
+        jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
+        pathValidator: MultipleFileLoadController.genomePathValidator,
+        fileLoadHandler: (configurations) => {
+            let config = configurations[ 0 ];
+            loadGenome(config);
+        }
+    }
+
+};
 
 export default GenomeLoadController;
 

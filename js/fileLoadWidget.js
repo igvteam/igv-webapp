@@ -24,54 +24,53 @@
  * THE SOFTWARE.
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
-
 class FileLoadWidget {
 
-    constructor(config, fileLoadManager) {
-        let self = this,
-            obj;
+    constructor({ $widgetParent, dataTitle, indexTitle, mode, fileLoadManager, dataOnly, doURL }) {
 
-        this.config = config;
+        this.$parent = $widgetParent;
 
-        if (undefined === this.config.dataOnly) {
-            this.config.dataOnly = false;
-        }
+        dataTitle = dataTitle || 'Data';
 
-        this.config.dataTitle = config.dataTitle || 'Data';
-        this.config.indexTitle = config.indexTitle || 'Index';
-
-        this.$parent = config.$widgetParent;
+        indexTitle = indexTitle || 'Index';
 
         this.fileLoadManager = fileLoadManager;
         this.fileLoadManager.fileLoadWidget = this;
+
+        dataOnly = dataOnly || false;
+
+        // TODO: Remove?
+        doURL = doURL || false;
 
         // file load widget
         this.$container = $('<div>', { class: 'igv-file-load-widget-container' });
         this.$parent.append(this.$container);
 
-        if ('localFile' === config.mode) {
+        let config;
+        if ('localFile' === mode) {
             // local data/index
-            obj =
+            config =
                 {
+                    $parent: this.$container,
                     doURL: false,
-                    dataTitle: config.dataTitle + ' file',
-                    indexTitle: config.indexTitle + ' file',
-                    dataOnly: this.config.dataOnly
+                    dataTitle: dataTitle + ' file',
+                    indexTitle: indexTitle + ' file',
+                    dataOnly
                 };
         } else {
 
             // url data/index
-            obj =
+            config =
                 {
+                    $parent: this.$container,
                     doURL: true,
-                    dataTitle: config.dataTitle + ' URL',
-                    indexTitle: config.indexTitle + ' URL',
-                    dataOnly: this.config.dataOnly
+                    dataTitle: dataTitle + ' URL',
+                    indexTitle: indexTitle + ' URL',
+                    dataOnly
                 };
         }
 
-        this.createInputContainer(this.$container, obj);
+        this.createInputContainer(config);
 
         // error message container
         this.$error_message = $("<div>", { class:"igv-flw-error-message-container" });
@@ -81,8 +80,8 @@ class FileLoadWidget {
         this.$error_message.append($("<div>", { class:"igv-flw-error-message" }));
 
         // error dismiss button
-        igv.attachDialogCloseHandlerWithParent(this.$error_message, function () {
-            self.dismissErrorMessage();
+        igv.attachDialogCloseHandlerWithParent(this.$error_message, () => {
+            this.dismissErrorMessage();
         });
 
         this.dismissErrorMessage();
@@ -119,7 +118,7 @@ class FileLoadWidget {
         customizer(this.$container);
     }
 
-    createInputContainer($parent, config) {
+    createInputContainer({ $parent, doURL, dataTitle, indexTitle, dataOnly }) {
         let $container,
             $input_data_row,
             $input_index_row,
@@ -136,15 +135,15 @@ class FileLoadWidget {
         // label
         $label = $("<div>", { class:"igv-flw-input-label" });
         $input_data_row.append($label);
-        $label.text(config.dataTitle);
+        $label.text(dataTitle);
 
-        if (true === config.doURL) {
+        if (true === doURL) {
             this.createURLContainer($input_data_row, 'igv-flw-data-url', false);
         } else {
             this.createLocalFileContainer($input_data_row, 'igv-flw-local-data-file', false);
         }
 
-        if (true === config.dataOnly) {
+        if (true === dataOnly) {
             return;
         }
 
@@ -154,9 +153,9 @@ class FileLoadWidget {
         // label
         $label = $("<div>", { class:"igv-flw-input-label" });
         $input_index_row.append($label);
-        $label.text(config.indexTitle);
+        $label.text(indexTitle);
 
-        if (true === config.doURL) {
+        if (true === doURL) {
             this.createURLContainer($input_index_row, 'igv-flw-index-url', true);
         } else {
             this.createLocalFileContainer($input_index_row, 'igv-flw-local-index-file', true);
@@ -176,15 +175,6 @@ class FileLoadWidget {
         } else {
             this.$inputData = $input;
         }
-
-        // $input.on('focus', function () {
-        //     self.dismissErrorMessage();
-        // });
-        //
-        // $input.on('change', function (e) {
-        //     self.dismissErrorMessage();
-        //     self.fileLoadManager.inputHandler($(this).val(), isIndexFile);
-        // });
 
         $parent
             .on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {

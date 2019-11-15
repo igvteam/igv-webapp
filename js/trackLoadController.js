@@ -43,14 +43,18 @@ class TrackLoadController {
         this.$dropdownMenu = $dropdownMenu;
         this.$modal = $genericTrackSelectModal;
 
-        // URL
         urlConfig =
             {
                 $widgetParent: $urlModal.find('.modal-body'),
+                dataTitle: undefined,
+                indexTitle: undefined,
                 mode: 'url',
+                fileLoadManager: new FileLoadManager(),
+                dataOnly: undefined,
+                doURL: undefined
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        this.urlWidget = new FileLoadWidget(urlConfig);
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
             uberFileLoader.ingestPaths( fileLoadManager.getPaths() );
             return true;

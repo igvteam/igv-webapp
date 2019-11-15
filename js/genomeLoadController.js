@@ -38,14 +38,18 @@ class GenomeLoadController {
         this.genomes = genomes;
 
         // URL
-        let urlConfig =
+        let config =
             {
-                dataTitle: 'Genome',
                 $widgetParent: $urlModal.find('.modal-body'),
-                mode: 'url'
+                dataTitle: 'Genome',
+                indexTitle: undefined,
+                mode: 'url',
+                fileLoadManager: new FileLoadManager(),
+                dataOnly: undefined,
+                doURL: undefined
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        this.urlWidget = new FileLoadWidget(config);
 
         let self = this;
         configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {

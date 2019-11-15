@@ -31,15 +31,18 @@ class SessionController {
 
     constructor ({ browser, $loadSessionModal, $saveButton, $saveSessionModal, uberFileLoader }) {
 
-        let urlConfig =
+        let config =
             {
-                dataTitle: 'Load Session',
                 $widgetParent: $loadSessionModal.find('.modal-body'),
+                dataTitle: 'Load Session',
+                indexTitle: undefined,
                 mode: 'url',
-                dataOnly: true
+                fileLoadManager: new FileLoadManager(),
+                dataOnly: true,
+                doURL: undefined
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        this.urlWidget = new FileLoadWidget(config);
 
         // Configure load session modal
         configureModal(this.urlWidget, $loadSessionModal, (fileLoadManager) => {

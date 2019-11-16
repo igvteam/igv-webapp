@@ -34,35 +34,6 @@ class FileLoadManager {
         this.ingestPath(path, isIndexFile);
     }
 
-    getPaths() {
-
-        let paths = [];
-
-        this.ingestPaths();
-
-        if (this.dictionary) {
-
-            if (this.dictionary.data) {
-                paths.push(this.dictionary.data);
-            }
-            if (this.dictionary.index) {
-                paths.push(this.dictionary.index);
-            }
-        }
-
-        return paths;
-    }
-
-    ingestPaths() {
-
-        this.ingestPath(this.fileLoadWidget.inputData.value, false);
-
-        if (this.fileLoadWidget.inputIndex) {
-            this.ingestPath(this.fileLoadWidget.inputIndex.value, true);
-        }
-
-    }
-
     ingestPath (path, isIndexFile) {
         let key = true === isIndexFile ? 'index' : 'data';
 

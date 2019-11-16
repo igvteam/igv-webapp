@@ -33,7 +33,6 @@ class FileLoadWidget {
         indexTitle = indexTitle || 'Index';
 
         this.fileLoadManager = fileLoadManager;
-        this.fileLoadManager.fileLoadWidget = this;
 
         dataOnly = dataOnly || false;
 
@@ -90,6 +89,28 @@ class FileLoadWidget {
         });
 
         this.dismissErrorMessage();
+
+    }
+
+    retrievePaths() {
+
+        this.fileLoadManager.ingestPath(this.inputData.value, false);
+        if (this.inputIndex) {
+            this.fileLoadManager.ingestPath(this.inputIndex.value, true);
+        }
+
+        let paths = [];
+        if (this.fileLoadManager.dictionary) {
+
+            if (this.fileLoadManager.dictionary.data) {
+                paths.push(this.fileLoadManager.dictionary.data);
+            }
+            if (this.fileLoadManager.dictionary.index) {
+                paths.push(this.fileLoadManager.dictionary.index);
+            }
+        }
+
+        return paths;
 
     }
 

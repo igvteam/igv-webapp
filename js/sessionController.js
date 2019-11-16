@@ -45,8 +45,8 @@ class SessionController {
         this.urlWidget = new FileLoadWidget(config);
 
         // Configure load session modal
-        configureModal(this.urlWidget, $loadSessionModal, (fileLoadManager) => {
-            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+        configureModal(this.urlWidget, $loadSessionModal, (fileLoadWidget) => {
+            uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
 

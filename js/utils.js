@@ -95,7 +95,7 @@ let isJSON = (thang) => {
     return (true === (thang instanceof Object) && false === (thang instanceof File));
 };
 
-let configureModal = (fileLoadWidget, $modal, okHandler = undefined) => {
+let configureModal = (fileLoadWidget, $modal, okHandler) => {
     let $dismiss,
         $ok;
 
@@ -118,14 +118,7 @@ let configureModal = (fileLoadWidget, $modal, okHandler = undefined) => {
 
     $ok.on('click', function () {
 
-        let status = true;
-
-        if (okHandler) {
-            status = okHandler(fileLoadWidget.fileLoadManager);
-        } else {
-            status = fileLoadWidget.fileLoadManager.okHandler();
-        }
-
+        let status = okHandler(fileLoadWidget);
         if (true === status) {
             fileLoadWidget.dismiss();
             $modal.modal('hide');

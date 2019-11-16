@@ -55,8 +55,8 @@ class TrackLoadController {
             };
 
         this.urlWidget = new FileLoadWidget(urlConfig);
-        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-            uberFileLoader.ingestPaths( fileLoadManager.getPaths() );
+        configureModal(this.urlWidget, $urlModal, (fileLoadWidget) => {
+            uberFileLoader.ingestPaths( fileLoadWidget.retrievePaths() );
             return true;
         });
 

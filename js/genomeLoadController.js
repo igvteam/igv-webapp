@@ -52,7 +52,7 @@ class GenomeLoadController {
         this.urlWidget = new FileLoadWidget(config);
 
         let self = this;
-        configureModal(this.urlWidget, $urlModal, (fileLoadWidget) => {
+        configureModal(this.urlWidget, $urlModal.get(0), (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
@@ -144,7 +144,7 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
 }
 
-export const  genomeMultipleFileLoadConfigurator = ({ browser, $modal, $localFileInput, $dropboxButton, googleEnabled, $googleDriveButton }) => {
+export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton }) => {
 
     if (false === googleEnabled) {
         $googleDriveButton.parent().hide();
@@ -152,12 +152,12 @@ export const  genomeMultipleFileLoadConfigurator = ({ browser, $modal, $localFil
 
     return {
         browser,
-        $modal,
+        modal,
         modalTitle: 'Genome File Error',
-        $localFileInput,
+        localFileInput,
         multipleFileSelection: true,
-        $dropboxButton,
-        $googleDriveButton: googleEnabled ? $googleDriveButton : undefined,
+        dropboxButton,
+        googleDriveButton: googleEnabled ? googleDriveButton : undefined,
         googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
         configurationHandler: MultipleFileLoadController.genomeConfigurator,
         jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,

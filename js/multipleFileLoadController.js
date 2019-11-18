@@ -23,29 +23,30 @@
 
 import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";
-
+import { BS } from '../node_modules/igv-ui/dist/igv-ui.js';
 const indexableFormats = new Set(["vcf", "bed", "gff", "gtf", "gff3", "bedgraph"]);
 
 class MultipleFileLoadController {
 
-    constructor ({ browser, $modal, modalTitle, $localFileInput, multipleFileSelection, $dropboxButton, $googleDriveButton, googleFilePickerHandler, configurationHandler, jsonFileValidator, pathValidator, fileLoadHandler }) {
+    constructor ({ browser, modal, modalTitle, localFileInput, multipleFileSelection, dropboxButton, googleDriveButton, googleFilePickerHandler, configurationHandler, jsonFileValidator, pathValidator, fileLoadHandler }) {
 
         this.browser = browser;
 
-        this.$modal = $modal;
-        this.$modal_body = $modal.find('.modal-body');
+        this.modal = modal;
+        this.modal_body = this.modal.querySelector('.modal-body');
 
         this.modalTitle = modalTitle;
 
-        this.createLocalInput($localFileInput);
+        this.createLocalInput(localFileInput);
 
-        this.createDropboxButton($dropboxButton, multipleFileSelection);
+        this.createDropboxButton(dropboxButton, multipleFileSelection);
 
-        if ($googleDriveButton && googleFilePickerHandler) {
+        if (googleDriveButton && googleFilePickerHandler) {
 
-            $googleDriveButton.on('click', () => {
+            googleDriveButton.addEventListener('click', () => {
                 googleFilePickerHandler(this, multipleFileSelection);
             });
+
         }
 
         this.configurationHandler = configurationHandler;
@@ -243,40 +244,34 @@ class MultipleFileLoadController {
 
     }
 
-    createLocalInput($input) {
-        let self = this;
+    createLocalInput(input) {
 
-        $input.on('change', function () {
+        input.addEventListener('change', () => {
 
-            if (true === MultipleFileLoadController.isValidLocalFileInput($(this))) {
-
-                let input = $(this).get(0);
-                let list = Array.from(input.files);
+            if (true === MultipleFileLoadController.isValidLocalFileInput(input)) {
+                this.ingestPaths( Array.from(input.files) );
                 input.value = '';
-
-                self.ingestPaths(list);
             }
 
         });
 
     }
 
-    createDropboxButton($dropboxButton, multipleFileSelection) {
-        let self = this;
+    createDropboxButton(dropboxButton, multipleFileSelection) {
 
-        $dropboxButton.on('click', function () {
-            let obj;
+        dropboxButton.addEventListener('click', () => {
 
-            obj =
+            const obj =
                 {
-                    success: (dbFiles) => (self.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
-                    cancel: function() { },
+                    success: (dbFiles) => (this.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
+                    cancel: () => {},
                     linkType: "preview",
                     multiselect: multipleFileSelection,
                     folderselect: false,
                 };
 
             Dropbox.choose( obj );
+
         });
     }
 
@@ -392,10 +387,10 @@ class MultipleFileLoadController {
             header = '<div> The following files were not loaded ...</div>';
             markup.unshift(header);
 
-            this.$modal.find('.modal-title').text( this.modalTitle );
-            this.$modal_body.empty();
-            this.$modal_body.append(markup.join(''));
-            this.$modal.modal('show');
+            this.modal.querySelector('.modal-title').textContent = this.modalTitle;
+            this.modal_body.innerHTML = "";
+            this.modal_body.innerHTML = markup.join('');
+            BS.showModal(this.modal, true);
         }
     }
 
@@ -449,15 +444,14 @@ class MultipleFileLoadController {
             markup.push('<div><span>' + name + '</span>' + '</div>');
         }
 
-        this.$modal.find('.modal-title').text( this.modalTitle );
-        this.$modal_body.empty();
-        this.$modal_body.append(markup.join(''));
-        this.$modal.modal('show');
-
+        this.modal.querySelector('.modal-title').textContent = this.modalTitle;
+        this.modal_body.innerHTML = '';
+        this.modal_body.innerHTML = markup.join('');
+        BS.showModal(this.modal, true);
     }
 
-    static isValidLocalFileInput($input) {
-        return ($input.get(0).files && $input.get(0).files.length > 0);
+    static isValidLocalFileInput(input) {
+        return (input.files && input.files.length > 0);
     }
 
     //

@@ -21,6 +21,7 @@
  *
  */
 
+import { BS } from '../node_modules/igv-ui/dist/igv-ui.js';
 import { trackLoadController, alertPanel } from './main.js';
 import Globals from "./globals.js"
 
@@ -95,33 +96,36 @@ let isJSON = (thang) => {
     return (true === (thang instanceof Object) && false === (thang instanceof File));
 };
 
-let configureModal = (fileLoadWidget, $modal, okHandler) => {
-    let $dismiss,
-        $ok;
+let configureModal = (fileLoadWidget, modal, okHandler) => {
+    let dismiss;
 
     // upper dismiss - x - button
-    $dismiss = $modal.find('.modal-header button:nth-child(1)');
-    $dismiss.on('click', function () {
+    dismiss = modal.querySelector('.modal-header button');
+    dismiss.addEventListener('click', () => {
         fileLoadWidget.dismiss();
-        $modal.modal('hide');
+        BS.showModal(modal, false);
+        // modal.modal('hide');
     });
 
     // lower dismiss - close - button
-    $dismiss = $modal.find('.modal-footer button:nth-child(1)');
-    $dismiss.on('click', function () {
+    dismiss = modal.querySelector('.modal-footer button:nth-child(1)');
+    dismiss.addEventListener('click', () => {
         fileLoadWidget.dismiss();
-        $modal.modal('hide');
+        BS.showModal(modal, false);
+        // modal.modal('hide');
     });
 
     // ok - button
-    $ok = $modal.find('.modal-footer button:nth-child(2)');
+    const ok = modal.querySelector('.modal-footer button:nth-child(2)');
 
-    $ok.on('click', function () {
+    ok.addEventListener('click', () => {
 
         let status = okHandler(fileLoadWidget);
+
         if (true === status) {
             fileLoadWidget.dismiss();
-            $modal.modal('hide');
+            BS.showModal(modal, false);
+            // modal.modal('hide');
         }
 
     });

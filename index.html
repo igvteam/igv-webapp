@@ -78,8 +78,7 @@
                         Genome
                     </a>
 
-                    <div id="igv-app-genome-dropdown-menu" class="dropdown-menu"
-                         aria-labelledby="igv-app-genome-dropdown-button">
+                    <div id="igv-app-genome-dropdown-menu" class="dropdown-menu">
 
                         <div id="igv-app-genome-dropdown-divider" class="dropdown-divider"></div>
 
@@ -90,8 +89,7 @@
                                     Local File ...
                                 </div>
                                 <div>
-                                    <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file"
-                                           multiple style="display: none;">
+                                    <input id="igv-app-dropdown-local-genome-file-input" type="file" name="file" multiple style="display: none;">
                                 </div>
                             </div>
                         </label>
@@ -140,8 +138,7 @@
                         Tracks
                     </a>
 
-                    <div id="igv-app-track-dropdown-menu" class="dropdown-menu"
-                         aria-labelledby="igv-app-track-dropdown-button">
+                    <div id="igv-app-track-dropdown-menu" class="dropdown-menu">
 
                         <!-- local file -->
                         <label class="dropdown-item btn btn-default btn-file">
@@ -150,8 +147,7 @@
                                     Local File ...
                                 </div>
                                 <div>
-                                    <input id="igv-app-dropdown-local-track-file-input" type="file" name="file" multiple
-                                           style="display: none;">
+                                    <input id="igv-app-dropdown-local-track-file-input" type="file" name="file" multiple style="display: none;">
                                 </div>
                             </div>
                         </label>
@@ -181,8 +177,8 @@
                         </div>
 
                         <!-- URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal"
-                                data-target="#igv-app-track-from-url-modal">URL ...
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-track-from-url-modal">
+                            URL ...
                         </button>
 
                         <div id="igv-app-annotations-section" class="dropdown-divider"></div>
@@ -209,8 +205,7 @@
                                     Local File ...
                                 </div>
                                 <div>
-                                    <input id="igv-app-dropdown-local-session-file-input" type="file" name="file"
-                                           style="display: none;">
+                                    <input id="igv-app-dropdown-local-session-file-input" type="file" name="file" style="display: none;">
                                 </div>
                             </div>
                         </label>
@@ -240,8 +235,8 @@
                         </div>
 
                         <!-- Load session URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal"
-                                data-target="#igv-app-session-from-url-modal">Load URL ...
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">
+                            Load URL ...
                         </button>
 
                         <div class="dropdown-divider"></div>
@@ -330,10 +325,9 @@
     </div>
 
     <!-- Multiple File Load Modal -->
-    <div id="igv-app-multiple-file-load-modal" class="modal" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-multiple-file-load-modal-label" aria-hidden="true">
+    <div id="igv-app-multiple-file-load-modal" class="modal">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
 
@@ -341,8 +335,8 @@
                     <div id="igv-app-multiple-file-load-modal-label" class="modal-title">
                     </div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
 
                 </div>
@@ -357,10 +351,9 @@
     </div>
 
     <!-- Generic Track Select Modal -->
-    <div id="igv-app-generic-track-select-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-generic-track-select-modal-label" aria-hidden="true">
+    <div id="igv-app-generic-track-select-modal" class="modal">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
 
@@ -368,8 +361,8 @@
                     <div id="igv-app-generic-track-select-modal-label" class="modal-title">
                     </div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
 
                 </div>
@@ -390,18 +383,19 @@
     </div>
 
     <!-- Genome from URL -->
-    <div id="igv-app-genome-from-url-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-genome-from-url-modal-label" aria-hidden="true">
+    <div id="igv-app-genome-from-url-modal" class="modal">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <div id="igv-app-genome-from-url-modal-label" class="modal-title">Genome URL</div>
+                    <div id="igv-app-genome-from-url-modal-label" class="modal-title">
+                        Genome URL
+                    </div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
 
                 </div>
@@ -421,18 +415,17 @@
     </div>
 
     <!-- Track from URL -->
-    <div id="igv-app-track-from-url-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-track-from-url-modal-label" aria-hidden="true">
+    <div id="igv-app-track-from-url-modal" class="modal">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
 
                 <div class="modal-header">
                     <div id="igv-app-track-from-url-modal-label" class="modal-title">Track URL</div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
 
                 </div>
@@ -452,10 +445,9 @@
     </div>
 
     <!-- Session save -->
-    <div id="igv-app-session-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-session-save-modal-label" aria-hidden="true">
+    <div id="igv-app-session-save-modal" class="modal igv-app-file-save-modal">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
 
@@ -467,8 +459,8 @@
                         </div>
                     </div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
                 </div>
 
@@ -493,18 +485,17 @@
     </div>
 
     <!-- Session from URL -->
-    <div id="igv-app-session-from-url-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-session-from-url-modal-label" aria-hidden="true">
+    <div id="igv-app-session-from-url-modal" class="modal">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
 
                 <div class="modal-header">
                     <div id="igv-app-session-from-url-modal-label" class="modal-title">Session URL</div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
 
                 </div>
@@ -524,10 +515,9 @@
     </div>
 
     <!-- SVG save -->
-    <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-svg-save-modal-label" aria-hidden="true">
+    <div id="igv-app-svg-save-modal" class="modal igv-app-file-save-modal">
 
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg">
 
             <div class="modal-content">
 
@@ -539,8 +529,8 @@
                         </div>
                     </div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
                 </div>
 
@@ -565,18 +555,17 @@
     </div>
 
     <!-- Share URL Modal -->
-    <div id="igv-app-share-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-share-input-modal-label" aria-hidden="true">
+    <div id="igv-app-share-modal" class="modal">
 
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
 
             <div class="modal-content">
 
                 <div class="modal-header">
                     <div id="igv-app-share-input-modal-close-button" class="modal-title">Share</div>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
                     </button>
 
                 </div>

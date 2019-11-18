@@ -29,6 +29,7 @@ import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 import * as app_google from "./app-google.js";
 import MultipleFileLoadController from "./multipleFileLoadController.js";
+import {DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class TrackLoadController {
 
@@ -55,7 +56,7 @@ class TrackLoadController {
             };
 
         this.urlWidget = new FileLoadWidget(urlConfig);
-        configureModal(this.urlWidget, $urlModal, (fileLoadWidget) => {
+        configureModal(this.urlWidget, $urlModal.get(0), (fileLoadWidget) => {
             uberFileLoader.ingestPaths( fileLoadWidget.retrievePaths() );
             return true;
         });
@@ -292,20 +293,20 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, mul
 
 };
 
-const trackLoadMultipleFileLoadConfigurator = ({ browser, $modal, $localFileInput, $dropboxButton, googleEnabled, $googleDriveButton }) => {
+const trackLoadMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton }) => {
 
     if (false === googleEnabled) {
-        $googleDriveButton.parent().hide();
+        DomUtils.hide(googleDriveButton.parentElement);
     }
 
     return {
         browser,
-        $modal,
+        modal,
         modalTitle: 'Track File Error',
-        $localFileInput,
+        localFileInput,
         multipleFileSelection: true,
-        $dropboxButton,
-        $googleDriveButton: googleEnabled ? $googleDriveButton : undefined,
+        dropboxButton,
+        googleDriveButton: googleEnabled ? googleDriveButton : undefined,
         googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
         configurationHandler: MultipleFileLoadController.trackConfigurator,
         jsonFileValidator: MultipleFileLoadController.trackJSONValidator,

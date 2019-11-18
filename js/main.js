@@ -23,6 +23,7 @@
 
 //import igv from '../node_modules/igv/dist/igv.esm.min.js';
 
+import { BS } from '../node_modules/igv-ui/dist/igv-ui.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 
@@ -85,21 +86,21 @@ let main = ($container, config) => {
 
 let initializationHelper = (browser, $container, options) => {
 
+    BS.initialize();
+
     alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
-
-    let $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
 
     // Track Load Multiple File Load Controller
     const trackLoadMultipleFileLoadConfig =
         {
             browser,
-            $modal: $multipleFileLoadModal,
-            $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
-            $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
+            modal: document.querySelector('#igv-app-multiple-file-load-modal'),
+            localFileInput: document.querySelector('#igv-app-dropdown-local-track-file-input'),
+            dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-track-file-button'),
             googleEnabled,
-            $googleDriveButton: $('#igv-app-dropdown-google-drive-track-file-button')
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-track-file-button')
         };
 
 
@@ -110,11 +111,11 @@ let initializationHelper = (browser, $container, options) => {
     const genomeMultipleFileLoadConfig =
         {
             browser,
-            $modal: $multipleFileLoadModal,
-            $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
-            $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
+            modal: document.querySelector('#igv-app-multiple-file-load-modal'),
+            localFileInput: document.querySelector('#igv-app-dropdown-local-genome-file-input'),
+            dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-genome-file-button'),
             googleEnabled,
-            $googleDriveButton: $('#igv-app-dropdown-google-drive-genome-file-button')
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-genome-file-button')
         };
 
     // Genome Load Controller
@@ -145,11 +146,11 @@ let initializationHelper = (browser, $container, options) => {
     const sessionMultipleFileLoadConfig =
         {
             browser,
-            $modal: $multipleFileLoadModal,
-            $localFileInput: $('#igv-app-dropdown-local-session-file-input'),
-            $dropboxButton: $('#igv-app-dropdown-dropbox-session-file-button'),
+            modal: document.querySelector('#igv-app-multiple-file-load-modal'),
+            localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
+            dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
             googleEnabled,
-            $googleDriveButton: $('#igv-app-dropdown-google-drive-session-file-button')
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button')
         };
 
     // Session Controller

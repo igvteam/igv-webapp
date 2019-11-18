@@ -45,7 +45,7 @@ class SessionController {
         this.urlWidget = new FileLoadWidget(config);
 
         // Configure load session modal
-        configureModal(this.urlWidget, $loadSessionModal, (fileLoadWidget) => {
+        configureModal(this.urlWidget, $loadSessionModal.get(0), (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
@@ -125,7 +125,7 @@ function configureSaveSessionModal(browser, $saveButton, $saveSessionModal){
 
 }
 
-export const sessionMultipleFileLoadConfigurator = ({ browser, $modal, $localFileInput, $dropboxButton, googleEnabled, $googleDriveButton }) => {
+export const sessionMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton }) => {
 
     if (false === googleEnabled) {
         $googleDriveButton.parent().hide();
@@ -133,12 +133,12 @@ export const sessionMultipleFileLoadConfigurator = ({ browser, $modal, $localFil
 
     return {
         browser,
-        $modal,
+        modal,
         modalTitle: 'Session File Error',
-        $localFileInput,
+        localFileInput,
         multipleFileSelection: false,
-        $dropboxButton,
-        $googleDriveButton: googleEnabled ? $googleDriveButton : undefined,
+        dropboxButton,
+        googleDriveButton: googleEnabled ? googleDriveButton : undefined,
         googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
         configurationHandler: MultipleFileLoadController.sessionConfigurator,
         jsonFileValidator: MultipleFileLoadController.sessionJSONValidator,

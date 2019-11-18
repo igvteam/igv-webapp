@@ -31,5 +31,8 @@
     "rollup-plugin-strip": "^1.2.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8"
+  },
+  "dependencies": {
+    "igv-ui": "github:igvteam/igv-ui#dat"
   }
 }

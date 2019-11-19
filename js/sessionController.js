@@ -125,7 +125,7 @@ function configureSaveSessionModal(browser, $saveButton, $saveSessionModal){
 
 }
 
-export const sessionMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton }) => {
+export const sessionMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
 
     if (false === googleEnabled) {
         $googleDriveButton.parent().hide();
@@ -143,7 +143,8 @@ export const sessionMultipleFileLoadConfigurator = ({ browser, modal, localFileI
         configurationHandler: MultipleFileLoadController.sessionConfigurator,
         jsonFileValidator: MultipleFileLoadController.sessionJSONValidator,
         pathValidator: undefined,
-        fileLoadHandler: undefined
+        fileLoadHandler: undefined,
+        modalPresentationHandler
     }
 
 };

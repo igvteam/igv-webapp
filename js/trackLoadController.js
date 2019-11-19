@@ -293,7 +293,7 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, mul
 
 };
 
-const trackLoadMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton }) => {
+const trackLoadMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
 
     if (false === googleEnabled) {
         DomUtils.hide(googleDriveButton.parentElement);
@@ -313,7 +313,8 @@ const trackLoadMultipleFileLoadConfigurator = ({ browser, modal, localFileInput,
         pathValidator: MultipleFileLoadController.trackPathValidator,
         fileLoadHandler: (configurations) => {
             browser.loadTrackList(configurations);
-        }
+        },
+        modalPresentationHandler
     }
 
 };

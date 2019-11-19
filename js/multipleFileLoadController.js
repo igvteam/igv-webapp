@@ -23,23 +23,42 @@
 
 import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";
-import { BS } from '../node_modules/igv-ui/dist/igv-ui.js';
 const indexableFormats = new Set(["vcf", "bed", "gff", "gtf", "gff3", "bedgraph"]);
 
 class MultipleFileLoadController {
 
-    constructor ({ browser, modal, modalTitle, localFileInput, multipleFileSelection, dropboxButton, googleDriveButton, googleFilePickerHandler, configurationHandler, jsonFileValidator, pathValidator, fileLoadHandler }) {
+    constructor ({ browser, modal, modalTitle, localFileInput, multipleFileSelection, dropboxButton, googleDriveButton, googleFilePickerHandler, configurationHandler, jsonFileValidator, pathValidator, fileLoadHandler, modalPresentationHandler }) {
 
         this.browser = browser;
 
         this.modal = modal;
-        this.modal_body = this.modal.querySelector('.modal-body');
 
         this.modalTitle = modalTitle;
 
-        this.createLocalInput(localFileInput);
+        localFileInput.addEventListener('change', async () => {
 
-        this.createDropboxButton(dropboxButton, multipleFileSelection);
+            if (true === MultipleFileLoadController.isValidLocalFileInput(localFileInput)) {
+                await this.ingestPaths( Array.from(localFileInput.files) );
+                localFileInput.value = '';
+            }
+
+        });
+
+        dropboxButton.addEventListener('click', () => {
+
+            const obj =
+                {
+                    success: (dbFiles) => (this.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
+                    cancel: () => {},
+                    linkType: "preview",
+                    multiselect: multipleFileSelection,
+                    folderselect: false,
+                };
+
+            Dropbox.choose( obj );
+
+        });
+
 
         if (googleDriveButton && googleFilePickerHandler) {
 
@@ -54,7 +73,7 @@ class MultipleFileLoadController {
 
         this.pathValidator = pathValidator;
         this.fileLoadHander = fileLoadHandler;
-
+        this.modalPresentationHandler = modalPresentationHandler;
     }
 
     async ingestPaths(paths) {
@@ -106,7 +125,7 @@ class MultipleFileLoadController {
                 .filter(o => false === o.isValid);
 
             if (invalids.length > 0) {
-                this.presentInvalidFiles( invalids.map(o => o.path) );
+                this.presentModalWithInvalidFiles(invalids.map(o => o.path));
                 return;
             }
 
@@ -177,7 +196,7 @@ class MultipleFileLoadController {
                     .filter(obj => false === obj.isValid);
 
                 if (invalid.length > 0) {
-                    this.presentInvalidFiles( invalid.map(o => o.path) );
+                    this.presentModalWithInvalidFiles(invalid.map(o => o.path));
                     return;
                 }
 
@@ -239,40 +258,9 @@ class MultipleFileLoadController {
                 this.fileLoadHander( configurations );
             }
 
-            this.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+            this.presentModalWithFileLoadingErrors(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
         }
 
-    }
-
-    createLocalInput(input) {
-
-        input.addEventListener('change', () => {
-
-            if (true === MultipleFileLoadController.isValidLocalFileInput(input)) {
-                this.ingestPaths( Array.from(input.files) );
-                input.value = '';
-            }
-
-        });
-
-    }
-
-    createDropboxButton(dropboxButton, multipleFileSelection) {
-
-        dropboxButton.addEventListener('click', () => {
-
-            const obj =
-                {
-                    success: (dbFiles) => (this.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
-                    cancel: () => {},
-                    linkType: "preview",
-                    multiselect: multipleFileSelection,
-                    folderselect: false,
-                };
-
-            Dropbox.choose( obj );
-
-        });
     }
 
     jsonRetrievalParallel(retrievalTasks, configurations, dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
@@ -302,15 +290,15 @@ class MultipleFileLoadController {
                     configurations.push.apply(configurations, jsonConfigurations);
                     self.fileLoadHander(configurations);
 
-                    self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+                    self.presentModalWithFileLoadingErrors(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
                 } else {
-                    self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+                    self.presentModalWithFileLoadingErrors(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
                 }
 
             })
             .catch(function (error) {
                 console.log(error);
-                self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
+                self.presentModalWithFileLoadingErrors(dataPaths, indexPaths, indexPathNamesLackingDataPaths, new Set());
             });
 
     }
@@ -357,40 +345,30 @@ class MultipleFileLoadController {
 
     }
 
-    renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonFailureNameSet) {
-        let markup;
+    presentModalWithFileLoadingErrors(dataPaths, indexPaths, indexPathNamesLackingDataPaths, jsonFailureNameSet) {
 
-        markup = Object
-            .keys(dataPaths)
-            .reduce(function(accumulator, name) {
+        let markup = Object.keys(dataPaths)
+            .filter(name => { return true === dataPathIsMissingIndexPath(name, indexPaths) })
+            .map(name => `'<div><span>${ name }</span> ERROR: index file must also be selected</div>`);
 
-                if (true === dataPathIsMissingIndexPath(name, indexPaths)) {
-                    accumulator.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: index file must also be selected</div>');
-                }
+        if (indexPathNamesLackingDataPaths.length > 0) {
+            markup = markup.concat(indexPathNamesLackingDataPaths.map(name => `<div><span>${ name }</span> ERROR: data file must also be selected</div>`));
+        }
 
-                return accumulator;
-            }, []);
-
-        indexPathNamesLackingDataPaths
-            .forEach(function (name) {
-                markup.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: data file must also be selected</div>');
-            });
-
-        jsonFailureNameSet
-            .forEach((name) => {
-                markup.push('<div><span>&nbsp;&nbsp;&nbsp;&nbsp;' + name + '</span>' + '&nbsp;&nbsp;&nbsp;ERROR: problems parsing JSON</div>');
-            });
+        if (jsonFailureNameSet.size > 0) {
+            markup = markup.concat(jsonFailureNameSet.map(name => `<div><span>${ name }</span> problems parsing JSON</div>`));
+        }
 
         if (markup.length > 0) {
-            let header;
 
-            header = '<div> The following files were not loaded ...</div>';
-            markup.unshift(header);
-
+            markup.unshift('<div> The following files were not loaded ...</div>');
             this.modal.querySelector('.modal-title').textContent = this.modalTitle;
-            this.modal_body.innerHTML = "";
-            this.modal_body.innerHTML = markup.join('');
-            BS.showModal(this.modal, true);
+
+            const modal_body = this.modal.querySelector('.modal-body');
+            modal_body.innerHTML = "";
+            modal_body.innerHTML = markup.join('');
+
+            this.modalPresentationHandler();
         }
     }
 
@@ -419,7 +397,7 @@ class MultipleFileLoadController {
             self.fileLoadHander(configurations);
 
             failureSet = [...taskSet].filter(x => !successSet.has(x));
-            self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+            self.presentModalWithFileLoadingErrors(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
 
         } else {
 
@@ -428,26 +406,24 @@ class MultipleFileLoadController {
             }
 
             failureSet = [...taskSet].filter(x => !successSet.has(x));
-            self.renderTrackFileSelection(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
+            self.presentModalWithFileLoadingErrors(dataPaths, indexPaths, indexPathNamesLackingDataPaths, failureSet);
         }
     }
 
-    presentInvalidFiles (paths) {
+    presentModalWithInvalidFiles(paths) {
 
         let markup = [];
 
-        let header = '<div> Invalid Files </div>';
-        markup.push(header);
+        markup.push('<div> Invalid Files </div>');
 
-        for (let path of paths) {
-            let name = getFilename(path);
-            markup.push('<div><span>' + name + '</span>' + '</div>');
-        }
+        markup = markup.concat(paths.map(path => `<div><span> ${ getFilename(path) }</span></div>`));
 
         this.modal.querySelector('.modal-title').textContent = this.modalTitle;
-        this.modal_body.innerHTML = '';
-        this.modal_body.innerHTML = markup.join('');
-        BS.showModal(this.modal, true);
+        const modal_body = this.modal.querySelector('.modal-body');
+        modal_body.innerHTML = '';
+        modal_body.innerHTML = markup.join('');
+
+        this.modalPresentationHandler();
     }
 
     static isValidLocalFileInput(input) {

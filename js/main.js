@@ -86,8 +86,6 @@ let main = ($container, config) => {
 
 let initializationHelper = (browser, $container, options) => {
 
-    BS.initialize();
-
     alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
@@ -100,7 +98,10 @@ let initializationHelper = (browser, $container, options) => {
             localFileInput: document.querySelector('#igv-app-dropdown-local-track-file-input'),
             dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-track-file-button'),
             googleEnabled,
-            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-track-file-button')
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-track-file-button'),
+            modalPresentationHandler: () => {
+                $('#igv-app-multiple-file-load-modal').modal('show');
+            }
         };
 
 
@@ -123,7 +124,10 @@ let initializationHelper = (browser, $container, options) => {
         {
             $urlModal: $('#igv-app-genome-from-url-modal'),
             genomes: options.genomes,
-            uberFileLoader: new MultipleFileLoadController(genomeMultipleFileLoadConfigurator(genomeMultipleFileLoadConfig))
+            uberFileLoader: new MultipleFileLoadController(genomeMultipleFileLoadConfigurator(genomeMultipleFileLoadConfig)),
+            modalPresentationHandler: () => {
+                $('#igv-app-multiple-file-load-modal').modal('show');
+            }
         };
 
     genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
@@ -150,7 +154,10 @@ let initializationHelper = (browser, $container, options) => {
             localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
             dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
             googleEnabled,
-            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button')
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button'),
+            modalPresentationHandler: () => {
+                $('#igv-app-multiple-file-load-modal').modal('show');
+            }
         };
 
     // Session Controller

@@ -103,16 +103,12 @@ let configureModal = (fileLoadWidget, modal, okHandler) => {
     dismiss = modal.querySelector('.modal-header button');
     dismiss.addEventListener('click', () => {
         fileLoadWidget.dismiss();
-        BS.showModal(modal, false);
-        // modal.modal('hide');
     });
 
     // lower dismiss - close - button
     dismiss = modal.querySelector('.modal-footer button:nth-child(1)');
     dismiss.addEventListener('click', () => {
         fileLoadWidget.dismiss();
-        BS.showModal(modal, false);
-        // modal.modal('hide');
     });
 
     // ok - button
@@ -120,12 +116,8 @@ let configureModal = (fileLoadWidget, modal, okHandler) => {
 
     ok.addEventListener('click', () => {
 
-        let status = okHandler(fileLoadWidget);
-
-        if (true === status) {
+        if (true === okHandler(fileLoadWidget)) {
             fileLoadWidget.dismiss();
-            BS.showModal(modal, false);
-            // modal.modal('hide');
         }
 
     });

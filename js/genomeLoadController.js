@@ -144,7 +144,7 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
 }
 
-export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton }) => {
+export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
 
     if (false === googleEnabled) {
         $googleDriveButton.parent().hide();
@@ -165,7 +165,8 @@ export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileI
         fileLoadHandler: (configurations) => {
             let config = configurations[ 0 ];
             loadGenome(config);
-        }
+        },
+        modalPresentationHandler
     }
 
 };

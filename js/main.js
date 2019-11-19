@@ -21,9 +21,6 @@
  *
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
-
-import { BS } from '../node_modules/igv-ui/dist/igv-ui.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 
@@ -106,7 +103,10 @@ let initializationHelper = (browser, $container, options) => {
 
 
     const { trackRegistryFile } = options;
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, multipleFileLoadConfig: trackLoadMultipleFileLoadConfig }));
+    const modalDismissHandler = () => {
+        $('#igv-app-generic-track-select-modal').modal('hide');
+    };
+    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, multipleFileLoadConfig: trackLoadMultipleFileLoadConfig, modalDismissHandler }));
 
     // Genome Multiple File Load Controller
     const genomeMultipleFileLoadConfig =

@@ -33,20 +33,19 @@ import {DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class TrackLoadController {
 
-    constructor({browser, trackRegistryFile, $urlModal, encodeModalTable, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
+    constructor({browser, trackRegistryFile, modal, encodeModalTable, dropdownMenu, genericTrackSelectModal, uberFileLoader, modalDismissHandler}) {
 
         let urlConfig;
 
         this.browser = browser;
         this.trackRegistryFile = trackRegistryFile;
-        this.trackRegistry = undefined;
         this.encodeModalTable = encodeModalTable;
-        this.$dropdownMenu = $dropdownMenu;
-        this.$modal = $genericTrackSelectModal;
+        this.dropdownMenu = dropdownMenu;
+        this.modal = genericTrackSelectModal;
 
         urlConfig =
             {
-                widgetParent: $urlModal.find('.modal-body').get(0),
+                widgetParent: modal.querySelector('.modal-body'),
                 dataTitle: undefined,
                 indexTitle: undefined,
                 mode: 'url',
@@ -56,33 +55,170 @@ class TrackLoadController {
             };
 
         this.urlWidget = new FileLoadWidget(urlConfig);
-        configureModal(this.urlWidget, $urlModal.get(0), (fileLoadWidget) => {
+        configureModal(this.urlWidget, modal, (fileLoadWidget) => {
             uberFileLoader.ingestPaths( fileLoadWidget.retrievePaths() );
             return true;
         });
+
+        this.modalDismissHandler = modalDismissHandler;
 
         this.updateTrackMenus(browser.genome.id);
 
     }
 
-    async getTrackRegistry() {
+    updateTrackMenus(genomeID) {
 
-        if (this.trackRegistry) {
-            return this.trackRegistry;
-        } else if (this.trackRegistryFile) {
+        (async (genomeID) => {
 
-            let response = undefined;
+            const id_prefix = 'genome_specific_';
 
-            try {
-                response = await fetch(this.trackRegistryFile);
-            } catch (e) {
-                console.error(e);
+            const divider = this.dropdownMenu.querySelector('#igv-app-annotations-section');
+
+            const e = this.dropdownMenu.querySelector(`[id^=${ id_prefix }]`);
+            if (e) {
+                e.parentNode.removeChild(e);
             }
 
-            if (response) {
-                return await response.json();
-            } else {
-                return undefined;
+            if (undefined === this.trackRegistryFile) {
+                const e = new Error("Error: Missing track registry file");
+                alertPanel.presentAlert(e.message);
+                throw e;
+            }
+
+            const trackRegistry = await getTrackRegistry(this.trackRegistryFile);
+
+            if (trackRegistry) {
+
+                const paths = trackRegistry[ genomeID ];
+
+                if (undefined === paths) {
+                    console.warn(`There are no tracks in the track registry for genome ${ genomeID }`);
+                    return;
+                }
+
+                let responses = [];
+                try {
+                    responses = await Promise.all( paths.map( path => fetch(path) ) )
+                } catch (e) {
+                    alertPanel.presentAlert(e.message);
+                }
+
+                if (responses.length > 0) {
+
+                    let jsons = [];
+                    try {
+                        jsons = await Promise.all( responses.map( response => response.json() ) )
+                    } catch (e) {
+                        alertPanel.presentAlert(e.message);
+                    }
+
+                    if (jsons.length > 0) {
+
+                        let buttonConfigurations = [];
+
+                        for (let json of jsons) {
+
+                            if ('ENCODE' === json.type) {
+                                const datasource = new EncodeDataSource(json.genomeID);
+                                this.encodeModalTable.setDatasource(datasource);
+                                buttonConfigurations.push(json);
+                            } else if ('GTEX' === json.type) {
+                                let info = undefined;
+                                try {
+                                    info = await igv.GtexUtils.getTissueInfo(json.datasetId);
+                                } catch (e) {
+                                    alertPanel.presentAlert(e.message);
+                                } finally {
+                                    if (info) {
+                                        json.tracks = info.tissueInfo.map(tissue => igv.GtexUtils.trackConfiguration(tissue));
+                                        buttonConfigurations.push(json);
+                                    }
+                                }
+                            } else {
+                                buttonConfigurations.push(json);
+                            }
+
+                        }
+
+                        buttonConfigurations = buttonConfigurations.reverse();
+                        for (let config of buttonConfigurations) {
+
+                            const { label, type, description, tracks } = config;
+
+                            const button = DomUtils.create('button', { class: 'dropdown-item' });
+                            button.setAttribute('type', 'button');
+                            button.id = id_prefix + label.toLowerCase().split(' ').join('_');
+
+                            button.textContent = `${ label } ...`;
+
+                            // $button.insertAfter($divider);
+                            divider.parentNode.insertBefore(button, divider.nextSibling);
+
+                            button.addEventListener('click', () => {
+
+                            });
+
+                            button.setAttribute('data-toggle', 'modal');
+
+                            if ('ENCODE' === type) {
+                                button.setAttribute('data-target', `#${ this.encodeModalTable.$modal.get(0).id }`);
+                            } else {
+
+                                button.setAttribute('data-target', `#${ this.modal.id }`);
+
+                                button.addEventListener('click', () => {
+
+                                    let markup = `<div>${ label }</div>`;
+
+                                    if (description) {
+                                        markup += `<div>${ description }</div>`;
+                                    }
+
+                                    this.modal.querySelector('#igv-app-generic-track-select-modal-label').innerHTML = markup;
+
+                                    configureModalSelectList(this.browser, this.modal, tracks, this.modalDismissHandler);
+
+                                });
+
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+
+        })(genomeID);
+
+    };
+
+}
+
+const getTrackRegistry = async trackRegistryFile => {
+
+    let response = undefined;
+
+    try {
+        response = await fetch(trackRegistryFile);
+    } catch (e) {
+        console.error(e);
+        alertPanel.presentAlert(e.message);
+    } finally {
+
+        if (response) {
+            let trackRegistry = undefined;
+            try {
+                trackRegistry = await response.json();
+            } catch (e) {
+                console.error(e);
+                alertPanel.presentAlert(e.message);
+            } finally {
+                return trackRegistry;
             }
 
         } else {
@@ -91,186 +227,61 @@ class TrackLoadController {
 
     }
 
-    createEncodeTable(genomeID) {
-        const datasource = new EncodeDataSource(genomeID);
-        this.encodeModalTable.setDatasource(datasource)
-    };
 
-    updateTrackMenus(genomeID) {
+};
 
-        (async (genomeID) => {
+const configureModalSelectList = (browser, modal, configurations, modalDismissHandler) => {
 
-            const id_prefix = 'genome_specific_';
+    let select,
+        option;
 
-            const $divider = this.$dropdownMenu.find('#igv-app-annotations-section');
+    const e = modal.querySelector('select');
+    e.parentNode.removeChild(e);
 
-            const searchString = '[id^=' + id_prefix + ']';
-            const $found = this.$dropdownMenu.find(searchString);
-            $found.remove();
+    select = DomUtils.create('select', { class: 'form-control' });
+    modal.querySelector('.form-group').appendChild(select);
 
+    option = DomUtils.create('option');
+    option.setAttribute('text', 'Select...');
+    option.setAttribute('selected', 'selected');
+    option.value = undefined;
 
-            this.trackRegistry = undefined;
-            try {
-                this.trackRegistry = await this.getTrackRegistry();
-            } catch (e) {
-                alertPanel.presentAlert(e.message);
-            }
+    select.appendChild(option);
 
-            if (undefined === this.trackRegistry) {
-                const e = new Error("Error retrieving registry via getTrackRegistry function");
-                alertPanel.presentAlert(e.message);
-                throw e;
-            }
+    configurations.forEach((configuration, key) => {
 
-            const paths = this.trackRegistry[genomeID];
+        const { name } = configuration;
 
-            if (undefined === paths) {
-                console.warn(`There are no tracks in the track registryy for genome ${ genomeID }`);
-                return;
-                // const e = new Error(`No tracks defined for genome ${ genomeID }`);
-                // alertPanel.presentAlert(e.message);
-                // throw e;
-            }
+        select[ key ] = new Option(name, name, false, false);
 
-            let responses = [];
-            try {
-                responses = await Promise.all( paths.map( path => fetch(path) ) )
-            } catch (e) {
-                alertPanel.presentAlert(e.message);
-            }
-
-            let jsons = [];
-            try {
-                jsons = await Promise.all( responses.map( response => response.json() ) )
-            } catch (e) {
-                alertPanel.presentAlert(e.message);
-            }
-
-            let buttonConfigurations = [];
-
-            for (let json of jsons) {
-
-                if ('ENCODE' === json.type) {
-
-                    this.createEncodeTable(json.genomeID);
-                    buttonConfigurations.push(json);
-
-                } else if ('GTEX' === json.type) {
-
-                    let info = undefined;
-                    try {
-                        info = await igv.GtexUtils.getTissueInfo(json.datasetId);
-                    } catch (e) {
-                        alertPanel.presentAlert(e.message);
-                    }
-
-                    if (info) {
-                        json.tracks = info.tissueInfo.map(tissue => igv.GtexUtils.trackConfiguration(tissue));
-                        buttonConfigurations.push(json);
-                    }
-
-                } else {
-                    buttonConfigurations.push(json);
-                }
+        select[ key ].setAttribute('data-track', JSON.stringify(configuration));
 
 
-            }
-
-            buttonConfigurations = buttonConfigurations.reverse();
-            for (let config of buttonConfigurations) {
-
-                const $button = $('<button>', {class: 'dropdown-item', type: 'button'});
-                const str = config.label + ' ...';
-                $button.text(str);
-
-                const id = id_prefix + config.label.toLowerCase().split(' ').join('_');
-                $button.attr('id', id);
-
-                $button.insertAfter($divider);
-
-                $button.on('click', () => {
-
-                    if ('ENCODE' === config.type) {
-
-                        this.encodeModalTable.$modal.modal('show');
-
-                    } else {
-
-                        let markup = '<div>' + config.label + '</div>';
-
-                        if (config.description) {
-                            markup += '<div>' + config.description + '</div>';
-                        }
-
-                        this.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
-
-                        configureModalSelectList(this.browser, this.$modal, config.tracks);
-
-                        this.$modal.modal('show');
-
-                    }
-
-                });
-
-            }
-
-        })(genomeID);
-
-    };
+    });
 
 
-}
+    select.addEventListener('change', () => {
 
-function configureModalSelectList(browser, $modal, configurations) {
-
-    let $select,
-        $option;
-
-    $modal.find('select').remove();
-
-    $select = $('<select>', {class: 'form-control'});
-    $modal.find('.form-group').append($select);
-
-    $option = $('<option>', {text: 'Select...'});
-    $select.append($option);
-
-    $option.attr('selected', 'selected');
-    $option.val(undefined);
-
-    configurations.reduce(($accumulator, configuration) => {
-
-            $option = $('<option>', {value: configuration.name, text: configuration.name});
-            $select.append($option);
-
-            $option.data('track', configuration);
-
-            $accumulator.append($option);
-
-            return $accumulator;
-        }, $select);
-
-    $select.on('change', () => {
-
-        let $option = $select.find('option:selected');
-        const value = $option.val();
+        let selectedOption = select.options[ select.selectedIndex ];
+        const value = selectedOption.value;
 
         if ('' === value) {
             // do nothing
         } else {
 
-            $option.removeAttr("selected");
+            selectedOption.removeAttribute('selected');
 
-            const configuration = $option.data('track');
+            const configuration = JSON.parse(selectedOption.getAttribute('data-track'));
             browser.loadTrack(configuration);
         }
 
-        $modal.modal('hide');
+        modalDismissHandler();
 
     });
 
 }
 
-export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, multipleFileLoadConfig }) => {
+export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, multipleFileLoadConfig, modalDismissHandler }) => {
 
     const encodeModalTableConfig =
         {
@@ -284,11 +295,12 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, mul
     return {
         browser,
         trackRegistryFile,
-        $urlModal: $('#igv-app-track-from-url-modal'),
+        modal: document.querySelector('#igv-app-track-from-url-modal'),
         encodeModalTable: new ModalTable(encodeModalTableConfig),
-        $dropdownMenu: $('#igv-app-track-dropdown-menu'),
-        $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
-        uberFileLoader: new MultipleFileLoadController(trackLoadMultipleFileLoadConfigurator(multipleFileLoadConfig))
+        dropdownMenu: document.querySelector('#igv-app-track-dropdown-menu'),
+        genericTrackSelectModal: document.querySelector('#igv-app-generic-track-select-modal'),
+        uberFileLoader: new MultipleFileLoadController(trackLoadMultipleFileLoadConfigurator(multipleFileLoadConfig)),
+        modalDismissHandler
     }
 
 };

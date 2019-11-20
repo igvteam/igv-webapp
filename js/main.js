@@ -122,7 +122,7 @@ let initializationHelper = (browser, $container, options) => {
     // Genome Load Controller
     const genomeLoadConfig =
         {
-            $urlModal: $('#igv-app-genome-from-url-modal'),
+            modal: document.querySelector('#igv-app-genome-from-url-modal'),
             genomes: options.genomes,
             uberFileLoader: new MultipleFileLoadController(genomeMultipleFileLoadConfigurator(genomeMultipleFileLoadConfig)),
             modalPresentationHandler: () => {
@@ -141,7 +141,7 @@ let initializationHelper = (browser, $container, options) => {
         }
 
         if (genomeDictionary) {
-            genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu: $('#igv-app-genome-dropdown-menu') });
+            genomeDropdownLayout({ browser, genomeDictionary, dropdownMenu: document.querySelector('#igv-app-genome-dropdown-menu') });
         }
 
     })();

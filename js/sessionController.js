@@ -26,6 +26,7 @@ import FileLoadWidget from "./fileLoadWidget.js";
 import FileLoadManager from "./fileLoadManager.js";
 import * as app_google from "./app-google";
 import MultipleFileLoadController from "./multipleFileLoadController.js";
+import {DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class SessionController {
 
@@ -104,7 +105,7 @@ function configureSaveSessionModal(browser, sessionSaveModal){
 export const sessionMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
 
     if (false === googleEnabled) {
-        $googleDriveButton.parent().hide();
+        DomUtils.hide(googleDriveButton.parentElement);
     }
 
     return {

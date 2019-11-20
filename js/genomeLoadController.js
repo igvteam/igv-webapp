@@ -30,17 +30,18 @@ import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 import * as app_google from "./app-google.js";
 import MultipleFileLoadController from "./multipleFileLoadController.js";
+import {DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class GenomeLoadController {
 
-    constructor (browser, { $urlModal, genomes, uberFileLoader }) {
+    constructor (browser, { modal, genomes, uberFileLoader }) {
 
         this.genomes = genomes;
 
         // URL
         let config =
             {
-                widgetParent: $urlModal.find('.modal-body').get(0),
+                widgetParent: modal.querySelector('.modal-body'),
                 dataTitle: 'Genome',
                 indexTitle: undefined,
                 mode: 'url',
@@ -52,7 +53,7 @@ class GenomeLoadController {
         this.urlWidget = new FileLoadWidget(config);
 
         let self = this;
-        configureModal(this.urlWidget, $urlModal.get(0), (fileLoadWidget) => {
+        configureModal(this.urlWidget, modal, (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
@@ -103,51 +104,46 @@ const buildDictionary = array => {
     return dictionary;
 };
 
-export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
+export function genomeDropdownLayout({ browser, genomeDictionary, dropdownMenu}) {
 
     // discard all buttons preceeding the divider div
-    let $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
-    $divider.prevAll().remove();
+    let divider = dropdownMenu.querySelector('#igv-app-genome-dropdown-divider');
+    getPreviousSiblings(divider).forEach(el => el.parentNode.removeChild(el));
 
-    for (let key in genomeDictionary) {
+    for (let [key, { name }] of Object.entries(genomeDictionary)) {
 
-        if (genomeDictionary.hasOwnProperty(key)) {
+        let button = DomUtils.create('button', { class:'dropdown-item' });
+        button.setAttribute('type', 'button');
+        button.setAttribute('data-id', key);
+        button.textContent =  name;
 
-            let $button = createButton(genomeDictionary[ key ].name);
-            $button.insertBefore($divider);
+        divider.parentNode.insertBefore(button, divider);
 
-            $button.data('id', key);
+        button.addEventListener('click', () => {
 
-            const str = `click.genome-dropdown.${ key }`;
+            const id = button.getAttribute('data-id');
+            if (id !== browser.genome.id) {
+                loadGenome(genomeDictionary[ id ]);
+            }
 
-            $button.on(str, () => {
+        });
 
-                const id = $button.data('id');
-
-                if (id !== browser.genome.id) {
-                    loadGenome(genomeDictionary[ id ]);
-                }
-
-            });
-
-        } // if (...)
-
-    } // for (...)
-
-    function createButton (title) {
-
-        let $button = $('<button>', { class:'dropdown-item', type:'button' });
-        $button.text(title);
-
-        return $button;
     }
 
 }
 
+const getPreviousSiblings = el => {
+    let siblings = [];
+    while (el = el.previousSibling) {
+        siblings.push(el);
+    }
+    return siblings;
+};
+
 export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
 
     if (false === googleEnabled) {
-        $googleDriveButton.parent().hide();
+        DomUtils.hide(googleDriveButton.parentElement);
     }
 
     return {

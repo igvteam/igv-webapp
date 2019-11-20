@@ -21,6 +21,7 @@
  *
  */
 
+import { AlertDialog } from '../node_modules/igv-ui/dist/igv-ui.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 
@@ -208,6 +209,29 @@ let initializationHelper = (browser, $container, options) => {
 
 };
 
+const loadGenome = genome => {
+
+    (async (genome) => {
+
+        let g = undefined;
+        try {
+            g = await Globals.browser.loadGenome(genome);
+        } catch (e) {
+            AlertDialog.present(e.message);
+        }
+
+        if (g) {
+            trackLoadController.updateTrackMenus(g.id);
+        } else {
+            const e = new Error(`Unable to load genome ${ genome.name }`);
+            AlertDialog.present(e.message);
+            throw e;
+        }
+
+    })(genome);
+
+};
+
 let createAppBookmarkHandler = ($bookmark_button) => {
 
     $bookmark_button.on('click', (e) => {
@@ -223,4 +247,4 @@ let createAppBookmarkHandler = ($bookmark_button) => {
 
 };
 
-export { main, trackLoadController, alertPanel };
+export { main, loadGenome };

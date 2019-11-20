@@ -21,10 +21,6 @@
  *
  */
 
-import { BS } from '../node_modules/igv-ui/dist/igv-ui.js';
-import { trackLoadController, alertPanel } from './main.js';
-import Globals from "./globals.js"
-
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
 
 let isValidIndexExtension = (path) => {
@@ -124,29 +120,6 @@ let configureModal = (fileLoadWidget, modal, okHandler) => {
 
 };
 
-let loadGenome = (genome) => {
-
-    (async (genome) => {
-
-        let g = undefined;
-        try {
-            g = await Globals.browser.loadGenome(genome);
-        } catch (e) {
-            alertPanel.presentAlert(e.message);
-        }
-
-        if (g) {
-            trackLoadController.updateTrackMenus(g.id);
-        } else {
-            const e = new Error(`Unable to load genome ${ genome.name }`);
-            alertPanel.presentAlert(e.message);
-            throw e;
-        }
-
-    })(genome);
-
-};
-
 let indexLookup = (dataSuffix) => {
 
     const fa =
@@ -209,4 +182,4 @@ let indexLookup = (dataSuffix) => {
 
 };
 
-export { validIndexExtensionSet, isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, configureModal, loadGenome };
+export { validIndexExtensionSet, isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, configureModal };

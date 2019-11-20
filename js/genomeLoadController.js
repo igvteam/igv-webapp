@@ -25,7 +25,8 @@
  */
 
 import {alertPanel} from "./main.js";
-import { loadGenome, configureModal } from './utils.js';
+import { loadGenome } from './main.js';
+import { configureModal } from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
 import * as app_google from "./app-google.js";

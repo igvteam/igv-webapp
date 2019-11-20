@@ -164,9 +164,8 @@ let initializationHelper = (browser, $container, options) => {
     const sessionConfig =
         {
             browser,
-            $loadSessionModal: $('#igv-app-session-from-url-modal'),
-            $saveButton: $('#igv-app-save-session-button'),
-            $saveSessionModal: $('#igv-app-session-save-modal'),
+            sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
+            sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
             uberFileLoader: new MultipleFileLoadController(sessionMultipleFileLoadConfigurator(sessionMultipleFileLoadConfig))
         };
     sessionController = new SessionController(sessionConfig);

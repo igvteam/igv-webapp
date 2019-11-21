@@ -21,7 +21,6 @@
  *
  */
 
-import { AlertDialog } from '../node_modules/igv-ui/dist/igv-ui.js';
 import { MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import { TrackLoadController, trackLoadControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import * as app_google from './app-google.js';
@@ -217,14 +216,14 @@ const loadGenome = genome => {
         try {
             g = await Globals.browser.loadGenome(genome);
         } catch (e) {
-            AlertDialog.present(e.message);
+            igv.Alert.presentAlert(e.message);
         }
 
         if (g) {
             trackLoadController.updateTrackMenus(g.id);
         } else {
             const e = new Error(`Unable to load genome ${ genome.name }`);
-            AlertDialog.present(e.message);
+            igv.Alert.presentAlert(e.message);
             throw e;
         }
 

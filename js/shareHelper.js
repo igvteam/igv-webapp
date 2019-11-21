@@ -24,7 +24,6 @@
 //import igv from '../node_modules/igv/dist/igv.esm.min.js';
 
 import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
-import {alertPanel} from "./main.js";
 
 let urlShortener;
 
@@ -42,10 +41,10 @@ export function setURLShortener(obj) {
         } else if ("google" === obj.provider && obj.apiKey) {
             fn = googleShortener(obj.apiKey);
         } else {
-            alertPanel.presentAlert(`Unknown URL shortener provider: ${obj.provider}`);
+            igv.Alert.presentAlert(`Unknown URL shortener provider: ${obj.provider}`);
         }
     } else {
-        alertPanel.presentAlert("URL shortener object must either be an object specifying a provider and apiKey, or a function")
+        igv.Alert.presentAlert("URL shortener object must either be an object specifying a provider and apiKey, or a function")
     }
 
     if (fn) {

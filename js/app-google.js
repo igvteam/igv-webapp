@@ -21,9 +21,7 @@
  *
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
-
-import {alertPanel} from "./main.js";
+import { AlertDialog } from '../node_modules/igv-ui/dist/igv-ui.js';
 
 let picker;
 
@@ -144,7 +142,7 @@ function createDropdownButtonPicker(multipleFileSelection, filePickerHandler) {
                 picker.setVisible(true);
 
             } else {
-                alertPanel.presentAlert("Sign into Google before using picker");
+                AlertDialog.present("Sign into Google before using picker");
             }
         })
         .catch(function (error) {

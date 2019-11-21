@@ -22,17 +22,17 @@
  */
 
 import { AlertDialog } from '../node_modules/igv-ui/dist/igv-ui.js';
+import { MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import { TrackLoadController, trackLoadControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
-
-import MultipleFileLoadController from './multipleFileLoadController.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
 import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 import Globals from "./globals.js"
 import GenomeLoadController, { genomeMultipleFileLoadConfigurator, genomeDropdownLayout } from "./genomeLoadController.js";
 import SessionController, {sessionMultipleFileLoadConfigurator} from "./sessionController.js";
-import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
+
 
 let trackLoadController;
 let genomeLoadController;
@@ -247,4 +247,4 @@ let createAppBookmarkHandler = ($bookmark_button) => {
 
 };
 
-export { main, loadGenome };
+export { main, alertPanel, loadGenome };

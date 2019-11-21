@@ -24,14 +24,14 @@
  * THE SOFTWARE.
  */
 
-import {alertPanel} from "./main.js";
+import { FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { FileLoadManager } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import {AlertDialog, DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
+
 import { loadGenome } from './main.js';
 import { configureModal } from './utils.js';
-import FileLoadWidget from './fileLoadWidget.js';
-import FileLoadManager from './fileLoadManager.js';
 import * as app_google from "./app-google.js";
-import MultipleFileLoadController from "./multipleFileLoadController.js";
-import {DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class GenomeLoadController {
 
@@ -75,7 +75,7 @@ class GenomeLoadController {
             try {
                 response = await fetch(this.genomes);
             } catch (e) {
-                alertPanel.presentAlert(e.message);
+                AlertDialog.present(e.message);
             }
 
             if (response) {

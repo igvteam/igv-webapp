@@ -27,11 +27,9 @@ import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
-import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 import Globals from "./globals.js"
 import GenomeLoadController, { genomeMultipleFileLoadConfigurator, genomeDropdownLayout } from "./genomeLoadController.js";
 import SessionController, {sessionMultipleFileLoadConfigurator} from "./sessionController.js";
-
 
 let trackLoadController;
 let genomeLoadController;
@@ -39,7 +37,6 @@ let sessionController;
 let svgController;
 let shareController;
 let googleEnabled = false;
-let alertPanel;
 let main = ($container, config) => {
 
     if (config.clientId && config.clientId !== "CLIENT_ID") {
@@ -82,8 +79,6 @@ let main = ($container, config) => {
 };
 
 let initializationHelper = (browser, $container, options) => {
-
-    alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
@@ -137,7 +132,7 @@ let initializationHelper = (browser, $container, options) => {
         try {
             genomeDictionary = await genomeLoadController.getAppLaunchGenomes();
         } catch (e) {
-            alertPanel.presentAlert(e.message)
+            igv.Alert.presentAlert(e.message)
         }
 
         if (genomeDictionary) {
@@ -246,4 +241,4 @@ let createAppBookmarkHandler = ($bookmark_button) => {
 
 };
 
-export { main, alertPanel, loadGenome };
+export { main, loadGenome };

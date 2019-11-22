@@ -73,11 +73,7 @@ export function sessionURL() {
 }
 
 export function shortSessionURL(base, session) {
-
-    const url = base + "?sessionURL=blob:" + session;
-
-    return shortenURL(url)
-
+    return shortenURL(`${ base }?sessionURL=blob:${ session }`)
 }
 
 function shortenURL(url) {

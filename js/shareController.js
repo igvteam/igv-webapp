@@ -29,11 +29,7 @@ class ShareController {
 
     constructor(container, browser, shareConfig) {
 
-        var qrcode;
-
-        qrcode = undefined;
-
-        shareConfig.$modal.on('show.bs.modal', function (e) {
+        shareConfig.$modal.on('show.bs.modal', async () => {
 
             var href,
                 idx;
@@ -53,43 +49,28 @@ class ShareController {
                 shareConfig.$embed_container.find('textarea').get(0).select();
             }
 
-            shortSessionURL(href, session)
+            // const shortURL = await shortSessionURL(href, session);
+            const shortURL = `${ href }?sessionURL=blob:${ session }`;
 
-                .then(function (shortURL) {
+            shareConfig.$share_input.val(shortURL);
+            shareConfig.$share_input.get(0).select();
 
-                    var obj;
+            shareConfig.$email_button.attr('href', 'mailto:?body=' + shortURL);
 
-                    shareConfig.$share_input.val(shortURL);
-                    shareConfig.$share_input.get(0).select();
+            // QR code generation
+            shareConfig.$qrcode_image.empty();
 
-                    shareConfig.$email_button.attr('href', 'mailto:?body=' + shortURL);
+            const qrcode = new QRCode(shareConfig.$qrcode_image.get(0), { width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
 
-                    // QR code generation
-                    shareConfig.$qrcode_image.empty();
-                    obj =
-                        {
-                            width: 128,
-                            height: 128,
-                            correctLevel: QRCode.CorrectLevel.H
-                        };
+            qrcode.makeCode(shortURL);
 
-                    qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
+            if (shareConfig.$tweet_button_container) {
 
-                    qrcode.makeCode(shortURL);
-
-                    if (shareConfig.$tweet_button_container) {
-
-                        shareConfig.$tweet_button_container.empty();
-                        obj =
-                            {
-                                text: ''
-                            };
-
-                        return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
-                    } else {
-                        return Promise.resolve(undefined);
-                    }
-                })
+                shareConfig.$tweet_button_container.empty();
+                return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), { text: '' });
+            } else {
+                return undefined;
+            }
         });
 
         shareConfig.$modal.on('hidden.bs.modal', function (e) {

@@ -49,8 +49,8 @@ class ShareController {
                 shareConfig.$embed_container.find('textarea').get(0).select();
             }
 
-            // const shortURL = await shortSessionURL(href, session);
-            const shortURL = `${ href }?sessionURL=blob:${ session }`;
+            const shortURL = await shortSessionURL(href, session);
+            // const shortURL = `${ href }?sessionURL=blob:${ session }`;
 
             shareConfig.$share_input.val(shortURL);
             shareConfig.$share_input.get(0).select();

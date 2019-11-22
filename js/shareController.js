@@ -27,7 +27,7 @@ import Globals from "./globals.js"
 
 class ShareController {
 
-    constructor($appContainer, browser, shareConfig) {
+    constructor(container, browser, shareConfig) {
 
         var qrcode;
 
@@ -48,7 +48,7 @@ class ShareController {
             const session = Globals.browser.compressedSession();
 
             if (shareConfig.embedTarget) {
-                const snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, session);
+                const snippet = getEmbeddableSnippet(container, shareConfig.embedTarget, session);
                 shareConfig.$embed_container.find('textarea').val(snippet);
                 shareConfig.$embed_container.find('textarea').get(0).select();
             }
@@ -143,10 +143,10 @@ class ShareController {
     }
 }
 
-function getEmbeddableSnippet($appContainer, embedTarget, session) {
+function getEmbeddableSnippet(container, embedTarget, session) {
 
-    const embedUrl = (embedTarget || getEmbedTarget()) + "?sessionURL=blob:" + session;
-    const height = $appContainer.height() + 50;
+    const embedUrl = `${ embedTarget || getEmbedTarget() }?sessionURL=blob:${ session }`;
+    const height = container.offsetHeight + 50;
     return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 
 }

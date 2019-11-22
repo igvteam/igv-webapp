@@ -21,7 +21,6 @@
     "@babel/core": "^7.6.0",
     "@babel/plugin-transform-regenerator": "^7.4.5",
     "@babel/preset-env": "^7.6.0",
-    "data-modal": "github:igvteam/data-modal",
     "eslint": "^6.4.0",
     "fs-extra": "^8.1.0",
     "http-server": "^0.11.1",
@@ -33,7 +32,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "igv-ui": "github:igvteam/igv-ui",
-    "igv-widgets": "github:igvteam/igv-widgets"
+    "igv-ui": "igvteam/igv-ui",
+    "igv-widgets": "igvteam/igv-widgets"
   }
 }

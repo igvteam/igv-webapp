@@ -37,7 +37,7 @@ let sessionController;
 let svgController;
 let shareController;
 let googleEnabled = false;
-let main = ($container, config) => {
+let main = (container, config) => {
 
     if (config.clientId && config.clientId !== "CLIENT_ID") {
 
@@ -49,19 +49,19 @@ let main = ($container, config) => {
                     (async () => {
 
                         let ignore = await app_google.init(config.clientId);
-                        browser = await igv.createBrowser($container.get(0), config.igvConfig);
+                        browser = await igv.createBrowser(container, config.igvConfig);
                         //  global hack -- there is only 1 browser in this app
                         Globals.browser = browser;
                         googleEnabled = true;
                         app_google.postInit();
-                        initializationHelper(browser, $container, config);
+                        initializationHelper(browser, container, config);
                     })();
 
                 },
                 onerror: error => {
                     console.log('gapi.client:auth2 - failed to load!');
                     console.error(error);
-                    initializationHelper(browser, $container, config);
+                    initializationHelper(browser, container, config);
                 }
             };
 
@@ -70,15 +70,15 @@ let main = ($container, config) => {
     } else {
 
         (async () => {
-            let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+            let browser = await igv.createBrowser(container, config.igvConfig);
             Globals.browser = browser;
-            initializationHelper(browser, $container, config);
+            initializationHelper(browser, container, config);
         })();
 
     }
 };
 
-let initializationHelper = (browser, $container, options) => {
+let initializationHelper = (browser, container, options) => {
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
@@ -199,7 +199,7 @@ let initializationHelper = (browser, $container, options) => {
             embedTarget: options.embedTarget
         };
 
-    shareController = new ShareController($container, browser, shareConfig);
+    shareController = new ShareController(container, browser, shareConfig);
 
 };
 

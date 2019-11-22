@@ -27,5 +27,5 @@ import {main} from './main.js';
 
 $(document).ready(() => {
    // window.igv = igv;
-    main($('#igv-app-container'), igvwebConfig);
+    main(document.querySelector('#igv-app-container'), igvwebConfig);
 });

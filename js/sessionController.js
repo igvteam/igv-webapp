@@ -21,12 +21,9 @@
  *
  */
 
-import {configureModal, getExtension } from "./utils.js";
-import { FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { FileLoadManager } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import * as app_google from "./app-google";
-import {DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
+import { Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class SessionController {
 
@@ -46,7 +43,7 @@ class SessionController {
         this.urlWidget = new FileLoadWidget(config);
 
         // Configure load session modal
-        configureModal(this.urlWidget, sessionLoadModal, (fileLoadWidget) => {
+        Widgets.configureModal(this.urlWidget, sessionLoadModal, (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
@@ -74,7 +71,7 @@ function configureSaveSessionModal(browser, sessionSaveModal){
 
         if (undefined === filename || '' === filename) {
             filename = input.getAttribute('placeholder');
-        } else if (false === extensions.has( getExtension( filename ) )) {
+        } else if (false === extensions.has( Widgets.getExtension( filename ) )) {
             filename = filename + '.json';
         }
 

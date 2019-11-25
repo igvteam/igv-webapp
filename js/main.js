@@ -21,8 +21,7 @@
  *
  */
 
-import { MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js'
-import { TrackLoadController, trackLoadControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
@@ -80,6 +79,8 @@ let main = (container, config) => {
 
 let initializationHelper = (browser, container, options) => {
 
+    Alert.init($(container));
+
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
     // Track Load Multiple File Load Controller
@@ -132,7 +133,7 @@ let initializationHelper = (browser, container, options) => {
         try {
             genomeDictionary = await genomeLoadController.getAppLaunchGenomes();
         } catch (e) {
-            igv.Alert.presentAlert(e.message)
+            Alert.presentAlert(e.message)
         }
 
         if (genomeDictionary) {
@@ -211,14 +212,14 @@ const loadGenome = genome => {
         try {
             g = await Globals.browser.loadGenome(genome);
         } catch (e) {
-            igv.Alert.presentAlert(e.message);
+            Alert.presentAlert(e.message);
         }
 
         if (g) {
             trackLoadController.updateTrackMenus(g.id);
         } else {
             const e = new Error(`Unable to load genome ${ genome.name }`);
-            igv.Alert.presentAlert(e.message);
+            Alert.presentAlert(e.message);
             throw e;
         }
 

@@ -23,6 +23,8 @@
 
 //import igv from '../node_modules/igv/dist/igv.esm.min.js';
 
+import igvxhr from '../node_modules/igv-widgets/dist/igv-widgets.js';
+
 function bitlyShortener(accessToken) {
 
     if (!accessToken || accessToken === "BITLY_TOKEN") {
@@ -35,7 +37,7 @@ function bitlyShortener(accessToken) {
                 url = url.replace("localhost", devIP);
             }  // Dev hack
             let endpoint = api + "?access_token=" + accessToken + "&longUrl=" + encodeURIComponent(url);
-            return igv.xhr.loadJson(endpoint, {})
+            return igvxhr.loadJson(endpoint, {})
                 .then(function (json) {
                     return json.data.url;
                 })
@@ -51,7 +53,7 @@ function googleShortener(apiKey) {
         return async function (url) {
             const api = "https://www.googleapis.com/urlshortener/v1/url";
             const endpoint = api + "?key=" + apiKey;
-            return igv.xhr
+            return igvxhr
                 .loadJson(endpoint, {sendData: JSON.stringify({"longUrl": url}), contentType: "application/json"})
                 .then(function (json) {
                     return json.id;

@@ -24,13 +24,10 @@
  * THE SOFTWARE.
  */
 
-import { FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { FileLoadManager } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import {DomUtils} from '../node_modules/igv-ui/dist/igv-ui.js';
+import { Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 
 import { loadGenome } from './main.js';
-import { configureModal } from './utils.js';
 import * as app_google from "./app-google.js";
 
 class GenomeLoadController {
@@ -54,7 +51,7 @@ class GenomeLoadController {
         this.urlWidget = new FileLoadWidget(config);
 
         let self = this;
-        configureModal(this.urlWidget, modal, (fileLoadWidget) => {
+        Widgets.configureModal(this.urlWidget, modal, (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });

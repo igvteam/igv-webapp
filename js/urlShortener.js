@@ -21,9 +21,7 @@
  *
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
-
-import igvxhr from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { igvxhr } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 
 function bitlyShortener(accessToken) {
 

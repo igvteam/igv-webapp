@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-import { Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 
 import { loadGenome } from './main.js';
@@ -50,7 +50,6 @@ class GenomeLoadController {
 
         this.urlWidget = new FileLoadWidget(config);
 
-        let self = this;
         Widgets.configureModal(this.urlWidget, modal, (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
@@ -72,7 +71,7 @@ class GenomeLoadController {
             try {
                 response = await fetch(this.genomes);
             } catch (e) {
-                igv.Alert.presentAlert(e.message);
+                Alert.presentAlert(e.message);
             }
 
             if (response) {

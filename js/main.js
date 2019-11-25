@@ -79,7 +79,7 @@ let main = (container, config) => {
 
 let initializationHelper = (browser, container, options) => {
 
-    Alert.init($(container));
+    Alert.init(container);
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 

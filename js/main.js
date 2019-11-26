@@ -21,8 +21,7 @@
  *
  */
 
-import { Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import * as app_google from './app-google.js';
+import { GoogleWidgets, Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
@@ -47,12 +46,12 @@ let main = (container, config) => {
 
                     (async () => {
 
-                        let ignore = await app_google.init(config.clientId);
+                        let ignore = await GoogleWidgets.init(config.clientId);
                         browser = await igv.createBrowser(container, config.igvConfig);
                         //  global hack -- there is only 1 browser in this app
                         Globals.browser = browser;
                         googleEnabled = true;
-                        app_google.postInit();
+                        GoogleWidgets.postInit();
                         initializationHelper(browser, container, config);
                     })();
 

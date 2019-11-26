@@ -21,8 +21,7 @@
  *
  */
 
-import * as app_google from "./app-google";
-import { Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { GoogleWidgets, Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class SessionController {
@@ -113,7 +112,7 @@ export const sessionMultipleFileLoadConfigurator = ({ browser, modal, localFileI
         multipleFileSelection: false,
         dropboxButton,
         googleDriveButton: googleEnabled ? googleDriveButton : undefined,
-        googleFilePickerHandler: googleEnabled ? app_google.createFilePickerHandler() : undefined,
+        googleFilePickerHandler: googleEnabled ? GoogleWidgets.createFilePickerHandler() : undefined,
         configurationHandler: MultipleFileLoadController.sessionConfigurator,
         jsonFileValidator: MultipleFileLoadController.sessionJSONValidator,
         pathValidator: undefined,

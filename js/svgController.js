@@ -21,7 +21,7 @@
  *
  */
 
-import { Widgets } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { FileUtils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 
 class SVGController {
 
@@ -56,7 +56,7 @@ function configureSaveModal(browser, $modal){
         if (undefined === fn || '' === fn) {
 
             fn = $input.attr('placeholder');
-        } else if (false === extensions.has( Widgets.getExtension( fn ) )) {
+        } else if (false === extensions.has( FileUtils.getExtension( fn ) )) {
 
             fn = fn + '.svg';
         }

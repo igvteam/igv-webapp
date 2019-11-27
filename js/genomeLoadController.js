@@ -24,10 +24,9 @@
  * THE SOFTWARE.
  */
 
-import { GoogleWidgets, Alert, Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { GoogleWidgets, Alert, Utils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
-
-import { loadGenome } from './main.js';
+import Globals from "./globals";
 
 class GenomeLoadController {
 
@@ -49,7 +48,7 @@ class GenomeLoadController {
 
         this.urlWidget = new FileLoadWidget(config);
 
-        Widgets.configureModal(this.urlWidget, modal, (fileLoadWidget) => {
+        Utils.configureModal(this.urlWidget, modal, (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
@@ -84,6 +83,25 @@ class GenomeLoadController {
 
 }
 
+const loadGenome = async genome => {
+
+    let g = undefined;
+    try {
+        g = await Globals.browser.loadGenome(genome);
+    } catch (e) {
+        Alert.presentAlert(e.message);
+    }
+
+    if (g) {
+        trackLoadController.updateTrackMenus(g.id);
+    } else {
+        const e = new Error(`Unable to load genome ${ genome.name }`);
+        Alert.presentAlert(e.message);
+        throw e;
+    }
+
+};
+
 const buildDictionary = array => {
 
     let dictionary = {};
@@ -115,11 +133,11 @@ export function genomeDropdownLayout({ browser, genomeDictionary, dropdownMenu})
 
         divider.parentNode.insertBefore(button, divider);
 
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
 
             const id = button.getAttribute('data-id');
             if (id !== browser.genome.id) {
-                loadGenome(genomeDictionary[ id ]);
+                await loadGenome(genomeDictionary[ id ]);
             }
 
         });
@@ -154,9 +172,9 @@ export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileI
         configurationHandler: MultipleFileLoadController.genomeConfigurator,
         jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
         pathValidator: MultipleFileLoadController.genomePathValidator,
-        fileLoadHandler: (configurations) => {
+        fileLoadHandler: async configurations => {
             let config = configurations[ 0 ];
-            loadGenome(config);
+            await loadGenome(config);
         },
         modalPresentationHandler
     }

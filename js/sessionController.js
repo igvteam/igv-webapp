@@ -21,7 +21,7 @@
  *
  */
 
-import { GoogleWidgets, Widgets, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { GoogleWidgets, Utils, FileUtils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 
 class SessionController {
@@ -42,7 +42,7 @@ class SessionController {
         this.urlWidget = new FileLoadWidget(config);
 
         // Configure load session modal
-        Widgets.configureModal(this.urlWidget, sessionLoadModal, (fileLoadWidget) => {
+        Utils.configureModal(this.urlWidget, sessionLoadModal, (fileLoadWidget) => {
             uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
@@ -70,7 +70,7 @@ function configureSaveSessionModal(browser, sessionSaveModal){
 
         if (undefined === filename || '' === filename) {
             filename = input.getAttribute('placeholder');
-        } else if (false === extensions.has( Widgets.getExtension( filename ) )) {
+        } else if (false === extensions.has( FileUtils.getExtension( filename ) )) {
             filename = filename + '.json';
         }
 

@@ -35,31 +35,31 @@ let sessionController;
 let svgController;
 let shareController;
 let googleEnabled = false;
-let main = async (container, config) => {
+let main = (container, config) => {
 
     if (config.clientId && config.clientId !== "CLIENT_ID") {
 
         let browser;
         const gapiConfig =
             {
-                callback: async () => {
+                callback: () => {
 
-                    let ignore = await GoogleWidgets.init(config.clientId);
-                    browser = await igv.createBrowser(container, config.igvConfig);
+                    (async () => {
 
-                    //  global hack -- there is only 1 browser in this app
-                    Globals.browser = browser;
-
-                    googleEnabled = true;
-                    GoogleWidgets.postInit();
-
-                    await initializationHelper(browser, container, config);
+                        let ignore = await GoogleWidgets.init(config.clientId);
+                        browser = await igv.createBrowser(container, config.igvConfig);
+                        //  global hack -- there is only 1 browser in this app
+                        Globals.browser = browser;
+                        googleEnabled = true;
+                        GoogleWidgets.postInit();
+                        initializationHelper(browser, container, config);
+                    })();
 
                 },
-                onerror: async error => {
+                onerror: error => {
                     console.log('gapi.client:auth2 - failed to load!');
                     console.error(error);
-                    await initializationHelper(browser, container, config);
+                    initializationHelper(browser, container, config);
                 }
             };
 
@@ -67,13 +67,16 @@ let main = async (container, config) => {
 
     } else {
 
-        Globals.browser = await igv.createBrowser(container, config.igvConfig);
-        await initializationHelper(Globals.browser, container, config);
+        (async () => {
+            let browser = await igv.createBrowser(container, config.igvConfig);
+            Globals.browser = browser;
+            initializationHelper(browser, container, config);
+        })();
 
     }
 };
 
-let initializationHelper = async (browser, container, options) => {
+let initializationHelper = (browser, container, options) => {
 
     Alert.init(container);
 
@@ -125,16 +128,18 @@ let initializationHelper = async (browser, container, options) => {
     genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
 
     let genomeDictionary = undefined;
+    (async () => {
+        try {
+            genomeDictionary = await genomeLoadController.getAppLaunchGenomes();
+        } catch (e) {
+            Alert.presentAlert(e.message)
+        }
 
-    try {
-        genomeDictionary = await genomeLoadController.getAppLaunchGenomes();
-    } catch (e) {
-        Alert.presentAlert(e.message)
-    }
+        if (genomeDictionary) {
+            genomeDropdownLayout({ browser, genomeDictionary, dropdownMenu: document.querySelector('#igv-app-genome-dropdown-menu') });
+        }
 
-    if (genomeDictionary) {
-        genomeDropdownLayout({ browser, genomeDictionary, dropdownMenu: document.querySelector('#igv-app-genome-dropdown-menu') });
-    }
+    })();
 
     // Session Multiple File Load Controller
     const sessionMultipleFileLoadConfig =
@@ -198,6 +203,29 @@ let initializationHelper = async (browser, container, options) => {
 
 };
 
+const loadGenome = genome => {
+
+    (async (genome) => {
+
+        let g = undefined;
+        try {
+            g = await Globals.browser.loadGenome(genome);
+        } catch (e) {
+            Alert.presentAlert(e.message);
+        }
+
+        if (g) {
+            trackLoadController.updateTrackMenus(g.id);
+        } else {
+            const e = new Error(`Unable to load genome ${ genome.name }`);
+            Alert.presentAlert(e.message);
+            throw e;
+        }
+
+    })(genome);
+
+};
+
 let createAppBookmarkHandler = ($bookmark_button) => {
 
     $bookmark_button.on('click', (e) => {
@@ -213,4 +241,4 @@ let createAppBookmarkHandler = ($bookmark_button) => {
 
 };
 
-export { main };
+export { main, loadGenome };

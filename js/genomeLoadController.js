@@ -26,7 +26,7 @@
 
 import { GoogleWidgets, Alert, Utils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
-import Globals from "./globals";
+import { loadGenome } from "./main.js";
 
 class GenomeLoadController {
 
@@ -83,25 +83,6 @@ class GenomeLoadController {
 
 }
 
-const loadGenome = async genome => {
-
-    let g = undefined;
-    try {
-        g = await Globals.browser.loadGenome(genome);
-    } catch (e) {
-        Alert.presentAlert(e.message);
-    }
-
-    if (g) {
-        trackLoadController.updateTrackMenus(g.id);
-    } else {
-        const e = new Error(`Unable to load genome ${ genome.name }`);
-        Alert.presentAlert(e.message);
-        throw e;
-    }
-
-};
-
 const buildDictionary = array => {
 
     let dictionary = {};
@@ -118,7 +99,7 @@ const buildDictionary = array => {
     return dictionary;
 };
 
-export function genomeDropdownLayout({ browser, genomeDictionary, dropdownMenu}) {
+export const genomeDropdownLayout = ({ browser, genomeDictionary, dropdownMenu}) => {
 
     // discard all buttons preceeding the divider div
     let divider = dropdownMenu.querySelector('#igv-app-genome-dropdown-divider');
@@ -133,18 +114,18 @@ export function genomeDropdownLayout({ browser, genomeDictionary, dropdownMenu})
 
         divider.parentNode.insertBefore(button, divider);
 
-        button.addEventListener('click', async () => {
+        button.addEventListener('click', () => {
 
             const id = button.getAttribute('data-id');
             if (id !== browser.genome.id) {
-                await loadGenome(genomeDictionary[ id ]);
+                loadGenome(genomeDictionary[ id ]);
             }
 
         });
 
     }
 
-}
+};
 
 const getPreviousSiblings = el => {
     let siblings = [];
@@ -154,7 +135,7 @@ const getPreviousSiblings = el => {
     return siblings;
 };
 
-export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
+export const genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
 
     if (false === googleEnabled) {
         DomUtils.hide(googleDriveButton.parentElement);
@@ -172,9 +153,9 @@ export const  genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileI
         configurationHandler: MultipleFileLoadController.genomeConfigurator,
         jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
         pathValidator: MultipleFileLoadController.genomePathValidator,
-        fileLoadHandler: async configurations => {
+        fileLoadHandler: configurations => {
             let config = configurations[ 0 ];
-            await loadGenome(config);
+            loadGenome(config);
         },
         modalPresentationHandler
     }

@@ -20,7 +20,7 @@ var fd = fs.openSync(out, 'w');
 let written = false;
 for (let line of lines) {
 
-    if(!written && line.includes("<script") && line.includes("module") && line.includes("app.js")) {
+    if(!written && line.includes("<script") && line.includes("module") && line.includes("main.js")) {
         fs.writeSync(fd, '\t<script src="./app_bundle.js"></script>\n', null, 'utf-8');
         written = true;
     } else {

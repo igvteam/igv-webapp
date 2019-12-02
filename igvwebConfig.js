@@ -29,9 +29,12 @@ var igvwebConfig = {
 
     // Provide a URL shorterner function or object.   This is optional.  If not supplied sharable URLs will not
     // be shortened.
-    urlShortener: {
-        provider: "tinyURL"
-    }
+    urlShortener:
+        [
+            {
+                provider: 'tinyURL'
+            }
+        ]
 
 };
 

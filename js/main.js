@@ -21,8 +21,8 @@
  *
  */
 
-import { GoogleWidgets, Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { setURLShortener, sessionURL } from './shareHelper.js';
+import { URLShortener, GoogleWidgets, Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
 import Globals from "./globals.js"
@@ -35,6 +35,11 @@ let sessionController;
 let svgController;
 let shareController;
 let googleEnabled = false;
+
+$(document).ready(() => {
+    main(document.querySelector('#igv-app-container'), igvwebConfig);
+});
+
 let main = (container, config) => {
 
     if (config.clientId && config.clientId !== "CLIENT_ID") {
@@ -176,12 +181,11 @@ let initializationHelper = (browser, container, options) => {
     // URL Shortener Configuration
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
 
-    let urlShortenerFn;
     if (options.urlShortener) {
-        urlShortenerFn = setURLShortener(options.urlShortener) !== undefined;
+        URLShortener.setURLShortenerList(options.urlShortener);
     }
 
-    if(!urlShortenerFn) {
+    if(false === URLShortener.isURLShortenerSet()) {
         $igv_app_tweet_button_container.hide();
     }
 
@@ -190,7 +194,7 @@ let initializationHelper = (browser, container, options) => {
             $modal: $('#igv-app-share-modal'),
             $share_input: $('#igv-app-share-input'),
             $copy_link_button: $('#igv-app-copy-link-button'),
-            $tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
+            $tweet_button_container: URLShortener.isURLShortenerSet() ? $igv_app_tweet_button_container : undefined,
             $email_button: $('#igv-app-email-button'),
             $qrcode_button: $('#igv-app-qrcode-button'),
             $qrcode_image: $('#igv-app-qrcode-image'),

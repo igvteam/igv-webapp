@@ -5,7 +5,8 @@ import strip from 'rollup-plugin-strip';
 export default [
 
     {
-        input: 'js/app.js',
+        // input: 'js/app.js',
+        input: 'js/main.js',
         output: [
             {file: 'tmp/app_bundle.js', format: 'umd', name: 'igv_webapp'},
         ],

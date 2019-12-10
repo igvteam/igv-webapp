@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "igv-ui": "github:igvteam/igv-ui",
-    "igv-widgets": "github:igvteam/igv-widgets"
+    "igv-widgets": "github:igvteam/igv-widgets#dat"
   }
 }

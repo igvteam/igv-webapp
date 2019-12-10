@@ -106,7 +106,12 @@ let initializationHelper = (browser, container, options) => {
     const modalDismissHandler = () => {
         $('#igv-app-generic-track-select-modal').modal('hide');
     };
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, multipleFileLoadConfig: trackLoadMultipleFileLoadConfig, modalDismissHandler }));
+
+    const urlModal = document.querySelector('#igv-app-track-from-url-modal');
+    const dropdownMenu = document.querySelector('#igv-app-track-dropdown-menu');
+    const selectModal = document.querySelector('#igv-app-generic-track-select-modal');
+
+    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, urlModal, dropdownMenu, selectModal, multipleFileLoadConfig: trackLoadMultipleFileLoadConfig, modalDismissHandler }));
 
     // Genome Multiple File Load Controller
     const genomeMultipleFileLoadConfig =

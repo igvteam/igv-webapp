@@ -21,6 +21,7 @@
  *
  */
 
+import igv from '../node_modules/igv/dist/igv.esm.js';
 import { URLShortener, GoogleWidgets, Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
@@ -47,18 +48,15 @@ let main = (container, config) => {
         let browser;
         const gapiConfig =
             {
-                callback: () => {
+                callback: async () => {
 
-                    (async () => {
-
-                        let ignore = await GoogleWidgets.init(config.clientId);
-                        browser = await igv.createBrowser(container, config.igvConfig);
-                        //  global hack -- there is only 1 browser in this app
-                        Globals.browser = browser;
-                        googleEnabled = true;
-                        GoogleWidgets.postInit();
-                        initializationHelper(browser, container, config);
-                    })();
+                    let ignore = await GoogleWidgets.init(config.clientId);
+                    browser = await igv.createBrowser(container, config.igvConfig);
+                    //  global hack -- there is only 1 browser in this app
+                    Globals.browser = browser;
+                    googleEnabled = true;
+                    GoogleWidgets.postInit();
+                    initializationHelper(browser, container, config);
 
                 },
                 onerror: error => {

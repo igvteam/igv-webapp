@@ -21,6 +21,7 @@
  *
  */
 
+import igv from '../node_modules/igv/dist/igv.esm.js';
 import { GoogleWidgets, Utils, FileUtils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 

@@ -32,6 +32,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
+    "igv": "^2.3.5",
     "igv-ui": "github:igvteam/igv-ui",
     "igv-widgets": "github:igvteam/igv-widgets"
   }

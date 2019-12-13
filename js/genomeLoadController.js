@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-import { GoogleWidgets, Alert, Utils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { GoogleFilePicker, Alert, Utils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 import { loadGenome } from "./main.js";
 
@@ -149,7 +149,7 @@ export const genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileIn
         multipleFileSelection: true,
         dropboxButton,
         googleDriveButton: googleEnabled ? googleDriveButton : undefined,
-        googleFilePickerHandler: googleEnabled ? GoogleWidgets.createFilePickerHandler() : undefined,
+        googleFilePickerHandler: googleEnabled ? GoogleFilePicker.createFilePickerHandler() : undefined,
         configurationHandler: MultipleFileLoadController.genomeConfigurator,
         jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
         pathValidator: MultipleFileLoadController.genomePathValidator,

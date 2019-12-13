@@ -22,7 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { URLShortener, GoogleWidgets, Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { URLShortener, GoogleFilePicker, Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
@@ -50,12 +50,12 @@ let main = (container, config) => {
             {
                 callback: async () => {
 
-                    let ignore = await GoogleWidgets.init(config.clientId);
+                    let ignore = await GoogleFilePicker.init(config.clientId);
                     browser = await igv.createBrowser(container, config.igvConfig);
                     //  global hack -- there is only 1 browser in this app
                     Globals.browser = browser;
                     googleEnabled = true;
-                    GoogleWidgets.postInit();
+                    GoogleFilePicker.postInit();
                     initializationHelper(browser, container, config);
 
                 },

@@ -34,6 +34,6 @@
   "dependencies": {
     "igv": "^2.3.5",
     "igv-ui": "github:igvteam/igv-ui",
-    "igv-widgets": "github:igvteam/igv-widgets"
+    "igv-widgets": "github:igvteam/igv-widgets#multiple_file_load_controller_bug_fix_and_updates"
   }
 }

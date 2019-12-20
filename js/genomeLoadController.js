@@ -114,11 +114,11 @@ export const genomeDropdownLayout = ({ browser, genomeDictionary, dropdownMenu})
 
         divider.parentNode.insertBefore(button, divider);
 
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
 
             const id = button.getAttribute('data-id');
             if (id !== browser.genome.id) {
-                loadGenome(genomeDictionary[ id ]);
+                await loadGenome(genomeDictionary[ id ]);
             }
 
         });

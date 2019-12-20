@@ -1,7 +1,7 @@
 import FileLoad from "./fileLoad.js";
 import { FileUtils, igvxhr } from '../../node_modules/igv-widgets/dist/igv-widgets.js';
 
-class JSONXMLFileLoad extends FileLoad {
+class SessionFileLoad extends FileLoad {
 
     constructor({ localFileInput, dropboxButton, googleEnabled, googleDriveButton, loadHandler }) {
         super({ localFileInput, dropboxButton, googleEnabled, googleDriveButton });
@@ -29,4 +29,4 @@ class JSONXMLFileLoad extends FileLoad {
 
 }
 
-export default JSONXMLFileLoad;
+export default SessionFileLoad;

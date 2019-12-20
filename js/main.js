@@ -22,14 +22,15 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { URLShortener, GoogleFilePicker, Alert, TrackLoadController, trackLoadControllerConfigurator, MultipleFileLoadController } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { URLShortener, GoogleFilePicker, Alert, TrackLoadController, trackLoadControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
 import Globals from "./globals.js"
 import GenomeLoadController, { genomeDropdownLayout } from "./genomeLoadController.js";
 import SessionController from "./sessionController.js";
-import JSONXMLFileLoad from "./igv_widgets/JSONXMLFileLoad.js";
+import SessionFileLoad from "./igv_widgets/SessionFileLoad.js";
+import GenomeFileLoad from "./igv_widgets/GenomeFileLoad.js";
 
 let trackLoadController;
 let genomeLoadController;
@@ -119,8 +120,8 @@ let initializationHelper = (browser, container, options) => {
             dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-genome-file-button'),
             googleEnabled,
             googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-genome-file-button'),
-            loadHandler: config => {
-                loadGenome(config);
+            loadHandler: async config => {
+                await loadGenome(config);
             }
         };
 
@@ -129,7 +130,7 @@ let initializationHelper = (browser, container, options) => {
         {
             genomes: options.genomes,
             genomeLoadModal: document.querySelector('#igv-app-genome-from-url-modal'),
-            genomeFileLoad: new JSONXMLFileLoad(genomeFileLoadConfig)
+            genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)
         };
 
     genomeLoadController = new GenomeLoadController(genomeLoadControllerConfig);
@@ -163,7 +164,7 @@ let initializationHelper = (browser, container, options) => {
         {
             sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
             sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
-            sessionFileLoad: new JSONXMLFileLoad(sessionFileLoadConfig),
+            sessionFileLoad: new SessionFileLoad(sessionFileLoadConfig),
             JSONProvider: () => browser.toJSON()
         };
     sessionController = new SessionController(sessionControllerConfig);
@@ -205,26 +206,22 @@ let initializationHelper = (browser, container, options) => {
 
 };
 
-const loadGenome = genome => {
+const loadGenome = async genome => {
 
-    (async (genome) => {
+    let g = undefined;
+    try {
+        g = await Globals.browser.loadGenome(genome);
+    } catch (e) {
+        Alert.presentAlert(e.message);
+    }
 
-        let g = undefined;
-        try {
-            g = await Globals.browser.loadGenome(genome);
-        } catch (e) {
-            Alert.presentAlert(e.message);
-        }
-
-        if (g) {
-            trackLoadController.updateTrackMenus(g.id);
-        } else {
-            const e = new Error(`Unable to load genome ${ genome.name }`);
-            Alert.presentAlert(e.message);
-            throw e;
-        }
-
-    })(genome);
+    if (g) {
+        trackLoadController.updateTrackMenus(g.id);
+    } else {
+        const e = new Error(`Unable to load genome ${ genome.name }`);
+        Alert.presentAlert(e.message);
+        throw e;
+    }
 
 };
 

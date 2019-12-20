@@ -27,9 +27,9 @@ import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
 import Globals from "./globals.js"
-import GenomeLoadController, { genomeMultipleFileLoadConfigurator, genomeDropdownLayout } from "./genomeLoadController.js";
+import GenomeLoadController, { genomeDropdownLayout } from "./genomeLoadController.js";
 import SessionController from "./sessionController.js";
-import SessionFileLoad from "./igv_widgets/sessionFileLoad.js";
+import JSONXMLFileLoad from "./igv_widgets/JSONXMLFileLoad.js";
 
 let trackLoadController;
 let genomeLoadController;
@@ -112,29 +112,27 @@ let initializationHelper = (browser, container, options) => {
 
     trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, urlModal, dropdownMenu, selectModal, multipleFileLoadConfig: trackLoadMultipleFileLoadConfig, modalDismissHandler }));
 
-    // Genome Multiple File Load Controller
-    const genomeMultipleFileLoadConfig =
+    //
+    const genomeFileLoadConfig =
         {
-            browser,
-            modal: document.querySelector('#igv-app-multiple-file-load-modal'),
             localFileInput: document.querySelector('#igv-app-dropdown-local-genome-file-input'),
             dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-genome-file-button'),
             googleEnabled,
-            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-genome-file-button')
-        };
-
-    // Genome Load Controller
-    const genomeLoadConfig =
-        {
-            modal: document.querySelector('#igv-app-genome-from-url-modal'),
-            genomes: options.genomes,
-            uberFileLoader: new MultipleFileLoadController(genomeMultipleFileLoadConfigurator(genomeMultipleFileLoadConfig)),
-            modalPresentationHandler: () => {
-                $('#igv-app-multiple-file-load-modal').modal('show');
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-genome-file-button'),
+            loadHandler: config => {
+                loadGenome(config);
             }
         };
 
-    genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
+    // Genome Load Controller
+    const genomeLoadControllerConfig =
+        {
+            genomes: options.genomes,
+            genomeLoadModal: document.querySelector('#igv-app-genome-from-url-modal'),
+            genomeFileLoad: new JSONXMLFileLoad(genomeFileLoadConfig)
+        };
+
+    genomeLoadController = new GenomeLoadController(genomeLoadControllerConfig);
 
     let genomeDictionary = undefined;
     (async () => {
@@ -157,7 +155,7 @@ let initializationHelper = (browser, container, options) => {
             dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
             googleEnabled,
             googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button'),
-            sessionLoader: config => browser.loadSession(config)
+            loadHandler: config => browser.loadSession(config)
         };
 
     // Session Controller
@@ -165,7 +163,7 @@ let initializationHelper = (browser, container, options) => {
         {
             sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
             sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
-            sessionFileLoad: new SessionFileLoad(sessionFileLoadConfig),
+            sessionFileLoad: new JSONXMLFileLoad(sessionFileLoadConfig),
             JSONProvider: () => browser.toJSON()
         };
     sessionController = new SessionController(sessionControllerConfig);

@@ -24,20 +24,20 @@
  * THE SOFTWARE.
  */
 
-import { GoogleFilePicker, Alert, Utils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, Utils, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
 import { loadGenome } from "./main.js";
 
 class GenomeLoadController {
 
-    constructor (browser, { modal, genomes, uberFileLoader }) {
+    constructor ({ genomes, genomeLoadModal, genomeFileLoad }) {
 
         this.genomes = genomes;
 
         // URL
         let config =
             {
-                widgetParent: modal.querySelector('.modal-body'),
+                widgetParent: genomeLoadModal.querySelector('.modal-body'),
                 dataTitle: 'Genome',
                 indexTitle: undefined,
                 mode: 'url',
@@ -48,8 +48,8 @@ class GenomeLoadController {
 
         this.urlWidget = new FileLoadWidget(config);
 
-        Utils.configureModal(this.urlWidget, modal, (fileLoadWidget) => {
-            uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
+        Utils.configureModal(this.urlWidget, genomeLoadModal, async fileLoadWidget => {
+            await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths());
             return true;
         });
 
@@ -133,33 +133,6 @@ const getPreviousSiblings = el => {
         siblings.push(el);
     }
     return siblings;
-};
-
-export const genomeMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
-
-    if (false === googleEnabled) {
-        DomUtils.hide(googleDriveButton.parentElement);
-    }
-
-    return {
-        browser,
-        modal,
-        modalTitle: 'Genome File Error',
-        localFileInput,
-        multipleFileSelection: true,
-        dropboxButton,
-        googleDriveButton: googleEnabled ? googleDriveButton : undefined,
-        googleFilePickerHandler: googleEnabled ? GoogleFilePicker.createFilePickerHandler() : undefined,
-        configurationHandler: MultipleFileLoadController.genomeConfigurator,
-        jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
-        pathValidator: MultipleFileLoadController.genomePathValidator,
-        fileLoadHandler: configurations => {
-            let config = configurations[ 0 ];
-            loadGenome(config);
-        },
-        modalPresentationHandler
-    }
-
 };
 
 export default GenomeLoadController;

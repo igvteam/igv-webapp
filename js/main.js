@@ -28,7 +28,8 @@ import ShareController from './shareController.js';
 import SVGController from './svgController.js';
 import Globals from "./globals.js"
 import GenomeLoadController, { genomeMultipleFileLoadConfigurator, genomeDropdownLayout } from "./genomeLoadController.js";
-import SessionController, {sessionMultipleFileLoadConfigurator} from "./sessionController.js";
+import SessionController from "./sessionController.js";
+import SessionFileLoad from "./igv_widgets/sessionFileLoad.js";
 
 let trackLoadController;
 let genomeLoadController;
@@ -149,29 +150,25 @@ let initializationHelper = (browser, container, options) => {
 
     })();
 
-    // Session Multiple File Load Controller
-    const sessionMultipleFileLoadConfig =
+    //
+    const sessionFileLoadConfig =
         {
-            browser,
-            modal: document.querySelector('#igv-app-multiple-file-load-modal'),
             localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
             dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
             googleEnabled,
             googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button'),
-            modalPresentationHandler: () => {
-                $('#igv-app-multiple-file-load-modal').modal('show');
-            }
+            sessionLoader: config => browser.loadSession(config)
         };
 
     // Session Controller
-    const sessionConfig =
+    const sessionControllerConfig =
         {
-            browser,
             sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
             sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
-            uberFileLoader: new MultipleFileLoadController(sessionMultipleFileLoadConfigurator(sessionMultipleFileLoadConfig))
+            sessionFileLoad: new SessionFileLoad(sessionFileLoadConfig),
+            JSONProvider: () => browser.toJSON()
         };
-    sessionController = new SessionController(sessionConfig);
+    sessionController = new SessionController(sessionControllerConfig);
 
     // SVG Controller
     const svgConfig =

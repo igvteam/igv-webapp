@@ -22,12 +22,11 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { GoogleFilePicker, Utils, FileUtils, MultipleFileLoadController, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
+import { Utils, FileUtils, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 
 class SessionController {
 
-    constructor ({ browser, sessionLoadModal, sessionSaveModal, uberFileLoader }) {
+    constructor ({ sessionLoadModal, sessionSaveModal, sessionFileLoad, JSONProvider }) {
 
         let config =
             {
@@ -43,23 +42,21 @@ class SessionController {
         this.urlWidget = new FileLoadWidget(config);
 
         // Configure load session modal
-        Utils.configureModal(this.urlWidget, sessionLoadModal, (fileLoadWidget) => {
-            uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
+        Utils.configureModal(this.urlWidget, sessionLoadModal, async fileLoadWidget => {
+            await sessionFileLoad.loadPaths(fileLoadWidget.retrievePaths());
             return true;
         });
 
         // Configure save session modal
-        configureSaveSessionModal(browser, sessionSaveModal);
+        configureSaveSessionModal(JSONProvider, sessionSaveModal);
 
     }
-
-
 
 }
 
 const input_default_value = 'igv-app-session.json';
 
-function configureSaveSessionModal(browser, sessionSaveModal){
+function configureSaveSessionModal(JSONProvider, sessionSaveModal){
 
     let input = sessionSaveModal.querySelector('input');
 
@@ -75,7 +72,7 @@ function configureSaveSessionModal(browser, sessionSaveModal){
             filename = filename + '.json';
         }
 
-        const json = browser.toJSON();
+        const json = JSONProvider();
         const jsonString = JSON.stringify(json, null, '\t');
         const data = URL.createObjectURL(new Blob([ jsonString ], { type: "application/octet-stream" }));
 
@@ -98,29 +95,5 @@ function configureSaveSessionModal(browser, sessionSaveModal){
     });
 
 }
-
-export const sessionMultipleFileLoadConfigurator = ({ browser, modal, localFileInput, dropboxButton, googleEnabled, googleDriveButton, modalPresentationHandler }) => {
-
-    if (false === googleEnabled) {
-        DomUtils.hide(googleDriveButton.parentElement);
-    }
-
-    return {
-        browser,
-        modal,
-        modalTitle: 'Session File Error',
-        localFileInput,
-        multipleFileSelection: false,
-        dropboxButton,
-        googleDriveButton: googleEnabled ? googleDriveButton : undefined,
-        googleFilePickerHandler: googleEnabled ? GoogleFilePicker.createFilePickerHandler() : undefined,
-        configurationHandler: MultipleFileLoadController.sessionConfigurator,
-        jsonFileValidator: MultipleFileLoadController.sessionJSONValidator,
-        pathValidator: undefined,
-        fileLoadHandler: undefined,
-        modalPresentationHandler
-    }
-
-};
 
 export default SessionController;

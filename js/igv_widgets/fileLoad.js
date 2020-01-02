@@ -76,34 +76,8 @@ class FileLoad {
 
     }
 
-    static categorizePaths(paths) {
-
-    }
-
     static isValidLocalFileInput(input) {
         return (input.files && input.files.length > 0);
-    }
-
-    static createDataPathDictionary(paths) {
-
-        return paths
-            .filter(path => Utils.isKnownFileExtension( FileUtils.getExtension(path) ))
-            .reduce((accumulator, path) => {
-                accumulator[ FileUtils.getFilename(path) ] = (path.google_url || path);
-                return accumulator;
-            }, {});
-
-    }
-
-    static createIndexPathCandidateDictionary(paths) {
-
-        return paths
-            .filter(path => Utils.isValidIndexExtension( FileUtils.getExtension(path) ))
-            .reduce((accumulator, path) => {
-                accumulator[ FileUtils.getFilename(path) ] = (path.google_url || path);
-                return accumulator;
-            }, {});
-
     }
 
     static getIndexURL(indexValue) {
@@ -187,57 +161,6 @@ class FileLoad {
             return accumulator;
         }, {});
 
-    }
-
-    static dataPathIsMissingIndexPath(dataName, indexPaths) {
-        let status,
-            aa;
-
-        // if index for data is not in indexPaths it has been culled
-        // because it is optional AND missing
-        if (undefined === indexPaths[ dataName ]) {
-
-            status = false;
-        }
-
-        else if (indexPaths && indexPaths[ dataName ]) {
-
-            aa = indexPaths[ dataName ][ 0 ];
-            if (1 === indexPaths[ dataName ].length) {
-                status = (undefined === aa);
-            } else /* BAM Track with two naming conventions */ {
-                let bb;
-                bb = indexPaths[ dataName ][ 1 ];
-                if (aa || bb) {
-                    status = false
-                } else {
-                    status = true;
-                }
-            }
-
-        } else {
-            status = true;
-        }
-
-        return status;
-
-    }
-
-    static assessErrorStatus(dataPaths, indexPaths, indexPathNamesLackingDataPaths) {
-
-        let errorStrings = [];
-
-        for (let key of Object.keys(dataPaths)) {
-            if (true === FileLoad.dataPathIsMissingIndexPath(key, indexPaths)) {
-                errorStrings.push(`Index file missing for ${ key }`);
-            }
-        }
-
-        for (let name of indexPathNamesLackingDataPaths) {
-            errorStrings.push(`Data file is missing for ${ name }`);
-        }
-
-        return errorStrings.length > 0 ? errorStrings.join(' ') : undefined;
     }
 
 }

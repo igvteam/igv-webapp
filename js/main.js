@@ -22,17 +22,22 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { URLShortener, GoogleFilePicker, Alert, TrackLoadController, trackLoadControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { URLShortener, GoogleFilePicker, Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import ModalTable from '../node_modules/data-modal/js/modalTable.js'
 import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
 import SVGController from './svgController.js';
 import Globals from "./globals.js"
-import GenomeLoadController, { genomeDropdownLayout } from "./genomeLoadController.js";
-import SessionController from "./sessionController.js";
-import SessionFileLoad from "./igv_widgets/SessionFileLoad.js";
-import GenomeFileLoad from "./igv_widgets/GenomeFileLoad.js";
 
-let trackLoadController;
+import SessionController from "./sessionController.js";
+import GenomeLoadController, { genomeDropdownLayout } from "./genomeLoadController.js";
+import BetterTrackLoadController from "./betterTrackLoadController.js";
+
+import SessionFileLoad from "./igv_widgets/sessionFileLoad.js";
+import GenomeFileLoad from "./igv_widgets/genomeFileLoad.js";
+import TrackFileLoad from "./igv_widgets/trackFileLoad.js";
+
+let betterTrackLoadController;
 let genomeLoadController;
 let sessionController;
 let svgController;
@@ -87,33 +92,50 @@ let initializationHelper = (browser, container, options) => {
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
-    // Track Load Multiple File Load Controller
-    const trackLoadMultipleFileLoadConfig =
+
+    // track file load config
+    const trackFileLoadConfig =
         {
-            browser,
-            modal: document.querySelector('#igv-app-multiple-file-load-modal'),
             localFileInput: document.querySelector('#igv-app-dropdown-local-track-file-input'),
             dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-track-file-button'),
             googleEnabled,
             googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-track-file-button'),
-            modalPresentationHandler: () => {
-                $('#igv-app-multiple-file-load-modal').modal('show');
+            loadHandler: async configurations => {
+                await browser.loadTrackList(configurations);
             }
         };
 
+    // encode modal table config
+    const encodeModalTableConfig =
+        {
+            id: "igv-app-encode-modal",
+            title: "ENCODE",
+            selectHandler: async trackConfigurations => {
+
+                (async (config) => {
+                    await browser.loadTrackList( config )
+                })(trackConfigurations);
+
+            }
+        };
 
     const { trackRegistryFile } = options;
-    const modalDismissHandler = () => {
-        $('#igv-app-generic-track-select-modal').modal('hide');
-    };
 
-    const urlModal = document.querySelector('#igv-app-track-from-url-modal');
-    const dropdownMenu = document.querySelector('#igv-app-track-dropdown-menu');
-    const selectModal = document.querySelector('#igv-app-generic-track-select-modal');
+    // Better Track Load Controller
+    const betterTrackLoadControllerConfig =
+        {
+            browser,
+            trackRegistryFile,
+            trackLoadModal: document.querySelector('#igv-app-track-from-url-modal'),
+            trackFileLoad: new TrackFileLoad(trackFileLoadConfig),
+            encodeModalTable: new ModalTable(encodeModalTableConfig),
+            dropdownMenu: document.querySelector('#igv-app-track-dropdown-menu'),
+            selectModal: document.querySelector('#igv-app-generic-track-select-modal')
+        };
 
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, urlModal, dropdownMenu, selectModal, multipleFileLoadConfig: trackLoadMultipleFileLoadConfig, modalDismissHandler }));
+    betterTrackLoadController = new BetterTrackLoadController(betterTrackLoadControllerConfig);
 
-    //
+    // genome file load config
     const genomeFileLoadConfig =
         {
             localFileInput: document.querySelector('#igv-app-dropdown-local-genome-file-input'),
@@ -149,7 +171,7 @@ let initializationHelper = (browser, container, options) => {
 
     })();
 
-    //
+    // session file load config
     const sessionFileLoadConfig =
         {
             localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
@@ -216,7 +238,10 @@ const loadGenome = async genome => {
     }
 
     if (g) {
-        trackLoadController.updateTrackMenus(g.id);
+        const dropdownMenu = document.querySelector('#igv-app-track-dropdown-menu');
+        const selectModal = document.querySelector('#igv-app-generic-track-select-modal');
+        const { browser } = Globals;
+        betterTrackLoadController.updateTrackMenus(browser, browser.genome.id, betterTrackLoadController.trackRegistryFile, dropdownMenu, selectModal);
     } else {
         const e = new Error(`Unable to load genome ${ genome.name }`);
         Alert.presentAlert(e.message);

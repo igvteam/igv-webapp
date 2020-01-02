@@ -49,66 +49,6 @@ class GenomeFileLoad extends FileLoad {
 
             await this.loadHandler({ fastaURL: dataPath, indexURL: indexPath });
 
-            return;
-
-
-            // isolate data paths in dictionary
-            const dataPaths = FileLoad.createDataPathDictionary(list);
-
-            if (Object.keys(dataPaths).length > 1) {
-                Alert.presentAlert(`${ errorString }`);
-                return;
-            }
-
-            // isolate index path candidates in dictionary
-            const indexPathCandidates = FileLoad.createIndexPathCandidateDictionary(list);
-
-            if (Object.keys(indexPathCandidates).length > 1) {
-                Alert.presentAlert(`${ errorString }`);
-                return;
-            }
-
-            // identify index paths that are
-            // 1) present
-            // 2) names of missing index paths for later error reporting
-            const indexPaths = FileLoad.getIndexPaths(dataPaths, indexPathCandidates);
-
-            const indexPathNameSet = new Set();
-            for (let key in indexPaths) {
-                if (indexPaths.hasOwnProperty(key)) {
-
-                    indexPaths[ key ]
-                        .forEach(function (obj) {
-                            if (obj) {
-                                indexPathNameSet.add( obj.name );
-                            }
-                        });
-                }
-            }
-
-            let indexPathNamesLackingDataPaths = [];
-            for (let key of Object.keys(indexPathCandidates)) {
-                if (false === indexPathNameSet.has(key)) {
-                    indexPathNamesLackingDataPaths.push(key);
-                }
-            }
-
-            let configurations = [];
-            for (let key of Object.keys(dataPaths)) {
-                if (false === FileLoad.dataPathIsMissingIndexPath(key, indexPaths) ) {
-                    configurations.push( GenomeFileLoad.configurationHandler(key, dataPaths[ key ], indexPaths) )
-                }
-            }
-
-            const str = FileLoad.assessErrorStatus(dataPaths, indexPaths, indexPathNamesLackingDataPaths);
-
-            if (undefined === str) {
-                await this.loadHandler(configurations[ 0 ]);
-            } else {
-                Alert.presentAlert(`ERROR: ${ str }`);
-            }
-
-
         } else {
             Alert.presentAlert(`${ errorString }`);
         }

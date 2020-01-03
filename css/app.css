@@ -335,8 +335,7 @@ ul.navbar-nav a:hover {
   color: #dfdfdf; }
 
 .dropdown-item {
-  cursor: pointer;
-  width: auto; }
+  cursor: pointer; }
 
 #igv-app-session-save-modal .modal-body {
   padding: 2rem; }

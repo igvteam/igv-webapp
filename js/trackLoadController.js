@@ -1,7 +1,7 @@
 import { Alert, GtexUtils, Utils, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
 
-class BetterTrackLoadController {
+class TrackLoadController {
 
     constructor({ browser, trackRegistryFile, trackLoadModal, trackFileLoad, encodeModalTable, dropdownMenu, selectModal }) {
 
@@ -222,4 +222,4 @@ function configureModalSelectList(browser, $selectModal, configurations) {
 
 }
 
-export default BetterTrackLoadController;
+export default TrackLoadController;

@@ -22,7 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { URLShortener, GoogleFilePicker, Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { URLShortener, GoogleFilePicker, Alert, SessionFileLoad, GenomeFileLoad, TrackFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import ModalTable from '../node_modules/data-modal/js/modalTable.js'
 import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';
@@ -31,11 +31,7 @@ import Globals from "./globals.js"
 
 import SessionController from "./sessionController.js";
 import GenomeLoadController, { genomeDropdownLayout } from "./genomeLoadController.js";
-import BetterTrackLoadController from "./betterTrackLoadController.js";
-
-import SessionFileLoad from "./igv_widgets/sessionFileLoad.js";
-import GenomeFileLoad from "./igv_widgets/genomeFileLoad.js";
-import TrackFileLoad from "./igv_widgets/trackFileLoad.js";
+import TrackLoadController from "./trackLoadController.js";
 
 let betterTrackLoadController;
 let genomeLoadController;
@@ -133,7 +129,7 @@ let initializationHelper = (browser, container, options) => {
             selectModal: document.querySelector('#igv-app-generic-track-select-modal')
         };
 
-    betterTrackLoadController = new BetterTrackLoadController(betterTrackLoadControllerConfig);
+    betterTrackLoadController = new TrackLoadController(betterTrackLoadControllerConfig);
 
     // genome file load config
     const genomeFileLoadConfig =

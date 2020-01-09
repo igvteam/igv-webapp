@@ -33,7 +33,7 @@ import SessionController from "./sessionController.js";
 import GenomeLoadController, { genomeDropdownLayout } from "./genomeLoadController.js";
 import TrackLoadController from "./trackLoadController.js";
 
-let betterTrackLoadController;
+let trackLoadController;
 let genomeLoadController;
 let sessionController;
 let svgController;
@@ -129,7 +129,7 @@ let initializationHelper = (browser, container, options) => {
             selectModal: document.querySelector('#igv-app-generic-track-select-modal')
         };
 
-    betterTrackLoadController = new TrackLoadController(betterTrackLoadControllerConfig);
+    trackLoadController = new TrackLoadController(betterTrackLoadControllerConfig);
 
     // genome file load config
     const genomeFileLoadConfig =
@@ -237,7 +237,7 @@ const loadGenome = async genome => {
         const dropdownMenu = document.querySelector('#igv-app-track-dropdown-menu');
         const selectModal = document.querySelector('#igv-app-generic-track-select-modal');
         const { browser } = Globals;
-        betterTrackLoadController.updateTrackMenus(browser, browser.genome.id, betterTrackLoadController.trackRegistryFile, dropdownMenu, selectModal);
+        trackLoadController.updateTrackMenus(browser, browser.genome.id, trackLoadController.trackRegistryFile, dropdownMenu, selectModal);
     } else {
         const e = new Error(`Unable to load genome ${ genome.name }`);
         Alert.presentAlert(e.message);

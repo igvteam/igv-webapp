@@ -18,23 +18,23 @@
   },
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/plugin-transform-regenerator": "^7.4.5",
-    "@babel/preset-env": "^7.6.0",
-    "eslint": "^6.4.0",
     "fs-extra": "^8.1.0",
-    "http-server": "^0.11.1",
-    "rollup": "^1.21.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-strip": "^1.2.2",
-    "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.8"
+    "rollup-plugin-strip": "^1.2.2"
   },
   "dependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-regenerator": "^7.7.5",
+    "@babel/preset-env": "^7.7.7",
     "data-modal": "github:igvteam/data-modal",
+    "eslint": "^6.8.0",
+    "http-server": "^0.12.1",
     "igv": "^2.3.5",
     "igv-ui": "github:igvteam/igv-ui",
-    "igv-widgets": "github:igvteam/igv-widgets"
+    "igv-widgets": "github:igvteam/igv-widgets",
+    "rollup": "^1.29.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   }
 }

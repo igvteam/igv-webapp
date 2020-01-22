@@ -22,7 +22,9 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { URLShortener, GoogleFilePicker, Alert, SessionFileLoad, GenomeFileLoad, TrackFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { GoogleFilePicker, SessionFileLoad, GenomeFileLoad, TrackFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert } from '../node_modules/igv-ui/src/index.js';
+import { URLShortener } from '../node_modules/igv-utils/src/index.js';
 import ModalTable from '../node_modules/data-modal/js/modalTable.js'
 import { sessionURL } from './shareHelper.js';
 import ShareController from './shareController.js';

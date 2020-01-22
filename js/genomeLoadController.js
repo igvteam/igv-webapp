@@ -24,8 +24,9 @@
  * THE SOFTWARE.
  */
 
-import { Alert, Utils, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { DomUtils } from '../node_modules/igv-ui/dist/igv-ui.js';
+import { Utils, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert } from '../node_modules/igv-ui/src/index.js';
+import { DOMUtils } from '../node_modules/igv-ui/src/index.js';
 import { loadGenome } from "./main.js";
 
 class GenomeLoadController {
@@ -107,7 +108,7 @@ export const genomeDropdownLayout = ({ browser, genomeDictionary, dropdownMenu})
 
     for (let [key, { name }] of Object.entries(genomeDictionary)) {
 
-        let button = DomUtils.create('button', { class:'dropdown-item' });
+        let button = DOMUtils.create('button', { class:'dropdown-item' });
         button.setAttribute('type', 'button');
         button.setAttribute('data-id', key);
         button.textContent =  name;

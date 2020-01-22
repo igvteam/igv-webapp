@@ -22,7 +22,7 @@
  */
 
 import Globals from "./globals.js";
-import { URLShortener } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { URLShortener } from '../node_modules/igv-utils/src/index.js';
 
 const sessionURL = () => {
 

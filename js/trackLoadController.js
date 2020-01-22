@@ -1,4 +1,6 @@
-import { Alert, GtexUtils, Utils, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Utils, FileLoadManager, FileLoadWidget } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { GtexUtils } from '../node_modules/igv-utils/src/index.js';
+import { Alert } from '../node_modules/igv-ui/src/index.js';
 import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
 
 class TrackLoadController {

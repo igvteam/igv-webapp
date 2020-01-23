@@ -449,21 +449,6 @@ ul.navbar-nav a:hover {
   .igv-app-dropdown-item-cloud-storage div:last-child {
     margin-left: 4px; }
 
-#igv-app-session-file-button input {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1; }
-
-#igv-app-multiple-file-load-modal-body.modal-body div {
-  color: #5f5f5f;
-  font-size: 18px;
-  padding-bottom: 8px; }
-#igv-app-multiple-file-load-modal-body.modal-body div:last-child {
-  padding-bottom: unset; }
-
 .modal-header {
   font-size: 1.2rem; }
 

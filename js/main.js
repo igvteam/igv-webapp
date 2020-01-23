@@ -23,7 +23,7 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import { GoogleFilePicker, SessionFileLoad, GenomeFileLoad, TrackFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { Alert } from '../node_modules/igv-ui/src/index.js';
+import { Alert, createGenericSelectModal, createTrackURLModal } from '../node_modules/igv-ui/src/index.js';
 import { URLShortener } from '../node_modules/igv-utils/src/index.js';
 import ModalTable from '../node_modules/data-modal/js/modalTable.js'
 import { sessionURL } from './shareHelper.js';
@@ -88,8 +88,11 @@ let initializationHelper = (browser, container, options) => {
 
     Alert.init(container);
 
-    createAppBookmarkHandler($('#igv-app-bookmark-button'));
+    const root = document.querySelector('#igv-main');
+    $(root).append(createGenericSelectModal('igv-app-generic-track-select-modal'));
+    $(root).append(createTrackURLModal('igv-app-track-from-url-modal'));
 
+    createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
     // track file load config
     const trackFileLoadConfig =

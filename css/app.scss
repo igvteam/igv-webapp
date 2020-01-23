@@ -238,33 +238,6 @@ ul.navbar-nav {
 
 }
 
-#igv-app-session-file-button {
-  input {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
-}
-
-#igv-app-multiple-file-load-modal-body.modal-body {
-
-  div {
-    color: $igv-app-dark-color;
-    font-size: 18px;
-
-    padding-bottom: 8px;
-  }
-
-  div:last-child {
-
-    padding-bottom: unset;
-  }
-
-}
-
 .modal-header {
   font-size: 1.2rem;
 }

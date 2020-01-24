@@ -135,7 +135,7 @@ class TrackLoadController {
 
                         const $modal = $(selectModal);
 
-                        $modal.find('#igv-app-generic-track-select-modal-label').html(markup);
+                        $modal.find('.modal-title').html(markup);
 
                         configureModalSelectList(browser, $modal, config.tracks);
 

@@ -89,7 +89,7 @@ let initializationHelper = (browser, container, options) => {
     Alert.init(container);
 
     const root = document.querySelector('#igv-main');
-    $(root).append(createGenericSelectModal('igv-app-generic-track-select-modal'));
+    $(root).append(createGenericSelectModal('igv-app-generic-track-select-modal', 'igv-app-generic-track-select'));
     $(root).append(createTrackURLModal('igv-app-track-from-url-modal'));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));

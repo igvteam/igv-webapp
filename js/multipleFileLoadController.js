@@ -556,7 +556,7 @@ class MultipleFileLoadController {
 
     //
     static genomePathValidator(extension) {
-        let referenceSet = new Set(['fai', 'fa', 'fasta']);
+        let referenceSet = new Set(['fna', 'fai', 'fa', 'fasta']);
         return referenceSet.has(extension);
     }
 

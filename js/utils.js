@@ -77,7 +77,7 @@ let getIndexObjectWithDataName = (name) => {
 };
 
 let isKnownFileExtension = (extension) => {
-    let fasta = new Set(['fa', 'fasta']);
+    let fasta = new Set([ 'fna', 'fa', 'fasta' ]);
     let union = new Set([...(igv.knownFileExtensions), ...fasta]);
     return union.has(extension);
 };
@@ -160,6 +160,12 @@ let loadGenome = (genome) => {
 
 let indexLookup = (dataSuffix) => {
 
+    const fna =
+        {
+            index: 'fai',
+            isOptional: false
+        };
+
     const fa =
         {
             index: 'fai',
@@ -204,6 +210,7 @@ let indexLookup = (dataSuffix) => {
 
     const lut =
         {
+            fna,
             fa,
             fasta,
             bam,

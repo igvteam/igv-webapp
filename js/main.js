@@ -21,8 +21,7 @@
  *
  */
 
-//import igv from '../node_modules/igv/dist/igv.esm.min.js';
-
+import igv from '../node_modules/igv/dist/igv.esm.js';
 import * as app_google from './app-google.js';
 import { setURLShortener, sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';

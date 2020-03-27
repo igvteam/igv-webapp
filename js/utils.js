@@ -25,10 +25,8 @@ import igv from '../node_modules/igv/dist/igv.esm.js';
 import { trackLoadController, alertPanel } from './main.js';
 import Globals from "./globals.js"
 
-let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
-
-let isValidIndexExtension = (path) => {
-    return validIndexExtensionSet.has(getExtension(path));
+let isValidIndexExtension = extension => {
+    return igv.knownIndexExtensions.has(extension) || igv.knownGenomeIndexExtensions.has(extension);
 };
 
 let getIndexObjectWithDataName = (name) => {
@@ -76,9 +74,7 @@ let getIndexObjectWithDataName = (name) => {
 };
 
 let isKnownFileExtension = (extension) => {
-    const a = igv.knownFileExtensions.has(extension);
-    const b = igv.knownGenomeFileExtensions.has(extension);
-    return a || b;
+    return igv.knownFileExtensions.has(extension) || igv.knownGenomeFileExtensions.has(extension);
 };
 
 let getFilename = (path) => {
@@ -226,4 +222,4 @@ let indexLookup = (dataSuffix) => {
 
 };
 
-export { validIndexExtensionSet, isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, configureModal, loadGenome };
+export { isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, configureModal, loadGenome };

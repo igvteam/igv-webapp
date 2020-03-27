@@ -23,10 +23,8 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import * as app_google from './app-google.js';
-import { getExtension, getFilename, validIndexExtensionSet, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
+import { getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";
-
-const indexableFormats = new Set(["vcf", "bed", "gff", "gtf", "gff3", "bedgraph"]);
 
 class MultipleFileLoadController {
 
@@ -509,7 +507,7 @@ class MultipleFileLoadController {
         if(indexURL) {
             config.indexURL = indexURL
         } else {
-            if(indexableFormats.has(config.format)) {
+            if(igv.knownIndexableFileExtensions.has(config.format)) {
                 config.indexed = false
             }
         }
@@ -556,12 +554,11 @@ class MultipleFileLoadController {
 
     //
     static genomePathValidator(extension) {
-        let referenceSet = new Set(['fna', 'fai', 'fa', 'fasta']);
-        return referenceSet.has(extension);
+        return igv.knownGenomeIndexExtensions.has(extension) || igv.knownGenomeFileExtensions.has(extension);
     }
 
     static trackPathValidator(extension) {
-        return igv.knownFileExtensions.has(extension) || validIndexExtensionSet.has(extension);
+        return igv.knownFileExtensions.has(extension) || isValidIndexExtension(extension);
     }
 
 }
@@ -580,7 +577,7 @@ function createDataPathDictionary(paths) {
 function createIndexPathCandidateDictionary (paths) {
 
     return paths
-        .filter((path) => isValidIndexExtension( getExtension(path) ))
+        .filter((path) => isValidIndexExtension(getExtension(path)))
         .reduce(function(accumulator, path) {
             accumulator[ getFilename(path) ] = (path.google_url || path);
             return accumulator;

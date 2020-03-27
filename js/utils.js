@@ -21,14 +21,13 @@
  *
  */
 
+import igv from '../node_modules/igv/dist/igv.esm.js';
 import { trackLoadController, alertPanel } from './main.js';
 import Globals from "./globals.js"
 
 let validIndexExtensionSet = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
 
 let isValidIndexExtension = (path) => {
-    // let set;
-    // set = new Set(['fai', 'bai', 'crai', 'tbi', 'idx']);
     return validIndexExtensionSet.has(getExtension(path));
 };
 
@@ -77,9 +76,9 @@ let getIndexObjectWithDataName = (name) => {
 };
 
 let isKnownFileExtension = (extension) => {
-    let fasta = new Set([ 'fna', 'fa', 'fasta' ]);
-    let union = new Set([...(igv.knownFileExtensions), ...fasta]);
-    return union.has(extension);
+    const a = igv.knownFileExtensions.has(extension);
+    const b = igv.knownGenomeFileExtensions.has(extension);
+    return a || b;
 };
 
 let getFilename = (path) => {

@@ -286,6 +286,8 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
         {
             id: "igv-app-encode-modal",
             title: "ENCODE",
+            selectionStyle: 'multi',
+            pageLength: 100,
             selectHandler: trackConfigurations => {
 
                 (async (config) => {

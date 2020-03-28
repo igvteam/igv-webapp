@@ -21,7 +21,7 @@
  *
  */
 
-import {getExtension} from "./utils.js";
+import { getExtension } from "./utils.js";
 
 class SVGController {
 
@@ -64,7 +64,7 @@ function configureSaveModal(browser, $modal){
         // dismiss modal
         $modal.modal('hide');
 
-        browser.saveSVGtoFile({ filename: fn });
+        browser.renderSVG({ filename: fn });
     };
 
     // ok - button

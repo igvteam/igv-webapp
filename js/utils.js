@@ -44,7 +44,7 @@ let getIndexObjectWithDataName = (name) => {
 
     dataSuffix = name.split('.').pop();
 
-    lookup = indexLookup(dataSuffix);
+    lookup = igv.knownDataFileIndexFileLookup(dataSuffix);
 
     indexObject = {};
 
@@ -150,75 +150,6 @@ let loadGenome = (genome) => {
         }
 
     })(genome);
-
-};
-
-let indexLookup = (dataSuffix) => {
-
-    const fna =
-        {
-            index: 'fai',
-            isOptional: false
-        };
-
-    const fa =
-        {
-            index: 'fai',
-            isOptional: false
-        };
-
-    const fasta =
-        {
-            index: 'fai',
-            isOptional: false
-        };
-
-    const bam =
-        {
-            index: 'bai',
-            isOptional: false
-        };
-
-    const cram =
-        {
-            index: 'crai',
-            isOptional: false
-        };
-
-    const gz =
-        {
-            index: 'tbi',
-            isOptional: true
-        };
-
-    const bgz =
-        {
-            index: 'tbi',
-            isOptional: true
-        };
-
-    const any =
-        {
-            index: 'idx',
-            isOptional: true
-        };
-
-    const lut =
-        {
-            fna,
-            fa,
-            fasta,
-            bam,
-            cram,
-            gz,
-            bgz
-        };
-
-    if (lut[dataSuffix]) {
-        return lut[dataSuffix];
-    } else {
-        return any;
-    }
 
 };
 

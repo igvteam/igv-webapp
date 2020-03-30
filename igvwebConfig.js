@@ -10,7 +10,7 @@ var igvwebConfig = {
 
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
-    embedTarget: 'https://igv.org/web/release/2.3.0/embed.html',
+    //embedTarget: 'https://igv.org/web/release/2.3.0/embed.html',
 
     igvConfig:
         {
@@ -20,7 +20,7 @@ var igvwebConfig = {
             showSVGButton: false,
             genome: "hg19",
 
-            // Supply a Google API key to access public Google resources.  This is optional.
+            // Supply a Google API key to access enable Google Drive support.  This is optional
             apiKey: "API_KEY"
         },
 

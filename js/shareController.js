@@ -29,67 +29,46 @@ class ShareController {
 
     constructor($appContainer, browser, shareConfig) {
 
-        var qrcode;
+        const embedTarget = shareConfig.embedTarget || getEmbedTarget();
 
-        qrcode = undefined;
+        shareConfig.$modal.on('show.bs.modal', async function (e) {
 
-        shareConfig.$modal.on('show.bs.modal', function (e) {
-
-            var href,
-                idx;
-
-            href = window.location.href.slice();
-
-            idx = href.indexOf("?");
+            let href = window.location.href.slice();
+            const idx = href.indexOf("?");
             if (idx > 0) {
                 href = href.substring(0, idx);
             }
 
             const session = Globals.browser.compressedSession();
 
-            if (shareConfig.embedTarget) {
-                const snippet = getEmbeddableSnippet($appContainer, shareConfig.embedTarget, session);
+            if (embedTarget) {
+                const snippet = getEmbeddableSnippet($appContainer, embedTarget, session);
                 shareConfig.$embed_container.find('textarea').val(snippet);
                 shareConfig.$embed_container.find('textarea').get(0).select();
             }
 
-            shortSessionURL(href, session)
+            const shortURL = await shortSessionURL(href, session);
+            shareConfig.$share_input.val(shortURL);
+            shareConfig.$share_input.get(0).select();
+            shareConfig.$email_button.attr('href', 'mailto:?body=' + shortURL);
 
-                .then(function (shortURL) {
+            // QR code generation
+            shareConfig.$qrcode_image.empty();
+            const obj =
+                {
+                    width: 128,
+                    height: 128,
+                    correctLevel: QRCode.CorrectLevel.H
+                };
 
-                    var obj;
+            const qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
+            qrcode.makeCode(shortURL);
 
-                    shareConfig.$share_input.val(shortURL);
-                    shareConfig.$share_input.get(0).select();
-
-                    shareConfig.$email_button.attr('href', 'mailto:?body=' + shortURL);
-
-                    // QR code generation
-                    shareConfig.$qrcode_image.empty();
-                    obj =
-                        {
-                            width: 128,
-                            height: 128,
-                            correctLevel: QRCode.CorrectLevel.H
-                        };
-
-                    qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
-
-                    qrcode.makeCode(shortURL);
-
-                    if (shareConfig.$tweet_button_container) {
-
-                        shareConfig.$tweet_button_container.empty();
-                        obj =
-                            {
-                                text: ''
-                            };
-
-                        return window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
-                    } else {
-                        return Promise.resolve(undefined);
-                    }
-                })
+            if (shareConfig.$tweet_button_container) {
+                shareConfig.$tweet_button_container.empty();
+                const obj = {text: ''};
+                window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
+            }
         });
 
         shareConfig.$modal.on('hidden.bs.modal', function (e) {
@@ -98,11 +77,8 @@ class ShareController {
         });
 
         shareConfig.$copy_link_button.on('click', function (e) {
-            var success;
-
             shareConfig.$share_input.get(0).select();
-            success = document.execCommand('copy');
-
+            const success = document.execCommand('copy');
             if (success) {
                 shareConfig.$modal.modal('hide');
             } else {
@@ -110,11 +86,10 @@ class ShareController {
             }
         });
 
-        if (undefined === shareConfig.embedTarget) {
 
+        if (undefined === embedTarget) {
             shareConfig.$embed_button.hide();
         } else {
-
             shareConfig.$embed_container.find('button').on('click', function (e) {
                 var success;
 
@@ -132,7 +107,6 @@ class ShareController {
                 shareConfig.$qrcode_image.hide();
                 shareConfig.$embed_container.toggle();
             });
-
         }
 
         shareConfig.$qrcode_button.on('click', function (e) {
@@ -144,11 +118,9 @@ class ShareController {
 }
 
 function getEmbeddableSnippet($appContainer, embedTarget, session) {
-
-    const embedUrl = (embedTarget || getEmbedTarget()) + "?sessionURL=blob:" + session;
+    const embedUrl = embedTarget + "?sessionURL=blob:" + session;
     const height = $appContainer.height() + 50;
     return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
-
 }
 
 /**
@@ -156,21 +128,15 @@ function getEmbeddableSnippet($appContainer, embedTarget, session) {
  */
 function getEmbedTarget() {
 
-    var href,
-        idx;
-
-    href = window.location.href.slice();
-
-    idx = href.indexOf("?");
+    let href = window.location.href.slice();
+    let idx = href.indexOf("?");
     if (idx > 0) {
         href = href.substring(0, idx);
     }
-
     idx = href.lastIndexOf("/");
     return href.substring(0, idx) + "/embed.html"
 
 }
-
 
 
 export default ShareController;

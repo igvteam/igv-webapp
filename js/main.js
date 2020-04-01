@@ -49,7 +49,11 @@ let alertPanel;
 
 let main = ($container, config) => {
 
-    if (config.clientId && config.clientId !== "CLIENT_ID") {
+    if (clientId && 'CLIENT_ID' !== clientId && (window.location.protocol !== "https:" && window.location.host !== "localhost")) {
+        console.warn("To enable Google Drive use https://")
+    }
+
+    if (clientId && 'CLIENT_ID' !== clientId && (window.location.protocol === "https:" || window.location.host === "localhost")) {
 
         let browser;
         const gapiConfig =

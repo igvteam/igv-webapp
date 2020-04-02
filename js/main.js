@@ -49,8 +49,10 @@ let alertPanel;
 
 let main = ($container, config) => {
 
-    if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol !== "https:" && window.location.host !== "localhost")) {
+    if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol !== "https:")) {// && window.location.host !== "localhost")) {
         console.warn("To enable Google Drive use https://")
+        Alert.presentAlert("Google services are disabled over http://.  To enable Google use <a href='https://igv.org/app'>https://igv.org/app");
+
     }
 
     if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost")) {

@@ -47,15 +47,24 @@ let shareController;
 let googleEnabled = false;
 let alertPanel;
 
+
 let main = ($container, config) => {
 
-    if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol !== "https:")) {// && window.location.host !== "localhost")) {
-        console.warn("To enable Google Drive use https://")
-        Alert.presentAlert("Google services are disabled over http://.  To enable Google use <a href='https://igv.org/app'>https://igv.org/app");
+    const alertDialog = new igv.AlertDialog($container)
+    alertDialog.$container[0].style.top = '300px';
 
+    // Note for localhost testing of warning use this test
+    //if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol !== "https:")) {
+    if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol !== "https:" && window.location.host !== "localhost")) {
+        const secureUrl = window.location.href.replace("http:", "https:")
+        console.warn("To enable Google Drive use https://");
+        alertDialog.present(`Google services are disabled.  To enable Google use <a href="${secureUrl}">${secureUrl}</a>`);
     }
 
-    if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost")) {
+    const enableGoogle = config.clientId &&
+        'CLIENT_ID' !== config.clientId &&
+        (window.location.protocol === "https:" || window.location.host === "localhost");
+    if (enableGoogle) {
 
         let browser;
         const gapiConfig =

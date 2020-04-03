@@ -25,6 +25,71 @@ import igv from '../node_modules/igv/dist/igv.esm.js';
 import { trackLoadController, alertPanel } from './main.js';
 import Globals from "./globals.js"
 
+const knownDataFileIndexFileLookup = extension => {
+
+    const fna =
+        {
+            index: 'fai',
+            isOptional: false
+        };
+
+    const fa =
+        {
+            index: 'fai',
+            isOptional: false
+        };
+
+    const fasta =
+        {
+            index: 'fai',
+            isOptional: false
+        };
+
+    const bam =
+        {
+            index: 'bai',
+            isOptional: false
+        };
+
+    const cram =
+        {
+            index: 'crai',
+            isOptional: false
+        };
+
+    const gz =
+        {
+            index: 'tbi',
+            isOptional: true
+        };
+
+    const bgz =
+        {
+            index: 'tbi',
+            isOptional: true
+        };
+
+    const lut =
+        {
+            fna,
+            fa,
+            fasta,
+            bam,
+            cram,
+            gz,
+            bgz
+        };
+
+    const any =
+        {
+            index: 'idx',
+            isOptional: true
+        };
+
+    return lut[ extension ]  || any;
+
+};
+
 let isValidIndexExtension = extension => {
     return igv.knownIndexExtensions.has(extension) || igv.knownGenomeIndexExtensions.has(extension);
 };
@@ -153,4 +218,4 @@ let loadGenome = (genome) => {
 
 };
 
-export { isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, configureModal, loadGenome };
+export { knownDataFileIndexFileLookup, isValidIndexExtension, getIndexObjectWithDataName, isKnownFileExtension, getFilename, getExtension, configureModal, loadGenome };

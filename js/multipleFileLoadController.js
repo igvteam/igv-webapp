@@ -59,7 +59,8 @@ class MultipleFileLoadController {
 
     async ingestPaths(paths) {
 
-        // LUT for all paths
+        const jsonConfigurations = await getJSONTrackConfigurations(paths);
+
         const LUT = {};
         for (let path of paths) {
             const name = getFilenameComprehensive(path);
@@ -67,6 +68,7 @@ class MultipleFileLoadController {
         }
 
         // LUT for data file paths
+        let final = undefined;
         const dataFileLUT = createDataFilePathLUT(LUT);
 
         if (Object.keys(dataFileLUT).length > 0) {
@@ -78,14 +80,23 @@ class MultipleFileLoadController {
             assessIndexFileAssociations(LUT, trackConfigurationLUT);
 
             // error assessment
-            const { configurations, errorStrings } = validateTrackConfigurations(trackConfigurationLUT);
+            let { configurations, errorStrings } = validateTrackConfigurations(trackConfigurationLUT);
 
-            this.fileLoadHander( Object.values(configurations) );
-            console.log(errorStrings.join('\n'));
+            if (configurations) {
+                this.fileLoadHander( jsonConfigurations ? jsonConfigurations.concat(configurations) : configurations )
+            }
+
+            if (errorStrings) {
+                console.log(errorStrings.join('\n'));
+            }
+
+        } else if (jsonConfigurations) {
+            this.fileLoadHander( jsonConfigurations );
         }
 
     }
 
+    /*
     async __ingestPaths(paths) {
 
         let self = this,
@@ -315,6 +326,7 @@ class MultipleFileLoadController {
         }
 
     }
+    */
 
     createLocalInput($input) {
         let self = this;
@@ -629,6 +641,19 @@ class MultipleFileLoadController {
     }
 
 }
+const getJSONTrackConfigurations = async paths => {
+
+    const jsonPaths = paths.filter(path => 'json' === getExtension(path) );
+
+    if (0 === jsonPaths.length) {
+        return undefined;
+    }
+
+    const promises = jsonPaths.map(path => igv.xhr.loadJson( path.google_url || path ));
+
+    return await Promise.all(promises);
+
+};
 
 const createDataFilePathLUT = LUT => {
 
@@ -746,8 +771,15 @@ const assessIndexFileAssociations = (LUT, trackConfigurationLUT) => {
 
 const validateTrackConfigurations = trackConfigurationLUT => {
 
-    const configurations = trackConfigurationLUT.filter(({ errorString}) => undefined === errorString);
-    const errorStrings = trackConfigurationLUT.filter(({ errorString}) => undefined !== errorString).map(({ errorString }) => errorString);
+    let configurations = Object.values(trackConfigurationLUT).filter(({ errorString }) => undefined === errorString);
+    if (0 === configurations.length) {
+        configurations = undefined;
+    }
+
+    let errorStrings = Object.values(trackConfigurationLUT).filter(({ errorString}) => undefined !== errorString).map(({ errorString }) => errorString);
+    if (0 === errorStrings.length) {
+        errorStrings = undefined;
+    }
 
     return { configurations, errorStrings }
 };

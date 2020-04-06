@@ -42,7 +42,7 @@ class MultipleTrackFileLoad {
 
                 input.value = '';
 
-                await ingestPaths( paths, fileLoadHandler );
+                await ingestPaths( { paths, fileLoadHandler } );
             }
 
         });
@@ -51,7 +51,7 @@ class MultipleTrackFileLoad {
 
             const obj =
                 {
-                    success: dbFiles => ingestPaths( dbFiles.map(({ link }) => link), fileLoadHandler ),
+                    success: dbFiles => ingestPaths( { paths: dbFiles.map(({ link }) => link), fileLoadHandler } ),
                     cancel: () => {},
                     linkType: "preview",
                     multiselect: multipleFileSelection,
@@ -68,10 +68,10 @@ class MultipleTrackFileLoad {
 
                 app_google.createDropdownButtonPicker(multipleFileSelection, async responses => {
 
-                    const configurations = responses.map(({ name, url: google_url }) => {
+                    const obj = responses.map(({ name, url }) => {
 
                         return {
-                            url: google.driveDownloadURL(google_url),
+                            url: google.driveDownloadURL(url),
                             name,
                             filename: name,
                             format: igv.inferFileFormat(name)
@@ -79,7 +79,7 @@ class MultipleTrackFileLoad {
 
                     });
 
-                    await ingestPaths(configurations, fileLoadHandler);
+                    await ingestPaths({ paths: obj, fileLoadHandler });
                 });
 
             });
@@ -94,39 +94,44 @@ class MultipleTrackFileLoad {
 
 }
 
-const ingestPaths = async (paths, fileLoadHandler) => {
+const ingestPaths = async ({ paths, fileLoadHandler }) => {
 
-    const jsonConfigurations = await getJSONTrackConfigurations(paths);
+    const { jsonConfigurations, remainingPaths } = await getJSONTrackConfigurations(paths);
 
-    const LUT = {};
-    for (let path of paths) {
-        const name = getFilenameComprehensive(path);
-        LUT[ name ] = path;
-    }
+    if (remainingPaths) {
 
-    // LUT for data file paths
-    const dataFileLUT = createDataFilePathLUT(LUT);
-
-    if (Object.keys(dataFileLUT).length > 0) {
-
-        // LUT for track configurations
-        const trackConfigurationLUT = createTrackConfigurationLUT(dataFileLUT);
-
-        // add index file associations to track files
-        assessIndexFileAssociations(LUT, trackConfigurationLUT);
-
-        // error assessment
-        let { configurations, errorStrings } = validateTrackConfigurations(trackConfigurationLUT);
-
-        if (configurations) {
-            fileLoadHandler( jsonConfigurations ? jsonConfigurations.concat(configurations) : configurations )
+        const LUT = {};
+        for (let path of remainingPaths) {
+            const name = getFilenameComprehensive(path);
+            LUT[ name ] = path;
         }
 
-        if (errorStrings) {
-            console.log(errorStrings.join('\n'));
+        // LUT for data file paths
+        const dataFileLUT = createDataFilePathLUT(LUT);
+
+        if (Object.keys(dataFileLUT).length > 0) {
+
+            // LUT for track configurations
+            const trackConfigurationLUT = createTrackConfigurationLUT(dataFileLUT);
+
+            // add index file associations to track files
+            assessIndexFileAssociations(LUT, trackConfigurationLUT);
+
+            // error assessment
+            let { configurations, errorStrings } = validateTrackConfigurations(trackConfigurationLUT);
+
+            if (configurations) {
+                fileLoadHandler( jsonConfigurations ? jsonConfigurations.concat(configurations) : configurations )
+            }
+
+            if (errorStrings) {
+                // console.log(errorStrings.join('\n'));
+                alertPanel.presentAlert(errorStrings.join('\n'))
+            }
+
         }
 
-    } else if (jsonConfigurations) {
+    } else {
         fileLoadHandler( jsonConfigurations );
     }
 
@@ -134,16 +139,34 @@ const ingestPaths = async (paths, fileLoadHandler) => {
 
 const getJSONTrackConfigurations = async paths => {
 
-    const jsonPaths = paths.filter(path => 'json' === getExtension(path) );
-
-    if (0 === jsonPaths.length) {
-        return undefined;
+    let remainingPaths = [];
+    let jsonPaths = [];
+    for (let path of paths) {
+        const extension = path.url ? getExtension(path.name) : getExtension(path);
+        if ('json' === getExtension(extension)) {
+            jsonPaths.push(path);
+        } else {
+            remainingPaths.push(path)
+        }
     }
 
-    const promises = jsonPaths.map(path => igv.xhr.loadJson( path.google_url || path ));
+    if (0 === jsonPaths.length) {
+        return { jsonConfigurations: undefined, remainingPaths };
+    }
 
-    return await Promise.all(promises);
+    const promises = jsonPaths.map(path => path.url ? handleGoogleJSON( path.url ) : igv.xhr.loadJson( path ));
 
+    if (0 === remainingPaths.length) {
+        remainingPaths = undefined;
+    }
+
+    return { jsonConfigurations: await Promise.all(promises), remainingPaths }
+
+};
+
+const handleGoogleJSON = async url => {
+    const result = await igv.xhr.load( url );
+    return JSON.parse(result);
 };
 
 const createDataFilePathLUT = LUT => {
@@ -172,6 +195,8 @@ const createDataFilePathLUT = LUT => {
 
         if (undefined !== format) {
             result[ key ] = path;
+        } else {
+            result[ key ] = { errorString: `Error: Unrecognizedfile format ${ key }`}
         }
 
     }
@@ -187,7 +212,11 @@ const createTrackConfigurationLUT = dataFileLUT => {
 
         let config = undefined;
 
-        if (path instanceof File) {
+        if (path.errorString) {
+
+            config = { errorString: path.errorString }
+
+        } else if (path instanceof File) {
 
             const { name } = path;
 
@@ -242,19 +271,24 @@ const assessIndexFileAssociations = (LUT, trackConfigurationLUT) => {
     // identify data file - index file associations
     for (let [ key, configuration ] of Object.entries(trackConfigurationLUT)) {
 
-        const { index: indexExtension, isOptional } = knownDataFileIndexFileLookup( igv.getExtension(configuration) );
-        const indexKey = `${ key }.${ indexExtension }`;
+        if (undefined === configuration.errorString) {
 
-        if (LUT[ indexKey ]) {
-            // console.log(`data file ${ key } has ${ isOptional ? 'optional' : 'required' } index file ${ indexKey }`);
-            configuration.indexURL = LUT[ indexKey ];
-        } else if (false === isOptional) {
-            const str = `ERROR: data file ${ key } is missing required index file ${ indexKey }`;
-            configuration.errorString = str;
-            // console.log(str);
-        } else {
-            // console.log(`data file ${ key } does not require index file ${ indexKey }`);
+            const { index: indexExtension, isOptional } = knownDataFileIndexFileLookup( igv.getExtension(configuration) );
+            const indexKey = `${ key }.${ indexExtension }`;
+
+            if (LUT[ indexKey ]) {
+                // console.log(`data file ${ key } has ${ isOptional ? 'optional' : 'required' } index file ${ indexKey }`);
+                configuration.indexURL = LUT[ indexKey ];
+            } else if (false === isOptional) {
+                const str = `ERROR: data file ${ key } is missing required index file ${ indexKey }`;
+                configuration.errorString = str;
+                // console.log(str);
+            } else {
+                // console.log(`data file ${ key } does not require index file ${ indexKey }`);
+            }
+
         }
+
 
     }
 

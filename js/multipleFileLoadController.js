@@ -158,9 +158,9 @@ class MultipleFileLoadController {
 
             if (igv.isFilePath(path)) {
                 tmp.push(path);
-            } else if (undefined === path.google_url && path.includes('drive.google.com')) {
+            } else if (undefined === path.url && path.includes('drive.google.com')) {
                 const fileInfo = await igv.google.getDriveFileInfo(path);
-                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, google_url: path});
+                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, url: path});
             } else {
                 tmp.push(path);
             }
@@ -177,7 +177,7 @@ class MultipleFileLoadController {
             // accumulate JSON retrieval Promises
             jsonPromises = jsonPaths
                 .map((path) => {
-                    let url = (path.google_url || path);
+                    let url = (path.url || path);
                     return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
                 });
 
@@ -198,8 +198,8 @@ class MultipleFileLoadController {
             if (true === MultipleFileLoadController.sessionJSONValidator(json)) {
                 let path = jsonPaths.pop();
 
-                if (path.google_url) {
-                    this.browser.loadSession({ url:path.google_url, filename:path.name });
+                if (path.url) {
+                    this.browser.loadSession({ url:path.url, filename:path.name });
                 } else {
                     let o = {};
                     o.filename = getFilename(path);
@@ -240,7 +240,7 @@ class MultipleFileLoadController {
             if (true === igv.isFilePath(path)) {
                 o.file = path;
             } else {
-                o.url = path.google_url || path;
+                o.url = path.url || path;
             }
             this.browser.loadSession(o);
 
@@ -369,10 +369,10 @@ class MultipleFileLoadController {
 
             app_google.createDropdownButtonPicker(multipleFileSelection, async responses => {
 
-                const configurations = responses.map(({ name, url: google_url }) => {
+                const configurations = responses.map(({ name, url }) => {
 
                     return {
-                        url: google.driveDownloadURL(google_url),
+                        url: google.driveDownloadURL(url),
                         name,
                         filename: name,
                         format: igv.inferFileFormat(name)
@@ -649,7 +649,7 @@ const getJSONTrackConfigurations = async paths => {
         return undefined;
     }
 
-    const promises = jsonPaths.map(path => igv.xhr.loadJson( path.google_url || path ));
+    const promises = jsonPaths.map(path => igv.xhr.loadJson( path.url || path ));
 
     return await Promise.all(promises);
 
@@ -809,7 +809,7 @@ function createDataPathDictionary(paths) {
     return paths
         .filter((path) => (isKnownFileExtension( getExtension(path) )))
         .reduce((accumulator, path) => {
-            accumulator[ getFilename(path) ] = (path.google_url || path);
+            accumulator[ getFilename(path) ] = (path.url || path);
             return accumulator;
         }, {});
 
@@ -820,7 +820,7 @@ function createIndexPathCandidateDictionary (paths) {
     return paths
         .filter((path) => isValidIndexExtension(getExtension(path)))
         .reduce(function(accumulator, path) {
-            accumulator[ getFilename(path) ] = (path.google_url || path);
+            accumulator[ getFilename(path) ] = (path.url || path);
             return accumulator;
         }, {});
 

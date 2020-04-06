@@ -21,12 +21,12 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js';
+//import igv from '../node_modules/igv/dist/igv.esm.min.js';
 import * as app_google from './app-google.js';
-import { knownDataFileIndexFileLookup, getExtension, getFilename, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
+import { getExtension, getFilename, knownDataFileIndexFileLookup, isKnownFileExtension, isValidIndexExtension, getIndexObjectWithDataName } from './utils.js';
 import {alertPanel} from "./main.js";
 
-const google = igv.google;
+const indexableFormats = new Set(["vcf", "bed", "gff", "gtf", "gff3", "bedgraph"]);
 
 class MultipleFileLoadController {
 
@@ -59,46 +59,6 @@ class MultipleFileLoadController {
 
     async ingestPaths(paths) {
 
-        const jsonConfigurations = await getJSONTrackConfigurations(paths);
-
-        const LUT = {};
-        for (let path of paths) {
-            const name = getFilenameComprehensive(path);
-            LUT[ name ] = path;
-        }
-
-        // LUT for data file paths
-        let final = undefined;
-        const dataFileLUT = createDataFilePathLUT(LUT);
-
-        if (Object.keys(dataFileLUT).length > 0) {
-
-            // LUT for track configurations
-            const trackConfigurationLUT = createTrackConfigurationLUT(dataFileLUT);
-
-            // add index file associations to track files
-            assessIndexFileAssociations(LUT, trackConfigurationLUT);
-
-            // error assessment
-            let { configurations, errorStrings } = validateTrackConfigurations(trackConfigurationLUT);
-
-            if (configurations) {
-                this.fileLoadHander( jsonConfigurations ? jsonConfigurations.concat(configurations) : configurations )
-            }
-
-            if (errorStrings) {
-                console.log(errorStrings.join('\n'));
-            }
-
-        } else if (jsonConfigurations) {
-            this.fileLoadHander( jsonConfigurations );
-        }
-
-    }
-
-    /*
-    async __ingestPaths(paths) {
-
         let self = this,
             dataPaths,
             indexPathCandidates,
@@ -108,49 +68,6 @@ class MultipleFileLoadController {
             jsonPromises,
             configurations;
 
-        const betterConfigurations = paths.map(path => {
-
-            let config = undefined;
-
-            if ('object' === typeof path) {
-
-                const { name, url } = path;
-
-                if (google.isGoogleURL(url)) {
-
-                    config =
-                        {
-                            // url: google.translateGoogleCloudURL(url),
-                            url: google.driveDownloadURL(url),
-                            name,
-                            filename: name,
-                            format: igv.inferFileFormat(name)
-                        };
-
-                }
-
-            } else {
-
-                const name = igv.getFilename(path);
-
-                config =
-                    {
-                        url: path,
-                        name,
-                        filename: name
-                    };
-
-                igv.inferTrackTypes(config);
-
-            }
-
-            return config;
-        });
-
-        this.fileLoadHander( betterConfigurations );
-
-        return;
-
         // handle Google Drive paths (not already handled via Google Drive Picker)
         let tmp = [];
         let googleDrivePaths = [];
@@ -158,9 +75,9 @@ class MultipleFileLoadController {
 
             if (igv.isFilePath(path)) {
                 tmp.push(path);
-            } else if (undefined === path.url && path.includes('drive.google.com')) {
+            } else if (undefined === path.google_url && path.includes('drive.google.com')) {
                 const fileInfo = await igv.google.getDriveFileInfo(path);
-                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, url: path});
+                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, google_url: path});
             } else {
                 tmp.push(path);
             }
@@ -177,7 +94,7 @@ class MultipleFileLoadController {
             // accumulate JSON retrieval Promises
             jsonPromises = jsonPaths
                 .map((path) => {
-                    let url = (path.url || path);
+                    let url = (path.google_url || path);
                     return { name: getFilename(path), promise: igv.xhr.loadJson(url) }
                 });
 
@@ -198,8 +115,8 @@ class MultipleFileLoadController {
             if (true === MultipleFileLoadController.sessionJSONValidator(json)) {
                 let path = jsonPaths.pop();
 
-                if (path.url) {
-                    this.browser.loadSession({ url:path.url, filename:path.name });
+                if (path.google_url) {
+                    this.browser.loadSession({ url:path.google_url, filename:path.name });
                 } else {
                     let o = {};
                     o.filename = getFilename(path);
@@ -240,7 +157,7 @@ class MultipleFileLoadController {
             if (true === igv.isFilePath(path)) {
                 o.file = path;
             } else {
-                o.url = path.url || path;
+                o.url = path.google_url || path;
             }
             this.browser.loadSession(o);
 
@@ -326,7 +243,6 @@ class MultipleFileLoadController {
         }
 
     }
-    */
 
     createLocalInput($input) {
         let self = this;
@@ -347,13 +263,15 @@ class MultipleFileLoadController {
     }
 
     createDropboxButton($dropboxButton, multipleFileSelection) {
+        let self = this;
 
-        $dropboxButton.on('click', () => {
+        $dropboxButton.on('click', function () {
+            let obj;
 
-            const obj =
+            obj =
                 {
-                    success: dbFiles => this.ingestPaths( dbFiles.map(({ link }) => link) ),
-                    cancel: () => {},
+                    success: (dbFiles) => (self.ingestPaths(dbFiles.map((dbFile) => dbFile.link))),
+                    cancel: function() { },
                     linkType: "preview",
                     multiselect: multipleFileSelection,
                     folderselect: false,
@@ -365,22 +283,27 @@ class MultipleFileLoadController {
 
     createGoogleDriveButton($button, multipleFileSelection) {
 
-        $button.on('click', () => {
+        let self = this,
+            paths;
 
-            app_google.createDropdownButtonPicker(multipleFileSelection, async responses => {
+        $button.on('click', function () {
 
-                const configurations = responses.map(({ name, url }) => {
+            app_google.createDropdownButtonPicker(multipleFileSelection, (googleDriveResponses) => {
 
-                    return {
-                        url: google.driveDownloadURL(url),
-                        name,
-                        filename: name,
-                        format: igv.inferFileFormat(name)
-                    };
+                // paths = googleDriveResponses.map((response) => ({ name: response.name, google_url: response.url }));
 
-                });
+                paths = googleDriveResponses
+                    .map((response) => {
+                        let result =
+                            {
+                                filename: response.name,
+                                name: response.name,
+                                google_url: response.url
+                            };
 
-                this.ingestPaths(configurations);
+                        return result;
+                    });
+                self.ingestPaths(paths);
             });
 
         });
@@ -586,7 +509,7 @@ class MultipleFileLoadController {
         if(indexURL) {
             config.indexURL = indexURL
         } else {
-            if(igv.knownIndexableFileExtensions.has(config.format)) {
+            if(indexableFormats.has(config.format)) {
                 config.indexed = false
             }
         }
@@ -633,183 +556,22 @@ class MultipleFileLoadController {
 
     //
     static genomePathValidator(extension) {
-        return igv.knownGenomeIndexExtensions.has(extension) || igv.knownGenomeFileExtensions.has(extension);
+        let referenceSet = new Set(['fai', 'fa', 'fasta']);
+        return referenceSet.has(extension);
     }
 
     static trackPathValidator(extension) {
-        return igv.knownFileExtensions.has(extension) || isValidIndexExtension(extension);
+        return igv.knownFileExtensions.has(extension) || knownDataFileIndexFileLookup.has(extension);
     }
 
 }
-const getJSONTrackConfigurations = async paths => {
-
-    const jsonPaths = paths.filter(path => 'json' === getExtension(path) );
-
-    if (0 === jsonPaths.length) {
-        return undefined;
-    }
-
-    const promises = jsonPaths.map(path => igv.xhr.loadJson( path.url || path ));
-
-    return await Promise.all(promises);
-
-};
-
-const createDataFilePathLUT = LUT => {
-
-    const result = {};
-
-    for (let [ key, path ] of Object.entries(LUT)) {
-
-        let format = undefined;
-
-        if (path instanceof File) {
-
-            const { name } = path;
-            format = igv.inferFileFormat( name );
-
-        } else if ('object' === typeof path) {
-
-            const { name, url } = path;
-            if (google.isGoogleURL(url)) {
-                format = igv.inferFileFormat( name );
-            }
-
-        } else {
-            format = igv.inferFileFormat( igv.getFilename(path) );
-        }
-
-        if (undefined !== format) {
-            result[ key ] = path;
-        }
-
-    }
-
-    return result;
-};
-
-const createTrackConfigurationLUT = dataFileLUT => {
-
-    const result = {};
-
-    for (let [ key, path ] of Object.entries(dataFileLUT)) {
-
-        let config = undefined;
-
-        if (path instanceof File) {
-
-            const { name } = path;
-
-            config =
-                {
-                    url: path,
-                    name,
-                    filename: name
-                };
-
-            igv.inferTrackTypes(config);
-
-        } else if ('object' === typeof path) {
-
-            const { name, url } = path;
-
-            if (google.isGoogleURL(url)) {
-
-                config =
-                    {
-                        url: google.driveDownloadURL(url),
-                        name,
-                        filename: name,
-                        format: igv.inferFileFormat(name)
-                    };
-
-            }
-
-        } else {
-
-            const name = igv.getFilename(path);
-
-            config =
-                {
-                    url: path,
-                    name,
-                    filename: name
-                };
-
-            igv.inferTrackTypes(config);
-
-        }
-
-        result[ key ] = config;
-    }
-
-    return result;
-};
-
-const assessIndexFileAssociations = (LUT, trackConfigurationLUT) => {
-
-    // identify data file - index file associations
-    for (let [ key, configuration ] of Object.entries(trackConfigurationLUT)) {
-
-        const { index: indexExtension, isOptional } = knownDataFileIndexFileLookup( igv.getExtension(configuration) );
-        const indexKey = `${ key }.${ indexExtension }`;
-
-        if (LUT[ indexKey ]) {
-            // console.log(`data file ${ key } has ${ isOptional ? 'optional' : 'required' } index file ${ indexKey }`);
-            configuration.indexURL = LUT[ indexKey ];
-        } else if (false === isOptional) {
-            const str = `ERROR: data file ${ key } is missing required index file ${ indexKey }`;
-            configuration.errorString = str;
-            // console.log(str);
-        } else {
-            // console.log(`data file ${ key } does not require index file ${ indexKey }`);
-        }
-
-    }
-
-};
-
-const validateTrackConfigurations = trackConfigurationLUT => {
-
-    let configurations = Object.values(trackConfigurationLUT).filter(({ errorString }) => undefined === errorString);
-    if (0 === configurations.length) {
-        configurations = undefined;
-    }
-
-    let errorStrings = Object.values(trackConfigurationLUT).filter(({ errorString}) => undefined !== errorString).map(({ errorString }) => errorString);
-    if (0 === errorStrings.length) {
-        errorStrings = undefined;
-    }
-
-    return { configurations, errorStrings }
-};
-
-const getFilenameComprehensive = path => {
-
-    // handles File or Google Drive
-    if (path instanceof File || 'object' === typeof path) {
-        const { name } = path;
-        return name;
-    } else {
-        return igv.getFilename(path);
-    }
-
-};
-
-
-
-
-
-
-
-
 
 function createDataPathDictionary(paths) {
 
     return paths
         .filter((path) => (isKnownFileExtension( getExtension(path) )))
         .reduce((accumulator, path) => {
-            accumulator[ getFilename(path) ] = (path.url || path);
+            accumulator[ getFilename(path) ] = (path.google_url || path);
             return accumulator;
         }, {});
 
@@ -818,9 +580,9 @@ function createDataPathDictionary(paths) {
 function createIndexPathCandidateDictionary (paths) {
 
     return paths
-        .filter((path) => isValidIndexExtension(getExtension(path)))
+        .filter((path) => isValidIndexExtension( getExtension(path) ))
         .reduce(function(accumulator, path) {
-            accumulator[ getFilename(path) ] = (path.url || path);
+            accumulator[ getFilename(path) ] = (path.google_url || path);
             return accumulator;
         }, {});
 

@@ -20,106 +20,108 @@
  * THE SOFTWARE.
  *
  */
-
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import FileLoadWidget from "./fileLoadWidget.js";
-import FileLoadManager from "./fileLoadManager.js";
-import {configureModal, getExtension } from "./utils.js";
+import {FileLoadManager, FileLoadWidget, Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import {FileUtils} from '../node_modules/igv-utils/src/index.js';
+import SessionFileLoad from "./sessionFileLoad.js";
+import { googleEnabled } from "./main.js";
 
 class SessionController {
 
-    constructor ({ browser, $urlModal, $saveButton, $saveModal, uberFileLoader }) {
+    constructor({sessionLoadModal, sessionSaveModal, sessionFileLoad, JSONProvider}) {
 
-        let urlConfig =
+        let config =
             {
+                widgetParent: sessionLoadModal.querySelector('.modal-body'),
                 dataTitle: 'Load Session',
-                $widgetParent: $urlModal.find('.modal-body'),
+                indexTitle: undefined,
                 mode: 'url',
-                dataOnly: true
+                fileLoadManager: new FileLoadManager(),
+                dataOnly: true,
+                doURL: undefined
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        this.urlWidget = new FileLoadWidget(config);
 
-        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+        // Configure load session modal
+        Utils.configureModal(this.urlWidget, sessionLoadModal, async fileLoadWidget => {
+            await sessionFileLoad.loadPaths(fileLoadWidget.retrievePaths());
             return true;
         });
 
-        configureSaveModal(browser, $saveModal);
-
-        $saveButton.on('click', (e) => {
-            $saveModal.modal();
-        });
+        // Configure save session modal
+        configureSaveSessionModal(JSONProvider, sessionSaveModal);
 
     }
 
-
-
 }
 
-function configureSaveModal(browser, $modal){
+const input_default_value = 'juiceboxjs-session.json';
 
-    const input_default_value = 'igv-app-session.json';
+function configureSaveSessionModal(JSONProvider, sessionSaveModal) {
 
-    let $input = $modal.find('input');
-
-    $modal.on('show.bs.modal', (e) => {
-        $input.val(input_default_value);
-    });
-
-    $modal.on('hidden.bs.modal', (e) => {
-        $input.val(input_default_value);
-    });
+    let input = sessionSaveModal.querySelector('input');
 
     let okHandler = () => {
 
-        let filename = $input.val();
-
         const extensions = new Set(['json', 'xml']);
 
+        let filename = input.value;
+
         if (undefined === filename || '' === filename) {
-
-            filename = $input.attr('placeholder');
-        } else if (false === extensions.has( getExtension( filename ) )) {
-
+            filename = input.getAttribute('placeholder');
+        } else if (false === extensions.has(FileUtils.getExtension(filename))) {
             filename = filename + '.json';
         }
 
-        // dismiss modal
-        $modal.modal('hide');
-
-        // Pretty JSON output
-        const obj = browser.toJSON();
-        const json = JSON.stringify(obj, null, '\t');
-        const data = URL.createObjectURL(new Blob([ json ], { type: "application/octet-stream" }));
+        const json = JSONProvider();
+        const jsonString = JSON.stringify(json, null, '\t');
+        const data = URL.createObjectURL(new Blob([jsonString], {type: "application/octet-stream"}));
 
         igv.download(filename, data);
 
+        $(sessionSaveModal).modal('hide');
     };
 
-    // ok - button
-    let $ok = $modal.find('.modal-footer button:nth-child(2)');
-
+    const $ok = $(sessionSaveModal).find('.modal-footer button:nth-child(2)');
     $ok.on('click', okHandler);
 
-    $input.on('keyup', (e) => {
+    $(sessionSaveModal).on('show.bs.modal', (e) => {
+        input.value = input_default_value;
+    });
+
+    input.addEventListener('keyup', e => {
+
+        // enter key key-up
         if (13 === e.keyCode) {
             okHandler();
         }
     });
 
-    // upper dismiss - x - button
-    let $dismiss = $modal.find('.modal-header button:nth-child(1)');
-    $dismiss.on('click', function () {
-        $modal.modal('hide');
-    });
-
-    // lower dismiss - close - button
-    $dismiss = $modal.find('.modal-footer button:nth-child(1)');
-    $dismiss.on('click', function () {
-        $modal.modal('hide');
-    });
-
 }
+
+export const sessionControllerConfigurator = (browser) => {
+
+    // Session File Load
+    const sessionFileLoadConfig =
+        {
+            localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
+            dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
+            googleEnabled,
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button'),
+            loadHandler: async config => await browser.loadSession(config),
+            igvxhr: igv.xhr,
+            google: igv.google
+        };
+
+    // Session Controller
+    return {
+            sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
+            sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
+            sessionFileLoad: new SessionFileLoad(sessionFileLoadConfig),
+            JSONProvider: () => browser.toJSON()()
+        }
+
+};
 
 export default SessionController;

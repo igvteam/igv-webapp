@@ -31,14 +31,13 @@ import GenomeLoadController from './genomeLoadController.js';
 import TrackLoadController from './trackLoadController.js';
 import { trackLoadControllerConfigurator } from './trackLoadController.js';
 import ShareController from './shareController.js';
-import SessionController from './sessionController.js';
+import SessionController, { sessionControllerConfigurator }from "./sessionController.js";
 import SVGController from './svgController.js';
 import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 import Globals from "./globals.js"
 
 let trackLoadController;
 let multipleFileGenomeController;
-let multipleFileSessionController;
 let genomeLoadController;
 let sessionController;
 let svgController;
@@ -49,14 +48,6 @@ let alertPanel;
 
 let main = ($container, config) => {
 
-    // const alertDialog = new igv.AlertDialog($container)
-    // alertDialog.$container[0].style.top = '300px';
-    // if (config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol !== "https:" && window.location.host !== "localhost")) {
-    //     const secureUrl = window.location.href.replace("http:", "https:")
-    //     console.warn("To enable Google Drive use https://");
-    //     alertDialog.present(`Google services are disabled.  To enable Google use <a href="${secureUrl}">${secureUrl}</a>`);
-    // }
-
     const enableGoogle = config.clientId &&
         'CLIENT_ID' !== config.clientId &&
         (window.location.protocol === "https:" || window.location.host === "localhost");
@@ -65,18 +56,15 @@ let main = ($container, config) => {
         let browser;
         const gapiConfig =
             {
-                callback: () => {
+                callback: async () => {
 
-                    (async () => {
-
-                        let ignore = await app_google.init(config.clientId);
-                        browser = await igv.createBrowser($container.get(0), config.igvConfig);
-                        //  global hack -- there is only 1 browser in this app
-                        Globals.browser = browser;
-                        googleEnabled = true;
-                        app_google.postInit();
-                        initializationHelper(browser, $container, config);
-                    })();
+                    await app_google.init(config.clientId);
+                    browser = await igv.createBrowser($container.get(0), config.igvConfig);
+                    //  global hack -- there is only 1 browser in this app
+                    Globals.browser = browser;
+                    googleEnabled = true;
+                    app_google.postInit();
+                    initializationHelper(browser, $container, config);
 
                 },
                 onerror: error => {
@@ -167,31 +155,7 @@ let initializationHelper = (browser, $container, options) => {
         $igv_app_dropdown_google_drive_session_file_button.parent().hide();
     }
 
-    // Multiple File Session Controller
-    const multipleFileSessionConfig =
-        {
-            $modal: $multipleFileLoadModal,
-            modalTitle: 'Session File Error',
-            $localFileInput: $('#igv-app-dropdown-local-session-file-input'),
-            multipleFileSelection: false,
-            $dropboxButton: $('#igv-app-dropdown-dropbox-session-file-button'),
-            $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_session_file_button : undefined,
-            configurationHandler: MultipleFileLoadController.sessionConfigurator,
-            jsonFileValidator: MultipleFileLoadController.sessionJSONValidator
-        };
-
-    multipleFileSessionController = new MultipleFileLoadController(browser, multipleFileSessionConfig);
-
-    // Session Controller
-    const sessionConfig =
-        {
-            browser: browser,
-            $urlModal: $('#igv-app-session-from-url-modal'),
-            $saveButton: $('#igv-app-save-session-button'),
-            $saveModal: $('#igv-app-session-save-modal'),
-            uberFileLoader: multipleFileSessionController
-        };
-    sessionController = new SessionController(sessionConfig);
+    sessionController = new SessionController(sessionControllerConfigurator(browser));
 
     // SVG Controller
     const svgConfig =
@@ -246,4 +210,4 @@ let createAppBookmarkHandler = ($bookmark_button) => {
 
 };
 
-export { main, trackLoadController, alertPanel };
+export { main, googleEnabled, trackLoadController, alertPanel };

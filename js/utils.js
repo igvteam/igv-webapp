@@ -143,11 +143,11 @@ let isKnownFileExtension = (extension) => {
 };
 
 let getFilename = (path) => {
-    return path.google_url ? path.name : igv.getFilename(path);
+    return path.url ? path.name : igv.getFilename(path);
 };
 
 let getExtension = (path) => {
-    return igv.getExtension({url: path.google_url ? path.name : path});
+    return igv.getExtension({url: path.url ? path.name : path});
 };
 
 let isJSON = (thang) => {

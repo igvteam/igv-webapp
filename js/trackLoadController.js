@@ -22,9 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import {configureModal} from './utils.js';
-import FileLoadWidget from './fileLoadWidget.js';
-import FileLoadManager from './fileLoadManager.js';
+import { FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
 import ModalTable from '../node_modules/data-modal/js/modalTable.js'
 import {alertPanel} from "./main.js";
@@ -41,16 +39,21 @@ class TrackLoadController {
         this.$dropdownMenu = $dropdownMenu;
         this.$modal = $genericTrackSelectModal;
 
-        // URL
-        const urlConfig =
+        let config =
             {
-                $widgetParent: $urlModal.find('.modal-body'),
+                widgetParent: $urlModal.find('.modal-body').get(0),
+                dataTitle: 'Untitled',
+                indexTitle: undefined,
                 mode: 'url',
+                fileLoadManager: new FileLoadManager(),
+                dataOnly: true,
+                doURL: undefined
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
-        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-            multipleTrackFileLoad.ingestPaths( fileLoadManager.getPaths() );
+        this.urlWidget = new FileLoadWidget(config);
+
+        Utils.configureModal(this.urlWidget, $urlModal, async (fileLoadManager) => {
+            await multipleTrackFileLoad.ingestPaths( fileLoadManager.getPaths() );
             return true;
         });
 

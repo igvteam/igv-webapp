@@ -23,10 +23,4 @@
 
 import {main} from './main.js';
 
-// To import igv as a module (1) uncomment the import below, and "window.igv=igv", (2) comment out the igv script include in the html
-//import igv from "http://localhost/igv-web/dist/igv.esm.js";
-
-$(document).ready(() => {
-   // window.igv = igv;
-    main($('#igv-app-container'), igvwebConfig);
-});
+$(document).ready(() => main($('#igv-app-container'), igvwebConfig));

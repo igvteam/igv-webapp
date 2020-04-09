@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "data-modal": "github:igvteam/data-modal",
-    "igv": "^2.5.0",
+    "igv": "^2.5.2",
     "igv-ui": "github:igvteam/igv-ui",
     "igv-utils": "github:igvteam/igv-utils",
     "igv-widgets": "github:igvteam/igv-widgets"

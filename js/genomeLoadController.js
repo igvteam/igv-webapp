@@ -24,10 +24,9 @@
  * THE SOFTWARE.
  */
 
-import { loadGenome, configureModal } from './utils.js';
-import FileLoadWidget from './fileLoadWidget.js';
-import FileLoadManager from './fileLoadManager.js';
-import {alertPanel} from "./main.js";
+import { FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { loadGenome } from './utils.js';
+import { alertPanel } from "./main.js";
 
 class GenomeLoadController {
 
@@ -35,19 +34,22 @@ class GenomeLoadController {
 
         this.genomes = genomes;
 
-        // URL
-        let urlConfig =
+        let config =
             {
+                widgetParent: $urlModal.find('.modal-body').get(0),
                 dataTitle: 'Genome',
-                $widgetParent: $urlModal.find('.modal-body'),
-                mode: 'url'
+                indexTitle: undefined,
+                mode: 'url',
+                fileLoadManager: new FileLoadManager(),
+                dataOnly: true,
+                doURL: undefined
             };
 
-        this.urlWidget = new FileLoadWidget(urlConfig, new FileLoadManager());
+        this.urlWidget = new FileLoadWidget(config);
 
         let self = this;
-        configureModal(this.urlWidget, $urlModal, (fileLoadManager) => {
-            uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+        Utils.configureModal(this.urlWidget, $urlModal, async (fileLoadManager) => {
+            await uberFileLoader.ingestPaths(fileLoadManager.getPaths());
             return true;
         });
 

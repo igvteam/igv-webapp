@@ -1,7 +1,7 @@
+import igv from '../node_modules/igv/dist/igv.esm.js';
+import { FileUtils } from "../node_modules/igv-utils/src/index.js"
 import FileLoad from "./fileLoad.js";
-import {FileUtils} from "../node_modules/igv-utils/src/index.js"
 import {getExtension} from "./utils";
-import igv from "igv";
 
 class SessionFileLoad extends FileLoad {
 

@@ -38,11 +38,11 @@ class GenomeLoadController {
             {
                 widgetParent: $urlModal.find('.modal-body').get(0),
                 dataTitle: 'Genome',
-                indexTitle: undefined,
+                indexTitle: 'Genome Index',
                 mode: 'url',
                 fileLoadManager: new FileLoadManager(),
-                dataOnly: true,
-                doURL: undefined
+                dataOnly: false,
+                doURL: true
             };
 
         this.urlWidget = new FileLoadWidget(config);

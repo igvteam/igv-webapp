@@ -23,15 +23,17 @@
 
 import {shortSessionURL} from './shareHelper.js';
 import {QRCode} from './qrcode.js';
-import Globals from "./globals.js"
+import {setURLShortener} from "./shareHelper.js";
 
 class ShareController {
 
-    constructor($appContainer, browser, shareConfig) {
+    constructor({ browser, $container, $modal, $share_input, $copy_link_button, $tweet_button_container, $email_button, $qrcode_button, $qrcode_image, $embed_container, $embed_button, embedTarget }) {
 
-        const embedTarget = shareConfig.embedTarget || getEmbedTarget();
+        if (undefined === embedTarget) {
+            embedTarget = getEmbedTarget();
+        }
 
-        shareConfig.$modal.on('show.bs.modal', async function (e) {
+        $modal.on('show.bs.modal', async function (e) {
 
             let href = window.location.href.slice();
             const idx = href.indexOf("?");
@@ -39,21 +41,21 @@ class ShareController {
                 href = href.substring(0, idx);
             }
 
-            const session = Globals.browser.compressedSession();
+            const session = browser.compressedSession();
 
             if (embedTarget) {
-                const snippet = getEmbeddableSnippet($appContainer, embedTarget, session);
-                shareConfig.$embed_container.find('textarea').val(snippet);
-                shareConfig.$embed_container.find('textarea').get(0).select();
+                const snippet = getEmbeddableSnippet($container, embedTarget, session);
+                $embed_container.find('textarea').val(snippet);
+                $embed_container.find('textarea').get(0).select();
             }
 
             const shortURL = await shortSessionURL(href, session);
-            shareConfig.$share_input.val(shortURL);
-            shareConfig.$share_input.get(0).select();
-            shareConfig.$email_button.attr('href', 'mailto:?body=' + shortURL);
+            $share_input.val(shortURL);
+            $share_input.get(0).select();
+            $email_button.attr('href', 'mailto:?body=' + shortURL);
 
             // QR code generation
-            shareConfig.$qrcode_image.empty();
+            $qrcode_image.empty();
             const obj =
                 {
                     width: 128,
@@ -61,26 +63,26 @@ class ShareController {
                     correctLevel: QRCode.CorrectLevel.H
                 };
 
-            const qrcode = new QRCode(shareConfig.$qrcode_image.get(0), obj);
+            const qrcode = new QRCode($qrcode_image.get(0), obj);
             qrcode.makeCode(shortURL);
 
-            if (shareConfig.$tweet_button_container) {
-                shareConfig.$tweet_button_container.empty();
+            if ($tweet_button_container) {
+                $tweet_button_container.empty();
                 const obj = {text: ''};
-                window.twttr.widgets.createShareButton(shortURL, shareConfig.$tweet_button_container.get(0), obj);
+                window.twttr.widgets.createShareButton(shortURL, $tweet_button_container.get(0), obj);
             }
         });
 
-        shareConfig.$modal.on('hidden.bs.modal', function (e) {
-            shareConfig.$embed_container.hide();
-            shareConfig.$qrcode_image.hide();
+        $modal.on('hidden.bs.modal', function (e) {
+            $embed_container.hide();
+            $qrcode_image.hide();
         });
 
-        shareConfig.$copy_link_button.on('click', function (e) {
-            shareConfig.$share_input.get(0).select();
+        $copy_link_button.on('click', function (e) {
+            $share_input.get(0).select();
             const success = document.execCommand('copy');
             if (success) {
-                shareConfig.$modal.modal('hide');
+                $modal.modal('hide');
             } else {
                 console.log('fail!');
             }
@@ -88,38 +90,38 @@ class ShareController {
 
 
         if (undefined === embedTarget) {
-            shareConfig.$embed_button.hide();
+            $embed_button.hide();
         } else {
-            shareConfig.$embed_container.find('button').on('click', function (e) {
+            $embed_container.find('button').on('click', function (e) {
                 var success;
 
-                shareConfig.$embed_container.find('textarea').get(0).select();
+                $embed_container.find('textarea').get(0).select();
                 success = document.execCommand('copy');
 
                 if (success) {
-                    shareConfig.$modal.modal('hide');
+                    $modal.modal('hide');
                 } else {
                     console.log('fail!');
                 }
             });
 
-            shareConfig.$embed_button.on('click', function (e) {
-                shareConfig.$qrcode_image.hide();
-                shareConfig.$embed_container.toggle();
+            $embed_button.on('click', function (e) {
+                $qrcode_image.hide();
+                $embed_container.toggle();
             });
         }
 
-        shareConfig.$qrcode_button.on('click', function (e) {
-            shareConfig.$embed_container.hide();
-            shareConfig.$qrcode_image.toggle();
+        $qrcode_button.on('click', function (e) {
+            $embed_container.hide();
+            $qrcode_image.toggle();
         });
 
     }
 }
 
-function getEmbeddableSnippet($appContainer, embedTarget, session) {
+function getEmbeddableSnippet($container, embedTarget, session) {
     const embedUrl = embedTarget + "?sessionURL=blob:" + session;
-    const height = $appContainer.height() + 50;
+    const height = $container.height() + 50;
     return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 }
 
@@ -138,5 +140,36 @@ function getEmbedTarget() {
 
 }
 
+const shareControllerConfigurator = (browser, $container, { urlShortener, embedTarget }) => {
+
+    let urlShortenerFn;
+
+    if (urlShortener) {
+        urlShortenerFn = setURLShortener(urlShortener) !== undefined;
+    }
+
+    let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
+    if(!urlShortenerFn) {
+        $igv_app_tweet_button_container.hide();
+    }
+
+    return {
+            browser,
+            $container,
+            $modal: $('#igv-app-share-modal'),
+            $share_input: $('#igv-app-share-input'),
+            $copy_link_button: $('#igv-app-copy-link-button'),
+            $tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
+            $email_button: $('#igv-app-email-button'),
+            $qrcode_button: $('#igv-app-qrcode-button'),
+            $qrcode_image: $('#igv-app-qrcode-image'),
+            $embed_container: $('#igv-app-embed-container'),
+            $embed_button: $('#igv-app-embed-button'),
+            embedTarget
+        };
+
+}
+
+export { shareControllerConfigurator }
 
 export default ShareController;

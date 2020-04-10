@@ -23,21 +23,18 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import * as app_google from './app-google.js';
-import { setURLShortener, sessionURL } from './shareHelper.js';
+import { sessionURL } from './shareHelper.js';
 import { loadGenome } from './utils.js';
-import { genomeDropdownLayout } from './genomeLoadController.js';
 import MultipleFileLoadController from './multipleFileLoadController.js';
-import GenomeLoadController from './genomeLoadController.js';
-import TrackLoadController from './trackLoadController.js';
-import { trackLoadControllerConfigurator } from './trackLoadController.js';
-import ShareController from './shareController.js';
+import GenomeLoadController, { genomeDropdownLayout } from './genomeLoadController.js';
+import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
+import ShareController, { shareControllerConfigurator } from './shareController.js';
 import SessionController, { sessionControllerConfigurator }from "./sessionController.js";
 import SVGController from './svgController.js';
 import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 import Globals from "./globals.js"
 
 let trackLoadController;
-let multipleFileGenomeController;
 let genomeLoadController;
 let sessionController;
 let svgController;
@@ -91,9 +88,21 @@ let initializationHelper = (browser, $container, options) => {
 
     alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
+    createTrackLoadGUI(browser, options);
+
+    createGenomeLoadGUI(browser, options);
+
+    createSessionSaveLoadGUI(browser);
+
+    svgController = new SVGController({ browser, $saveModal: $('#igv-app-svg-save-modal') });
+
+    shareController = new ShareController(shareControllerConfigurator(browser, $container, options));
+
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
-    let $multipleFileLoadModal = $('#igv-app-multiple-file-load-modal');
+};
+
+const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
 
     let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
     if (!googleEnabled) {
@@ -101,16 +110,21 @@ let initializationHelper = (browser, $container, options) => {
     }
 
     const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile: options.trackRegistryFile, $googleDriveButton }));
+    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, $googleDriveButton }));
+
+}
+
+const createGenomeLoadGUI = (browser, { genomes }) => {
 
     let $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
+
     if (!googleEnabled) {
         $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
     }
 
-    const multipleFileGenomeConfig =
+    const uberFileLoaderConfig =
         {
-            $modal: $multipleFileLoadModal,
+            $modal: $('#igv-app-multiple-file-load-modal'),
             modalTitle: 'Genome File Error',
             $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
             $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
@@ -124,14 +138,13 @@ let initializationHelper = (browser, $container, options) => {
             }
         };
 
-    multipleFileGenomeController = new MultipleFileLoadController(browser, multipleFileGenomeConfig);
+    const uberFileLoader = new MultipleFileLoadController(browser, uberFileLoaderConfig);
 
-    // Genome Load Controller
     const genomeLoadConfig =
         {
             $urlModal: $('#igv-app-genome-from-url-modal'),
-            genomes: options.genomes,
-            uberFileLoader: multipleFileGenomeController
+            genomes,
+            uberFileLoader
         };
 
     genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
@@ -150,52 +163,19 @@ let initializationHelper = (browser, $container, options) => {
 
     })();
 
-    let $igv_app_dropdown_google_drive_session_file_button = $('#igv-app-dropdown-google-drive-session-file-button');
+}
+
+const createSessionSaveLoadGUI = browser => {
+
     if (!googleEnabled) {
-        $igv_app_dropdown_google_drive_session_file_button.parent().hide();
+        $('#igv-app-dropdown-google-drive-session-file-button').parent().hide();
     }
 
     sessionController = new SessionController(sessionControllerConfigurator(browser));
 
-    // SVG Controller
-    const svgConfig =
-        {
-            browser: browser,
-            $saveModal: $('#igv-app-svg-save-modal')
-        };
-    svgController = new SVGController(svgConfig);
+}
 
-    // URL Shortener Configuration
-    let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
-
-    let urlShortenerFn;
-    if (options.urlShortener) {
-        urlShortenerFn = setURLShortener(options.urlShortener) !== undefined;
-    }
-
-    if(!urlShortenerFn) {
-        $igv_app_tweet_button_container.hide();
-    }
-
-    const shareConfig =
-        {
-            $modal: $('#igv-app-share-modal'),
-            $share_input: $('#igv-app-share-input'),
-            $copy_link_button: $('#igv-app-copy-link-button'),
-            $tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
-            $email_button: $('#igv-app-email-button'),
-            $qrcode_button: $('#igv-app-qrcode-button'),
-            $qrcode_image: $('#igv-app-qrcode-image'),
-            $embed_container: $('#igv-app-embed-container'),
-            $embed_button: $('#igv-app-embed-button'),
-            embedTarget: options.embedTarget
-        };
-
-    shareController = new ShareController($container, browser, shareConfig);
-
-};
-
-let createAppBookmarkHandler = ($bookmark_button) => {
+const createAppBookmarkHandler = $bookmark_button => {
 
     $bookmark_button.on('click', (e) => {
         let blurb,

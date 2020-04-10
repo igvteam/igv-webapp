@@ -56,7 +56,7 @@ class SessionController {
 
 }
 
-const input_default_value = 'juiceboxjs-session.json';
+const input_default_value = 'igv-session.json';
 
 function configureSaveSessionModal(JSONProvider, sessionSaveModal) {
 
@@ -119,7 +119,7 @@ export const sessionControllerConfigurator = (browser) => {
             sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
             sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
             sessionFileLoad: new SessionFileLoad(sessionFileLoadConfig),
-            JSONProvider: () => browser.toJSON()()
+            JSONProvider: () => browser.toJSON()
         }
 
 };

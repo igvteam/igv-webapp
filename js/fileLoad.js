@@ -1,8 +1,7 @@
 import {FileUtils} from "../node_modules/igv-utils/src/index.js"
 import { DOMUtils } from '../node_modules/igv-ui/src/index.js'
-import { Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import * as app_google from './app-google.js';
-
 class FileLoad {
 
     constructor({ localFileInput, dropboxButton, googleEnabled, googleDriveButton, igvxhr, google }) {
@@ -43,17 +42,13 @@ class FileLoad {
 
             googleDriveButton.addEventListener('click', () => {
 
-                app_google.createDropdownButtonPicker(true, async responses => {
+                app_google.createDropdownButtonPicker(true, responses => {
 
-                    const paths = responses.map(({ name, url }) => {
-                            return {
-                                filename: name,
-                                name,
-                                url: google.driveDownloadURL(url)
-                            };
+                    const paths = responses.map(({ name, url: google_url }) => {
+                            return { filename: name, name, google_url };
                         });
 
-                    await this.loadPaths(paths);
+                    this.loadPaths(paths);
                 });
 
             });
@@ -74,9 +69,9 @@ class FileLoad {
 
             if (FileUtils.isFilePath(path)) {
                 tmp.push(path);
-            } else if (path.google_url) {
-                const fileInfo = await this.google.getDriveFileInfo(path.google_url);
-                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, url: path.url });
+            } else if (undefined === path.google_url && path.includes('drive.google.com')) {
+                const fileInfo = await this.google.getDriveFileInfo(path);
+                googleDrivePaths.push({ filename: fileInfo.name, name: fileInfo.name, google_url: path});
             } else {
                 tmp.push(path);
             }

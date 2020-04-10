@@ -1,7 +1,5 @@
-import igv from '../node_modules/igv/dist/igv.esm.js';
-import { FileUtils } from "../node_modules/igv-utils/src/index.js"
 import FileLoad from "./fileLoad.js";
-import {getExtension} from "./utils";
+import {FileUtils} from "../node_modules/igv-utils/src/index.js"
 
 class SessionFileLoad extends FileLoad {
 
@@ -16,7 +14,7 @@ class SessionFileLoad extends FileLoad {
 
         const path = list[ 0 ];
         if ('json' === FileUtils.getExtension(path)) {
-            const json = await this.igvxhr.loadJson(path);
+            const json = await this.igvxhr.loadJson((path.google_url || path));
             this.loadHandler(json);
         } else if ('xml' === FileUtils.getExtension(path)) {
 
@@ -30,32 +28,5 @@ class SessionFileLoad extends FileLoad {
     };
 
 }
-
-const getJSONTrackConfigurations = async paths => {
-
-    let remainingPaths = [];
-    let jsonPaths = [];
-    for (let path of paths) {
-        const extension = path.url ? getExtension(path.name) : getExtension(path);
-        if ('json' === getExtension(extension)) {
-            jsonPaths.push(path);
-        } else {
-            remainingPaths.push(path)
-        }
-    }
-
-    if (0 === jsonPaths.length) {
-        return { jsonConfigurations: undefined, remainingPaths };
-    }
-
-    const promises = jsonPaths.map(path => path.url ? handleGoogleJSON( path.url ) : igv.xhr.loadJson( path ));
-
-    if (0 === remainingPaths.length) {
-        remainingPaths = undefined;
-    }
-
-    return { jsonConfigurations: await Promise.all(promises), remainingPaths }
-
-};
 
 export default SessionFileLoad;

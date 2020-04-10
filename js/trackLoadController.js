@@ -42,12 +42,12 @@ class TrackLoadController {
         let config =
             {
                 widgetParent: $urlModal.find('.modal-body').get(0),
-                dataTitle: 'Untitled',
-                indexTitle: undefined,
+                dataTitle: 'Track',
+                indexTitle: 'Track Index',
                 mode: 'url',
                 fileLoadManager: new FileLoadManager(),
-                dataOnly: true,
-                doURL: undefined
+                dataOnly: false,
+                doURL: true
             };
 
         this.urlWidget = new FileLoadWidget(config);

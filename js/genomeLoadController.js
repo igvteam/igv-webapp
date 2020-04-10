@@ -24,13 +24,14 @@
  * THE SOFTWARE.
  */
 
-import { FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import igv from '../node_modules/igv/dist/igv.esm.js';
+import { GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { loadGenome } from './utils.js';
-import { alertPanel } from "./main.js";
+import { alertPanel, googleEnabled } from "./main.js";
 
 class GenomeLoadController {
 
-    constructor (browser, { $urlModal, genomes, uberFileLoader }) {
+    constructor (browser, { $urlModal, genomes, genomeFileLoad }) {
 
         this.genomes = genomes;
 
@@ -47,11 +48,30 @@ class GenomeLoadController {
 
         this.urlWidget = new FileLoadWidget(config);
 
-        let self = this;
         Utils.configureModal(this.urlWidget, $urlModal.get(0), async fileLoadWidget => {
-            await uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
+            await genomeFileLoad.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
+
+    }
+
+    initialize(browser, $dropdown_menu) {
+
+        (async () => {
+
+            try {
+
+                const genomeDictionary = await this.getAppLaunchGenomes();
+
+                if (genomeDictionary) {
+                    genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu });
+                }
+
+            } catch (e) {
+                alertPanel.presentAlert(e.message)
+            }
+
+        })();
 
     }
 
@@ -99,7 +119,29 @@ const buildDictionary = array => {
     return dictionary;
 };
 
-export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu}) {
+const genomeLoadConfigurator = (browser, { genomes }) => {
+
+    const genomeFileLoadConfig =
+        {
+            localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
+            dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
+            googleEnabled,
+            googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
+            loadHandler: (configuration) => {
+                loadGenome(configuration);
+            },
+            igvxhr: igv.xhr,
+            google: igv.google,
+
+        };
+
+    const genomeFileLoad = new GenomeFileLoad(genomeFileLoadConfig);
+
+    return { $urlModal: $('#igv-app-genome-from-url-modal'), genomes, genomeFileLoad }
+
+}
+
+const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
     // discard all buttons preceeding the divider div
     let $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
@@ -139,6 +181,8 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
     }
 
 }
+
+export { genomeLoadConfigurator }
 
 export default GenomeLoadController;
 

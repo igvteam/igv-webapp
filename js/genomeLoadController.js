@@ -48,8 +48,8 @@ class GenomeLoadController {
         this.urlWidget = new FileLoadWidget(config);
 
         let self = this;
-        Utils.configureModal(this.urlWidget, $urlModal, async (fileLoadManager) => {
-            await uberFileLoader.ingestPaths(fileLoadManager.getPaths());
+        Utils.configureModal(this.urlWidget, $urlModal.get(0), async fileLoadWidget => {
+            await uberFileLoader.ingestPaths(fileLoadWidget.retrievePaths());
             return true;
         });
 

@@ -52,8 +52,8 @@ class TrackLoadController {
 
         this.urlWidget = new FileLoadWidget(config);
 
-        Utils.configureModal(this.urlWidget, $urlModal, async (fileLoadManager) => {
-            await multipleTrackFileLoad.ingestPaths( fileLoadManager.getPaths() );
+        Utils.configureModal(this.urlWidget, $urlModal.get(0), async fileLoadWidget => {
+            await multipleTrackFileLoad.ingestPaths( fileLoadWidget.retrievePaths() );
             return true;
         });
 

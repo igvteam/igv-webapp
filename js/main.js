@@ -24,9 +24,7 @@
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import * as app_google from './app-google.js';
 import { sessionURL } from './shareHelper.js';
-import { loadGenome } from './utils.js';
-import MultipleFileLoadController from './multipleFileLoadController.js';
-import GenomeLoadController, { genomeDropdownLayout } from './genomeLoadController.js';
+import GenomeLoadController, { genomeLoadConfigurator } from './genomeLoadController.js';
 import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
 import ShareController, { shareControllerConfigurator } from './shareController.js';
 import SessionController, { sessionControllerConfigurator }from "./sessionController.js";
@@ -88,9 +86,9 @@ let initializationHelper = (browser, $container, options) => {
 
     alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
-    createTrackLoadGUI(browser, options);
-
     createGenomeLoadGUI(browser, options);
+
+    createTrackLoadGUI(browser, options);
 
     createSessionSaveLoadGUI(browser);
 
@@ -116,52 +114,8 @@ const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
 
 const createGenomeLoadGUI = (browser, { genomes }) => {
 
-    let $igv_app_dropdown_google_drive_genome_file_button = $('#igv-app-dropdown-google-drive-genome-file-button');
-
-    if (!googleEnabled) {
-        $igv_app_dropdown_google_drive_genome_file_button.parent().hide();
-    }
-
-    const uberFileLoaderConfig =
-        {
-            $modal: $('#igv-app-multiple-file-load-modal'),
-            modalTitle: 'Genome File Error',
-            $localFileInput: $('#igv-app-dropdown-local-genome-file-input'),
-            $dropboxButton: $('#igv-app-dropdown-dropbox-genome-file-button'),
-            $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_genome_file_button : undefined,
-            configurationHandler: MultipleFileLoadController.genomeConfigurator,
-            jsonFileValidator: MultipleFileLoadController.genomeJSONValidator,
-            pathValidator: MultipleFileLoadController.genomePathValidator,
-            fileLoadHandler: (configurations) => {
-                let config = configurations[ 0 ];
-                loadGenome(config);
-            }
-        };
-
-    const uberFileLoader = new MultipleFileLoadController(browser, uberFileLoaderConfig);
-
-    const genomeLoadConfig =
-        {
-            $urlModal: $('#igv-app-genome-from-url-modal'),
-            genomes,
-            uberFileLoader
-        };
-
-    genomeLoadController = new GenomeLoadController(browser, genomeLoadConfig);
-
-    let genomeDictionary = undefined;
-    (async () => {
-        try {
-            genomeDictionary = await genomeLoadController.getAppLaunchGenomes();
-        } catch (e) {
-            alertPanel.presentAlert(e.message)
-        }
-
-        if (genomeDictionary) {
-            genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu: $('#igv-app-genome-dropdown-menu') });
-        }
-
-    })();
+    genomeLoadController = new GenomeLoadController(browser, genomeLoadConfigurator(browser, { genomes }));
+    genomeLoadController.initialize(browser, $('#igv-app-genome-dropdown-menu'))
 
 }
 

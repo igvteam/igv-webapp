@@ -22,10 +22,9 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
+import {  Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import * as app_google from './app-google.js';
 import { knownDataFileIndexFileLookup, getExtension, isValidIndexExtension } from './utils.js';
-import {alertPanel} from "./main.js";
-
 const google = igv.google;
 
 class MultipleTrackFileLoad {
@@ -66,7 +65,7 @@ class MultipleTrackFileLoad {
 
             $googleDriveButton.on('click', () => {
 
-                app_google.createDropdownButtonPicker(multipleFileSelection, async responses => {
+                GoogleFilePicker.createDropdownButtonPicker(multipleFileSelection, async responses => {
 
                     const obj = responses.map(({ name, url }) => {
 
@@ -126,7 +125,7 @@ const ingestPaths = async ({ paths, fileLoadHandler }) => {
 
             if (errorStrings) {
                 // console.log(errorStrings.join('\n'));
-                alertPanel.presentAlert(errorStrings.join('\n'))
+                Alert.presentAlert(errorStrings.join('\n'))
             }
 
         }

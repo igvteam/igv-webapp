@@ -1,4 +1,4 @@
-import FileLoad from "./fileLoad.js";
+import { FileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import {FileUtils} from "../node_modules/igv-utils/src/index.js"
 
 class SessionFileLoad extends FileLoad {

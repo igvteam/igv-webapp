@@ -22,10 +22,9 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
 import ModalTable from '../node_modules/data-modal/js/modalTable.js'
-import {alertPanel} from "./main.js";
 import MultipleTrackFileLoad from "./multipleTrackFileLoad.js";
 
 class TrackLoadController {
@@ -109,12 +108,12 @@ class TrackLoadController {
             try {
                 this.trackRegistry = await this.getTrackRegistry();
             } catch (e) {
-                alertPanel.presentAlert(e.message);
+                Alert.presentAlert(e.message);
             }
 
             if (undefined === this.trackRegistry) {
                 const e = new Error("Error retrieving registry via getTrackRegistry function");
-                alertPanel.presentAlert(e.message);
+                Alert.presentAlert(e.message);
                 throw e;
             }
 
@@ -123,23 +122,20 @@ class TrackLoadController {
             if (undefined === paths) {
                 console.warn(`There are no tracks in the track registryy for genome ${ genomeID }`);
                 return;
-                // const e = new Error(`No tracks defined for genome ${ genomeID }`);
-                // alertPanel.presentAlert(e.message);
-                // throw e;
             }
 
             let responses = [];
             try {
                 responses = await Promise.all( paths.map( path => fetch(path) ) )
             } catch (e) {
-                alertPanel.presentAlert(e.message);
+                Alert.presentAlert(e.message);
             }
 
             let jsons = [];
             try {
                 jsons = await Promise.all( responses.map( response => response.json() ) )
             } catch (e) {
-                alertPanel.presentAlert(e.message);
+                Alert.presentAlert(e.message);
             }
 
             let buttonConfigurations = [];
@@ -157,7 +153,7 @@ class TrackLoadController {
                     try {
                         info = await igv.GtexUtils.getTissueInfo(json.datasetId);
                     } catch (e) {
-                        alertPanel.presentAlert(e.message);
+                        Alert.presentAlert(e.message);
                     }
 
                     if (info) {

@@ -22,7 +22,8 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { trackLoadController, alertPanel } from './main.js';
+import { Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { trackLoadController } from './main.js';
 import Globals from "./globals.js"
 
 const knownDataFileIndexFileLookup = extension => {
@@ -203,14 +204,14 @@ let loadGenome = (genome) => {
         try {
             g = await Globals.browser.loadGenome(genome);
         } catch (e) {
-            alertPanel.presentAlert(e.message);
+            Alert.presentAlert(e.message);
         }
 
         if (g) {
             trackLoadController.updateTrackMenus(g.id);
         } else {
             const e = new Error(`Unable to load genome ${ genome.name }`);
-            alertPanel.presentAlert(e.message);
+            Alert.presentAlert(e.message);
             throw e;
         }
 

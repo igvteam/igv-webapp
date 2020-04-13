@@ -22,6 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
+import { Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import * as app_google from './app-google.js';
 import { sessionURL } from './shareHelper.js';
 import GenomeLoadController, { genomeLoadConfigurator } from './genomeLoadController.js';
@@ -29,7 +30,6 @@ import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoa
 import ShareController, { shareControllerConfigurator } from './shareController.js';
 import SessionController, { sessionControllerConfigurator }from "./sessionController.js";
 import SVGController from './svgController.js';
-import AlertPanel, { alertPanelConfigurator } from "./alertPanel.js";
 import Globals from "./globals.js"
 
 let trackLoadController;
@@ -38,14 +38,13 @@ let sessionController;
 let svgController;
 let shareController;
 let googleEnabled = false;
-let alertPanel;
-
 
 let main = ($container, config) => {
 
-    const enableGoogle = config.clientId &&
-        'CLIENT_ID' !== config.clientId &&
-        (window.location.protocol === "https:" || window.location.host === "localhost");
+    Alert.init($container.get(0));
+
+    const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
+
     if (enableGoogle) {
 
         let browser;
@@ -53,12 +52,12 @@ let main = ($container, config) => {
             {
                 callback: async () => {
 
-                    await app_google.init(config.clientId);
+                    await GoogleFilePicker.init(config.clientId, igv.oauth, igv.google);
                     browser = await igv.createBrowser($container.get(0), config.igvConfig);
                     //  global hack -- there is only 1 browser in this app
                     Globals.browser = browser;
                     googleEnabled = true;
-                    app_google.postInit();
+                    GoogleFilePicker.postInit();
                     initializationHelper(browser, $container, config);
 
                 },
@@ -83,8 +82,6 @@ let main = ($container, config) => {
 };
 
 let initializationHelper = (browser, $container, options) => {
-
-    alertPanel = new AlertPanel( alertPanelConfigurator({$container}) );
 
     createGenomeLoadGUI(browser, options);
 
@@ -144,4 +141,4 @@ const createAppBookmarkHandler = $bookmark_button => {
 
 };
 
-export { main, googleEnabled, trackLoadController, alertPanel };
+export { main, googleEnabled, trackLoadController };

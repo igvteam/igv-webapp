@@ -23,7 +23,6 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import {  Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import * as app_google from './app-google.js';
 import { knownDataFileIndexFileLookup, getExtension, isValidIndexExtension } from './utils.js';
 const google = igv.google;
 

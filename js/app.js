@@ -21,6 +21,125 @@
  *
  */
 
-import {main} from './main.js';
+import igv from '../node_modules/igv/dist/igv.esm.js';
+import { Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { sessionURL } from './shareHelper.js';
+import GenomeLoadController, { genomeLoadConfigurator } from './genomeLoadController.js';
+import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
+import ShareController, { shareControllerConfigurator } from './shareController.js';
+import SessionController, { sessionControllerConfigurator }from "./sessionController.js";
+import SVGController from './svgController.js';
+import Globals from "./globals.js"
 
 $(document).ready(() => main($('#igv-app-container'), igvwebConfig));
+
+let trackLoadController;
+let genomeLoadController;
+let sessionController;
+let svgController;
+let shareController;
+let googleEnabled = false;
+
+let main = ($container, config) => {
+
+    Alert.init($container.get(0));
+
+    const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
+
+    if (enableGoogle) {
+
+        let browser;
+        const gapiConfig =
+            {
+                callback: async () => {
+
+                    await GoogleFilePicker.init(config.clientId, igv.oauth, igv.google);
+                    browser = await igv.createBrowser($container.get(0), config.igvConfig);
+                    //  global hack -- there is only 1 browser in this app
+                    Globals.browser = browser;
+                    googleEnabled = true;
+                    GoogleFilePicker.postInit();
+                    initializationHelper(browser, $container, config);
+
+                },
+                onerror: error => {
+                    console.log('gapi.client:auth2 - failed to load!');
+                    console.error(error);
+                    initializationHelper(browser, $container, config);
+                }
+            };
+
+        gapi.load('client:auth2', gapiConfig);
+
+    } else {
+
+        (async () => {
+            let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+            Globals.browser = browser;
+            initializationHelper(browser, $container, config);
+        })();
+
+    }
+};
+
+let initializationHelper = (browser, $container, options) => {
+
+    createGenomeLoadGUI(browser, options);
+
+    createTrackLoadGUI(browser, options);
+
+    createSessionSaveLoadGUI(browser);
+
+    svgController = new SVGController({ browser, $saveModal: $('#igv-app-svg-save-modal') });
+
+    shareController = new ShareController(shareControllerConfigurator(browser, $container, options));
+
+    createAppBookmarkHandler($('#igv-app-bookmark-button'));
+
+};
+
+const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
+
+    let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
+    if (!googleEnabled) {
+        $igv_app_dropdown_google_drive_track_file_button.parent().hide();
+    }
+
+    const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
+    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, $googleDriveButton }));
+
+}
+
+const createGenomeLoadGUI = (browser, { genomes }) => {
+
+    genomeLoadController = new GenomeLoadController(browser, genomeLoadConfigurator(browser, { genomes }));
+    genomeLoadController.initialize(browser, $('#igv-app-genome-dropdown-menu'))
+
+}
+
+const createSessionSaveLoadGUI = browser => {
+
+    if (!googleEnabled) {
+        $('#igv-app-dropdown-google-drive-session-file-button').parent().hide();
+    }
+
+    sessionController = new SessionController(sessionControllerConfigurator(browser));
+
+}
+
+const createAppBookmarkHandler = $bookmark_button => {
+
+    $bookmark_button.on('click', (e) => {
+        let blurb,
+            str;
+
+        window.history.pushState({}, "IGV", sessionURL());
+
+        str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+        blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
+        alert(blurb);
+    });
+
+};
+
+export { main, googleEnabled, trackLoadController };

@@ -248,7 +248,7 @@ let initializationHelper = (browser, $container, options) => {
             $modal: $('#igv-app-share-modal'),
             $share_input: $('#igv-app-share-input'),
             $copy_link_button: $('#igv-app-copy-link-button'),
-            $tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
+            //$tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
             $email_button: $('#igv-app-email-button'),
             $qrcode_button: $('#igv-app-qrcode-button'),
             $qrcode_image: $('#igv-app-qrcode-image'),

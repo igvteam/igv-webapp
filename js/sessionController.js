@@ -24,7 +24,7 @@ import igv from '../node_modules/igv/dist/igv.esm.js';
 import { FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { FileUtils } from '../node_modules/igv-utils/src/index.js';
 import SessionFileLoad from "./sessionFileLoad.js";
-import { googleEnabled } from "./main.js";
+import { googleEnabled } from "./app.js";
 
 class SessionController {
 

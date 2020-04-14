@@ -27,7 +27,7 @@
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import { Alert, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { loadGenome } from './utils.js';
-import { googleEnabled } from "./main.js";
+import { googleEnabled } from "./app.js";
 
 class GenomeLoadController {
 

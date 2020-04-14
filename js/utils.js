@@ -23,7 +23,7 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import { Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { trackLoadController } from './main.js';
+import { trackLoadController } from './app.js';
 import Globals from "./globals.js"
 
 const knownDataFileIndexFileLookup = extension => {

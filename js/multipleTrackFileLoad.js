@@ -22,8 +22,8 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import {  Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { knownDataFileIndexFileLookup, getExtension, isValidIndexExtension } from './utils.js';
+import { Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { knownDataFileIndexFileLookup, getExtension } from './utils.js';
 const google = igv.google;
 
 class MultipleTrackFileLoad {

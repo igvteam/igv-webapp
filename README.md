@@ -38,12 +38,10 @@ localhost:8080
 
 ## Configuration
 
-**NOTE:** Your must rebuild the dist directory after making any to configuration files in ```resources```.  Alternatively 
+**NOTE:** Your must rebuild the dist directory ``` npm run build``` after making any to configuration files in ```resources```.  Alternatively 
 you can manually copy the changed files to ```dist/resources```,  or just edit ```dist/resources``` directly.
 
-```bash
-npm run build
-```
+
 
 
 

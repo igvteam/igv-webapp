@@ -49,27 +49,35 @@ let main = ($container, config) => {
     if (enableGoogle) {
 
         let browser;
-        const gapiConfig =
+        const googleConfig =
             {
                 callback: async () => {
 
-                    await GoogleFilePicker.init(config.clientId, igv.oauth, igv.google);
+                    try {
+                        await GoogleFilePicker.init(config.clientId, igv.oauth, igv.google);
+                        googleEnabled = true;
+                    } catch (e) {
+                        console.error(e);
+                        Alert.presentAlert(e.message)
+                    }
+
                     browser = await igv.createBrowser($container.get(0), config.igvConfig);
-                    //  global hack -- there is only 1 browser in this app
                     Globals.browser = browser;
-                    googleEnabled = true;
-                    GoogleFilePicker.postInit();
+
+                    if (googleEnabled) {
+                        GoogleFilePicker.postInit();
+                    }
+
                     initializationHelper(browser, $container, config);
 
                 },
-                onerror: error => {
-                    console.log('gapi.client:auth2 - failed to load!');
-                    console.error(error);
-                    initializationHelper(browser, $container, config);
+                onerror: async (e) => {
+                    console.error(e);
+                    Alert.presentAlert(e.message)
                 }
             };
 
-        gapi.load('client:auth2', gapiConfig);
+        gapi.load('client:auth2', googleConfig);
 
     } else {
 

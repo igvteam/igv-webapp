@@ -114,7 +114,7 @@ const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
     }
 
     const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, $googleDriveButton }));
+    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, $googleDriveButton, igvxhr: igv.xhr, google: igv.google }));
 
 }
 

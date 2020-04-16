@@ -21,7 +21,7 @@
  *
  */
 
-import { getExtension } from "./utils.js";
+import igv from '../node_modules/igv/dist/igv.esm.js';
 
 class SVGController {
 
@@ -56,7 +56,7 @@ function configureSaveModal(browser, $modal){
         if (undefined === fn || '' === fn) {
 
             fn = $input.attr('placeholder');
-        } else if (false === extensions.has( getExtension( fn ) )) {
+        } else if (false === extensions.has( igv.getExtension({ url: fn } ) )) {
 
             fn = fn + '.svg';
         }

@@ -27,7 +27,7 @@ import { sessionURL } from './shareHelper.js';
 import GenomeLoadController, { genomeLoadConfigurator } from './genomeLoadController.js';
 import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
 import ShareController, { shareControllerConfigurator } from './shareController.js';
-import SessionController, { sessionControllerConfigurator }from "./sessionController.js";
+import { SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import SVGController from './svgController.js';
 import Globals from "./globals.js"
 
@@ -131,7 +131,8 @@ const createSessionSaveLoadGUI = browser => {
         $('#igv-app-dropdown-google-drive-session-file-button').parent().hide();
     }
 
-    sessionController = new SessionController(sessionControllerConfigurator(browser));
+    // sessionController = new SessionController(sessionControllerConfigurator(browser));
+    sessionController = new SessionController(sessionControllerConfigurator(igv.xhr, igv.google, googleEnabled, async config => { await browser.loadSession(config) }, browser.toJSON));
 
 }
 

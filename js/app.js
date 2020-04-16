@@ -22,16 +22,17 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, GoogleFilePicker, MultipleTrackFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { ModalTable } from '../node_modules/data-modal/js/index.js';
+import Globals from "./globals.js"
 import { sessionURL } from './shareHelper.js';
 import GenomeLoadController, { genomeLoadConfigurator } from './genomeLoadController.js';
-import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
+import TrackLoadController from './trackLoadController.js';
 import ShareController, { shareControllerConfigurator } from './shareController.js';
-import { SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import SVGController from './svgController.js';
-import Globals from "./globals.js"
 
-$(document).ready(() => main($('#igv-app-container'), igvwebConfig));
+$(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
 let trackLoadController;
 let genomeLoadController;
@@ -40,7 +41,7 @@ let svgController;
 let shareController;
 let googleEnabled = false;
 
-let main = ($container, config) => {
+let main = async ($container, config) => {
 
     Alert.init($container.get(0));
 
@@ -81,11 +82,9 @@ let main = ($container, config) => {
 
     } else {
 
-        (async () => {
-            let browser = await igv.createBrowser($container.get(0), config.igvConfig);
-            Globals.browser = browser;
-            initializationHelper(browser, $container, config);
-        })();
+        let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+        Globals.browser = browser;
+        initializationHelper(browser, $container, config);
 
     }
 };
@@ -103,6 +102,40 @@ let initializationHelper = (browser, $container, options) => {
     shareController = new ShareController(shareControllerConfigurator(browser, $container, options));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
+
+};
+
+const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDriveButton, igvxhr, google }) => {
+
+    const encodeModalTableConfig =
+        {
+            id: "igv-app-encode-modal",
+            title: "ENCODE",
+            selectionStyle: 'multi',
+            pageLength: 100,
+            selectHandler: async trackConfigurations => await browser.loadTrackList( trackConfigurations )
+        };
+
+    const multipleTrackFileLoadConfig =
+        {
+            $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
+            $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
+            $googleDriveButton,
+            fileLoadHandler: async configurations => await browser.loadTrackList(configurations),
+            multipleFileSelection: true,
+            igvxhr,
+            google
+        };
+
+    return {
+        browser,
+        trackRegistryFile,
+        $urlModal: $('#igv-app-track-from-url-modal'),
+        encodeModalTable: new ModalTable(encodeModalTableConfig),
+        $dropdownMenu: $('#igv-app-track-dropdown-menu'),
+        $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
+        multipleTrackFileLoad: new MultipleTrackFileLoad(multipleTrackFileLoadConfig)
+    }
 
 };
 
@@ -131,8 +164,7 @@ const createSessionSaveLoadGUI = browser => {
         $('#igv-app-dropdown-google-drive-session-file-button').parent().hide();
     }
 
-    // sessionController = new SessionController(sessionControllerConfigurator(browser));
-    sessionController = new SessionController(sessionControllerConfigurator(igv.xhr, igv.google, googleEnabled, async config => { await browser.loadSession(config) }, browser.toJSON));
+    sessionController = new SessionController(sessionControllerConfigurator(igv.xhr, igv.google, googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON()));
 
 }
 

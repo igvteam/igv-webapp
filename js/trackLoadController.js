@@ -262,7 +262,7 @@ function configureModalSelectList(browser, $modal, configurations) {
 
 }
 
-export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $googleDriveButton}) => {
+export const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDriveButton, igvxhr, google }) => {
 
     const encodeModalTableConfig =
         {
@@ -285,7 +285,9 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
             $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
             $googleDriveButton,
             fileLoadHandler: configurations => browser.loadTrackList(configurations),
-            multipleFileSelection: true
+            multipleFileSelection: true,
+            igvxhr,
+            google
         };
 
     return {

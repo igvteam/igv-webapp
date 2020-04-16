@@ -22,10 +22,9 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, MultipleTrackFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
 import ModalTable from '../node_modules/data-modal/js/modalTable.js'
-import MultipleTrackFileLoad from "./multipleTrackFileLoad.js";
 
 class TrackLoadController {
 

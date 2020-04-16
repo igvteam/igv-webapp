@@ -22,14 +22,15 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, GoogleFilePicker, MultipleTrackFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { ModalTable } from '../node_modules/data-modal/js/index.js';
+import Globals from "./globals.js"
 import { sessionURL } from './shareHelper.js';
 import GenomeLoadController, { genomeLoadConfigurator } from './genomeLoadController.js';
-import TrackLoadController, { trackLoadControllerConfigurator } from './trackLoadController.js';
+import TrackLoadController from './trackLoadController.js';
 import ShareController, { shareControllerConfigurator } from './shareController.js';
-import { SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import SVGController from './svgController.js';
-import Globals from "./globals.js"
 
 $(document).ready(() => main($('#igv-app-container'), igvwebConfig));
 
@@ -105,6 +106,47 @@ let initializationHelper = (browser, $container, options) => {
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
 };
+
+const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDriveButton, igvxhr, google }) => {
+
+    const encodeModalTableConfig =
+        {
+            id: "igv-app-encode-modal",
+            title: "ENCODE",
+            selectionStyle: 'multi',
+            pageLength: 100,
+            selectHandler: trackConfigurations => {
+
+                (async (config) => {
+                    await browser.loadTrackList( config )
+                })(trackConfigurations);
+
+            }
+        };
+
+    const multipleTrackFileLoadConfig =
+        {
+            $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
+            $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
+            $googleDriveButton,
+            fileLoadHandler: configurations => browser.loadTrackList(configurations),
+            multipleFileSelection: true,
+            igvxhr,
+            google
+        };
+
+    return {
+        browser,
+        trackRegistryFile,
+        $urlModal: $('#igv-app-track-from-url-modal'),
+        encodeModalTable: new ModalTable(encodeModalTableConfig),
+        $dropdownMenu: $('#igv-app-track-dropdown-menu'),
+        $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
+        multipleTrackFileLoad: new MultipleTrackFileLoad(multipleTrackFileLoadConfig)
+    }
+
+};
+
 
 const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
 

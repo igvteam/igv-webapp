@@ -105,6 +105,18 @@ let initializationHelper = (browser, $container, options) => {
 
 };
 
+const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
+
+    let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
+    if (!googleEnabled) {
+        $igv_app_dropdown_google_drive_track_file_button.parent().hide();
+    }
+
+    const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
+    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, $googleDriveButton, igvxhr: igv.xhr, google: igv.google }));
+
+}
+
 const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDriveButton, igvxhr, google }) => {
 
     const encodeModalTableConfig =
@@ -138,18 +150,6 @@ const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDr
     }
 
 };
-
-const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
-
-    let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
-    if (!googleEnabled) {
-        $igv_app_dropdown_google_drive_track_file_button.parent().hide();
-    }
-
-    const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, $googleDriveButton, igvxhr: igv.xhr, google: igv.google }));
-
-}
 
 const createGenomeLoadGUI = (browser, { genomes }) => {
 

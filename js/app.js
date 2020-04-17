@@ -22,8 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, GoogleFilePicker, MultipleTrackFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, GoogleFilePicker, MultipleTrackFileLoad, SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { ModalTable } from '../node_modules/data-modal/js/index.js';
 import Globals from "./globals.js"
 import { sessionURL } from './shareHelper.js';
@@ -87,7 +86,7 @@ let main = async ($container, config) => {
         initializationHelper(browser, $container, config);
 
     }
-};
+}
 
 let initializationHelper = (browser, $container, options) => {
 
@@ -103,7 +102,7 @@ let initializationHelper = (browser, $container, options) => {
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
-};
+}
 
 const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
 
@@ -149,7 +148,7 @@ const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDr
         multipleTrackFileLoad: new MultipleTrackFileLoad(multipleTrackFileLoadConfig)
     }
 
-};
+}
 
 const createGenomeLoadGUI = (browser, { genomes }) => {
 
@@ -164,7 +163,7 @@ const createSessionSaveLoadGUI = browser => {
         $('#igv-app-dropdown-google-drive-session-file-button').parent().hide();
     }
 
-    sessionController = new SessionController(sessionControllerConfigurator(igv.xhr, igv.google, googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON()));
+    sessionController = new SessionController(sessionControllerConfigurator('igv-webapp', igv.xhr, igv.google, googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON()));
 
 }
 
@@ -181,6 +180,6 @@ const createAppBookmarkHandler = $bookmark_button => {
         alert(blurb);
     });
 
-};
+}
 
-export { main, googleEnabled, trackLoadController };
+export { main, googleEnabled, trackLoadController }

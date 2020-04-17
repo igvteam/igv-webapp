@@ -21,9 +21,8 @@
  *
  */
 
-import {shortSessionURL} from './shareHelper.js';
 import { QRCode } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import {setURLShortener} from "./shareHelper.js";
+import { shortSessionURL, setURLShortener } from './shareHelper.js';
 
 class ShareController {
 

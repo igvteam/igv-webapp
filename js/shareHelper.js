@@ -22,8 +22,9 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
 import { Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
+
 let urlShortener;
 
 export function setURLShortener(obj) {

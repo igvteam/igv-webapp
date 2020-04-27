@@ -70,9 +70,8 @@
     <div id="igv-app-navbar-navigation" class="collapse navbar-collapse">
         <ul class="navbar-nav">
 
+            <!-- Genome -->
             <li class="nav-item px-3">
-
-                <!-- Genome -->
                 <div class="dropdown">
 
                     <a id="igv-app-genome-dropdown-button" class="dropdown-toggle" href="#" data-toggle="dropdown">
@@ -132,9 +131,8 @@
 
             </li>
 
+            <!-- Tracks -->
             <li class="nav-item px-3">
-
-                <!-- Tracks -->
                 <div id="igv-app-track-dropdown" class="dropdown">
 
                     <a id="igv-track-dropdown-button" class="dropdown-toggle" href="#" data-toggle="dropdown">
@@ -192,9 +190,8 @@
                 </div>
             </li>
 
+            <!-- Session -->
             <li class="nav-item px-3">
-
-                <!-- Session -->
                 <div class="dropdown">
 
                     <a id="igv-app-session-dropdown-button" class="dropdown-toggle" href="#" data-toggle="dropdown">
@@ -241,14 +238,14 @@
                         </div>
 
                         <!-- Load session URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal"
-                                data-target="#igv-app-session-from-url-modal">Load URL ...
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">
+                            Load URL ...
                         </button>
 
                         <div class="dropdown-divider"></div>
 
                         <!-- Save local session file -->
-                        <button id="igv-app-save-session-button" class="dropdown-item" type="button">
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-save-modal">
                             Save ...
                         </button>
 
@@ -257,9 +254,8 @@
                 </div>
             </li>
 
+            <!-- Share (generate URL) -->
             <li class="nav-item px-3">
-
-                <!-- Share (generate URL) -->
                 <div>
                     <a href="#" data-toggle="modal" data-target="#igv-app-share-modal">
                         Share
@@ -267,9 +263,8 @@
                 </div>
             </li>
 
+            <!-- Bookmark -->
             <li class="nav-item px-3">
-
-                <!-- Bookmark -->
                 <div>
                     <a id="igv-app-bookmark-button" href="#">
                         Bookmark
@@ -277,9 +272,8 @@
                 </div>
             </li>
 
+            <!-- Save SVG -->
             <li class="nav-item px-3">
-
-                <!-- Save SVG -->
                 <div>
                     <a href="#" data-toggle="modal" data-target="#igv-app-svg-save-modal">
                         Save SVG
@@ -453,8 +447,7 @@
     </div>
 
     <!-- Session save -->
-    <div id="igv-app-session-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-session-save-modal-label" aria-hidden="true">
+    <div id="igv-app-session-save-modal" class="modal fade igv-app-file-save-modal">
 
         <div class="modal-dialog modal-lg" role="document">
 

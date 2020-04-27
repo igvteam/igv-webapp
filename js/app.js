@@ -22,7 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, GoogleFilePicker, MultipleTrackFileLoad, SessionController, sessionControllerConfigurator } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, GoogleFilePicker, MultipleTrackFileLoad, SessionController, SessionFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { ModalTable } from '../node_modules/data-modal/js/index.js';
 import Globals from "./globals.js"
 import { sessionURL } from './shareHelper.js';
@@ -166,6 +166,30 @@ const createSessionSaveLoadGUI = browser => {
     sessionController = new SessionController(sessionControllerConfigurator('igv-webapp', igv.xhr, igv.google, googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON()));
 
 }
+
+const sessionControllerConfigurator = (prefix, igvxhr, google, googleEnabled, loadHandler, JSONProvider) => {
+
+    // Session File Load
+    const sessionFileLoadConfig =
+        {
+            localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
+            dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
+            googleEnabled,
+            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button'),
+            loadHandler,
+            igvxhr,
+            google
+        };
+
+    // Session Controller
+    return {
+        prefix,
+        sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
+        sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
+        sessionFileLoad: new SessionFileLoad(sessionFileLoadConfig),
+        JSONProvider
+    }
+};
 
 const createAppBookmarkHandler = $bookmark_button => {
 

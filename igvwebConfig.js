@@ -14,9 +14,6 @@ var igvwebConfig = {
             showSVGButton: false
         },
 
-    // Supply a Google client id to enable the Google file picker in the load menus.  This is optional
-    clientId: "661332306814-fmasnut050v7qds33tsa2rtvd5tc06sl.apps.googleusercontent.com",
-
     // Provide a URL shorterner function or object.   This is optional.  If not supplied sharable URLs will not
     // be shortened but will be usable.
     urlShortener: {

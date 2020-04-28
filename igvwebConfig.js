@@ -11,8 +11,7 @@ var igvwebConfig = {
             queryParametersSupported: true,
             showChromosomeWidget: true,
             genome: "hg19",
-            showSVGButton: false,
-            apiKey: "AIzaSyCEmqU2lrAgKxJCbnJX87a5F3c9GejCCLA"
+            showSVGButton: false
         },
 
     // Supply a Google client id to enable the Google file picker in the load menus.  This is optional

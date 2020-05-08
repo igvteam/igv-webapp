@@ -18,14 +18,14 @@
   },
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.9.6",
     "@babel/plugin-transform-regenerator": "^7.8.7",
-    "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
     "core-js": "^3.6.5",
     "eslint": "^6.8.0",
     "fs-extra": "^8.1.0",
-    "http-server": "^0.12.1",
+    "http-server": "^0.12.3",
     "regenerator-runtime": "^0.13.5",
     "rollup": "^1.32.1",
     "rollup-plugin-babel": "^4.4.0",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "data-modal": "github:igvteam/data-modal",
-    "igv": "^2.5.2",
+    "igv": "^2.5.5",
     "igv-ui": "github:igvteam/igv-ui",
     "igv-utils": "github:igvteam/igv-utils",
     "igv-widgets": "github:igvteam/igv-widgets"

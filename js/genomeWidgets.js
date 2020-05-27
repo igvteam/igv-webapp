@@ -29,74 +29,66 @@ import { Alert, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '.
 import { loadGenome } from './utils.js';
 import { googleEnabled } from "./app.js";
 
-class GenomeLoadController {
+let urlWidget = undefined;
 
-    constructor (browser, { $urlModal, genomes, genomeFileLoad }) {
+const creatGenomeWidgets = ({ $urlModal, genomeFileLoad }) => {
 
-        this.genomes = genomes;
+    let config =
+        {
+            widgetParent: $urlModal.find('.modal-body').get(0),
+            dataTitle: 'Genome',
+            indexTitle: 'Genome Index',
+            mode: 'url',
+            fileLoadManager: new FileLoadManager(),
+            dataOnly: false,
+            doURL: true
+        };
 
-        let config =
-            {
-                widgetParent: $urlModal.find('.modal-body').get(0),
-                dataTitle: 'Genome',
-                indexTitle: 'Genome Index',
-                mode: 'url',
-                fileLoadManager: new FileLoadManager(),
-                dataOnly: false,
-                doURL: true
-            };
+    urlWidget = new FileLoadWidget(config);
 
-        this.urlWidget = new FileLoadWidget(config);
+    Utils.configureModal(urlWidget, $urlModal.get(0), async fileLoadWidget => {
+        await genomeFileLoad.ingestPaths(fileLoadWidget.retrievePaths());
+        return true;
+    });
 
-        Utils.configureModal(this.urlWidget, $urlModal.get(0), async fileLoadWidget => {
-            await genomeFileLoad.ingestPaths(fileLoadWidget.retrievePaths());
-            return true;
-        });
+}
 
-    }
+const initializeGenomeWidgets = async (browser, genomes, $dropdown_menu) => {
 
-    initialize(browser, $dropdown_menu) {
+    try {
 
-        (async () => {
+        const genomeDictionary = await getAppLaunchGenomes(genomes);
 
-            try {
-
-                const genomeDictionary = await this.getAppLaunchGenomes();
-
-                if (genomeDictionary) {
-                    genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu });
-                }
-
-            } catch (e) {
-                Alert.presentAlert(e.message)
-            }
-
-        })();
-
-    }
-
-    async getAppLaunchGenomes () {
-
-        if(undefined === this.genomes) {
-            return undefined;
+        if (genomeDictionary) {
+            genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu });
         }
 
-        if(Array.isArray(this.genomes)) {
-            return buildDictionary(this.genomes);
-        } else {
+    } catch (e) {
+        Alert.presentAlert(e.message)
+    }
 
-            let response = undefined;
-            try {
-                response = await fetch(this.genomes);
-            } catch (e) {
-                Alert.presentAlert(e.message);
-            }
+}
 
-            if (response) {
-                let json = await response.json();
-                return buildDictionary(json);
-            }
+const getAppLaunchGenomes = async genomes => {
 
+    if(undefined === genomes) {
+        return undefined;
+    }
+
+    if(Array.isArray(genomes)) {
+        return buildDictionary(genomes);
+    } else {
+
+        let response = undefined;
+        try {
+            response = await fetch(genomes);
+        } catch (e) {
+            Alert.presentAlert(e.message);
+        }
+
+        if (response) {
+            let json = await response.json();
+            return buildDictionary(json);
         }
 
     }
@@ -119,7 +111,7 @@ const buildDictionary = array => {
     return dictionary;
 };
 
-const genomeLoadConfigurator = (browser, { genomes }) => {
+const genomeWidgetConfigurator = () => {
 
     const genomeFileLoadConfig =
         {
@@ -137,7 +129,7 @@ const genomeLoadConfigurator = (browser, { genomes }) => {
 
     const genomeFileLoad = new GenomeFileLoad(genomeFileLoadConfig);
 
-    return { $urlModal: $('#igv-app-genome-from-url-modal'), genomes, genomeFileLoad }
+    return { $urlModal: $('#igv-app-genome-from-url-modal'), genomeFileLoad }
 
 }
 
@@ -182,7 +174,5 @@ const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
 }
 
-export { genomeLoadConfigurator }
-
-export default GenomeLoadController;
+export { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator }
 

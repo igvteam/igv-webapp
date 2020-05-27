@@ -25,19 +25,17 @@ import igv from '../node_modules/igv/dist/igv.esm.js';
 import { Alert, GoogleFilePicker, MultipleTrackFileLoad, SessionController, SessionFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { ModalTable } from '../node_modules/data-modal/js/index.js';
 import Globals from "./globals.js"
-import { sessionURL } from './shareHelper.js';
-import GenomeLoadController, { genomeLoadConfigurator } from './genomeLoadController.js';
 import TrackLoadController from './trackLoadController.js';
-import ShareController, { shareControllerConfigurator } from './shareController.js';
-import SVGController from './svgController.js';
+import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
+import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
+import { sessionURL } from './shareHelper.js';
+import { createSVGWidget } from './svgWidget.js';
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
 let trackLoadController;
-let genomeLoadController;
 let sessionController;
 let svgController;
-let shareController;
 let googleEnabled = false;
 
 let main = async ($container, config) => {
@@ -68,7 +66,7 @@ let main = async ($container, config) => {
                         GoogleFilePicker.postInit();
                     }
 
-                    initializationHelper(browser, $container, config);
+                    await initializationHelper(browser, $container, config);
 
                 },
                 onerror: async (e) => {
@@ -83,22 +81,23 @@ let main = async ($container, config) => {
 
         let browser = await igv.createBrowser($container.get(0), config.igvConfig);
         Globals.browser = browser;
-        initializationHelper(browser, $container, config);
+        await initializationHelper(browser, $container, config);
 
     }
 }
 
-let initializationHelper = (browser, $container, options) => {
+let initializationHelper = async (browser, $container, options) => {
 
-    createGenomeLoadGUI(browser, options);
+    creatGenomeWidgets(genomeWidgetConfigurator())
+    await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
     createTrackLoadGUI(browser, options);
 
     createSessionSaveLoadGUI(browser);
 
-    svgController = new SVGController({ browser, $saveModal: $('#igv-app-svg-save-modal') });
+    createSVGWidget({ browser, $saveModal: $('#igv-app-svg-save-modal') })
 
-    shareController = new ShareController(shareControllerConfigurator(browser, $container, options));
+    createShareWidgets(shareWidgetConfigurator(browser, $container, options));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
@@ -147,13 +146,6 @@ const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDr
         $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
         multipleTrackFileLoad: new MultipleTrackFileLoad(multipleTrackFileLoadConfig)
     }
-
-}
-
-const createGenomeLoadGUI = (browser, { genomes }) => {
-
-    genomeLoadController = new GenomeLoadController(browser, genomeLoadConfigurator(browser, { genomes }));
-    genomeLoadController.initialize(browser, $('#igv-app-genome-dropdown-menu'))
 
 }
 

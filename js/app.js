@@ -22,16 +22,18 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, Utils, GoogleFilePicker, MultipleTrackFileLoad, FileLoadManager, FileLoadWidget, SessionController, SessionFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, EventBus, Utils, GoogleFilePicker, MultipleTrackFileLoad, FileLoadManager, FileLoadWidget, SessionController, SessionFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { ModalTable } from '../node_modules/data-modal/js/index.js';
 import Globals from "./globals.js"
-import TrackLoadController, { updateTrackMenus } from './trackLoadController.js';
+import { updateTrackMenus } from './trackMenu.js';
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
 import { sessionURL } from './shareHelper.js';
 import { createSVGWidget } from './svgWidget.js';
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
+
+let eventBus = new EventBus();
 
 let fileLoadWidget;
 let multipleTrackFileLoad;
@@ -159,16 +161,19 @@ const createTrackLoadGUI = async (browser, googleEnabled, igvxhr, google, { trac
 
     encodeModalTable = new ModalTable(encodeModalTableConfig)
 
-    const trackLoadControllerConfig =
-        {
-            trackRegistryFile,
-            $dropdownMenu: $('#igv-app-track-dropdown-menu'),
-            $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
+    await updateTrackMenus(browser.genome.id, encodeModalTable, trackRegistryFile, $('#igv-app-track-dropdown-menu'), $('#igv-app-generic-track-select-modal'), configuration => browser.loadTrack(configuration));
+
+    const genomeChangeListener = {
+
+        receiveEvent: async ({ data }) => {
+
+            const { genomeID } = data;
+            await updateTrackMenus(genomeID, encodeModalTable, trackRegistryFile, $('#igv-app-track-dropdown-menu'), $('#igv-app-generic-track-select-modal'), configuration => browser.loadTrack(configuration));
         }
+    }
 
-    trackLoadController = new TrackLoadController(trackLoadControllerConfig);
+    eventBus.subscribe('DidChangeGenome', genomeChangeListener);
 
-    await updateTrackMenus(browser.genome.id, encodeModalTable, trackLoadController, configuration => browser.loadTrack(configuration))
 }
 
 const createSessionSaveLoadGUI = browser => {
@@ -220,4 +225,4 @@ const createAppBookmarkHandler = $bookmark_button => {
 
 }
 
-export { main, googleEnabled, encodeModalTable, trackLoadController }
+export { main, eventBus, googleEnabled, encodeModalTable, trackLoadController }

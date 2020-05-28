@@ -22,9 +22,8 @@
  */
 
 import { Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { encodeModalTable, trackLoadController } from './app.js';
 import Globals from "./globals.js"
-import { updateTrackMenus } from "./trackLoadController.js";
+import { eventBus } from './app.js';
 
 const loadGenome = async genome => {
 
@@ -36,11 +35,7 @@ const loadGenome = async genome => {
     }
 
     if (g) {
-        await updateTrackMenus(g.id, encodeModalTable, trackLoadController, configuration => Globals.browser.loadTrack(configuration));
-    } else {
-        const e = new Error(`Unable to load genome ${ genome.name }`);
-        Alert.presentAlert(e.message);
-        throw e;
+        eventBus.post({ type: "DidChangeGenome", data: { genomeID: g.id } });
     }
 
 };

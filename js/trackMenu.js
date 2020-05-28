@@ -25,17 +25,7 @@ import { Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { GtexUtils } from '../node_modules/igv-utils/src/index.js';
 import { EncodeDataSource } from '../node_modules/data-modal/js/index.js';
 
-class TrackLoadController {
-
-    constructor({ trackRegistryFile, $dropdownMenu, $genericTrackSelectModal }) {
-        this.trackRegistryFile = trackRegistryFile;
-        this.$dropdownMenu = $dropdownMenu;
-        this.$genericTrackSelectModal = $genericTrackSelectModal;
-    }
-
-}
-
-const updateTrackMenus = async (genomeID, encodeModalTable, { trackRegistryFile, $dropdownMenu, $genericTrackSelectModal }, fileLoader) => {
+const updateTrackMenus = async (genomeID, encodeModalTable, trackRegistryFile, $dropdownMenu, $genericTrackSelectModal, fileLoader) => {
 
     const id_prefix = 'genome_specific_';
 
@@ -122,7 +112,7 @@ const updateTrackMenus = async (genomeID, encodeModalTable, { trackRegistryFile,
 
                 $genericTrackSelectModal.find('#igv-app-generic-track-select-modal-label').html(markup);
 
-                configureModalSelectList($genericTrackSelectModal, buttonConfiguration.tracks, fileLoader);
+                configureTrackSelectModal($genericTrackSelectModal, buttonConfiguration.tracks, fileLoader);
 
                 $genericTrackSelectModal.modal('show');
 
@@ -135,7 +125,7 @@ const updateTrackMenus = async (genomeID, encodeModalTable, { trackRegistryFile,
 
 };
 
-const configureModalSelectList = ($selectModal, configurations, fileLoader) => {
+const configureTrackSelectModal = ($selectModal, configurations, fileLoader) => {
 
     let $select,
         $option;
@@ -208,4 +198,3 @@ const getPathsWithTrackRegistryFile = async (genomeID, trackRegistryFile) => {
 }
 
 export { updateTrackMenus }
-export default TrackLoadController;

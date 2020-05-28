@@ -119,8 +119,8 @@ const genomeWidgetConfigurator = () => {
             dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
             googleEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
-            loadHandler: (configuration) => {
-                loadGenome(configuration);
+            loadHandler: async configuration => {
+                await loadGenome(configuration);
             },
             igvxhr: igv.xhr,
             google: igv.google,
@@ -150,12 +150,12 @@ const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
             const str = `click.genome-dropdown.${ key }`;
 
-            $button.on(str, () => {
+            $button.on(str, async () => {
 
                 const id = $button.data('id');
 
                 if (id !== browser.genome.id) {
-                    loadGenome(genomeDictionary[ id ]);
+                    await loadGenome(genomeDictionary[ id ]);
                 }
 
             });

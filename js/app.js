@@ -22,10 +22,10 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, GoogleFilePicker, MultipleTrackFileLoad, SessionController, SessionFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, Utils, GoogleFilePicker, MultipleTrackFileLoad, FileLoadManager, FileLoadWidget, SessionController, SessionFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { ModalTable } from '../node_modules/data-modal/js/index.js';
 import Globals from "./globals.js"
-import TrackLoadController from './trackLoadController.js';
+import TrackLoadController, { updateTrackMenus } from './trackLoadController.js';
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
 import { sessionURL } from './shareHelper.js';
@@ -33,9 +33,11 @@ import { createSVGWidget } from './svgWidget.js';
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
+let fileLoadWidget;
+let multipleTrackFileLoad;
+let encodeModalTable;
 let trackLoadController;
 let sessionController;
-let svgController;
 let googleEnabled = false;
 
 let main = async ($container, config) => {
@@ -91,7 +93,7 @@ let initializationHelper = async (browser, $container, options) => {
     creatGenomeWidgets(genomeWidgetConfigurator())
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
-    createTrackLoadGUI(browser, options);
+    await createTrackLoadGUI(browser, googleEnabled, igv.xhr, igv.google, options);
 
     createSessionSaveLoadGUI(browser);
 
@@ -103,7 +105,28 @@ let initializationHelper = async (browser, $container, options) => {
 
 }
 
-const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
+const createTrackLoadGUI = async (browser, googleEnabled, igvxhr, google, { trackRegistryFile }) => {
+
+    const $urlModal = $('#igv-app-track-from-url-modal')
+
+    let fileLoadWidgetConfig =
+        {
+            widgetParent: $urlModal.find('.modal-body').get(0),
+            dataTitle: 'Track',
+            indexTitle: 'Track Index',
+            mode: 'url',
+            fileLoadManager: new FileLoadManager(),
+            dataOnly: false,
+            doURL: true
+        };
+
+    fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
+
+    Utils.configureModal(fileLoadWidget, $urlModal.get(0), async fileLoadWidget => {
+        const paths = fileLoadWidget.retrievePaths();
+        await multipleTrackFileLoad.loadPaths( paths );
+        return true;
+    });
 
     let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
     if (!googleEnabled) {
@@ -111,20 +134,6 @@ const createTrackLoadGUI = (browser, { trackRegistryFile }) => {
     }
 
     const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
-    trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile, $googleDriveButton, igvxhr: igv.xhr, google: igv.google }));
-
-}
-
-const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDriveButton, igvxhr, google }) => {
-
-    const encodeModalTableConfig =
-        {
-            id: "igv-app-encode-modal",
-            title: "ENCODE",
-            selectionStyle: 'multi',
-            pageLength: 100,
-            selectHandler: async trackConfigurations => await browser.loadTrackList( trackConfigurations )
-        };
 
     const multipleTrackFileLoadConfig =
         {
@@ -137,16 +146,29 @@ const trackLoadControllerConfigurator = ({ browser, trackRegistryFile, $googleDr
             google
         };
 
-    return {
-        browser,
-        trackRegistryFile,
-        $urlModal: $('#igv-app-track-from-url-modal'),
-        encodeModalTable: new ModalTable(encodeModalTableConfig),
-        $dropdownMenu: $('#igv-app-track-dropdown-menu'),
-        $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
-        multipleTrackFileLoad: new MultipleTrackFileLoad(multipleTrackFileLoadConfig)
-    }
+    multipleTrackFileLoad = new MultipleTrackFileLoad(multipleTrackFileLoadConfig)
 
+    const encodeModalTableConfig =
+        {
+            id: "igv-app-encode-modal",
+            title: "ENCODE",
+            selectionStyle: 'multi',
+            pageLength: 100,
+            selectHandler: async configurations => await browser.loadTrackList( configurations )
+        };
+
+    encodeModalTable = new ModalTable(encodeModalTableConfig)
+
+    const trackLoadControllerConfig =
+        {
+            trackRegistryFile,
+            $dropdownMenu: $('#igv-app-track-dropdown-menu'),
+            $genericTrackSelectModal: $('#igv-app-generic-track-select-modal')
+        }
+
+    trackLoadController = new TrackLoadController(trackLoadControllerConfig);
+
+    await updateTrackMenus(browser.genome.id, encodeModalTable, trackLoadController, configuration => browser.loadTrack(configuration))
 }
 
 const createSessionSaveLoadGUI = browser => {
@@ -198,4 +220,4 @@ const createAppBookmarkHandler = $bookmark_button => {
 
 }
 
-export { main, googleEnabled, trackLoadController }
+export { main, googleEnabled, encodeModalTable, trackLoadController }

@@ -93,7 +93,7 @@ let initializationHelper = async (browser, $container, options) => {
 
     await createTrackWidgets($('#igv-main'), browser, $('#igv-app-track-dropdown-menu'), 'igv-app-encode-modal', 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', googleEnabled, igv.xhr, igv.google, options);
 
-    createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON());
+    createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON());
 
     createSVGWidget({ browser, $saveModal: $('#igv-app-svg-save-modal') })
 

@@ -26,12 +26,16 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import { Alert, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { createModal } from '../node_modules/igv-ui/src/index.js'
 import { loadGenome } from './utils.js';
 import { googleEnabled } from "./app.js";
 
 let urlWidget = undefined;
 
-const creatGenomeWidgets = ({ $urlModal, genomeFileLoad }) => {
+const creatGenomeWidgets = ({ $igvMain, urlModalId, genomeFileLoad }) => {
+
+    const $urlModal = $(createModal(urlModalId, 'Genome URL'))
+    $igvMain.append($urlModal);
 
     let config =
         {
@@ -111,28 +115,6 @@ const buildDictionary = array => {
     return dictionary;
 };
 
-const genomeWidgetConfigurator = () => {
-
-    const genomeFileLoadConfig =
-        {
-            localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
-            dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
-            googleEnabled,
-            googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
-            loadHandler: async configuration => {
-                await loadGenome(configuration);
-            },
-            igvxhr: igv.xhr,
-            google: igv.google,
-
-        };
-
-    const genomeFileLoad = new GenomeFileLoad(genomeFileLoadConfig);
-
-    return { $urlModal: $('#igv-app-genome-from-url-modal'), genomeFileLoad }
-
-}
-
 const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
     // discard all buttons preceeding the divider div
@@ -171,6 +153,28 @@ const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
         return $button;
     }
+
+}
+
+const genomeWidgetConfigurator = () => {
+
+    const genomeFileLoadConfig =
+        {
+            localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
+            dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
+            googleEnabled,
+            googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
+            loadHandler: async configuration => {
+                await loadGenome(configuration);
+            },
+            igvxhr: igv.xhr,
+            google: igv.google,
+
+        };
+
+    const genomeFileLoad = new GenomeFileLoad(genomeFileLoadConfig);
+
+    return { $igvMain: $('#igv-main'), urlModalId: 'igv-app-genome-from-url-modal', genomeFileLoad }
 
 }
 

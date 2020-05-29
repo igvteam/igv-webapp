@@ -6,13 +6,13 @@ let fileLoadWidget;
 
 // urlModalId = igv-app-session-from-url-modal
 // sessionSaveModalId = igv-app-session-save-modal
-const createSessionWidgets = ($igvMain, igvxhr, google, prefix, urlModalId, sessionSaveModalId, googleEnabled, loadHandler, JSONProvider) => {
+const createSessionWidgets = ($igvMain, igvxhr, google, prefix, localFileInputId, dropboxButtonId, googleDriveButtonId, urlModalId, sessionSaveModalId, googleEnabled, loadHandler, JSONProvider) => {
 
     const $urlModal = $(createURLModal(urlModalId, 'Session URL'))
     $igvMain.append($urlModal);
 
     if (!googleEnabled) {
-        $('#igv-app-dropdown-google-drive-session-file-button').parent().hide();
+        $(`#${ googleDriveButtonId }`).parent().hide();
     }
 
     const fileLoadWidgetConfig =
@@ -30,10 +30,10 @@ const createSessionWidgets = ($igvMain, igvxhr, google, prefix, urlModalId, sess
 
     const sessionFileLoadConfig =
         {
-            localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
-            dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
+            localFileInput: document.querySelector(`#${ localFileInputId }`),
+            dropboxButton: document.querySelector(`#${ dropboxButtonId }`),
             googleEnabled,
-            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button'),
+            googleDriveButton: document.querySelector(`#${ googleDriveButtonId }`),
             loadHandler,
             igvxhr,
             google

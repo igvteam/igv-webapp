@@ -26,15 +26,15 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import { Alert, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
-import { createModal } from '../node_modules/igv-ui/src/index.js'
+import { createURLModal } from '../node_modules/igv-ui/src/index.js'
 import { loadGenome } from './utils.js';
 import { googleEnabled } from "./app.js";
 
-let urlWidget = undefined;
+let fileLoadWidget;
 
 const creatGenomeWidgets = ({ $igvMain, urlModalId, genomeFileLoad }) => {
 
-    const $urlModal = $(createModal(urlModalId, 'Genome URL'))
+    const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
     $igvMain.append($urlModal);
 
     let config =
@@ -48,9 +48,9 @@ const creatGenomeWidgets = ({ $igvMain, urlModalId, genomeFileLoad }) => {
             doURL: true
         };
 
-    urlWidget = new FileLoadWidget(config);
+    fileLoadWidget = new FileLoadWidget(config);
 
-    Utils.configureModal(urlWidget, $urlModal.get(0), async fileLoadWidget => {
+    Utils.configureModal(fileLoadWidget, $urlModal.get(0), async fileLoadWidget => {
         await genomeFileLoad.ingestPaths(fileLoadWidget.retrievePaths());
         return true;
     });

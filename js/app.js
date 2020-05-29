@@ -91,7 +91,7 @@ let initializationHelper = async (browser, $container, options) => {
     creatGenomeWidgets(genomeWidgetConfigurator())
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
-    await createTrackWidgets(browser, googleEnabled, igv.xhr, igv.google, options);
+    await createTrackWidgets($('#igv-main'), browser, $('#igv-app-track-dropdown-menu'), 'igv-app-encode-modal', 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', googleEnabled, igv.xhr, igv.google, options);
 
     createSessionSaveLoadGUI(browser);
 

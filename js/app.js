@@ -22,17 +22,17 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, EventBus, GoogleFilePicker, SessionController, SessionFileLoad } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, EventBus, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import Globals from "./globals.js"
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
 import { sessionURL } from './shareHelper.js';
 import { createSVGWidget } from './svgWidget.js';
 import {createTrackWidgets} from "./trackWidgets.js";
+import {createSessionWidgets} from "./sessionWidgets.js";
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
-let sessionController;
 
 let eventBus = new EventBus();
 let trackLoadController;
@@ -93,7 +93,7 @@ let initializationHelper = async (browser, $container, options) => {
 
     await createTrackWidgets($('#igv-main'), browser, $('#igv-app-track-dropdown-menu'), 'igv-app-encode-modal', 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', googleEnabled, igv.xhr, igv.google, options);
 
-    createSessionSaveLoadGUI(browser);
+    createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON());
 
     createSVGWidget({ browser, $saveModal: $('#igv-app-svg-save-modal') })
 
@@ -102,40 +102,6 @@ let initializationHelper = async (browser, $container, options) => {
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
 }
-
-const createSessionSaveLoadGUI = browser => {
-
-    if (!googleEnabled) {
-        $('#igv-app-dropdown-google-drive-session-file-button').parent().hide();
-    }
-
-    sessionController = new SessionController(sessionControllerConfigurator('igv-webapp', igv.xhr, igv.google, googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON()));
-
-}
-
-const sessionControllerConfigurator = (prefix, igvxhr, google, googleEnabled, loadHandler, JSONProvider) => {
-
-    // Session File Load
-    const sessionFileLoadConfig =
-        {
-            localFileInput: document.querySelector('#igv-app-dropdown-local-session-file-input'),
-            dropboxButton: document.querySelector('#igv-app-dropdown-dropbox-session-file-button'),
-            googleEnabled,
-            googleDriveButton: document.querySelector('#igv-app-dropdown-google-drive-session-file-button'),
-            loadHandler,
-            igvxhr,
-            google
-        };
-
-    // Session Controller
-    return {
-        prefix,
-        sessionLoadModal: document.querySelector('#igv-app-session-from-url-modal'),
-        sessionSaveModal: document.querySelector('#igv-app-session-save-modal'),
-        sessionFileLoad: new SessionFileLoad(sessionFileLoadConfig),
-        JSONProvider
-    }
-};
 
 const createAppBookmarkHandler = $bookmark_button => {
 

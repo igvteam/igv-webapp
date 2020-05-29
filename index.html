@@ -236,7 +236,7 @@
                         </div>
 
                         <!-- Load session URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-from-url-modal">
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-url-modal">
                             Load URL ...
                         </button>
 
@@ -322,123 +322,10 @@
         </div>
     </div>
 
-    <!-- Session save -->
-    <div id="igv-app-session-save-modal" class="modal fade igv-app-file-save-modal">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <div id="igv-app-session-save-modal-label" class="modal-title">
-                        <div>
-                            Save Session File
-                        </div>
-                    </div>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <input class="form-control" type="text" placeholder="igv-app-session.json">
-
-                    <div>
-                        Enter session filename with .json suffix
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-secondary">OK</button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Session from URL -->
-    <div id="igv-app-session-from-url-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-session-from-url-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <div id="igv-app-session-from-url-modal-label" class="modal-title">Session URL</div>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-
-                <div class="modal-body">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-secondary">OK</button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- SVG save -->
-    <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-svg-save-modal-label" aria-hidden="true">
-
-        <div class="modal-dialog modal-lg" role="document">
-
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <div id="igv-app-svg-save-modal-label" class="modal-title">
-                        <div>
-                            Save SVG File
-                        </div>
-                    </div>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <input class="form-control" type="text" placeholder="igv-app.svg">
-
-                    <div>
-                        Enter filename with .svg suffix
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-secondary">OK</button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
     <!-- Share URL Modal -->
-    <div id="igv-app-share-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="igv-app-share-input-modal-label" aria-hidden="true">
+    <div id="igv-app-share-modal" class="modal fade">
 
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
 
             <div class="modal-content">
 
@@ -502,6 +389,46 @@
                         </div>
 
                     </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SVG save -->
+    <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <div id="igv-app-svg-save-modal-label" class="modal-title">
+                        <div>
+                            Save SVG File
+                        </div>
+                    </div>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <input class="form-control" type="text" placeholder="igv-app.svg">
+
+                    <div>
+                        Enter filename with .svg suffix
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-secondary">OK</button>
                 </div>
 
             </div>

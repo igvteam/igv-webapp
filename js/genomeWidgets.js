@@ -118,7 +118,7 @@ const buildDictionary = array => {
 const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
     // discard all buttons preceeding the divider div
-    let $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider');
+    let $divider = $dropdown_menu.find('.dropdown-divider');
     $divider.prevAll().remove();
 
     for (let key in genomeDictionary) {

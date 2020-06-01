@@ -25,10 +25,10 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, EventBus, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { createURLModal } from '../node_modules/igv-ui/src/index.js'
-import { loadGenome } from './utils.js';
 import { googleEnabled } from "./app.js";
+import Globals from "./globals.js";
 
 let fileLoadWidget;
 
@@ -177,6 +177,21 @@ const genomeWidgetConfigurator = () => {
     return { $igvMain: $('#igv-main'), urlModalId: 'igv-app-genome-from-url-modal', genomeFileLoad }
 
 }
+
+const loadGenome = async genome => {
+
+    let g = undefined;
+    try {
+        g = await Globals.browser.loadGenome(genome);
+    } catch (e) {
+        Alert.presentAlert(e.message);
+    }
+
+    if (g) {
+        EventBus.globalBus.post({ type: "DidChangeGenome", data: { genomeID: g.id } });
+    }
+
+};
 
 export { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator }
 

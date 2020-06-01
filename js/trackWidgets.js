@@ -1,8 +1,7 @@
-import { Alert, FileLoadManager, FileLoadWidget, MultipleTrackFileLoad, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, EventBus, FileLoadManager, FileLoadWidget, MultipleTrackFileLoad, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import { EncodeDataSource, ModalTable } from '../node_modules/data-modal/js/index.js';
 import { GtexUtils } from '../node_modules/igv-utils/src/index.js';
 import { createGenericSelectModal, createTrackURLModal } from '../node_modules/igv-ui/src/index.js'
-import {eventBus} from "./app.js";
 
 let fileLoadWidget;
 let multipleTrackFileLoad;
@@ -77,7 +76,7 @@ const createTrackWidgets = async ($igvMain, browser, $dropdownMenu, encodeTrackM
         }
     }
 
-    eventBus.subscribe('DidChangeGenome', genomeChangeListener);
+    EventBus.globalBus.subscribe('DidChangeGenome', genomeChangeListener);
 
 }
 

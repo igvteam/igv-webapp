@@ -22,7 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { Alert, EventBus, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import Globals from "./globals.js"
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
@@ -33,8 +33,6 @@ import {createSessionWidgets} from "./sessionWidgets.js";
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
-
-let eventBus = new EventBus();
 let trackLoadController;
 let googleEnabled = false;
 
@@ -118,4 +116,4 @@ const createAppBookmarkHandler = $bookmark_button => {
 
 }
 
-export { main, eventBus, googleEnabled, trackLoadController }
+export { main, googleEnabled, trackLoadController }

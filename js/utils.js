@@ -21,9 +21,8 @@
  *
  */
 
-import { Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, EventBus } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import Globals from "./globals.js"
-import { eventBus } from './app.js';
 
 const loadGenome = async genome => {
 
@@ -35,7 +34,7 @@ const loadGenome = async genome => {
     }
 
     if (g) {
-        eventBus.post({ type: "DidChangeGenome", data: { genomeID: g.id } });
+        EventBus.globalBus.post({ type: "DidChangeGenome", data: { genomeID: g.id } });
     }
 
 };

@@ -7,7 +7,7 @@ let fileLoadWidget;
 let multipleTrackFileLoad;
 let encodeModalTable;
 
-const createTrackWidgets = async ($igvMain, browser, $dropdownMenu, encodeTrackModalId, urlModalId, selectModalId, googleEnabled, igvxhr, google, { trackRegistryFile }) => {
+const createTrackWidgets = async ($igvMain, $dropdownMenu, $localFileInput, $dropboxButton, googleEnabled, $googleDriveButton, encodeTrackModalId, urlModalId, selectModalId, igvxhr, google, trackRegistryFile, trackLoadHandler) => {
 
     const $genericSelectModal = $(createGenericSelectModal(selectModalId, `${ selectModalId }-select`));
     $igvMain.append($genericSelectModal);
@@ -34,19 +34,16 @@ const createTrackWidgets = async ($igvMain, browser, $dropdownMenu, encodeTrackM
         return true;
     });
 
-    let $igv_app_dropdown_google_drive_track_file_button = $('#igv-app-dropdown-google-drive-track-file-button');
     if (!googleEnabled) {
-        $igv_app_dropdown_google_drive_track_file_button.parent().hide();
+        $googleDriveButton.parent().hide();
     }
-
-    const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
 
     const multipleTrackFileLoadConfig =
         {
-            $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
-            $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-            $googleDriveButton,
-            fileLoadHandler: async configurations => await browser.loadTrackList(configurations),
+            $localFileInput,
+            $dropboxButton,
+            $googleDriveButton: googleEnabled ? $googleDriveButton : undefined,
+            fileLoadHandler: trackLoadHandler,
             multipleFileSelection: true,
             igvxhr,
             google
@@ -60,19 +57,17 @@ const createTrackWidgets = async ($igvMain, browser, $dropdownMenu, encodeTrackM
             title: 'ENCODE',
             selectionStyle: 'multi',
             pageLength: 100,
-            selectHandler: async configurations => await browser.loadTrackList( configurations )
+            selectHandler: trackLoadHandler
         };
 
     encodeModalTable = new ModalTable(encodeModalTableConfig)
-
-    await updateTrackMenus(browser.genome.id, encodeModalTable, trackRegistryFile, $dropdownMenu, $genericSelectModal, configuration => browser.loadTrack(configuration));
 
     const genomeChangeListener = {
 
         receiveEvent: async ({ data }) => {
 
             const { genomeID } = data;
-            await updateTrackMenus(genomeID, encodeModalTable, trackRegistryFile, $dropdownMenu, $genericSelectModal, configuration => browser.loadTrack(configuration));
+            await updateTrackMenus(genomeID, encodeModalTable, trackRegistryFile, $dropdownMenu, $genericSelectModal, trackLoadHandler);
         }
     }
 
@@ -215,7 +210,7 @@ const configureSelectModal = ($genericSelectModal, buttonConfiguration, fileLoad
 
             const configuration = $option.data('track');
 
-            fileLoader(configuration)
+            fileLoader([ configuration ])
         }
 
         $genericSelectModal.modal('hide');

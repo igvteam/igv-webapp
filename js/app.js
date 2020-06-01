@@ -30,6 +30,7 @@ import { sessionURL } from './shareHelper.js';
 import { createSVGWidget } from './svgWidget.js';
 import {createTrackWidgets} from "./trackWidgets.js";
 import {createSessionWidgets} from "./sessionWidgets.js";
+import { dropboxButtonImageBase64 } from "./createDropboxButtonImage.js";
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
@@ -85,6 +86,11 @@ let main = async ($container, config) => {
 }
 
 let initializationHelper = async (browser, $container, options) => {
+
+    for (let str of ['track', 'genome', 'session']) {
+        const imgElement = document.querySelector(`img#igv-app-${ str }-dropbox-button-image`);
+        imgElement.src = `data:image/svg+xml;base64,${ dropboxButtonImageBase64() }`;
+    }
 
     creatGenomeWidgets(genomeWidgetConfigurator())
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))

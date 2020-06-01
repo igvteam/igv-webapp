@@ -221,6 +221,7 @@ ul.navbar-nav {
   justify-content: flex-start;
   align-items: center;
 
+  font-size: .875rem;
   height: 18px;
 
   margin-top: 4px;
@@ -272,10 +273,6 @@ ul.navbar-nav {
 
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25);
-}
-
-.igv-app-dropdown-item-cloud-storage {
-  font-size: .875rem;
 }
 
 .dropdown-menu {

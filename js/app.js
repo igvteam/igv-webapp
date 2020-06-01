@@ -88,7 +88,7 @@ let main = async ($container, config) => {
 
 let initializationHelper = async (browser, $container, options) => {
 
-    for (let str of [ 'track', 'genome', 'session' ]) {
+    [ 'track', 'genome', 'session' ].forEach(str => {
         let imgElement;
 
         imgElement = document.querySelector(`img#igv-app-${ str }-dropbox-button-image`);
@@ -96,7 +96,7 @@ let initializationHelper = async (browser, $container, options) => {
 
         imgElement = document.querySelector(`img#igv-app-${ str }-google-drive-button-image`);
         imgElement.src = `data:image/svg+xml;base64,${ googleDriveButtonImageBase64() }`;
-    }
+    })
 
     creatGenomeWidgets(genomeWidgetConfigurator())
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))

@@ -187,7 +187,7 @@
                         Session
                     </a>
 
-                    <div class="dropdown-menu">
+                    <div id="igv-session-dropdown-menu" class="dropdown-menu">
 
                         <!-- Load local session file -->
                         <label class="dropdown-item btn btn-default btn-file">
@@ -203,29 +203,10 @@
                         </label>
 
                         <!-- Dropbox -->
-                        <div class="dropdown-item">
-
-                            <div id="igv-app-dropdown-dropbox-session-file-button"
-                                 class="igv-app-dropdown-item-cloud-storage">
-
-                                <div>Dropbox</div>
-                                <div><img id="igv-app-session-dropbox-button-image" width="18" height="18"></div>
-                                <div>...</div>
-
-                            </div>
-
-                        </div>
 
                         <!-- Google Drive -->
-                        <div class="dropdown-item">
-                            <div id="igv-app-dropdown-google-drive-session-file-button" class="igv-app-dropdown-item-cloud-storage">
-                                <div>Google Drive</div>
-                                <div><img id="igv-app-session-google-drive-button-image" width="18" height="18"></div>
-                                <div>...</div>
-                            </div>
-                        </div>
 
-                        <!-- Load session URL -->
+                        <!-- Session URL -->
                         <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-url-modal">
                             Load URL ...
                         </button>

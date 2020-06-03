@@ -22,8 +22,9 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
-import { dropboxButtonImageBase64, googleDriveButtonImageBase64 } from '../node_modules/igv-ui/src/index.js'
+import { dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-ui/src/index.js'
 import { Alert, EventBus, GoogleFilePicker, createSessionWidgets } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { } from '../node_modules/igv-ui/src/index.js'
 import Globals from "./globals.js"
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
@@ -86,7 +87,7 @@ let main = async ($container, config) => {
 
 let initializationHelper = async (browser, $container, options) => {
 
-    [ 'track', 'genome', 'session' ].forEach(str => {
+    [ 'track', 'genome' ].forEach(str => {
         let imgElement;
 
         imgElement = document.querySelector(`img#igv-app-${ str }-dropbox-button-image`);
@@ -95,6 +96,10 @@ let initializationHelper = async (browser, $container, options) => {
         imgElement = document.querySelector(`img#igv-app-${ str }-google-drive-button-image`);
         imgElement.src = `data:image/svg+xml;base64,${ googleDriveButtonImageBase64() }`;
     })
+
+    // Session - Dropbox and Google Drive buttons
+    $('div#igv-session-dropdown-menu > :nth-child(1)').after(dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'));
+    $('div#igv-session-dropdown-menu > :nth-child(2)').after(googleDriveDropdownItem('igv-app-dropdown-google-drive-session-file-button'));
 
     creatGenomeWidgets(genomeWidgetConfigurator())
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))

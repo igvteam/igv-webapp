@@ -23,14 +23,13 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js';
 import { dropboxButtonImageBase64, googleDriveButtonImageBase64 } from '../node_modules/igv-ui/src/index.js'
-import { Alert, EventBus, GoogleFilePicker } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, EventBus, GoogleFilePicker, createSessionWidgets } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import Globals from "./globals.js"
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
 import { sessionURL } from './shareHelper.js';
 import { createSVGWidget } from './svgWidget.js';
 import {createTrackWidgets} from "./trackWidgets.js";
-import {createSessionWidgets} from "./sessionWidgets.js";
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 

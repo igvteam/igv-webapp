@@ -163,6 +163,10 @@ assemblies for human (hg19, GRCh38),  mouse (mm10), worm (ce11), and fly (dm6).
 
 ```
 
+## Data Servers
+
+IGV-webapp uses igv.js, a javascript client.  Data servers must support CORS access and Range requests.  See https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements  for more details.  
+
 ## License
 IGV Web App is [MIT](/LICENSE) licensed.
 

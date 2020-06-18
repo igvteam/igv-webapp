@@ -113,35 +113,6 @@ let initializationHelper = (browser, $container, options) => {
         $igv_app_dropdown_google_drive_track_file_button.parent().hide();
     }
 
-    // const multipleFileTrackConfig =
-    //     {
-    //         $modal: $multipleFileLoadModal,
-    //         modalTitle: 'Track File Error',
-    //         $localFileInput: $('#igv-app-dropdown-local-track-file-input'),
-    //         $dropboxButton: $('#igv-app-dropdown-dropbox-track-file-button'),
-    //         $googleDriveButton: googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined,
-    //         configurationHandler: MultipleFileLoadController.trackConfigurator,
-    //         jsonFileValidator: MultipleFileLoadController.trackJSONValidator,
-    //         pathValidator: MultipleFileLoadController.trackPathValidator,
-    //         fileLoadHandler: (configurations) => {
-    //             browser.loadTrackList( configurations );
-    //         }
-    //     };
-    // multipleFileTrackController = new MultipleFileLoadController(browser, multipleFileTrackConfig);
-    //
-    // // Track load controller configuration
-    // const trackLoadConfig =
-    //     {
-    //         trackRegistryFile: options.trackRegistryFile,
-    //         $urlModal: $('#igv-app-track-from-url-modal'),
-    //         $encodeModal: $('#igv-app-encode-modal'),
-    //         $dropdownMenu: $('#igv-app-track-dropdown-menu'),
-    //         $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
-    //         uberFileLoader: multipleFileTrackController
-    //     };
-    //
-    // trackLoadController = new TrackLoadController(browser, trackLoadConfig);
-
     const $googleDriveButton = googleEnabled ? $igv_app_dropdown_google_drive_track_file_button : undefined;
     trackLoadController = new TrackLoadController(trackLoadControllerConfigurator({ browser, trackRegistryFile: options.trackRegistryFile, $googleDriveButton }));
 

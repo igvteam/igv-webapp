@@ -25,21 +25,25 @@
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import EncodeDataSource from '../node_modules/data-modal/js/encodeDataSource.js'
 import ModalTable from '../node_modules/data-modal/js/modalTable.js'
+import EncodeTrackDatasource from "../node_modules/data-modal/js/encodeTrackDatasource.js"
+import { encodeTrackDatasourceConfigurator } from '../node_modules/data-modal/js/encodeTrackDatasourceConfig.js'
+import { encodeTrackDatasourceSignalConfigurator } from "../node_modules/data-modal/js/encodeTrackDatasourceSignalConfig.js"
+import { encodeTrackDatasourceOtherConfigurator } from "../node_modules/data-modal/js/encodeTrackDatasourceOtherConfig.js"
+
 import MultipleFileLoadController from "./multipleFileLoadController.js";
 import {alertPanel} from "./main.js";
 
 class TrackLoadController {
 
-    constructor({browser, trackRegistryFile, $urlModal, encodeModalTable, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
+    constructor({browser, trackRegistryFile, $urlModal, encodeModaTables, $dropdownMenu, $genericTrackSelectModal, uberFileLoader}) {
 
         let urlConfig;
 
         this.browser = browser;
         this.trackRegistryFile = trackRegistryFile;
         this.trackRegistry = undefined;
-        this.encodeModalTable = encodeModalTable;
+        this.encodeModaTables = encodeModaTables;
         this.$dropdownMenu = $dropdownMenu;
         this.$modal = $genericTrackSelectModal;
 
@@ -85,11 +89,6 @@ class TrackLoadController {
         }
 
     }
-
-    createEncodeTable(genomeID) {
-        const datasource = new EncodeDataSource(genomeID);
-        this.encodeModalTable.setDatasource(datasource)
-    };
 
     updateTrackMenus(genomeID) {
 
@@ -147,7 +146,11 @@ class TrackLoadController {
 
                 if ('ENCODE' === json.type) {
 
-                    this.createEncodeTable(json.genomeID);
+                    let i = 0;
+                    for (let config of [ encodeTrackDatasourceSignalConfigurator(genomeID), encodeTrackDatasourceOtherConfigurator(json.genomeID) ]) {
+                        this.encodeModaTables[ i++ ].setDatasource( new EncodeTrackDatasource(config) )
+                    }
+
                     buttonConfigurations.push(json);
 
                 } else if ('GTEX' === json.type) {
@@ -168,43 +171,37 @@ class TrackLoadController {
                     buttonConfigurations.push(json);
                 }
 
-
             }
 
-            buttonConfigurations = buttonConfigurations.reverse();
+            let encodeConfiguration
+            let configurations = []
             for (let config of buttonConfigurations) {
+                if (config.type && 'ENCODE' === config.type) {
+                    encodeConfiguration = config
+                } else {
+                    configurations.unshift(config)
+                }
+            }
 
-                const $button = $('<button>', {class: 'dropdown-item', type: 'button'});
-                const str = config.label + ' ...';
-                $button.text(str);
+            createDropdownButton($divider, 'ENCODE Signals', id_prefix).on('click', () => this.encodeModaTables[ 0 ].$modal.modal('show'));
+            createDropdownButton($divider, 'ENCODE Others', id_prefix).on('click', () => this.encodeModaTables[ 1 ].$modal.modal('show'));
 
-                const id = id_prefix + config.label.toLowerCase().split(' ').join('_');
-                $button.attr('id', id);
+            for (let config of configurations) {
 
-                $button.insertAfter($divider);
+                const $button = createDropdownButton($divider, config.label, id_prefix)
 
                 $button.on('click', () => {
 
-                    if ('ENCODE' === config.type) {
-
-                        this.encodeModalTable.$modal.modal('show');
-
-                    } else {
-
-                        let markup = '<div>' + config.label + '</div>';
-
-                        if (config.description) {
-                            markup += '<div>' + config.description + '</div>';
-                        }
-
-                        this.$modal.find('#igv-app-generic-track-select-modal-label').html(markup);
-
-                        configureModalSelectList(this.browser, this.$modal, config.tracks);
-
-                        this.$modal.modal('show');
-
+                    let markup = '<div>' + config.label + '</div>'
+                    if (config.description) {
+                        markup += '<div>' + config.description + '</div>'
                     }
 
+                    this.$modal.find('#igv-app-generic-track-select-modal-label').html(markup)
+
+                    configureModalSelectList(this.browser, this.$modal, config.tracks)
+
+                    this.$modal.modal('show')
                 });
 
             }
@@ -213,7 +210,14 @@ class TrackLoadController {
 
     };
 
+}
 
+const createDropdownButton = ($divider, buttonText, id_prefix) => {
+    const $button = $('<button>', { class: 'dropdown-item', type: 'button' })
+    $button.text(`${ buttonText } ...`)
+    $button.attr('id', `${ id_prefix }${ buttonText.toLowerCase().split(' ').join('_') }`)
+    $button.insertAfter($divider)
+    return $button
 }
 
 function configureModalSelectList(browser, $modal, configurations) {
@@ -234,15 +238,15 @@ function configureModalSelectList(browser, $modal, configurations) {
 
     configurations.reduce(($accumulator, configuration) => {
 
-            $option = $('<option>', {value: configuration.name, text: configuration.name});
-            $select.append($option);
+        $option = $('<option>', {value: configuration.name, text: configuration.name});
+        $select.append($option);
 
-            $option.data('track', configuration);
+        $option.data('track', configuration);
 
-            $accumulator.append($option);
+        $accumulator.append($option);
 
-            return $accumulator;
-        }, $select);
+        return $accumulator;
+    }, $select);
 
     $select.on('change', () => {
 
@@ -282,26 +286,29 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
             }
         };
 
-    const encodeModalTableConfig =
+    const encodeSignalModalTableConfig =
         {
-            id: "igv-app-encode-modal",
-            title: "ENCODE",
+            id: "igv-app-encode-signal-modal",
+            title: "ENCODE Signals",
             selectionStyle: 'multi',
             pageLength: 100,
-            selectHandler: trackConfigurations => {
+            selectHandler: async trackConfigurations => await browser.loadTrackList( trackConfigurations )
+        };
 
-                (async (config) => {
-                    await browser.loadTrackList( config )
-                })(trackConfigurations);
-
-            }
+    const encodeOtherModalTableConfig =
+        {
+            id: "igv-app-encode-other-modal",
+            title: "ENCODE Others",
+            selectionStyle: 'multi',
+            pageLength: 100,
+            selectHandler: async trackConfigurations => await browser.loadTrackList( trackConfigurations )
         };
 
     return {
         browser,
         trackRegistryFile,
         $urlModal: $('#igv-app-track-from-url-modal'),
-        encodeModalTable: new ModalTable(encodeModalTableConfig),
+        encodeModaTables: [ new ModalTable(encodeSignalModalTableConfig), new ModalTable(encodeOtherModalTableConfig) ],
         $dropdownMenu: $('#igv-app-track-dropdown-menu'),
         $genericTrackSelectModal: $('#igv-app-generic-track-select-modal'),
         uberFileLoader: new MultipleFileLoadController(browser, multipleFileTrackConfig)

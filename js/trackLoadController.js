@@ -183,8 +183,8 @@ class TrackLoadController {
                 }
             }
 
+            createDropdownButton($divider, 'ENCODE Other', id_prefix).on('click', () => this.encodeModaTables[ 1 ].$modal.modal('show'));
             createDropdownButton($divider, 'ENCODE Signals', id_prefix).on('click', () => this.encodeModaTables[ 0 ].$modal.modal('show'));
-            createDropdownButton($divider, 'ENCODE Others', id_prefix).on('click', () => this.encodeModaTables[ 1 ].$modal.modal('show'));
 
             for (let config of configurations) {
 
@@ -298,7 +298,7 @@ export const trackLoadControllerConfigurator = ({browser, trackRegistryFile, $go
     const encodeOtherModalTableConfig =
         {
             id: "igv-app-encode-other-modal",
-            title: "ENCODE Others",
+            title: "ENCODE Other",
             selectionStyle: 'multi',
             pageLength: 100,
             selectHandler: async trackConfigurations => await browser.loadTrackList( trackConfigurations )

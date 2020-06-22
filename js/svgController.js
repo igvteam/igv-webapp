@@ -21,9 +21,7 @@
  *
  */
 
-import FileLoadWidget from "./fileLoadWidget.js";
-import FileLoadManager from "./fileLoadManager.js";
-import {configureModal, getExtension} from "./utils.js";
+import {getExtension} from "./utils.js";
 
 class SVGController {
 
@@ -66,7 +64,7 @@ function configureSaveModal(browser, $modal){
         // dismiss modal
         $modal.modal('hide');
 
-        browser.renderSVG({ filename: fn });
+        browser.saveSVGtoFile({ filename: fn });
     };
 
     // ok - button

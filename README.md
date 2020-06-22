@@ -8,7 +8,7 @@ igv-webapp is a pure-client "genome browser" application based on [igv.js](https
 
 ## Supported Browsers
 
-igv-webapp and igv.js require a modern web browser with support for Javascript ECMAScript 2015. We test on the latest versions of Chrome, Safari, Firefox, and Edge. Internet Explorer (IE) is not supported.
+igv-webapp and igv.js require a modern web browser with support for Javascript ECMAScript 2015.
 
 ## Installation
 * Clone this repository
@@ -38,11 +38,10 @@ localhost:8080
 
 ## Configuration
 
-**NOTE:** Your must rebuild the dist directory ``` npm run build``` after making any to configuration files in ```resources```.  Alternatively 
+**NOTE:** 
+
+Your must rebuild the dist directory ``` npm run build``` after making any to configuration files in ```resources```.  Alternatively 
 you can manually copy the changed files to ```dist/resources```,  or just edit ```dist/resources``` directly.
-
-
-
 
 
 The webapp is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties
@@ -58,21 +57,15 @@ a json object with genomeIDs as keys and an array of URLs to json files defining
 For an example see the default configuration at ```resources/tracks/trackRegistry.json```.    Further details on the track menu configuration are available [below](#track-registry).
 
 * igvConfg - an igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0) for details.
-The property **apiKey** is optional. Setting a value will enable access to public Google resources.
-See [Google Support](https://support.google.com/googleapi/answer/6158862?hl=en) for instructions
-on obtaining an API key.  
 
-* clientId - a Google clientId, used to enable OAuth for the Google picker and access to protected
+* clientId - **Optional** a Google clientId, used to enable OAuth for the Google picker and access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for
 instructions on obtaining a clienId.  OAuth requests from igv.js will include the following scopes.
 
-```
-            'https://www.googleapis.com/auth/cloud-platform',
-            'https://www.googleapis.com/auth/genomics',
-            'https://www.googleapis.com/auth/devstorage.read_only',
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/drive.readonly'
-   ```     
+    * https://www.googleapis.com/auth/devstorage.read_only 
+    * https://www.googleapis.com/auth/userinfo.profile 
+    * https://www.googleapis.com/auth/drive.readonly'
+  
 * urlShortener - an object or function defining a URL shortener to shorten links created by the **Share** button.   This is optional, if not provided the links are not shortened, and the "Twitter" option is disabled.  The value of this property can be a function, taking a single argument (the long URL) and returning the shortened url, or an Object. Objects define a provider and an apiKey to be used with the provider service.  Currently 2 providers are recognized,  __bitly__ and __google__.  
 
 ### Default configuration

@@ -1,0 +1,16 @@
+{
+  "label": "Annotations",
+  "description": "Annotations from the SARS-Cov-2",
+  "tracks": [
+    {
+      "name": "SARS-Cov-2",
+      "type": "annotation",
+      "format": "bed",
+      "url": "https://opencdn-databucket-gen3.s3.amazonaws.com/annotation/COVID19_gene_annotation.bed.gz",
+      "indexURL": "https://opencdn-databucket-gen3.s3.amazonaws.com/annotation/COVID19_gene_annotation.ix",
+      "visibilityWindow": -1,
+      "removable": false,
+      "order": 1000000
+    }
+  ]
+}

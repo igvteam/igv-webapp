@@ -1,5 +1,21 @@
 [
   {
+    "id": "ASM985889v3",
+    "name": "Sars-CoV-2 (ASM985889v3)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/covid_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/covid_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.fai",
+    "order": 1000000,
+    "tracks": [
+      {
+        "name": "Annotations",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/covid_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.gff.gz",
+        "displayMode": "EXPANDED",
+        "nameField": "gene",
+        "height": 150
+      }
+    ]
+  },
+  {
     "id": "hg38",
     "name": "Human (GRCh38/hg38)",
     "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
@@ -290,22 +306,6 @@
         "removable": false,
         "supportsWholeGenome": false,
         "visibilityWindow": -1
-      }
-    ]
-  },
-  {
-    "id": "ASM985889v3",
-    "name": "Sars-CoV-2 (ASM985889v3)",
-    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/covid_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna",
-    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/covid_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.fai",
-    "order": 1000000,
-    "tracks": [
-      {
-        "name": "Annotations",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/covid_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.gff.gz",
-        "displayMode": "EXPANDED",
-        "nameField": "gene",
-        "height": 150
       }
     ]
   }

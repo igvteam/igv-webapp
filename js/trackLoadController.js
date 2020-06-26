@@ -25,11 +25,10 @@
 import {configureModal} from './utils.js';
 import FileLoadWidget from './fileLoadWidget.js';
 import FileLoadManager from './fileLoadManager.js';
-import ModalTable from '../node_modules/data-modal/js/modalTable.js'
-import EncodeTrackDatasource from "../node_modules/data-modal/js/encodeTrackDatasource.js"
-import { encodeTrackDatasourceConfigurator } from '../node_modules/data-modal/js/encodeTrackDatasourceConfig.js'
-import { encodeTrackDatasourceSignalConfigurator } from "../node_modules/data-modal/js/encodeTrackDatasourceSignalConfig.js"
-import { encodeTrackDatasourceOtherConfigurator } from "../node_modules/data-modal/js/encodeTrackDatasourceOtherConfig.js"
+import ModalTable from './data-modal/modalTable.js'
+import EncodeTrackDatasource from "./data-modal/encodeTrackDatasource.js"
+import { encodeTrackDatasourceSignalConfigurator } from "./data-modal/encodeTrackDatasourceSignalConfig.js"
+import { encodeTrackDatasourceOtherConfigurator } from "./data-modal/encodeTrackDatasourceOtherConfig.js"
 
 import MultipleFileLoadController from "./multipleFileLoadController.js";
 import {alertPanel} from "./main.js";

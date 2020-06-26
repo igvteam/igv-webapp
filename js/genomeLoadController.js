@@ -132,7 +132,6 @@ export function genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu
 
         let $button = $('<button>', { class:'dropdown-item', type:'button' });
         $button.text(title);
-
         return $button;
     }
 

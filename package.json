@@ -1,29 +1,27 @@
 {
-  "name": "igv-webapp",
+  "name": "gen3-igv",
   "version": "1.1.0",
   "description": "igv web app",
   "keywords": [],
   "author": "Douglass Turner and Jim Robinson",
   "license": "MIT",
   "scripts": {
-    "start": "http-server -a localhost dist",
+    "start": "http-server -a localhost -p 3000 dist",
     "build": "node scripts/clean.js && rollup -c && node scripts/copyArtifacts.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/igvteam/igv-webapp.git"
+    "url": "git+https://github.com/uc-cdis/gen3-igv.git"
   },
   "bugs": {
-    "url": "https://github.com/igvteam/igv-webapp/issues"
+    "url": "https://github.com/uc-cdis/gen3-igv/issues"
   },
-  "homepage": "https://github.com/igvteam/igv-webapp#readme",
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-transform-regenerator": "^7.10.1",
     "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.10.2",
     "core-js": "^3.6.5",
-    "data-modal": "github:igvteam/data-modal",
     "eslint": "^6.8.0",
     "fs-extra": "^8.1.0",
     "http-server": "^0.12.3",

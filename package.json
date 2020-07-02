@@ -40,6 +40,6 @@
     "igv": "^2.5.5",
     "igv-ui": "github:igvteam/igv-ui",
     "igv-utils": "github:igvteam/igv-utils",
-    "igv-widgets": "github:igvteam/igv-widgets#dat"
+    "igv-widgets": "github:igvteam/igv-widgets"
   }
 }

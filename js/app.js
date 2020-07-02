@@ -20,12 +20,114 @@
  * THE SOFTWARE.
  *
  */
-import {main} from './main.js';
 
-// To import igv as a module (1) uncomment the import below, and "window.igv=igv", (2) comment out the igv script include in the html
-//import igv from "http://localhost/igv-web/dist/igv.esm.js";
+import igv from '../node_modules/igv/dist/igv.esm.js';
+import { dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-ui/src/index.js'
+import { Alert, EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import Globals from "./globals.js"
+import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
+import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
+import { sessionURL } from './shareHelper.js';
+import { createSVGWidget } from './svgWidget.js';
 
-$(document).ready(() => {
-   // window.igv = igv;
-    main($('#igv-app-container'), igvwebConfig);
-});
+$(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
+
+let trackLoadController;
+let googleEnabled = false;
+
+let main = async ($container, config) => {
+
+    Alert.init($container.get(0));
+
+    const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
+
+    if (enableGoogle) {
+
+        let browser;
+        const googleConfig =
+            {
+                callback: async () => {
+
+                    try {
+                        await GoogleFilePicker.init(config.clientId, igv.oauth, igv.google);
+                        googleEnabled = true;
+                    } catch (e) {
+                        console.error(e);
+                        Alert.presentAlert(e.message)
+                    }
+
+                    browser = await igv.createBrowser($container.get(0), config.igvConfig);
+                    Globals.browser = browser;
+
+                    if (googleEnabled) {
+                        GoogleFilePicker.postInit();
+                    }
+
+                    await initializationHelper(browser, $container, config);
+
+                },
+                onerror: async (e) => {
+                    console.error(e);
+                    Alert.presentAlert(e.message)
+                }
+            };
+
+        gapi.load('client:auth2', googleConfig);
+
+    } else {
+
+        let browser = await igv.createBrowser($container.get(0), config.igvConfig);
+        Globals.browser = browser;
+        await initializationHelper(browser, $container, config);
+
+    }
+}
+
+let initializationHelper = async (browser, $container, options) => {
+
+    [ 'track', 'genome' ].forEach(str => {
+        let imgElement;
+
+        imgElement = document.querySelector(`img#igv-app-${ str }-dropbox-button-image`);
+        imgElement.src = `data:image/svg+xml;base64,${ dropboxButtonImageBase64() }`;
+
+        imgElement = document.querySelector(`img#igv-app-${ str }-google-drive-button-image`);
+        imgElement.src = `data:image/svg+xml;base64,${ googleDriveButtonImageBase64() }`;
+    })
+
+    // Session - Dropbox and Google Drive buttons
+    $('div#igv-session-dropdown-menu > :nth-child(1)').after(dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'));
+    $('div#igv-session-dropdown-menu > :nth-child(2)').after(googleDriveDropdownItem('igv-app-dropdown-google-drive-session-file-button'));
+
+    creatGenomeWidgets(genomeWidgetConfigurator())
+    await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
+
+    createTrackWidgetsWithTrackRegistry($('#igv-main'), $('#igv-app-track-dropdown-menu'), $('#igv-app-dropdown-local-track-file-input'), $('#igv-app-dropdown-dropbox-track-file-button'), googleEnabled, $('#igv-app-dropdown-google-drive-track-file-button'), [ 'igv-app-encode-signal-modal', 'igv-app-encode-others-modal'], 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', igv.xhr, igv.google, options.trackRegistryFile, async configurations => await browser.loadTrackList(configurations));
+
+    createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON());
+
+    createSVGWidget({ browser, $saveModal: $('#igv-app-svg-save-modal') })
+
+    createShareWidgets(shareWidgetConfigurator(browser, $container, options));
+
+    createAppBookmarkHandler($('#igv-app-bookmark-button'));
+
+    EventBus.globalBus.post({ type: "DidChangeGenome", data: { genomeID: browser.genome.id } });
+}
+
+const createAppBookmarkHandler = $bookmark_button => {
+
+    $bookmark_button.on('click', (e) => {
+        let blurb,
+            str;
+
+        window.history.pushState({}, "IGV", sessionURL());
+
+        str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+        blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
+        alert(blurb);
+    });
+
+}
+
+export { main, googleEnabled, trackLoadController }

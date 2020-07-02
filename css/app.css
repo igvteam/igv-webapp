@@ -450,6 +450,7 @@ ul.navbar-nav a:hover {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
+  font-size: .875rem;
   height: 18px;
   margin-top: 4px;
   margin-bottom: 4px; }
@@ -478,9 +479,6 @@ ul.navbar-nav a:hover {
 
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.25); }
-
-.igv-app-dropdown-item-cloud-storage {
-  font-size: .875rem; }
 
 .dropdown-menu {
   font-size: .875rem; }

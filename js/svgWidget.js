@@ -21,29 +21,19 @@
  *
  */
 
-import {getExtension} from "./utils.js";
+import igv from '../node_modules/igv/dist/igv.esm.js';
 
-class SVGController {
-
-    constructor ({ browser, $saveModal }) {
-
-        configureSaveModal(browser, $saveModal);
-
-    }
-
-}
-
-function configureSaveModal(browser, $modal){
+const createSVGWidget = ({ browser, $saveModal }) => {
 
     const input_default_value = 'igv-app.svg';
 
-    let $input = $modal.find('input');
+    let $input = $saveModal.find('input');
 
-    $modal.on('show.bs.modal', (e) => {
+    $saveModal.on('show.bs.modal', (e) => {
         $input.val(input_default_value);
     });
 
-    $modal.on('hidden.bs.modal', (e) => {
+    $saveModal.on('hidden.bs.modal', (e) => {
         $input.val(input_default_value);
     });
 
@@ -56,19 +46,19 @@ function configureSaveModal(browser, $modal){
         if (undefined === fn || '' === fn) {
 
             fn = $input.attr('placeholder');
-        } else if (false === extensions.has( getExtension( fn ) )) {
+        } else if (false === extensions.has( igv.getExtension({ url: fn } ) )) {
 
             fn = fn + '.svg';
         }
 
         // dismiss modal
-        $modal.modal('hide');
+        $saveModal.modal('hide');
 
-        browser.saveSVGtoFile({ filename: fn });
+        browser.renderSVG({ filename: fn });
     };
 
     // ok - button
-    let $ok = $modal.find('.modal-footer button:nth-child(2)');
+    let $ok = $saveModal.find('.modal-footer button:nth-child(2)');
 
     $ok.on('click', okHandler);
 
@@ -79,17 +69,17 @@ function configureSaveModal(browser, $modal){
     });
 
     // upper dismiss - x - button
-    let $dismiss = $modal.find('.modal-header button:nth-child(1)');
+    let $dismiss = $saveModal.find('.modal-header button:nth-child(1)');
     $dismiss.on('click', function () {
-        $modal.modal('hide');
+        $saveModal.modal('hide');
     });
 
     // lower dismiss - close - button
-    $dismiss = $modal.find('.modal-footer button:nth-child(1)');
+    $dismiss = $saveModal.find('.modal-footer button:nth-child(1)');
     $dismiss.on('click', function () {
-        $modal.modal('hide');
+        $saveModal.modal('hide');
     });
 
 }
 
-export default SVGController;
+export { createSVGWidget }

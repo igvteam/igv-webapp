@@ -21,7 +21,6 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js';
 
 const createSVGWidget = ({ browser, $saveModal }) => {
 

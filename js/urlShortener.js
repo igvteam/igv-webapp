@@ -21,8 +21,6 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js';
-
 function bitlyShortener(accessToken) {
 
     if (!accessToken || accessToken === "BITLY_TOKEN") {

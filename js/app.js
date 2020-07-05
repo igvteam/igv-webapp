@@ -21,7 +21,6 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js';
 import { dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-ui/src/index.js'
 import { Alert, EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry } from '../node_modules/igv-widgets/dist/igv-widgets.js';
 import Globals from "./globals.js"

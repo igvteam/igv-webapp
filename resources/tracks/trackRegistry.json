@@ -9,7 +9,6 @@
   "hg38": [
     "resources/tracks/hg38_annotations.json",
     "resources/tracks/hg38_encode.json",
-    "resources/tracks/hg38_gtex.json",
     "resources/tracks/hg38_1KG_lowCoverageCrams.json"
   ],
   "mm10": [

@@ -34,6 +34,10 @@ $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 let trackLoadController;
 let googleEnabled = false;
 
+// For development with igv.js (1) comment out the script include of igv.min.js in index.html, (2) uncomment the 2 lines below
+//import igv from "http://localhost/igv-web/js/index.js";
+//window.igv = igv;
+
 let main = async ($container, config) => {
 
     Alert.init($container.get(0));

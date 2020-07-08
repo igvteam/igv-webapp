@@ -27,7 +27,7 @@ The available pre-defined genomes are listed at the top of the menu. If you sele
 
 #### Loading a genome file
 
-If you have a FASTA file of your reference genome sequence, you can load it using one of the options in the bottom part of the menu: 
+If you have an indexed FASTA file of your reference genome sequence, you can load it using one of the options in the bottom part of the menu: 
 
 * `Local File`
 * `Dropbox`

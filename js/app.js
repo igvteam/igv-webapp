@@ -22,7 +22,7 @@
  */
 
 import { dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-ui/src/index.js'
-import { Alert, EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry } from '../node_modules/igv-widgets/dist/igv-widgets.js';
+import { Alert, EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry } from '../node_modules/igv-widgets/src/index.js';
 import Globals from "./globals.js"
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
@@ -31,12 +31,11 @@ import { createSVGWidget } from './svgWidget.js';
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
-let trackLoadController;
 let googleEnabled = false;
 
 // For development with igv.js (1) comment out the script include of igv.min.js in index.html, (2) uncomment the 2 lines below
-//import igv from "http://localhost/igv-web/js/index.js";
-//window.igv = igv;
+// import igv from '../node_modules/igv/dist/igv.js'
+// window.igv = igv;
 
 let main = async ($container, config) => {
 
@@ -105,7 +104,7 @@ let initializationHelper = async (browser, $container, options) => {
     creatGenomeWidgets(genomeWidgetConfigurator())
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
-    createTrackWidgetsWithTrackRegistry($('#igv-main'), $('#igv-app-track-dropdown-menu'), $('#igv-app-dropdown-local-track-file-input'), $('#igv-app-dropdown-dropbox-track-file-button'), googleEnabled, $('#igv-app-dropdown-google-drive-track-file-button'), [ 'igv-app-encode-signal-modal', 'igv-app-encode-others-modal'], 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', igv.xhr, igv.google, options.trackRegistryFile, async configurations => await browser.loadTrackList(configurations));
+    createTrackWidgetsWithTrackRegistry($('#igv-main'), $('#igv-app-track-dropdown-menu'), $('#igv-app-dropdown-local-track-file-input'), $('#igv-app-dropdown-dropbox-track-file-button'), googleEnabled, $('#igv-app-dropdown-google-drive-track-file-button'), [ 'igv-app-encode-signal-modal', 'igv-app-encode-others-modal'], 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', igv.xhr, igv.google, igv.GtexUtils, options.trackRegistryFile, async configurations => await browser.loadTrackList(configurations));
 
     createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON());
 
@@ -129,8 +128,8 @@ const createAppBookmarkHandler = $bookmark_button => {
         str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
         blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
         alert(blurb);
-    });
+    })
 
 }
 
-export { main, googleEnabled, trackLoadController }
+export { main, googleEnabled }

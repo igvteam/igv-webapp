@@ -21,8 +21,8 @@
  *
  */
 
-import { QRCode } from '../node_modules/igv-widgets/src/index.js';
-import { shortSessionURL, setURLShortener } from './shareHelper.js';
+import { QRCode } from '../node_modules/igv-widgets/src/index.js'
+import { shortSessionURL, setURLShortener } from './shareHelper.js'
 
 const createShareWidgets = ({ browser, $container, $modal, $share_input, $copy_link_button, $tweet_button_container, $email_button, $qrcode_button, $qrcode_image, $embed_container, $embed_button, embedTarget }) => {
 

@@ -34,6 +34,7 @@ let googleEnabled = false;
 
 // For development with igv.js (1) comment out the script include of igv.min.js in index.html, (2) uncomment the 2 lines below
 // import igv from '../node_modules/igv/dist/igv.js'
+// import igv from '../node_modules/igv/dist/igv.esm.js'
 // window.igv = igv;
 
 let main = async ($container, config) => {

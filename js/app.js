@@ -21,7 +21,7 @@
  *
  */
 
-import { EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry, dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-widgets/src/index.js'
+import { Alert, EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry, dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-widgets/src/index.js'
 import Globals from "./globals.js"
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
@@ -39,7 +39,9 @@ let googleEnabled = false;
 
 let main = async ($container, config) => {
 
-    igv.Alert.init($container.get(0));
+    Alert.init($container.get(0))
+    
+    igv.Alert.init($container.get(0))
 
     const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
 

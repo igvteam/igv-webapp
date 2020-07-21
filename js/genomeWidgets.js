@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-import { createURLModal, EventBus, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/src/index.js'
+import { createURLModal, EventBus, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import { googleEnabled } from "./app.js";
 import Globals from "./globals.js";
 

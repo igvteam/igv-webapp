@@ -73,6 +73,25 @@
     ]
   },
   {
+    "id": "mm9",
+    "name": "Mouse (NCBI37/mm9)",
+    "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/mm9.fasta",
+    "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/mm9.fasta.fai",
+    "cytobandURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/cytoBandIdeo.txt.gz",
+    "order": 1000000,
+    "tracks": [
+      {
+        "name": "Refseq Genes",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/refGene.sorted.txt.gz.tbi",
+        "order": 1000000,
+        "removable": false,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
+      }
+    ]
+  },
+  {
     "id": "panTro4",
     "name": " Chimp (SAC 2.1.4/panTro4)",
     "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/panTro4/panTro4.fa",

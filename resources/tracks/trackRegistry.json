@@ -29,5 +29,8 @@
   ],
   "rn6": [
     "resources/tracks/rn6_annotations.json"
+  ],
+  "mm9": [
+    "resources/tracks/mm9_annotations.json"
   ]
 }

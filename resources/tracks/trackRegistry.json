@@ -32,5 +32,23 @@
   ],
   "mm9": [
     "resources/tracks/mm9_annotations.json"
+  ],
+  "susScr11": [
+    "resources/tracks/susScr11_annotations.json"
+  ],
+  "panTro4": [
+    "resources/tracks/panTro4_annotations.json"
+  ],
+  "panPan2": [
+    "resources/tracks/panPan2_annotations.json"
+  ],
+  "gorGor4": [
+    "resources/tracks/gorGor4_annotations.json"
+  ],
+  "canFam3": [
+    "resources/tracks/canFam3_annotations.json"
+  ],
+  "bosTau8": [
+    "resources/tracks/bosTau8_annotations.json"
   ]
 }

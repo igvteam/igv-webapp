@@ -53,7 +53,7 @@ const createSVGWidget = ({ browser, $saveModal }) => {
         // dismiss modal
         $saveModal.modal('hide');
 
-        browser.renderSVG({ filename: fn });
+        browser.saveSVGtoFile({ filename: fn });
     };
 
     // ok - button

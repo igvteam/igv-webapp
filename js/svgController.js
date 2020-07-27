@@ -66,7 +66,7 @@ function configureSaveModal(browser, $modal){
         // dismiss modal
         $modal.modal('hide');
 
-        browser.renderSVG({ filename: fn });
+        browser.saveSVGtoFile({ filename: fn });
     };
 
     // ok - button

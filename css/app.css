@@ -313,6 +313,11 @@ a#igv-app-email-button:active {
   justify-content: center;
   align-items: center; }
 
+select#igv-app-track-select-modal-select {
+  height: 200px; }
+  select#igv-app-track-select-modal-select option {
+    font-size: 01.0rem; }
+
 body {
   padding-top: 48px; }
 

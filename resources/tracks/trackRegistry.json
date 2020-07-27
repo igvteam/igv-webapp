@@ -50,5 +50,8 @@
   ],
   "bosTau8": [
     "resources/tracks/bosTau8_annotations.json"
+  ],
+  "bosTau9": [
+    "resources/tracks/bosTau9_annotations.json"
   ]
 }

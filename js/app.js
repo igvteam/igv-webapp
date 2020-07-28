@@ -41,8 +41,6 @@ let main = async ($container, config) => {
 
     Alert.init($container.get(0))
 
-    igv.Alert.init($container.get(0))
-
     const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
 
     if (enableGoogle) {
@@ -57,7 +55,7 @@ let main = async ($container, config) => {
                         googleEnabled = true;
                     } catch (e) {
                         console.error(e);
-                        igv.Alert.presentAlert(e.message)
+                        Alert.presentAlert(e.message)
                     }
 
                     browser = await igv.createBrowser($container.get(0), config.igvConfig);
@@ -72,7 +70,7 @@ let main = async ($container, config) => {
                 },
                 onerror: async (e) => {
                     console.error(e);
-                    igv.Alert.presentAlert(e.message)
+                    Alert.presentAlert(e.message)
                 }
             };
 

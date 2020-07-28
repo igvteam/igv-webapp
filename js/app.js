@@ -90,6 +90,8 @@ let main = async ($container, config) => {
 
 let initializationHelper = async (browser, $container, options) => {
 
+    Alert.presentAlert('Testing that funky Alert');
+
     [ 'track', 'genome' ].forEach(str => {
         let imgElement;
 

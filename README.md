@@ -33,9 +33,12 @@ npm start
 ````
 * Open a browser and enter the following URL to run the app
 ````
-http://localhost:8080/index
+localhost:8080
 ````
-
+or
+````
+localhost:8080/index
+````
 ## Configuration
 
 **NOTE:** 

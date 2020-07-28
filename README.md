@@ -31,9 +31,9 @@ npm run build
 ````
 npm start
 ````
-* Open a browser and enter the follow url to run the app
+* Open a browser and enter the following URL to run the app
 ````
-localhost:8080
+http://localhost:8080/index
 ````
 
 ## Configuration

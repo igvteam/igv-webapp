@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "http-server -a localhost dist",
-    "build": "node scripts/clean.js && rollup -c && node scripts/copyArtifacts.js"
+    "build": "node scripts/updateVersion.js && node scripts/clean.js && rollup -c && node scripts/copyArtifacts.js"
   },
   "repository": {
     "type": "git",

@@ -27,6 +27,7 @@ import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator }
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
 import { sessionURL } from './shareHelper.js';
 import { createSVGWidget } from './svgWidget.js';
+import version from "./version.js";
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
@@ -40,6 +41,8 @@ let googleEnabled = false;
 let main = async ($container, config) => {
 
     Alert.init($container.get(0))
+
+    $('#igv-version-label').text(`version ${ version() }`)
 
     const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
 

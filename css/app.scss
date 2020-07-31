@@ -57,6 +57,46 @@ ul.navbar-nav {
   width: auto;
 }
 
+.modal-title {
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  div:first-child {
+    font-size: 1.5rem;
+  }
+  div:last-child {
+    font-size: 01.0rem;
+  }
+
+}
+
+.modal-header {
+  font-size: 1.2rem;
+}
+
+.modal-body {
+
+  select {
+    font-size: .875rem;
+
+    option {
+      font-size: .875rem;
+    }
+  }
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.modal-footer {
+  border-top: unset;
+}
+
 #igv-app-session-save-modal {
 
   .modal-body {
@@ -98,19 +138,22 @@ ul.navbar-nav {
   }
 }
 
-.modal-title {
+#igv-app-encode-modal .modal-dialog {
+  max-width: 75%;
+}
 
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;
+#igv-app-multiple-file-load-modal-body.modal-body {
 
-  div:first-child {
-    font-size: 1.5rem;
+  div {
+    color: $igv-app-dark-color;
+    font-size: 18px;
+
+    padding-bottom: 8px;
   }
+
   div:last-child {
-    font-size: 01.0rem;
+
+    padding-bottom: unset;
   }
 
 }
@@ -196,10 +239,6 @@ ul.navbar-nav {
   margin-bottom: 8px;
 }
 
-#igv-app-encode-modal .modal-dialog {
-  max-width: 75%;
-}
-
 .igv-app-disabled {
   color: $igv-app-medium-color;
   pointer-events:none; // This makes it not clickable
@@ -261,43 +300,8 @@ ul.navbar-nav {
   }
 }
 
-#igv-app-multiple-file-load-modal-body.modal-body {
-
-  div {
-    color: $igv-app-dark-color;
-    font-size: 18px;
-
-    padding-bottom: 8px;
-  }
-
-  div:last-child {
-
-    padding-bottom: unset;
-  }
-
-}
-
-.modal-header {
-  font-size: 1.2rem;
-}
-
-.modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.25);
-}
-
 .dropdown-menu {
   font-size: .875rem;
-}
-
-.modal-body {
-
-  select {
-    font-size: .875rem;
-
-    option {
-      font-size: .875rem;
-    }
-  }
 }
 
 label.dropdown-item {

@@ -45,8 +45,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg18/refGene.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg18/refGene.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg18/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg18/refGene.sorted.txt.gz.tbi",
         "visibilityWindow": -1,
         "removable": false,
         "order": 1000000
@@ -63,8 +63,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm10/refGene.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm10/refGene.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm10/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm10/refGene.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
         "visibilityWindow": -1,
@@ -156,8 +156,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/refGene.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/refGene.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/refGene.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -192,8 +192,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/refGene.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/refGene.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/refGene.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -248,8 +248,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/rn6/refGene.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/rn6/refGene.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/rn6/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/rn6/refGene.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -284,8 +284,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/refGene.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/refGene.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/refGene.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -303,8 +303,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer10/refGene.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer10/refGene.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer10/refGene.sorted.txt.gz",
+        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer10/refGene.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,

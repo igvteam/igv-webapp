@@ -8,7 +8,7 @@
       "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/GRCz11.gtf.gz",
       "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/GRCz11.gtf.gz.tbi",
       "visibilityWindow": 20000000
-    }
+    },
     {
       "name": "Ensembl Genes",
       "type": "annotation",

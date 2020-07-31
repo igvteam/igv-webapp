@@ -21,6 +21,12 @@ body {
   padding-top: $igv-header-height;
 }
 
+#igv-app-container {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
 #igv-main.container-fluid {
   width: unset;
 }

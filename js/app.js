@@ -35,8 +35,8 @@ let googleEnabled = false;
 
 // For development with igv.js (1) comment out the script include of igv.min.js in index.html, (2) uncomment the 2 lines below
 // import igv from '../node_modules/igv/dist/igv.js'
-// import igv from '../node_modules/igv/dist/igv.esm.js'
-// window.igv = igv;
+import igv from '../node_modules/igv/dist/igv.esm.js'
+window.igv = igv;
 
 let main = async ($container, config) => {
 
@@ -62,13 +62,18 @@ let main = async ($container, config) => {
                     }
 
                     browser = await igv.createBrowser($container.get(0), config.igvConfig);
-                    Globals.browser = browser;
 
-                    if (googleEnabled) {
-                        GoogleFilePicker.postInit();
+                    if (browser) {
+
+                        Globals.browser = browser;
+
+                        if (googleEnabled) {
+                            GoogleFilePicker.postInit();
+                        }
+
+                        await initializationHelper(browser, $container, config);
+
                     }
-
-                    await initializationHelper(browser, $container, config);
 
                 },
                 onerror: async (e) => {
@@ -82,8 +87,11 @@ let main = async ($container, config) => {
     } else {
 
         let browser = await igv.createBrowser($container.get(0), config.igvConfig);
-        Globals.browser = browser;
-        await initializationHelper(browser, $container, config);
+
+        if (browser) {
+            Globals.browser = browser;
+            await initializationHelper(browser, $container, config);
+        }
 
     }
 }

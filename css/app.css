@@ -311,6 +311,11 @@ select#igv-app-track-select-modal-select {
 body {
   padding-top: 48px; }
 
+#igv-app-container {
+  position: relative;
+  top: 0;
+  left: 0; }
+
 #igv-main.container-fluid {
   width: unset; }
 

@@ -25,17 +25,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-1.10.20/sl-1.3.1/datatables.min.css">
 
     <!-- CSS -->
-<!--    <link rel="stylesheet" href="node_modules/igv-widgets/css/file-load-widget.css">-->
-<!--    <link rel="stylesheet" href="node_modules/igv-widgets/css/igv-widgets-alert-dialog.css">-->
+    <!--    <link rel="stylesheet" href="node_modules/igv-widgets/css/file-load-widget.css">-->
+    <!--    <link rel="stylesheet" href="node_modules/igv-widgets/css/igv-widgets-alert-dialog.css">-->
     <link rel="stylesheet" href="css/file-load-widget.css">
     <link rel="stylesheet" href="css/igv-widgets-alert-dialog.css">
 
     <link rel="stylesheet" href="css/app.css">
 
     <!-- IGV JS-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/igv@2.6.3/dist/igv.min.js"></script>-->
-<!--    <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>-->
-<!--    <script src="node_modules/igv/dist/igv.js"></script>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/igv@2.6.3/dist/igv.min.js"></script>-->
+    <!--    <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>-->
+    <!--    <script src="node_modules/igv/dist/igv.js"></script>-->
 
     <!-- Dropbox Chooser API-->
     <script id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js" data-app-key="8glijwyao9fq8we"></script>
@@ -125,7 +125,6 @@
                     </div>
 
                 </div>
-
             </li>
 
             <!-- Tracks -->
@@ -227,7 +226,7 @@
             <!-- Share (generate URL) -->
             <li class="nav-item px-3">
                 <div>
-                    <a href="#" data-toggle="modal" data-target="#igv-app-share-modal">
+                    <a id="igv-app-share-button" href="#" data-toggle="modal" data-target="#igv-app-share-modal">
                         Share
                     </a>
                 </div>
@@ -245,23 +244,31 @@
             <!-- Save SVG -->
             <li class="nav-item px-3">
                 <div>
-                    <a href="#" data-toggle="modal" data-target="#igv-app-svg-save-modal">
+                    <a id="igv-app-save-svg-button" href="#" data-toggle="modal" data-target="#igv-app-svg-save-modal">
                         Save SVG
                     </a>
                 </div>
             </li>
 
+            <!-- Help Menu -->
+            <li class="nav-item px-3">
+                <div id="igv-app-help-dropdown" class="dropdown">
+
+                    <a id="igv-app-help-button" class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        Help
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="https://igvteam.github.io/igv-webapp/" target="_blank">Documentation</a>
+                        <a class="dropdown-item" href="https://github.com/igvteam/igv-webapp" target="_blank">GitHub Repository</a>
+                        <a class="dropdown-item" href="https://groups.google.com/group/igv-help" target="_blank">User Forum</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-help-about-modal">About IGV-Web</a>
+                    </div>
+                </div>
+            </li>
+
         </ul>
     </div>
-
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a href="https://igvteam.github.io/igv-webapp/" target="_blank">
-                Help
-            </a>
-        </li>
-    </ul>
-
 
 </nav>
 
@@ -388,6 +395,27 @@
 
         </div>
 
+    </div>
+
+    <!-- Help - About - Modal -->
+    <div id="igv-app-help-about-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">About IGV-Web</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="igv-app-version"></div>
+                    <div id="igv-igvjs-version"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </main>

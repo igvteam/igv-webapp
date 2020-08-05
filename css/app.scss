@@ -41,14 +41,17 @@ hr {
 }
 
 ul.navbar-nav {
-  a {
-    color: white;
-    text-decoration: none;
-    outline: 0;
-  }
-
-  a:hover {
-    color: #dfdfdf;
+  >li {
+    >div {
+      >a {
+        color: white;
+        text-decoration: none;
+        outline: 0;
+      }
+      >a:hover {
+        color: #dfdfdf;
+      }
+    }
   }
 }
 

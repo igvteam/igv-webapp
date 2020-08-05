@@ -42,7 +42,8 @@ let main = async ($container, config) => {
 
     Alert.init($container.get(0))
 
-    $('#igv-version-label').text(`app version ${ version() }. igvjs version ${ igv.version() }`)
+    $('#igv-app-version').text(`IGV-Web app version ${ version() }`)
+    $('#igv-igvjs-version').text(`igv.js version ${ igv.version() }`)
 
     const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
 

@@ -65,18 +65,20 @@ ul.navbar-nav {
   justify-content: flex-start;
   align-items: flex-start;
 
-  div:first-child {
-    font-size: 1.5rem;
-  }
-  div:last-child {
-    font-size: 01.0rem;
-  }
+  font-size: 1.5rem;
+
+  //div:first-child {
+  //  font-size: 1.5rem;
+  //}
+  //div:last-child {
+  //  font-size: 01.0rem;
+  //}
 
 }
 
-.modal-header {
-  font-size: 1.2rem;
-}
+//.modal-header {
+//  font-size: 1.2rem;
+//}
 
 .modal-body {
 

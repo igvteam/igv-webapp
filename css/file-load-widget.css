@@ -2,7 +2,6 @@
   position: relative;
   border-color: transparent;
   width: 100%;
-  padding-bottom: 20px;
   color: #7F7F7F;
   font-family: "Open Sans", sans-serif;
   font-size: 0.875rem;
@@ -60,8 +59,7 @@
       .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-input-label {
         color: #6c757c;
         font-weight: 400;
-        margin-left: 8px;
-        width: 128px;
+        width: 136px;
         height: 36px;
         line-height: 36px;
         text-align: left; }
@@ -81,7 +79,6 @@
         border-color: #7F7F7F;
         background-color: white; }
       .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row input {
-        width: 410px;
         height: calc(36px - 12px); }
       .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row .igv-flw-file-chooser-container {
         display: flex;

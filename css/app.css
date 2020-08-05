@@ -143,14 +143,8 @@ ul.navbar-nav a:hover {
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  align-items: flex-start; }
-  .modal-title div:first-child {
-    font-size: 1.5rem; }
-  .modal-title div:last-child {
-    font-size: 01.0rem; }
-
-.modal-header {
-  font-size: 1.2rem; }
+  align-items: flex-start;
+  font-size: 1.5rem; }
 
 .modal-body select {
   font-size: .875rem; }

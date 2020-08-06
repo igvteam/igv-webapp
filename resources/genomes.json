@@ -313,6 +313,37 @@
     ]
   },
   {
+    "id": "ASM294v2",
+    "name": "S. pombe (ASM294v2)",
+    "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/S.pombe_ASM294v2/Schizosaccharomyces_pombe_all_chromosomes.fa",
+    "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/S.pombe_ASM294v2/Schizosaccharomyces_pombe_all_chromosomes.fa.fai",
+    "tracks": [
+      {
+        "name": "Pombase forward strand",
+        "type": "annotation",
+        "format": "gff3",
+        "displayMode": "EXPANDED",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/S.pombe_ASM294v2/Schizosaccharomyces_pombe_all_chromosomes.plus.gff3.gz",
+        "indexed": false,
+        "supportsWholeGenome": true,
+        "labelAllFeatures": true,
+        "height": 150,
+        "color": "rgb(5,75,180)"
+      },
+      {
+        "name": "Pombase reverse strand",
+        "type": "annotation",
+        "format": "gff3",
+        "displayMode": "EXPANDED",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/S.pombe_ASM294v2/Schizosaccharomyces_pombe_all_chromosomes.minus.gff3.gz",
+        "indexed": false,
+        "supportsWholeGenome": true,
+        "height": 150,
+        "color": "rgb(7,123,220)"
+      }
+    ]
+  },
+  {
     "id": "ASM985889v3",
     "name": "Sars-CoV-2 (ASM985889v3)",
     "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/covid_ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna",

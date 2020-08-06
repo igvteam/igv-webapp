@@ -19,28 +19,31 @@
     <link rel="stylesheet" href="css/fontawesome/all.css">
 
     <!-- Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-1.10.20/sl-1.3.1/datatables.min.css">
 
-    <!-- APP CSS -->
+    <!-- CSS -->
+    <!--    <link rel="stylesheet" href="node_modules/igv-widgets/css/file-load-widget.css">-->
+    <!--    <link rel="stylesheet" href="node_modules/igv-widgets/css/igv-widgets-alert-dialog.css">-->
+    <link rel="stylesheet" href="css/file-load-widget.css">
+    <link rel="stylesheet" href="css/igv-widgets-alert-dialog.css">
+
     <link rel="stylesheet" href="css/app.css">
 
     <!-- IGV JS-->
-    <script src="https://cdn.jsdelivr.net/npm/igv@2.6.3/dist/igv.min.js"></script>
-<!--    <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>-->
-
-    <!-- FOR DEVELOPMENT ONLY -->
-<!--    <script src="node_modules/igv/dist/igv.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/igv@2.6.4/dist/igv.min.js"></script>
+    <!--    <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>-->
+    <!--    <script src="node_modules/igv/dist/igv.js"></script>-->
 
     <!-- Dropbox Chooser API-->
     <script id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js" data-app-key="8glijwyao9fq8we"></script>
 
     <!-- Bootstrap 4 and Dependancies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
 
     <!-- Datatables JS -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/sl-1.3.1/datatables.min.js"></script>
@@ -122,7 +125,6 @@
                     </div>
 
                 </div>
-
             </li>
 
             <!-- Tracks -->
@@ -224,7 +226,7 @@
             <!-- Share (generate URL) -->
             <li class="nav-item px-3">
                 <div>
-                    <a href="#" data-toggle="modal" data-target="#igv-app-share-modal">
+                    <a id="igv-app-share-button" href="#" data-toggle="modal" data-target="#igv-app-share-modal">
                         Share
                     </a>
                 </div>
@@ -242,23 +244,31 @@
             <!-- Save SVG -->
             <li class="nav-item px-3">
                 <div>
-                    <a href="#" data-toggle="modal" data-target="#igv-app-svg-save-modal">
+                    <a id="igv-app-save-svg-button" href="#" data-toggle="modal" data-target="#igv-app-svg-save-modal">
                         Save SVG
                     </a>
                 </div>
             </li>
 
+            <!-- Help Menu -->
+            <li class="nav-item px-3">
+                <div id="igv-app-help-dropdown" class="dropdown">
+
+                    <a id="igv-app-help-button" class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        Help
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="https://igvteam.github.io/igv-webapp/" target="_blank">Documentation</a>
+                        <a class="dropdown-item" href="https://github.com/igvteam/igv-webapp" target="_blank">GitHub Repository</a>
+                        <a class="dropdown-item" href="https://groups.google.com/group/igv-help" target="_blank">User Forum</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#igv-app-help-about-modal">About IGV-Web</a>
+                    </div>
+                </div>
+            </li>
+
         </ul>
     </div>
-
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a href="https://igvteam.github.io/igv-webapp/" target="_blank">
-                Help
-            </a>
-        </li>
-    </ul>
-
 
 </nav>
 
@@ -268,25 +278,6 @@
     <div class="row">
         <div class="col-sm">
             <div id="igv-app-container">
-
-                <!-- alert panel -->
-                <div id="igv-webapp-alertpanel" class="card">
-
-                    <div class="card-body">
-
-                        <div class="igv-webapp-panel-drag-container">
-                            <i class="fas fa-square-full"></i>
-                            <i class="fas fa-sm fa-grip-horizontal"></i>
-                            <i class="fas fa-times-circle"></i>
-                        </div>
-
-                        <div id="igv-webapp-alert-panel-content-container">
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
         </div>
     </div>
@@ -406,6 +397,27 @@
 
     </div>
 
+    <!-- Help - About - Modal -->
+    <div id="igv-app-help-about-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">About IGV-Web</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="igv-app-version"></div>
+                    <div id="igv-igvjs-version"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <footer class="igv-app-footer">
@@ -417,7 +429,6 @@
     </div>
 
     <div id="igv-version-label">
-        version X.X.X
     </div>
 
     <div>

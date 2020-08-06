@@ -42,7 +42,8 @@ let main = async ($container, config) => {
 
     Alert.init($container.get(0))
 
-    $('#igv-version-label').text(`version ${ version() }`)
+    $('#igv-app-version').text(`IGV-Web app version ${ version() }`)
+    $('#igv-igvjs-version').text(`igv.js version ${ igv.version() }`)
 
     const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
 
@@ -62,13 +63,18 @@ let main = async ($container, config) => {
                     }
 
                     browser = await igv.createBrowser($container.get(0), config.igvConfig);
-                    Globals.browser = browser;
 
-                    if (googleEnabled) {
-                        GoogleFilePicker.postInit();
+                    if (browser) {
+
+                        Globals.browser = browser;
+
+                        if (googleEnabled) {
+                            GoogleFilePicker.postInit();
+                        }
+
+                        await initializationHelper(browser, $container, config);
+
                     }
-
-                    await initializationHelper(browser, $container, config);
 
                 },
                 onerror: async (e) => {
@@ -82,8 +88,11 @@ let main = async ($container, config) => {
     } else {
 
         let browser = await igv.createBrowser($container.get(0), config.igvConfig);
-        Globals.browser = browser;
-        await initializationHelper(browser, $container, config);
+
+        if (browser) {
+            Globals.browser = browser;
+            await initializationHelper(browser, $container, config);
+        }
 
     }
 }

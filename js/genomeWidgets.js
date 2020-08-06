@@ -49,7 +49,7 @@ const creatGenomeWidgets = ({ $igvMain, urlModalId, genomeFileLoad }) => {
     fileLoadWidget = new FileLoadWidget(config);
 
     Utils.configureModal(fileLoadWidget, $urlModal.get(0), async fileLoadWidget => {
-        await genomeFileLoad.ingestPaths(fileLoadWidget.retrievePaths());
+        await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths());
         return true;
     });
 

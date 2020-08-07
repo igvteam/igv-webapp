@@ -39,7 +39,7 @@ const creatGenomeWidgets = ({ $igvMain, urlModalId, genomeFileLoad }) => {
         {
             widgetParent: $urlModal.find('.modal-body').get(0),
             dataTitle: 'Genome',
-            indexTitle: 'Genome Index',
+            indexTitle: 'Index',
             mode: 'url',
             fileLoadManager: new FileLoadManager(),
             dataOnly: false,

@@ -20,6 +20,10 @@ body {
   padding-top: $igv-header-height;
 }
 
+#igv-widgets-generic-select-modal-footnotes {
+  font-size:0.9rem;
+}
+
 #igv-app-container {
   position: relative;
   top: 0;
@@ -60,28 +64,20 @@ ul.navbar-nav {
   width: auto;
 }
 
-.modal-title {
-
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  font-size: 1.5rem;
-
-  //div:first-child {
-  //  font-size: 1.5rem;
-  //}
-  //div:last-child {
-  //  font-size: 01.0rem;
-  //}
-
+.modal-header {
+  padding: .7rem 1.0rem;
 }
 
-//.modal-header {
-//  font-size: 1.2rem;
-//}
+.modal-title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  height: 1.2rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+}
 
 .modal-body {
 
@@ -100,6 +96,7 @@ ul.navbar-nav {
 
 .modal-footer {
   border-top: unset;
+  padding: 0.6rem 0.75rem;
 }
 
 #igv-app-session-save-modal {

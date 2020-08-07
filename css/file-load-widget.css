@@ -68,15 +68,16 @@
         height: 100%;
         width: 100%;
         padding-left: 4px;
-        font-family: "Open Sans", sans-serif;
-        font-weight: 200;
-        font-size: 0.875rem;
         color: #373737;
+        font-size: 0.875rem;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 400;
         text-align: left;
         outline: none;
         border-style: solid;
         border-width: thin;
-        border-color: #7F7F7F;
+        border-color: #dee2e6;
+        border-radius: .25rem;
         background-color: white; }
       .igv-file-load-widget-container .igv-flw-input-container .igv-flw-input-row input {
         height: calc(36px - 12px); }

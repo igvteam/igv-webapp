@@ -4,11 +4,6 @@
   "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
-      "name": "Repeat Masker",
-      "type": "annotation",
-      "format": "rmsk"
-    },
-    {
       "name": "CpG Islands",
       "type": "annotation",
       "format": "cpgIslandExt",

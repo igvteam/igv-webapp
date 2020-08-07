@@ -69,7 +69,7 @@ instructions on obtaining a clienId.  OAuth requests from igv.js will include th
     * https://www.googleapis.com/auth/userinfo.profile 
     * https://www.googleapis.com/auth/drive.readonly'
   
-* urlShortener - an object or function defining a URL shortener to shorten links created by the **Share** button.   This is optional, if not provided the links are not shortened, and the "Twitter" option is disabled.  The value of this property can be a function, taking a single argument (the long URL) and returning the shortened url, or an Object. Objects define a provider and an apiKey to be used with the provider service.  Currently 2 providers are recognized,  __bitly__ and __google__.  
+* urlShortener - an object or function defining a URL shortener to shorten links created by the **Share** button.  The value of this property can be replaced with a function, taking a single argument (the long URL) and returning the shortened url, or an Object. 
 
 ### Default configuration
 
@@ -77,32 +77,31 @@ instructions on obtaining a clienId.  OAuth requests from igv.js will include th
 
 
 var igvwebConfig = {
-
-    genomes: "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/genomes.json",
-
+    genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
-
     igvConfig:
         {
             queryParametersSupported: true,
             showChromosomeWidget: true,
             genome: "hg19",
-            apiKey: "API_KEY"
+            showSVGButton: false,
+            tracks: [
+                // TODO (optional) -- add default tracks here.  See github.com/igvteam/igv.js/wiki for details
+                // {
+                //     name: "CTCF - string url",
+                //     type: "wig",
+                //     format: "bigwig",
+                //     url: "https://www.encodeproject.org/files/ENCFF563PAW/@@download/ENCFF563PAW.bigWig"
+                // }
+            ]
         },
 
-    clientId: "CLIENT_ID",
-
+    // Provide a URL shorterner function or object.   This is optional.  If not supplied
+    // sharable URLs will not be shortened .
     urlShortener: {
-        provider: "bitly",
-        apiKey: "BITLY_TOKEN"
+        provider: "tinyURL"
     }
-
-    // urlShortener: {
-    //     provider: "google",
-    //     apiKey: "API_KEY"
-    // }
-
-}
+};
 ```
 `
 ### Track Registry

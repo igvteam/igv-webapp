@@ -34,17 +34,18 @@ $igv-flw-border-radius: 2px;
 
     padding-left: 4px;
 
-    font-family: $igv-flw-font-face;
-    font-weight: 200;
-    font-size: $igv-flw-font-size;
     color: $igv-flw-dark-grey-color;
+    font-size: $igv-flw-font-size;
+    font-family: $igv-flw-font-face;
+    font-weight: 400;
     text-align: left;
 
     outline: none;
 
     border-style: solid;
     border-width: thin;
-    border-color: $igv-flw-grey-color;
+    border-color: #dee2e6;
+    border-radius: .25rem;
 
     background-color: white;
   }
@@ -161,7 +162,6 @@ $igv-flw-border-radius: 2px;
       // url input
       @include igv-flw-input;
       input {
-        //width: 410px;
         height: calc(#{$igv-flw-input-row-height} - 12px);
       }
 

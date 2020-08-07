@@ -111,6 +111,9 @@ select#igv-app-track-select-modal-select {
 body {
   padding-top: 48px; }
 
+#igv-widgets-generic-select-modal-footnotes {
+  font-size: 0.9rem; }
+
 #igv-app-container {
   position: relative;
   top: 0;
@@ -138,13 +141,18 @@ ul.navbar-nav > li > div > a:hover {
   cursor: pointer;
   width: auto; }
 
+.modal-header {
+  padding: .7rem 1.0rem; }
+
 .modal-title {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  align-items: flex-start;
-  font-size: 1.5rem; }
+  align-items: center;
+  height: 1.2rem;
+  font-size: 1.2rem;
+  line-height: 1.2rem; }
 
 .modal-body select {
   font-size: .875rem; }
@@ -155,7 +163,8 @@ ul.navbar-nav > li > div > a:hover {
   background-color: rgba(0, 0, 0, 0.25); }
 
 .modal-footer {
-  border-top: unset; }
+  border-top: unset;
+  padding: 0.6rem 0.75rem; }
 
 #igv-app-session-save-modal .modal-body {
   padding: 2rem; }

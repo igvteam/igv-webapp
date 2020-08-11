@@ -1,5 +1,5 @@
 var igvwebConfig = {
-    genomes: "resources/genomes.json",
+    genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
     igvConfig:
         {

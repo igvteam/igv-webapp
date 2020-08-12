@@ -52,8 +52,8 @@ are customizable.
 
 * genomes - url to a file containing a list of genome configuration objects.  This list populates the Genomes 
 pulldown menu.  See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome-2.0) for a description of 
-the genome configuration object.  For an example download 
-the default genome list from [https://s3.amazonaws.com/igv.org.genomes/genomes.json](https://s3.amazonaws.com/igv.org.genomes/genomes.json).
+the genome configuration object.  For an example see 
+the default genome list in ```resources/genomes```.
 
 * trackRegistryFile - url to a file configurating the Track pulldown.  Use this to define custom load menus.  The file contains
 a json object with genomeIDs as keys and an array of URLs to json files defining menu entries in the _Load Tracks_ pulldown.

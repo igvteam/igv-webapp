@@ -1,9 +1,9 @@
 .igv-widgets-alert-dialog-container {
+  box-sizing: content-box;
   position: absolute;
   z-index: 2048;
   top: 50%;
   left: 50%;
-  margin: -150px 0 0 -150px;
   width: 400px;
   height: 200px;
   border-color: #7F7F7F;
@@ -24,7 +24,7 @@
     display: flex;
     flex-flow: row;
     flex-wrap: nowrap;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     height: 24px;
@@ -35,15 +35,8 @@
     border-bottom-style: solid;
     border-bottom-width: thin;
     background-color: #eee; }
-    .igv-widgets-alert-dialog-container > div:first-child div {
-      margin-right: 4px;
-      margin-bottom: 2px;
-      height: 12px;
-      width: 12px;
-      color: #7F7F7F; }
-    .igv-widgets-alert-dialog-container > div:first-child div:hover {
-      cursor: pointer;
-      color: #444; }
+    .igv-widgets-alert-dialog-container > div:first-child div:first-child {
+      padding-left: 8px; }
   .igv-widgets-alert-dialog-container #igv-widgets-alert-dialog-body {
     color: #7F7F7F;
     width: 100%;

@@ -92,10 +92,6 @@ let main = async ($container, config) => {
         if (browser) {
             Globals.browser = browser;
             await initializationHelper(browser, $container, config);
-
-            const str = [ 0, 1, 2, 3, 4, 5, 6, 7 ].map(digit => `ERROR ${ digit }. That was a bad thing.`).join('<br>')
-            AlertSingleton.present(str)
-
         }
 
     }

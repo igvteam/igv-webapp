@@ -21,7 +21,7 @@
  *
  */
 
-import { Alert, EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry, dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import { AlertSingleton, EventBus, GoogleFilePicker, createSessionWidgets, createTrackWidgetsWithTrackRegistry, dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator } from './genomeWidgets.js';
 import { shareWidgetConfigurator, createShareWidgets } from './shareWidgets.js';
@@ -40,7 +40,7 @@ let googleEnabled = false;
 
 let main = async ($container, config) => {
 
-    Alert.init($container.get(0))
+    AlertSingleton.init($container.get(0))
 
     $('#igv-app-version').text(`IGV-Web app version ${ version() }`)
     $('#igv-igvjs-version').text(`igv.js version ${ igv.version() }`)
@@ -59,7 +59,7 @@ let main = async ($container, config) => {
                         googleEnabled = true;
                     } catch (e) {
                         console.error(e);
-                        Alert.presentAlert(e.message)
+                        AlertSingleton.present(e.message)
                     }
 
                     browser = await igv.createBrowser($container.get(0), config.igvConfig);
@@ -79,7 +79,7 @@ let main = async ($container, config) => {
                 },
                 onerror: async (e) => {
                     console.error(e);
-                    Alert.presentAlert(e.message)
+                    AlertSingleton.present(e.message)
                 }
             };
 
@@ -92,6 +92,10 @@ let main = async ($container, config) => {
         if (browser) {
             Globals.browser = browser;
             await initializationHelper(browser, $container, config);
+
+            const str = [ 0, 1, 2, 3, 4, 5, 6, 7 ].map(digit => `ERROR ${ digit }. That was a bad thing.`).join('<br>')
+            AlertSingleton.present(str)
+
         }
 
     }

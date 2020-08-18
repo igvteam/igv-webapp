@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-import { Alert, createURLModal, EventBus, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import { AlertSingleton, createURLModal, EventBus, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import { googleEnabled } from "./app.js";
 import Globals from "./globals.js";
 
@@ -66,7 +66,7 @@ const initializeGenomeWidgets = async (browser, genomes, $dropdown_menu) => {
         }
 
     } catch (e) {
-        Alert.presentAlert(e.message)
+        AlertSingleton.present(e.message)
     }
 
 }
@@ -85,7 +85,7 @@ const getAppLaunchGenomes = async genomes => {
         try {
             response = await fetch(genomes);
         } catch (e) {
-            Alert.presentAlert(e.message);
+            AlertSingleton.present(e.message);
         }
 
         if (response) {
@@ -182,7 +182,7 @@ const loadGenome = async genome => {
     try {
         g = await Globals.browser.loadGenome(genome);
     } catch (e) {
-        Alert.presentAlert(e.message);
+        AlertSingleton.present(e.message);
     }
 
     if (g) {

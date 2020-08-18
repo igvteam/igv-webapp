@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  */
-import { Alert } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import { AlertSingleton } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
 
 let urlShortener;
@@ -39,10 +39,10 @@ export function setURLShortener(obj) {
         } else if ("google" === obj.provider && obj.apiKey) {
             fn = googleShortener(obj.apiKey);
         } else {
-            Alert.presentAlert(`Unknown URL shortener provider: ${obj.provider}`);
+            AlertSingleton.present(`Unknown URL shortener provider: ${obj.provider}`);
         }
     } else {
-        Alert.presentAlert("URL shortener object must either be an object specifying a provider and apiKey, or a function")
+        AlertSingleton.present("URL shortener object must either be an object specifying a provider and apiKey, or a function")
     }
 
     if (fn) {

@@ -73,7 +73,6 @@ let main = async ($container, config) => {
                         }
 
                         await initializationHelper(browser, $container, config);
-
                     }
 
                 },
@@ -118,7 +117,19 @@ let initializationHelper = async (browser, $container, options) => {
 
     createTrackWidgetsWithTrackRegistry($('#igv-main'), $('#igv-app-track-dropdown-menu'), $('#igv-app-dropdown-local-track-file-input'), $('#igv-app-dropdown-dropbox-track-file-button'), googleEnabled, $('#igv-app-dropdown-google-drive-track-file-button'), [ 'igv-app-encode-signal-modal', 'igv-app-encode-others-modal'], 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', igv.xhr, igv.google, igv.GtexUtils, options.trackRegistryFile, async configurations => await browser.loadTrackList(configurations));
 
-    createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON());
+    const sessionJSONHandler = () => {
+
+        let json = undefined
+        try {
+            json = browser.toJSON()
+        } catch (e) {
+            AlertSingleton.present(e.message)
+        }
+
+        return json
+    }
+
+    createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, sessionJSONHandler);
 
     createSVGWidget({ browser, $saveModal: $('#igv-app-svg-save-modal') })
 
@@ -132,14 +143,21 @@ let initializationHelper = async (browser, $container, options) => {
 const createAppBookmarkHandler = $bookmark_button => {
 
     $bookmark_button.on('click', (e) => {
-        let blurb,
-            str;
 
-        window.history.pushState({}, "IGV", sessionURL());
+        let url = undefined
+        try {
+            url = sessionURL()
+        } catch (e) {
+            AlertSingleton.present(e.message)
+        }
 
-        str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
-        blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
-        alert(blurb);
+        if (url) {
+            window.history.pushState({}, "IGV", url);
+
+            const str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl');
+            const blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.';
+            alert(blurb);
+        }
     })
 
 }

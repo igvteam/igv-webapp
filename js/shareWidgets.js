@@ -21,7 +21,7 @@
  *
  */
 
-import { QRCode } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import { AlertSingleton, QRCode } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import { shortSessionURL, setURLShortener } from './shareHelper.js'
 
 const createShareWidgets = ({ browser, $container, $modal, $share_input, $copy_link_button, $tweet_button_container, $email_button, $qrcode_button, $qrcode_image, $embed_container, $embed_button, embedTarget }) => {
@@ -30,7 +30,7 @@ const createShareWidgets = ({ browser, $container, $modal, $share_input, $copy_l
         embedTarget = getEmbedTarget();
     }
 
-    $modal.on('show.bs.modal', async function (e) {
+    $modal.on('shown.bs.modal', async function (e) {
 
         let href = window.location.href.slice();
         const idx = href.indexOf("?");
@@ -38,36 +38,47 @@ const createShareWidgets = ({ browser, $container, $modal, $share_input, $copy_l
             href = href.substring(0, idx);
         }
 
-        const session = browser.compressedSession();
-
-        if (embedTarget) {
-            const snippet = getEmbeddableSnippet($container, embedTarget, session);
-            $embed_container.find('textarea').val(snippet);
-            $embed_container.find('textarea').get(0).select();
+        let session = undefined
+        try {
+            session = browser.compressedSession();
+        } catch (e) {
+            AlertSingleton.present(e.message)
         }
 
-        const shortURL = await shortSessionURL(href, session);
-        $share_input.val(shortURL);
-        $share_input.get(0).select();
-        $email_button.attr('href', 'mailto:?body=' + shortURL);
+        if (session) {
 
-        // QR code generation
-        $qrcode_image.empty();
-        const obj =
-            {
-                width: 128,
-                height: 128,
-                correctLevel: QRCode.CorrectLevel.H
-            };
+            if (embedTarget) {
+                const snippet = getEmbeddableSnippet($container, embedTarget, session);
+                $embed_container.find('textarea').val(snippet);
+                $embed_container.find('textarea').get(0).select();
+            }
 
-        const qrcode = new QRCode($qrcode_image.get(0), obj);
-        qrcode.makeCode(shortURL);
+            const shortURL = await shortSessionURL(href, session);
+            $share_input.val(shortURL);
+            $share_input.get(0).select();
+            $email_button.attr('href', 'mailto:?body=' + shortURL);
 
-        if ($tweet_button_container) {
-            $tweet_button_container.empty();
-            const obj = {text: ''};
-            window.twttr.widgets.createShareButton(shortURL, $tweet_button_container.get(0), obj);
+            // QR code generation
+            $qrcode_image.empty();
+            const obj =
+                {
+                    width: 128,
+                    height: 128,
+                    correctLevel: QRCode.CorrectLevel.H
+                };
+
+            const qrcode = new QRCode($qrcode_image.get(0), obj);
+            qrcode.makeCode(shortURL);
+
+            if ($tweet_button_container) {
+                $tweet_button_container.empty();
+                const obj = {text: ''};
+                window.twttr.widgets.createShareButton(shortURL, $tweet_button_container.get(0), obj);
+            }
+        } else {
+            $modal.modal('hide');
         }
+
     });
 
     $modal.on('hidden.bs.modal', function (e) {

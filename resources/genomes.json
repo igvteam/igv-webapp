@@ -9,8 +9,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg38/ncbiRefGene.txt.gz",
+        "indexed": false,
         "visibilityWindow": -1,
         "removable": false,
         "order": 1000000
@@ -27,8 +27,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg19/ncbiRefGene.txt.gz",
+        "indexed": false,
         "visibilityWindow": -1,
         "removable": false,
         "order": 1000000
@@ -45,8 +45,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg18/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg18/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/hg18/refGene.txt.gz",
+        "indexed": false,
         "visibilityWindow": -1,
         "removable": false,
         "order": 1000000
@@ -63,8 +63,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm10/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm10/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm10/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "visibilityWindow": -1,
@@ -82,8 +82,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/mm9/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "visibilityWindow": -1,
@@ -101,8 +101,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/rn6/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/rn6/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/rn6/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -121,8 +121,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/gorGor4/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/gorGor4/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/gorGor4/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "visibilityWindow": -1
@@ -140,8 +140,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/panTro4/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/panTro4/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/panTro4/refGene.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "visibilityWindow": -1
@@ -159,8 +159,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/panPan2/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/panPan2/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/panPan2/refGene.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "visibilityWindow": -1
@@ -177,8 +177,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/canFam3/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/canFam3/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/canFam3/refGene.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "visibilityWindow": -1
@@ -195,8 +195,26 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/bosTau8/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/bosTau8/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/bosTau8/refGene.txt.gz",
+        "indexed": false,
+        "removable": false,
+        "order": 1000000,
+        "visibilityWindow": -1
+      }
+    ]
+  },
+  {
+    "id": "bosTau9",
+    "name": "Cow (ARS-UCD1.2/bosTau9)",
+    "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/bosTau9/bosTau9.fa",
+    "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/bosTau9/bosTau9.fa.fai",
+    "cytobandURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/bosTau9/cytoBandIdeo.txt.gz",
+    "tracks": [
+      {
+        "name": "Refseq Genes",
+        "format": "refgene",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/bosTau9/refGene.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "visibilityWindow": -1
@@ -213,8 +231,8 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/susScr11/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/susScr11/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/susScr11/refGene.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "visibilityWindow": -1
@@ -231,8 +249,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer11/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -250,8 +268,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer10/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer10/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/danRer10/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -268,8 +286,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/ce11/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,
@@ -286,8 +304,8 @@
     "tracks": [
       {
         "name": "Refseq Genes",
-        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/refGene.sorted.txt.gz.tbi",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/dm6/refGene.txt.gz",
+        "indexed": false,
         "order": 1000000,
         "removable": false,
         "supportsWholeGenome": false,

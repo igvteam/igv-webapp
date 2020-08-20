@@ -115,9 +115,11 @@ let initializationHelper = async (browser, $container, options) => {
     creatGenomeWidgets(genomeWidgetConfigurator())
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
-    createTrackWidgetsWithTrackRegistry($('#igv-main'), $('#igv-app-track-dropdown-menu'), $('#igv-app-dropdown-local-track-file-input'), $('#igv-app-dropdown-dropbox-track-file-button'), googleEnabled, $('#igv-app-dropdown-google-drive-track-file-button'), [ 'igv-app-encode-signal-modal', 'igv-app-encode-others-modal'], 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', igv.xhr, igv.google, igv.GtexUtils, options.trackRegistryFile, async configurations => await browser.loadTrackList(configurations));
+    const $main = $('#igv-main')
 
-    const sessionJSONHandler = () => {
+    createTrackWidgetsWithTrackRegistry($main, $('#igv-app-track-dropdown-menu'), $('#igv-app-dropdown-local-track-file-input'), $('#igv-app-dropdown-dropbox-track-file-button'), googleEnabled, $('#igv-app-dropdown-google-drive-track-file-button'), [ 'igv-app-encode-signal-modal', 'igv-app-encode-others-modal'], 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', igv.xhr, igv.google, igv.GtexUtils, options.trackRegistryFile, async configurations => await browser.loadTrackList(configurations));
+    
+    $('#igv-app-session-save-button').on('click', () => {
 
         let json = undefined
         try {
@@ -126,10 +128,13 @@ let initializationHelper = async (browser, $container, options) => {
             AlertSingleton.present(e.message)
         }
 
-        return json
-    }
+        if (json) {
+            $('#igv-app-session-save-modal').modal('show')
+        }
 
-    createSessionWidgets($('#igv-main'), igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, sessionJSONHandler);
+    })
+
+    createSessionWidgets($main, igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => { await browser.loadSession(config) }, () => browser.toJSON());
 
     createSVGWidget({ browser, $saveModal: $('#igv-app-svg-save-modal') })
 

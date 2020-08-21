@@ -31,22 +31,23 @@ npm run build
 ## Running the app
 
 igv-webapp is a pure client web application consisting entirely of static files and can be served from virtually any web server, 
-e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.  Instructions using node's http-server follow.
+e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.  As an example, instructions for use with the NPM package http-server follow.
 
 #### http-server
 
 Instructions for running with [http-server](https://www.npmjs.com/package/http-server).  For more options, including
 installing http-server locally, see [http-server](https://www.npmjs.com/package/http-server).
 
-```
 * Start http-server on the ```dist``` directory
 ````
 npx http-server -a localhost dist
 ````
+
 * Open a browser and enter the following
 ````
 localhost:8080
 ````
+
 or
 ````
 localhost:8080/index.html

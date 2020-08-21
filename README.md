@@ -27,18 +27,7 @@ npm install
 ````
 npm run build
 ````
-## Run the app
-````
-npm start
-````
-* Open a browser and enter the following URL to run the app
-````
-localhost:8080
-````
-or
-````
-localhost:8080/index
-````
+
 ## Configuration
 
 **NOTE:** 
@@ -161,6 +150,38 @@ assemblies for human (hg19, GRCh38),  mouse (mm10), worm (ce11), and fly (dm6).
 ### Data Servers
 
 IGV-webapp uses igv.js, a javascript client. Servers for track data must support CORS access and Range requests.  See https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements  for more details.  
+
+## Running igv-webapp
+
+## Run the app
+
+igv-webapp is a pure client web application consisting
+entirely of static files be served from virtually any web server, e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.
+Instructions using node's http-server follow.
+
+#### http-server
+
+Instructions for running with [http-server](https://www.npmjs.com/package/http-server).  For more options, including
+installing http-server locally, see [http-server](https://www.npmjs.com/package/http-server).
+
+* Build igv-webapp
+
+```bash
+npm run build
+```
+* Start http-server on the ```dist``` directory
+````
+npx http-server -a localhost dist
+````
+* Open a browser and enter the following
+````
+localhost:8080
+````
+or
+````
+localhost:8080/index.html
+````
+
 
 ## License
 IGV Web App is [MIT](/LICENSE) licensed.

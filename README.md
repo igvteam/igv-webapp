@@ -33,7 +33,7 @@ npm run build
 igv-webapp is a pure client web application consisting entirely of static files and can be served from virtually any web server, 
 e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.  As an example, instructions for use with the NPM package http-server follow.
 
-#### http-server
+### http-server
 
 Instructions for running with [http-server](https://www.npmjs.com/package/http-server).  For more options, including
 installing http-server locally, see [http-server](https://www.npmjs.com/package/http-server).
@@ -52,6 +52,10 @@ or
 ````
 localhost:8080/index.html
 ````
+
+### Amazon S3
+
+To server the app from Amazon S3 simply upload the contents of "dist" to an Amazon S3 bucket.  Be sure to keep the directory structure intact, and make all files public.  Example of an S3 hosted app is at  https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this app is placed as an example and is not kept up-to-date.
 
 
 ## Configuration

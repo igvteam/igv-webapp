@@ -24,13 +24,20 @@
  * THE SOFTWARE.
  */
 
-import { AlertSingleton, createURLModal, EventBus, GenomeFileLoad, FileLoadManager, FileLoadWidget, Utils } from '../node_modules/igv-widgets/dist/igv-widgets.js'
-import { googleEnabled } from "./app.js";
+import {
+    AlertSingleton,
+    createURLModal,
+    EventBus,
+    FileLoadManager,
+    FileLoadWidget,
+    GenomeFileLoad,
+    Utils
+} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js";
 
 let fileLoadWidget;
 
-const creatGenomeWidgets = ({ $igvMain, urlModalId, genomeFileLoad }) => {
+function creatGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
 
     const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
     $igvMain.append($urlModal);
@@ -52,32 +59,29 @@ const creatGenomeWidgets = ({ $igvMain, urlModalId, genomeFileLoad }) => {
         await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths());
         return true;
     });
-
 }
 
-const initializeGenomeWidgets = async (browser, genomes, $dropdown_menu) => {
-
+async function initializeGenomeWidgets(browser, genomes, $dropdown_menu) {
     try {
 
         const genomeDictionary = await getAppLaunchGenomes(genomes);
 
         if (genomeDictionary) {
-            genomeDropdownLayout({ browser, genomeDictionary, $dropdown_menu });
+            genomeDropdownLayout({browser, genomeDictionary, $dropdown_menu});
         }
 
     } catch (e) {
         AlertSingleton.present(e.message)
     }
-
 }
 
-const getAppLaunchGenomes = async genomes => {
+async function getAppLaunchGenomes(genomes) {
 
-    if(undefined === genomes) {
+    if (undefined === genomes) {
         return undefined;
     }
 
-    if(Array.isArray(genomes)) {
+    if (Array.isArray(genomes)) {
         return buildDictionary(genomes);
     } else {
 
@@ -94,26 +98,25 @@ const getAppLaunchGenomes = async genomes => {
         }
 
     }
-
 }
 
-const buildDictionary = array => {
+function buildDictionary(array) {
 
     let dictionary = {};
     if (true === Array.isArray(array)) {
 
         for (let json of array) {
-            dictionary[ json.id ] = json;
+            dictionary[json.id] = json;
         }
 
     } else {
-        dictionary[ array.id ] = array;
+        dictionary[array.id] = array;
     }
 
     return dictionary;
-};
+}
 
-const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
+function genomeDropdownLayout({browser, genomeDictionary, $dropdown_menu}) {
 
     // discard all buttons preceeding the divider div
     let $divider = $dropdown_menu.find('.dropdown-divider');
@@ -123,19 +126,19 @@ const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
         if (genomeDictionary.hasOwnProperty(key)) {
 
-            let $button = createButton(genomeDictionary[ key ].name);
+            let $button = createButton(genomeDictionary[key].name);
             $button.insertBefore($divider);
 
             $button.data('id', key);
 
-            const str = `click.genome-dropdown.${ key }`;
+            const str = `click.genome-dropdown.${key}`;
 
             $button.on(str, async () => {
 
                 const id = $button.data('id');
 
                 if (id !== browser.genome.id) {
-                    await loadGenome(genomeDictionary[ id ]);
+                    await loadGenome(genomeDictionary[id]);
                 }
 
             });
@@ -144,9 +147,9 @@ const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
     } // for (...)
 
-    function createButton (title) {
+    function createButton(title) {
 
-        let $button = $('<button>', { class:'dropdown-item', type:'button' });
+        let $button = $('<button>', {class: 'dropdown-item', type: 'button'});
         $button.text(title);
 
         return $button;
@@ -154,7 +157,7 @@ const genomeDropdownLayout = ({ browser, genomeDictionary, $dropdown_menu}) => {
 
 }
 
-const genomeWidgetConfigurator = () => {
+function genomeWidgetConfigurator(googleEnabled) {
 
     const genomeFileLoadConfig =
         {
@@ -172,11 +175,10 @@ const genomeWidgetConfigurator = () => {
 
     const genomeFileLoad = new GenomeFileLoad(genomeFileLoadConfig);
 
-    return { $igvMain: $('#igv-main'), urlModalId: 'igv-app-genome-from-url-modal', genomeFileLoad }
-
+    return {$igvMain: $('#igv-main'), urlModalId: 'igv-app-genome-from-url-modal', genomeFileLoad}
 }
 
-const loadGenome = async genome => {
+async function loadGenome(genome) {
 
     let g = undefined;
     try {
@@ -186,10 +188,9 @@ const loadGenome = async genome => {
     }
 
     if (g) {
-        EventBus.globalBus.post({ type: "DidChangeGenome", data: { genomeID: g.id } });
+        EventBus.globalBus.post({type: "DidChangeGenome", data: {genomeID: g.id}});
     }
+}
 
-};
-
-export { creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator }
+export {creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator}
 

@@ -21,10 +21,10 @@
  *
  */
 
-import { AlertSingleton, QRCode } from '../node_modules/igv-widgets/dist/igv-widgets.js'
-import { shortSessionURL, setURLShortener } from './shareHelper.js'
+import {AlertSingleton, QRCode} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import {setURLShortener, shortSessionURL} from './shareHelper.js'
 
-const createShareWidgets = ({ browser, $container, $modal, $share_input, $copy_link_button, $tweet_button_container, $email_button, $qrcode_button, $qrcode_image, $embed_container, $embed_button, embedTarget }) => {
+function createShareWidgets({browser, $container, $modal, $share_input, $copy_link_button, $tweet_button_container, $email_button, $qrcode_button, $qrcode_image, $embed_container, $embed_button, embedTarget}) {
 
     if (undefined === embedTarget) {
         embedTarget = getEmbedTarget();
@@ -147,7 +147,7 @@ function getEmbedTarget() {
 
 }
 
-const shareWidgetConfigurator = (browser, $container, {urlShortener, embedTarget}) => {
+function shareWidgetConfigurator(browser, $container, {urlShortener, embedTarget}) {
 
     let urlShortenerFn;
 
@@ -156,7 +156,7 @@ const shareWidgetConfigurator = (browser, $container, {urlShortener, embedTarget
     }
 
     let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
-    if(!urlShortenerFn) {
+    if (!urlShortenerFn) {
         $igv_app_tweet_button_container.hide();
     }
 
@@ -177,4 +177,4 @@ const shareWidgetConfigurator = (browser, $container, {urlShortener, embedTarget
 
 }
 
-export { createShareWidgets, shareWidgetConfigurator }
+export {createShareWidgets, shareWidgetConfigurator}

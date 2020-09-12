@@ -22,7 +22,7 @@
  */
 
 
-const createSVGWidget = ({ browser, $saveModal }) => {
+function createSVGWidget ({ browser, $saveModal }) {
 
     const input_default_value = 'igv-app.svg';
 

@@ -48,7 +48,7 @@ let googleEnabled = false;
 // import igv from '../node_modules/igv/dist/igv.esm.js'
 // window.igv = igv;
 
-let main = async ($container, config) => {
+async function main($container, config) {
 
     AlertSingleton.init($container.get(0))
 
@@ -79,7 +79,7 @@ let main = async ($container, config) => {
     }
 }
 
-let initializationHelper = async (browser, $container, options) => {
+async function initializationHelper(browser, $container, options) {
 
     ['track', 'genome'].forEach(str => {
         let imgElement;
@@ -95,7 +95,7 @@ let initializationHelper = async (browser, $container, options) => {
     $('div#igv-session-dropdown-menu > :nth-child(1)').after(dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'));
     $('div#igv-session-dropdown-menu > :nth-child(2)').after(googleDriveDropdownItem('igv-app-dropdown-google-drive-session-file-button'));
 
-    creatGenomeWidgets(genomeWidgetConfigurator())
+    creatGenomeWidgets(genomeWidgetConfigurator(googleEnabled))
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
     const $main = $('#igv-main')
@@ -130,7 +130,7 @@ let initializationHelper = async (browser, $container, options) => {
     EventBus.globalBus.post({type: "DidChangeGenome", data: {genomeID: browser.genome.id}});
 }
 
-const createAppBookmarkHandler = $bookmark_button => {
+function createAppBookmarkHandler($bookmark_button) {
 
     $bookmark_button.on('click', (e) => {
 
@@ -152,4 +152,4 @@ const createAppBookmarkHandler = $bookmark_button => {
 
 }
 
-export {main, googleEnabled}
+export {main}

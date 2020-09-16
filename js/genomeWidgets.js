@@ -168,8 +168,7 @@ function genomeWidgetConfigurator(googleEnabled) {
             loadHandler: async configuration => {
                 await loadGenome(configuration);
             },
-            igvxhr: igv.xhr,
-            google: igv.google,
+            igvxhr: igv.xhr
 
         };
 

@@ -55,10 +55,11 @@ async function main($container, config) {
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
 
-    const enableGoogle = config.clientId && 'CLIENT_ID' !== config.clientId && (window.location.protocol === "https:" || window.location.host === "localhost");
+    const enableGoogle = config.clientId &&
+        'CLIENT_ID' !== config.clientId &&
+        (window.location.protocol === "https:" || window.location.host === "localhost");
 
     if (enableGoogle) {
-
         try {
             await GoogleAuth.init({
                 client_id: config.clientId,
@@ -100,7 +101,19 @@ async function initializationHelper(browser, $container, options) {
 
     const $main = $('#igv-main')
 
-    createTrackWidgetsWithTrackRegistry($main, $('#igv-app-track-dropdown-menu'), $('#igv-app-dropdown-local-track-file-input'), $('#igv-app-dropdown-dropbox-track-file-button'), googleEnabled, $('#igv-app-dropdown-google-drive-track-file-button'), ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'], 'igv-app-track-from-url-modal', 'igv-app-track-select-modal', igv.xhr, igv.google, igv.GtexUtils, options.trackRegistryFile, async configurations => await browser.loadTrackList(configurations));
+    createTrackWidgetsWithTrackRegistry($main,
+        $('#igv-app-track-dropdown-menu'),
+        $('#igv-app-dropdown-local-track-file-input'),
+        $('#igv-app-dropdown-dropbox-track-file-button'),
+        googleEnabled,
+        $('#igv-app-dropdown-google-drive-track-file-button'),
+        ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
+        'igv-app-track-from-url-modal',
+        'igv-app-track-select-modal',
+        igv.xhr,
+        igv.GtexUtils,
+        options.trackRegistryFile,
+        async configurations => await browser.loadTrackList(configurations));
 
     $('#igv-app-session-save-button').on('click', () => {
 
@@ -117,9 +130,16 @@ async function initializationHelper(browser, $container, options) {
 
     })
 
-    createSessionWidgets($main, igv.xhr, igv.google, 'igv-webapp', 'igv-app-dropdown-local-session-file-input', 'igv-app-dropdown-dropbox-session-file-button', 'igv-app-dropdown-google-drive-session-file-button', 'igv-app-session-url-modal', 'igv-app-session-save-modal', googleEnabled, async config => {
-        await browser.loadSession(config)
-    }, () => browser.toJSON());
+    createSessionWidgets($main,
+        igv.xhr,
+        'igv-webapp',
+        'igv-app-dropdown-local-session-file-input',
+        'igv-app-dropdown-dropbox-session-file-button',
+        'igv-app-dropdown-google-drive-session-file-button',
+        'igv-app-session-url-modal',
+        'igv-app-session-save-modal',
+        googleEnabled,
+        async config => {await browser.loadSession(config)}, () => browser.toJSON());
 
     createSVGWidget({browser, $saveModal: $('#igv-app-svg-save-modal')})
 

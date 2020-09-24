@@ -108,7 +108,7 @@ async function initializationHelper(browser, $container, options) {
         googleEnabled,
         $('#igv-app-dropdown-google-drive-track-file-button'),
 	['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
-	options.customRegistry,
+	options.customWidgets,
         'igv-app-track-from-url-modal',
         'igv-app-track-select-modal',
         igv.xhr,

@@ -22,6 +22,7 @@
  */
 import { AlertSingleton } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
+import Globals from "./globals.js";
 
 let urlShortener;
 
@@ -65,7 +66,7 @@ export function sessionURL() {
     path = window.location.href.slice();
     idx = path.indexOf("?");
 
-    surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + igv.getBrowser().compressedSession();
+    surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + Globals.browser.compressedSession();
 
     return surl;
 }

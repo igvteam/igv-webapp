@@ -35,7 +35,7 @@
     "rollup-plugin-terser": "^5.3.0"
   },
   "dependencies": {
-    "igv-widgets": "github:igvteam/igv-widgets#34302baf",
-    "igv-utils": "github:igvteam/igv-utils#2c9085f9"
+    "igv-widgets": "github:igvteam/igv-widgets#2af664dc",
+    "igv-utils": "github:igvteam/igv-utils#e11d0cd0"
   }
 }

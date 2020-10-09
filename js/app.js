@@ -22,8 +22,7 @@
  */
 
 import {GoogleAuth} from '../node_modules/igv-utils/src/index.js';
-import {
-    AlertSingleton,
+import { AlertSingleton,
     createSessionWidgets,
     createTrackWidgetsWithTrackRegistry,
     dropboxButtonImageBase64,
@@ -63,7 +62,7 @@ async function main($container, config) {
         try {
             await GoogleAuth.init({
                 client_id: config.clientId,
-                scope: 'https://www.googleapis.com/auth/userinfo.profile'
+                scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
             googleEnabled = true;
         } catch (e) {
@@ -110,7 +109,6 @@ async function initializationHelper(browser, $container, options) {
         ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
         'igv-app-track-select-modal',
-        igv.xhr,
         igv.GtexUtils,
         options.trackRegistryFile,
         async configurations => await browser.loadTrackList(configurations));

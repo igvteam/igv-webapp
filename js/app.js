@@ -110,7 +110,6 @@ async function initializationHelper(browser, $container, options) {
         ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
         'igv-app-track-select-modal',
-        igv.xhr,
         igv.GtexUtils,
         options.trackRegistryFile,
         async configurations => await browser.loadTrackList(configurations));

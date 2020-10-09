@@ -22,8 +22,7 @@
  */
 
 import {GoogleAuth} from '../node_modules/igv-utils/src/index.js';
-import {
-    AlertSingleton,
+import { AlertSingleton,
     createSessionWidgets,
     createTrackWidgetsWithTrackRegistry,
     dropboxButtonImageBase64,
@@ -63,7 +62,8 @@ async function main($container, config) {
         try {
             await GoogleAuth.init({
                 client_id: config.clientId,
-                scope: 'https://www.googleapis.com/auth/userinfo.profile'
+                scope: 'https://www.googleapis.com/auth/userinfo.profile',
+                apiKey: config.igvConfig.apiKey
             })
             googleEnabled = true;
         } catch (e) {

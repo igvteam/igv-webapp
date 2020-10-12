@@ -54,14 +54,14 @@ async function main($container, config) {
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
 
-    const enableGoogle = config.clientId &&
-        'CLIENT_ID' !== config.clientId &&
+    const enableGoogle = (config.clientId  || config.apiKey) &&
         (window.location.protocol === "https:" || window.location.host === "localhost");
 
     if (enableGoogle) {
         try {
             await GoogleAuth.init({
                 client_id: config.clientId,
+                apiKey: config.apiKey,
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
             googleEnabled = true;

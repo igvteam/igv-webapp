@@ -48,11 +48,9 @@ To load data and genomic annotations, click on the `Tracks` dropdown menu and ei
 
 #### Selecting a pre-defined track
 
-The available pre-defined track sources are listed at the bottom of the menu. Clicking on a source will open a list of datasets from that source. For example, if `ENCODE` is one of the menu items, clicking on it will bring up a table of datasets available from the ENCODE data portal (Encyclopedia of DNA Elements, <https://www.encodeproject.org>). 
- 
-See information on the available [data sources](./dataSources.html). 
+Categories of available pre-defined tracks are listed at the bottom of the menu. Clicking on a category will open a list of datasets. For example, if `ENCODE` is one of the menu items, clicking on it will bring up a list of datasets available from the ENCODE data portal (Encyclopedia of DNA Elements, <https://www.encodeproject.org>). 
 
-> **Note:** The list of pre-defined track sources varies depending on the current reference genome. Some genomes do not come with any pre-defined tracks. 
+> **Note:** The set of pre-defined tracks presented in the menu varies depending on the current reference genome. Some genomes do not come with any pre-defined tracks. 
 
 #### Loading a track file
 
@@ -94,10 +92,10 @@ IGV-Web provides several navigation controls for specifying the genomic region t
 	* Close a panel by clicking on the **X** on the right edge of its ruler.
  
 * **Zoom and pan.** 
-	* Use the zoom slider or the **+** and **-** buttons on the right end of the toolbar to zoom in and out. In multi-locus view, this will affect all the panels. *Not available in whole-genome view*.
+	* Use the zoom slider or the **+** and **-** buttons on the right end of the toolbar to zoom in and out. In multi-locus view, this will affect all the panels. *The zoom controls are not available in whole-genome view*.
 	> **Note:** If your browser window is narrow, the **+** and **-** buttons appear without the slider widget.
 	 
-	* Double-click in any of the data tracks to zoom in one level. The new view will be centered around the point where you clicked.
+	* Double-click in any of the data tracks to zoom in one level. The new view will be centered on the point where you clicked.
 	
 	* Click and drag in the ruler to sweep out a region to zoom into.
 	
@@ -153,7 +151,7 @@ When you load a data track, it will be positioned just above this gene annotatio
 
 By default, the annotations are displayed in a compact mode, where overlapping transcripts are collapsed into a single line:
 ![](./assets/images/GenesCollapsed.png)
-The track gear menu provide two different options for expanding the display to show the overlapping features on separate lines:
+The track gear menu provides two different options for expanding the display to show the overlapping features on separate lines:
 ![](./assets/images/GenesExpanded.png)
 ![](./assets/images/GenesSquished.png)
 
@@ -166,13 +164,13 @@ IGV-Web has a number of options for saving the state of your IGV session: you ca
 
 Be aware that the saved state of an IGV session includes pointers to the data files for any loaded tracks. So to fully restore the state, you must have access to the same files that were loaded when the IGV session was saved.
 
-> **Note:** Due to security restrictions on web browsers, if you loaded any files from the local file system, IGV cannot automatically load them for you when you restore the session **even if you run the session in the same environment on the same computer** where you saved the session. The IGV-Web will warn you if a restored session includes pointers to local files.
+> **Note:** Due to security restrictions on web browsers, if you loaded any files from the local file system, IGV cannot automatically load them for you when you restore the session **even if you run the session in the same environment on the same computer** where you saved the session. 
 
 
 ### Session files
 To save a file that contains the state of the current IGV session, click on the `Session` dropdown menu and select `Save`. In the dialog that pops up, you can set the name of the file. As noted in the dialog, the filename must have the .json suffix, or it will not be recognized as a session file when later loaded into IGV-Web. Depending on your web browser settings, the file will be saved to your default downloads folder or you will be prompted to specify a destination folder. 
 
-You can share your session with others, for example by copying the saved file to a shared file system or by uploading it to Dropbox, Google Drive, or a web server.
+You can share your session with others, for example by emailing it to them, or copying the saved file to a shared file system, or uploading it to Dropbox, Google Drive, or a web server.
 
 To restore a session from a saved file, click on the `Session` dropdown menu and select one of the options in the top part of the menu: 
 
@@ -211,7 +209,15 @@ Two options are provided for saving images from the IGV-Web app:
 Depending on your web browser settings, the image files will be saved to your default downloads folder or you will be prompted to specify a destination folder. 
 
 
-# Supported browsers
+# Help Menu
+
+The `Help` dropdown menu provides links to:
+
+* This online documentation.
+* The IGV **user forum**, where you can post support questions, bug reports, feature requests and other suggestions.
+* The **GitHub repository** that hosts the IGV-Web source code. It provides another means of reaching the IGV team for support (via Git issues), and it includes documentation on how to host a local installation of the IGV-Web app.
+* IGV-Web version information.
+
+# Supported Browsers
 
 IGV-Web requires a modern web browser with support for Javascript ECMAScript 2015. We test on the latest versions of Chrome, Safari, Firefox, and Edge. Internet Explorer (IE) is not supported.
-

@@ -220,6 +220,6 @@ The `Help` dropdown menu provides links to:
 
 # Supported Browsers
 
-IGV-Web requires a modern web browser with support for Javascript ECMAScript 2015. We test on the latest versions of Chrome, Safari, Firefox, and Edge. Internet Explorer (IE) is not supported.
+IGV-Web requires a modern web browser with support for JavaScript ECMAScript 2015. We try to test on the latest versions of Chrome, Safari, Firefox, and Edge. Internet Explorer (IE) is not supported.
 
 *GitHub Pages theme adapted from [mattgraham](https://twitter.com/mattgraham)* 

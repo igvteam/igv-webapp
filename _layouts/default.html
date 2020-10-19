@@ -24,6 +24,8 @@
     <div class="wrapper">
       <nav>
         <ul><b>TABLE OF CONTENTS</b></br></br></ul>
+        <!-- I took out the table of contents heading, but the following <ul></ul> line is needed for the table of contents to appear -->
+        <ul></ul>
       </nav>
       <section>
         {{ content }}
@@ -33,7 +35,7 @@
         {% if site.github.is_project_page %}
           <p>Project maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
         {% endif %}
-        <p><small>Theme adapted from <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+        
       </footer>
     </div>
 

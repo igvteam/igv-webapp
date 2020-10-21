@@ -6,10 +6,9 @@
 /build/
 /js/igv.js
 /js/igv.min.js
-
 /igvjs/
-/index-dev.html
 /igvwebConfig-dev.js
 /igvwebConfig-bak.js
 /node_modules
 /igvwebConfig-private.js
+/deployConfig.sh

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <!-- IGV JS -->
+    <script src="igv.min.js"></script>
+</head>
+
+<body>
+
+<!-- Default page for embeddable snippets to be inserted into an iframe.  Assumes existence of igv.min.js in same directory -->
+
+<div id="igvDiv"/>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const div = document.getElementById('igvDiv');
+        const config = {
+            queryParametersSupported: true
+        };
+        igv.createBrowser(div, config);
+    })
+
+</script>
+
+</body>
+
+</html>

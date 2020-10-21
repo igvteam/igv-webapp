@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs-extra');
+const pkg = require('../package.json');
 
 fs.copySync(__dirname + '/../igvwebConfig.js', __dirname + '/../dist/igvwebConfig.js');
 fs.copySync(__dirname + '/../css/file-load-widget.css', __dirname + '/../dist/css/file-load-widget.css');
@@ -11,6 +12,7 @@ fs.copySync(__dirname + '/../css/fontawesome', __dirname + '/../dist/css/fontawe
 fs.copySync(__dirname + '/../img', __dirname + '/../dist/img');
 fs.copySync(__dirname + '/../resources', __dirname + '/../dist/resources');
 fs.copySync(__dirname + '/../favicon.ico', __dirname + '/../dist/favicon.ico');
+fs.copySync(__dirname + '/../embed.html', __dirname + '/../dist/embed.html');
 
 const indexPath =  __dirname + '/../index.html';
 let ping = fs.readFileSync(indexPath, 'utf-8');
@@ -23,7 +25,7 @@ let written = false;
 for (let line of lines) {
 
     if(!written && line.includes("<script") && line.includes("module") && line.includes("app.js")) {
-        fs.writeSync(fd, '\t<script src="./app_bundle.js"></script>\n', null, 'utf-8');
+        fs.writeSync(fd, '\t<script src=./app_bundle-' + pkg.version + '.js></script>\n', null, 'utf-8');
         written = true;
     } else {
         fs.writeSync(fd, line + '\n', null, 'utf-8')

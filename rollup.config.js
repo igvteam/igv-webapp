@@ -3,14 +3,15 @@ import babel from 'rollup-plugin-babel';
 import strip from 'rollup-plugin-strip';
 import commonjs from 'rollup-plugin-commonjs';
 import {terser} from "rollup-plugin-terser"
+const pkg = require('./package.json');
 
 export default [
 
     {
         input: 'js/app.js',
         output: [
-            {file: 'dist/app_bundle.js', format: 'umd', name: 'igv_webapp'},
-            {file: 'dist/app_bundle.min.js', format: 'umd', name: 'igv_webapp', sourcemap: true}
+            {file: `dist/app_bundle-${pkg.version}.js`, format: 'umd', name: 'igv_webapp'},
+            {file: `dist/app_bundle-${pkg.version}.min.js`, format: 'umd', name: 'igv_webapp', sourcemap: true, plugins: [terser()]}
         ],
         plugins: [
             strip({
@@ -20,20 +21,10 @@ export default [
 
                 // defaults to `[ 'console.*', 'assert.*' ]`
                 functions: ['console.log', 'assert.*', 'debug'],
-
-                // set this to `false` if you're not using sourcemaps –
-                // defaults to `true`
-                sourceMap: false
             }),
             commonjs(),
             resolve(),
-            babel(),
-            terser({
-                include: [/^.+\.min\.js$/],
-                sourcemap: {
-                    filename: "app_bundle.min.js",
-                    url: "app_bundle.min.js.map"
-                }})
+            babel()
         ]
     }
 ];

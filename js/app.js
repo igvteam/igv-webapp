@@ -71,6 +71,13 @@ async function main($container, config) {
         }
     }
 
+    // Load genomes for use by igv.js and webapp
+    if (config.genomes) {
+        let tmp = await getGenomesArray(config.genomes);
+        config.genomes = tmp;
+        config.igvConfig.genomes = tmp;
+    }
+
     const browser = await igv.createBrowser($container.get(0), config.igvConfig);
 
     if (browser) {
@@ -167,7 +174,25 @@ function createAppBookmarkHandler($bookmark_button) {
             alert(blurb);
         }
     })
+}
 
+async function getGenomesArray(genomes) {
+
+    if (undefined === genomes) {
+        return undefined;
+    }
+    if (Array.isArray(genomes)) {
+        return genomes;
+    } else {
+
+        let response = undefined;
+        try {
+            response = await fetch(genomes);
+            return response.json();
+        } catch (e) {
+            AlertSingleton.present(e.message);
+        }
+    }
 }
 
 export {main}

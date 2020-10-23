@@ -62,6 +62,40 @@ ul.navbar-nav {
 .dropdown-item {
   cursor: pointer;
   width: auto;
+  padding: .125rem 1rem;
+}
+
+label.dropdown-item {
+  margin-bottom: unset;
+}
+
+.dropdown-menu {
+  overflow-y: auto;
+  max-height: 640px;
+  font-size: .875rem;
+}
+
+.igv-app-dropdown-item-cloud-storage {
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  font-size: .875rem;
+  height: 18px;
+
+  margin-top: 4px;
+  margin-bottom: 4px;
+
+  div:first-child {
+    margin-right: 4px;
+  }
+  div:last-child {
+    margin-left: 4px;
+  }
+
 }
 
 .modal-header {
@@ -264,29 +298,6 @@ ul.navbar-nav {
   background-color: mediumaquamarine;
 }
 
-.igv-app-dropdown-item-cloud-storage {
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-
-  font-size: .875rem;
-  height: 18px;
-
-  margin-top: 4px;
-  margin-bottom: 4px;
-
-  div:first-child {
-    margin-right: 4px;
-  }
-  div:last-child {
-    margin-left: 4px;
-  }
-
-}
-
 .igv-app-google-account-switch-button {
 
 }
@@ -300,14 +311,6 @@ ul.navbar-nav {
     position: absolute;
     z-index: -1;
   }
-}
-
-.dropdown-menu {
-  font-size: .875rem;
-}
-
-label.dropdown-item {
-  margin-bottom: unset;
 }
 
 // prevent button glow outline

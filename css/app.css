@@ -139,7 +139,8 @@ ul.navbar-nav > li > div > a:hover {
 
 .dropdown-item {
   cursor: pointer;
-  width: auto; }
+  width: auto;
+  padding: .125rem 1rem; }
 
 .modal-header {
   padding: .7rem 1.0rem; }

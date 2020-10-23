@@ -120,14 +120,14 @@ function genomeDropdownLayout({browser, genomeDictionary, $dropdown_menu}) {
 
     // discard all buttons preceeding the divider div
     let $divider = $dropdown_menu.find('.dropdown-divider');
-    $divider.prevAll().remove();
+    $divider.nextAll().remove();
 
     for (let key in genomeDictionary) {
 
         if (genomeDictionary.hasOwnProperty(key)) {
 
             let $button = createButton(genomeDictionary[key].name);
-            $button.insertBefore($divider);
+            $button.insertAfter($divider);
 
             $button.data('id', key);
 

@@ -64,10 +64,10 @@ function creatGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
 async function initializeGenomeWidgets(browser, genomes, $dropdown_menu) {
     try {
 
-        const genomeDictionary = await getAppLaunchGenomes(genomes);
+        const genomeMap = await getAppLaunchGenomes(genomes);
 
-        if (genomeDictionary) {
-            genomeDropdownLayout({browser, genomeDictionary, $dropdown_menu});
+        if (genomeMap) {
+            genomeDropdownLayout({ browser, genomeMap, $dropdown_menu });
         }
 
     } catch (e) {
@@ -82,7 +82,7 @@ async function getAppLaunchGenomes(genomes) {
     }
 
     if (Array.isArray(genomes)) {
-        return buildDictionary(genomes);
+        return buildMap(genomes);
     } else {
 
         let response = undefined;
@@ -94,56 +94,53 @@ async function getAppLaunchGenomes(genomes) {
 
         if (response) {
             let json = await response.json();
-            return buildDictionary(json);
+            return buildMap(json);
         }
 
     }
 }
 
-function buildDictionary(array) {
+function buildMap(arrayOrJson) {
 
-    let dictionary = {};
-    if (true === Array.isArray(array)) {
+    const map = new Map()
 
-        for (let json of array) {
-            dictionary[json.id] = json;
+    if (true === Array.isArray(arrayOrJson)) {
+
+        for (let json of arrayOrJson.reverse()) {
+            map.set(json.id, json)
         }
 
     } else {
-        dictionary[array.id] = array;
+        map.set(arrayOrJson.id, arrayOrJson)
     }
 
-    return dictionary;
+    return map
 }
 
-function genomeDropdownLayout({browser, genomeDictionary, $dropdown_menu}) {
+function genomeDropdownLayout({browser, genomeMap, $dropdown_menu}) {
 
     // discard all buttons preceeding the divider div
     let $divider = $dropdown_menu.find('.dropdown-divider');
     $divider.nextAll().remove();
 
-    for (let key in genomeDictionary) {
+    for (let [ key, value ] of genomeMap) {
 
-        if (genomeDictionary.hasOwnProperty(key)) {
+        const $button = createButton(value.name);
+        $button.insertAfter($divider);
 
-            let $button = createButton(genomeDictionary[key].name);
-            $button.insertAfter($divider);
+        $button.data('id', key);
 
-            $button.data('id', key);
+        const str = `click.genome-dropdown.${ key }`;
 
-            const str = `click.genome-dropdown.${key}`;
+        $button.on(str, async () => {
 
-            $button.on(str, async () => {
+            const id = $button.data('id');
 
-                const id = $button.data('id');
+            if (id !== browser.genome.id) {
+                await loadGenome( value );
+            }
 
-                if (id !== browser.genome.id) {
-                    await loadGenome(genomeDictionary[id]);
-                }
-
-            });
-
-        } // if (...)
+        });
 
     } // for (...)
 

@@ -57,7 +57,7 @@ localhost:8080/index.html
 
 ### Amazon S3
 
-To server the app from Amazon S3 simply upload the contents of "dist" to an Amazon S3 bucket.  Keep the 
+To serve the app from Amazon S3 simply upload the contents of "dist" to an Amazon S3 bucket.  Keep the 
 directory structure intact, and make all files public.  Example of an S3 hosted app is at  
 https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this is an example and is not kept up-to-date.
 

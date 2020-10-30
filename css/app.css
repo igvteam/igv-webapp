@@ -150,6 +150,9 @@ label.dropdown-item {
   max-height: 640px;
   font-size: .875rem; }
 
+#igv-app-genome-dropdown-menu {
+  min-width: 19rem; }
+
 .igv-app-dropdown-item-cloud-storage {
   display: flex;
   flex-direction: row;

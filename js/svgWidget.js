@@ -45,8 +45,7 @@ function createSVGWidget ({ browser, $saveModal }) {
         if (undefined === fn || '' === fn) {
 
             fn = $input.attr('placeholder');
-        } else if (false === extensions.has( igv.getExtension({ url: fn } ) )) {
-
+        } else if (!fn.endsWith(".svg")) {
             fn = fn + '.svg';
         }
 

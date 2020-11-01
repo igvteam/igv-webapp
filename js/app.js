@@ -36,6 +36,7 @@ import {creatGenomeWidgets, genomeWidgetConfigurator, initializeGenomeWidgets} f
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js';
 import {sessionURL} from './shareHelper.js';
 import {createSVGWidget} from './svgWidget.js';
+import GtexUtils from "./gtexUtils.js";
 import version from "./version.js";
 
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
@@ -116,7 +117,7 @@ async function initializationHelper(browser, $container, options) {
         ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
         'igv-app-track-select-modal',
-        igv.GtexUtils,
+        GtexUtils,
         options.trackRegistryFile,
         async configurations => await browser.loadTrackList(configurations));
 

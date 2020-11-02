@@ -22,6 +22,7 @@
     {
       "type": "variant",
       "format": "vcf",
+      "visibilityWindow": 10000000,
       "url": "https://1000genomes.s3.amazonaws.com/phase3/integrated_sv_map/ALL.wgs.integrated_sv_map_v2.20130502.svs.genotypes.vcf.gz",
       "indexURL": "https://1000genomes.s3.amazonaws.com/phase3/integrated_sv_map/ALL.wgs.integrated_sv_map_v2.20130502.svs.genotypes.vcf.gz.tbi",
       "name": "1KG Phase 3 SVs"

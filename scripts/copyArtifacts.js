@@ -10,7 +10,6 @@ fs.copySync(__dirname + '/../css/fontawesome', __dirname + '/../dist/css/fontawe
 fs.copySync(__dirname + '/../img', __dirname + '/../dist/img');
 fs.copySync(__dirname + '/../resources', __dirname + '/../dist/resources');
 fs.copySync(__dirname + '/../favicon.ico', __dirname + '/../dist/favicon.ico');
-fs.copySync(__dirname + '/../embed.html', __dirname + '/../dist/embed.html');
 
 const indexPath =  __dirname + '/../index.html';
 let ping = fs.readFileSync(indexPath, 'utf-8');

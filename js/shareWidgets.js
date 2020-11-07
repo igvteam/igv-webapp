@@ -28,7 +28,7 @@ import {setURLShortener, shortSessionURL} from './shareHelper.js'
 function createShareWidgets({browser, $container, $modal, $share_input, $copy_link_button, $tweet_button_container, $email_button, $qrcode_button, $qrcode_image, $embed_container, $embed_button, embedTarget}) {
 
     if (undefined === embedTarget) {
-        embedTarget = getEmbedTarget();
+        embedTarget = `https://igv.org/web/release/${igv.version()}/embed.html`;
     }
 
     $modal.on('shown.bs.modal', async function (e) {
@@ -131,21 +131,6 @@ function getEmbeddableSnippet($container, embedTarget, session) {
     const embedUrl = embedTarget + "?sessionURL=blob:" + session;
     const height = $container.height() + 50;
     return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
-}
-
-/**
- * Get the default embed html target.  Assumes an "embed.html" file in same directory as this page
- */
-function getEmbedTarget() {
-
-    let href = window.location.href.slice();
-    let idx = href.indexOf("?");
-    if (idx > 0) {
-        href = href.substring(0, idx);
-    }
-    idx = href.lastIndexOf("/");
-    return href.substring(0, idx) + "/embed.html"
-
 }
 
 function shareWidgetConfigurator(browser, $container, {urlShortener, embedTarget}) {

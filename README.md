@@ -19,7 +19,7 @@ igv-webapp and igv.js require a modern web browser with support for Javascript E
 igv-webapp is a pure client web application consisting entirely of static files and can be served from virtually any web server, 
 e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.   A pre-built web content directory for the current release can be downloaded from     
 [https://igv.org/app-archive/igv-webapp.1.3.0.zip](https://igv.org/app-archive/igv-webapp.1.3.0.zip).  
-Refer to your web server documentation for information on mapping a url to the igv web content directory.
+Refer to your web server documentation for information on serving the web content. 
 
 
 ### Building from source code

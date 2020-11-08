@@ -1,10 +1,10 @@
-@import "color";
-@import "panel";
-@import "share-modal";
-@import "encode";
-@import "track-select";
 
 //
+$igv-default-font-face: 'Open Sans', sans-serif;
+$igv-trackgear-grey-color: #7F7F7F;
+$igv-trackgear-popover-border-radius: 4px;
+$igv-dark-grey-color: #373737;
+
 $igv-app-light-color: #f7f7f7;
 $igv-app-medium-color: #a6a6a6;
 $igv-app-dark-color: #5f5f5f;
@@ -15,6 +15,13 @@ $igv-app-genome-load-widget-height: 200px;
 $igv-app-footer-height: 48px;
 $igv-app-logo-container-width: 20%;
 $igv-header-height: 48px;
+
+@import "color";
+@import "panel";
+@import "igv-webapp-alert-dialog";
+@import "share-modal";
+@import "encode";
+@import "track-select";
 
 body {
   padding-top: $igv-header-height;

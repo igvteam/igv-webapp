@@ -22,8 +22,7 @@
  */
 
 import {GoogleAuth} from '../node_modules/igv-utils/src/index.js';
-import {AlertSingleton} from '../node_modules/igv-ui/dist/igv-ui.js'
-import { createSessionWidgets, createTrackWidgetsWithTrackRegistry, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import { AlertSingleton, createSessionWidgets, createTrackWidgetsWithTrackRegistry, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import {creatGenomeWidgets, genomeWidgetConfigurator, initializeGenomeWidgets} from './genomeWidgets.js';
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js';

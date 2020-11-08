@@ -13,6 +13,17 @@ igv-webapp is a pure-client "genome browser" application based on [igv.js](https
 igv-webapp and igv.js require a modern web browser with support for Javascript ECMAScript 2015.
 
 ## Installation
+
+### Prebuilt packages
+
+igv-webapp is a pure client web application consisting entirely of static files and can be served from virtually any web server, 
+e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.   A pre-built web content directory for the current release can be downloaded from     
+[https://igv.org/app-archive/igv-webapp.1.3.0.zip](https://igv.org/app-archive/igv-webapp.1.3.0.zip).  
+Refer to your web server documentation for information on mapping a url to the igv web content directory.
+
+
+### Building from source code
+
 * Clone this repository
 ````
 git clone git@github.com:igvteam/igv-webapp.git
@@ -32,17 +43,17 @@ npm run build
 
 ## Running the app
 
-igv-webapp is a pure client web application consisting entirely of static files and can be served from virtually any web server, 
-e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.  As an example, instructions for use with the NPM package http-server follow.
+As noted above, refer to your web server documentation for instructions on serving the web content.  As examples, 
+instructions for use with the NPM package http-server and Amazon S3 follow.  
 
 ### http-server
 
 Instructions for running with [http-server](https://www.npmjs.com/package/http-server).  For more options, including
 installing http-server locally, see [http-server](https://www.npmjs.com/package/http-server).
 
-* Start http-server on the ```dist``` directory
+* Start http-server on the web content directory (_**igv-webapp.1.3.0**_ for the prepackaged distribution or _**dist**_ if building from source )
 ````
-npx http-server -a localhost dist
+npx http-server -a localhost <web content directory>
 ````
 
 * Open a browser and enter the following

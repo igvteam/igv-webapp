@@ -1,8 +1,8 @@
-# IGV Web App
+# IGV-Web App
 
-igv-webapp is a pure-client "genome browser" application based on [igv.js](https://github.com/igvteam/igv.js).  It is developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team. You can use our hosted app at https://igv.org/app, or follow the directions below to install your own.
+The IGV-Web app is a pure-client "genome browser" application based on [igv.js](https://github.com/igvteam/igv.js).  It is developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team. You can use our hosted app at https://igv.org/app, or follow the directions below to install your own.
 
-**Note:  the instructions below are for developers or others wishing to install a copy of igv-webapp.  For user documentation see [https://igvteam.github.io/igv-webapp/](https://igvteam.github.io/igv-webapp/)**
+**Note:  the instructions below are for developers or others wishing to install a copy of the IGV-Web app.  For user documentation see [https://igvteam.github.io/igv-webapp/](https://igvteam.github.io/igv-webapp/).** A link to the user documentation is also provided in the app's Help menu.
 
 ## Requirements
 - Node >= v8.11.4
@@ -10,16 +10,14 @@ igv-webapp is a pure-client "genome browser" application based on [igv.js](https
 
 ## Supported Browsers
 
-igv-webapp and igv.js require a modern web browser with support for Javascript ECMAScript 2015.
+The IGV-Web app and igv.js require a modern web browser with support for JavaScript ECMAScript 2015.
 
 ## Installation
 
 ### Prebuilt packages
 
-igv-webapp is a pure client web application consisting entirely of static files and can be served from virtually any web server, 
-e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3.   A pre-built web content directory for the current release can be downloaded from     
-[https://igv.org/app-archive/igv-webapp.1.3.0.zip](https://igv.org/app-archive/igv-webapp.1.3.0.zip).  
-Refer to your web server documentation for information on serving the web content. 
+IGV-Web is a pure client web application consisting entirely of static files and can be served from virtually any web server, e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3. 
+A pre-built web content directory for the current release can be downloaded from [https://igv.org/app-archive/igv-webapp.1.3.0.zip](https://igv.org/app-archive/igv-webapp.1.3.0.zip). Refer to your web server documentation for information on serving the web content. Some examples are provided in the section on **Running the app** below.
 
 
 ### Building from source code
@@ -81,7 +79,7 @@ Your must rebuild the dist directory ``` npm run build``` after making any to co
 you can manually copy the changed files to ```dist/resources```,  or just edit ```dist/resources``` directly.
 
 
-The webapp is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties
+The IGV-Web app is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties
 are customizable.
 
 * genomes - url to a file containing a list of genome configuration objects.  This list populates the Genomes 
@@ -194,9 +192,9 @@ assemblies for human (hg19, GRCh38),  mouse (mm10), worm (ce11), and fly (dm6).
 
 ### Data Servers
 
-IGV-webapp uses igv.js, a javascript client. Servers for track data must support CORS access and Range requests.  See https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements  for more details.  
+IGV-Web uses igv.js, a JavasScript client. Servers for track data must support CORS access and Range requests.  See https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements  for more details.  
 
 
 ## License
-IGV Web App is [MIT](/LICENSE) licensed.
+The IGV-Web app is [MIT](/LICENSE) licensed.
 

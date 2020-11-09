@@ -21,19 +21,19 @@ A pre-built web content directory for the current release can be downloaded from
   * Node >= v8.11.4
   * NPM >= v5.6.0
 
-1. Clone this repository
+* Clone this repository
 ````
 git clone git@github.com:igvteam/igv-webapp.git
 ````
-2. Change directories to project
+* Change directories to project
 ````
 cd ./igv-webapp
 ````
-3. Install
+* Install
 ````
 npm install
 ````
-4. Build
+* Build
 ````
 npm run build
 ````
@@ -48,12 +48,12 @@ instructions for use with the NPM package http-server and Amazon S3 follow.
 Instructions for running with [http-server](https://www.npmjs.com/package/http-server).  For more options, including
 installing http-server locally, see [http-server](https://www.npmjs.com/package/http-server).
 
-1. Start http-server on the web content directory (_**igv-webapp.1.3.0**_ for the prepackaged distribution or _**dist**_ if building from source )
+* Start http-server on the web content directory (_**igv-webapp.1.3.0**_ for the prepackaged distribution or _**dist**_ if building from source )
 ````
 npx http-server -a localhost <web content directory>
 ````
 
-2. Open a browser and enter the following
+* Open a browser and enter the following
 ````
 localhost:8080
 ````

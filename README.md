@@ -4,10 +4,6 @@ The IGV-Web app is a pure-client "genome browser" application based on [igv.js](
 
 **Note:  the instructions below are for developers or others wishing to install a copy of the IGV-Web app.  For user documentation see [https://igvteam.github.io/igv-webapp/](https://igvteam.github.io/igv-webapp/).** A link to the user documentation is also provided in the app's Help menu.
 
-## Requirements
-- Node >= v8.11.4
-- NPM >= v5.6.0
-
 ## Supported Browsers
 
 The IGV-Web app and igv.js require a modern web browser with support for JavaScript ECMAScript 2015.
@@ -19,22 +15,25 @@ The IGV-Web app and igv.js require a modern web browser with support for JavaScr
 IGV-Web is a pure client web application consisting entirely of static files and can be served from virtually any web server, e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3. 
 A pre-built web content directory for the current release can be downloaded from [https://igv.org/app-archive/igv-webapp.1.3.0.zip](https://igv.org/app-archive/igv-webapp.1.3.0.zip). Refer to your web server documentation for information on serving the web content. Some examples are provided in the section on **Running the app** below.
 
-
 ### Building from source code
 
-* Clone this repository
+* Requirements
+  * Node >= v8.11.4
+  * NPM >= v5.6.0
+
+1. Clone this repository
 ````
 git clone git@github.com:igvteam/igv-webapp.git
 ````
-* Change directories to project
+2. Change directories to project
 ````
 cd ./igv-webapp
 ````
-* Install
+3. Install
 ````
 npm install
 ````
-* Build
+4. Build
 ````
 npm run build
 ````
@@ -49,16 +48,15 @@ instructions for use with the NPM package http-server and Amazon S3 follow.
 Instructions for running with [http-server](https://www.npmjs.com/package/http-server).  For more options, including
 installing http-server locally, see [http-server](https://www.npmjs.com/package/http-server).
 
-* Start http-server on the web content directory (_**igv-webapp.1.3.0**_ for the prepackaged distribution or _**dist**_ if building from source )
+1. Start http-server on the web content directory (_**igv-webapp.1.3.0**_ for the prepackaged distribution or _**dist**_ if building from source )
 ````
 npx http-server -a localhost <web content directory>
 ````
 
-* Open a browser and enter the following
+2. Open a browser and enter the following
 ````
 localhost:8080
 ````
-
 or
 ````
 localhost:8080/index.html

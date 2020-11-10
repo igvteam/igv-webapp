@@ -57,6 +57,7 @@ async function main($container, config) {
                 apiKey: config.apiKey,
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
+            GoogleAuth.signOut();
             googleEnabled = true;
         } catch (e) {
             console.error(e);

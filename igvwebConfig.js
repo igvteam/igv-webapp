@@ -13,7 +13,7 @@ var igvwebConfig = {
         provider: "tinyURL"
     },
 
-    restoreLastGenome: true,
+    //restoreLastGenome: true,
 
     igvConfig:
         {

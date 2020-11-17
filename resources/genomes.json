@@ -317,6 +317,41 @@
     ]
   },
   {
+    "id": "dm3",
+    "name": "D. melanogaster (dm3)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/dm3/dm3.fa",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/dm3/dm3.fa.fai",
+    "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/dm3/cytoBand.txt.gz",
+    "tracks": [
+      {
+        "name": "UCSC Refseq Genes",
+        "format": "refgene",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/dm3/refGene.txt.gz",
+        "indexed": false,
+        "order": 1000000,
+        "removable": false,
+        "visibilityWindow": -1
+      }
+    ]
+  },
+  {
+    "id": "dmel_r5.9",
+    "name": "D. melanogaster (dmel_r5.9)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/dmel_r5.9/dmel-all-chromosome-r5.9.fasta",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/dmel_r5.9/dmel-all-chromosome-r5.9.fasta.fai",
+    "tracks": [
+      {
+        "name": "Transcripts",
+        "format": "gff3",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/dmel_r5.9/dmel-r5.9.transcripts.sorted.gff.gz",
+        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/dmel_r5.9/dmel-r5.9.transcripts.sorted.gff.gz.tbi",
+        "order": 1000000,
+        "removable": false,
+        "visibilityWindow": -1
+      }
+    ]
+  },
+  {
     "id": "sacCer3",
     "name": "S. cerevisiae (sacCer3)",
     "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/sacCer3/sacCer3.fa",
@@ -376,6 +411,23 @@
         "displayMode": "EXPANDED",
         "nameField": "gene",
         "height": 150
+      }
+    ]
+  },
+  {
+    "id": "tair10",
+    "name": "A. thaliana (TAIR 10)",
+    "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/tair10/TAIR10_chr_all.fas",
+    "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/tair10/TAIR10_chr_all.fas.fai",
+    "aliasURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/tair10/TAIR10_alias.tab",
+    "tracks": [
+      {
+        "name": "Genes",
+        "format": "gff3",
+        "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.genomes/tair10/TAIR10_GFF3_genes.gff",
+        "indexed": false,
+        "removable": false,
+        "order": 1000000
       }
     ]
   }

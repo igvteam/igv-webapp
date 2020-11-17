@@ -171,6 +171,10 @@ async function loadGenome(genome) {
     let g = undefined;
     try {
         g = await Globals.browser.loadGenome(genome);
+        if(g.id) {
+            localStorage.setItem("genomeID", g.id);
+        }
+
     } catch (e) {
         AlertSingleton.present(e.message);
     }

@@ -72,7 +72,17 @@ async function main($container, config) {
         config.igvConfig.genomes = tmp;
     }
 
-    const browser = await igv.createBrowser($container.get(0), config.igvConfig);
+    const igvConfig = config.igvConfig;
+
+    if(config.restoreLastGenome) {
+        const lastGenomeId = localStorage.getItem("genomeID");
+        if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
+            igvConfig.genome = lastGenomeId;
+            igvConfig.tracks = [];
+        }
+    }
+
+    const browser = await igv.createBrowser($container.get(0), igvConfig);
 
     if (browser) {
         Globals.browser = browser;

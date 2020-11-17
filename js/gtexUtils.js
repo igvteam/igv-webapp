@@ -1,4 +1,3 @@
-const igvxhr = igv.xhr;
 
 const GtexUtils = {
 
@@ -6,7 +5,7 @@ const GtexUtils = {
         datasetId = datasetId || 'gtex_v8';
         baseURL = baseURL || 'https://gtexportal.org/rest/v1';
         let url = baseURL + '/dataset/tissueInfo?datasetId=' + datasetId;
-        return igvxhr.loadJson(url, {})
+        return igv.xhr.loadJson(url, {})
     },
 
     //https://gtexportal.org/rest/v1/association/singleTissueEqtlByLocation?chromosome=7&start=98358766&end=101523798&tissueName=Liver&datasetId=gtex_v7

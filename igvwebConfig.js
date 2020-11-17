@@ -1,4 +1,5 @@
 var igvwebConfig = {
+
     genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
@@ -12,6 +13,7 @@ var igvwebConfig = {
         provider: "tinyURL"
     },
 
+    restoreLastGenome: true,
 
     igvConfig:
         {

@@ -21,8 +21,12 @@
   "danRer10": [
     "resources/tracks/danRer10_annotations.json"
   ],
+  "dm3" : [
+    "resources/tracks/dm3_encode.json"
+  ],
   "dm6": [
-    "resources/tracks/dm6_annotations.json"
+    "resources/tracks/dm6_annotations.json",
+    "resources/tracks/dm6_encode.json"
   ],
   "ce11": [
     "resources/tracks/ce11_annotations.json"

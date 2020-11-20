@@ -11,7 +11,9 @@ IGV-Web is developed by the same team that develops the IGV desktop application.
 
 ### 1. Open the IGV-Web app
 
-In a [web browser](#supported-browsers), navigate to <https://igv.org/app>.  
+In a [web browser](#supported-browsers), navigate to <https://igv.org/app>.   
+
+> **Note:** Make sure that popups are not disabled in your web browser as some features rely on them. For example, loading tracks and genomes from files in Google Drive may pop up a login window.
 
 ### 2. Load a reference genome
 IGV displays data mapped to the genomic coordinates of a reference genome. When the IGV-Web page first loads, it will load the default reference genome **hg19**. To load a different genome, click on the `Genome` dropdown menu and either select from the list of pre-defined genomes, or use one of the options to load a genome sequence file that you specify.
@@ -194,7 +196,7 @@ To create a web link URL that will open the IGV-Web app with all the same data t
 
 * Use the `COPY` button to copy the URL to the clipboard and paste it wherever you want for safe keeping. 
 * Alternatively, the `Tweet` and `EMAIL` buttons provide shortcuts for sending the URL to others. 
-* The `EMBED` button generates an HTML code snippet that can be used to add the session to a web page. 
+* The `EMBED` button generates an HTML code snippet that can be used to add the session to a web page. *Note: For the EMBED option, tracks loaded from Google Drive will only work if they are publicly available.*
 * The `QR CODE` button generates a QR two-dimenionsal barcode for the URL.
 
 To restore a session from URL, paste it into a browser address bar, or click on the URL in an email message, tweet, etc.

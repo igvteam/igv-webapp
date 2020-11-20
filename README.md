@@ -45,10 +45,10 @@ instructions for use with the NPM package http-server and Amazon S3 follow.
 
 ### http-server
 
-Instructions for running with [http-server](https://www.npmjs.com/package/http-server).  For more options, including
-installing http-server locally, see [http-server](https://www.npmjs.com/package/http-server).
+Instructions for running with http-server.  For more options, including
+installing http-server locally, see the [http-server documentation](https://www.npmjs.com/package/http-server).
 
-* Start http-server on the web content directory (_**igv-webapp.1.4.1**_ for the prepackaged distribution or _**dist**_ if building from source )
+* Start http-server on the web content directory (i.e., the downloaded pre-packaged distribution described above, or the `dist` directory if building from source )
 ````
 npx http-server -a localhost <web content directory>
 ````
@@ -64,7 +64,7 @@ localhost:8080/index.html
 
 ### Amazon S3
 
-To serve the app from Amazon S3 simply upload the contents of "dist" to an Amazon S3 bucket.  Keep the 
+To serve the app from Amazon S3, simply upload the contents from the IGV-Web content directory (i.e., the pre-packaged distribution described above, or the `dist` directory if building from source ) to an Amazon S3 bucket.  Keep the 
 directory structure intact, and make all files public.  Example of an S3 hosted app is at  
 https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this is an example and is not kept up-to-date.
 
@@ -73,25 +73,25 @@ https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this is an example a
 
 **NOTE:** 
 
-Your must rebuild the dist directory ``` npm run build``` after making any to configuration files in ```resources```.  Alternatively 
+You must rebuild the `dist` directory with ``` npm run build``` after making any changes to configuration files in ```resources```.  Alternatively, 
 you can manually copy the changed files to ```dist/resources```,  or just edit ```dist/resources``` directly.
 
 
 The IGV-Web app is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties
 are customizable.
 
-* genomes - url to a file containing a list of genome configuration objects.  This list populates the Genomes 
+* `genomes` - URL to a file containing a list of genome configuration objects.  This list populates the _Genomes_ 
 pulldown menu.  See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome-2.0) for a description of 
 the genome configuration object.  For an example see 
 the default genome list in ```resources/genomes```.
 
-* trackRegistryFile - url to a file configurating the Track pulldown.  Use this to define custom load menus.  The file contains
-a json object with genomeIDs as keys and an array of URLs to json files defining menu entries in the _Load Tracks_ pulldown.
-For an example see the default configuration at ```resources/tracks/trackRegistry.json```.    Further details on the track menu configuration are available [below](#track-registry).
+* `trackRegistryFile` - URL to a configuration file for the _Tracks_ pulldown menu.  Use this to define custom load menus.  The file contains
+a JSON object with genomeIDs as keys and an array of URLs to JSON files defining menu entries in the _Tracks_ pulldown menu.
+For an example see the default configuration at ```resources/tracks/trackRegistry.json```.    Further details on configuring the tracks menu are available [below](#track-registry).
 
-* igvConfg - an igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0) for details.
+* `igvConfg` - An igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0) for details.
 
-* clientId - **Optional** a Google clientId, used to enable OAuth for the Google picker and access to protected
+* `clientId` - (_optional_) A Google clientId, used to enable OAuth for the Google picker and access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for
 instructions on obtaining a clienId.  OAuth requests from igv.js will include the following scopes.
 
@@ -99,7 +99,7 @@ instructions on obtaining a clienId.  OAuth requests from igv.js will include th
     * https://www.googleapis.com/auth/userinfo.profile 
     * https://www.googleapis.com/auth/drive.readonly'
   
-* urlShortener - an object or function defining a URL shortener to shorten links created by the **Share** button.  The value of this property can be replaced with a function, taking a single argument (the long URL) and returning the shortened url, or an Object. 
+* `urlShortener` - An object or function defining a URL shortener to shorten links created by the **Share** button.  The value of this property can be replaced with a function, taking a single argument (the long URL) and returning the shortened URL, or an Object. 
 
 ### Default configuration
 
@@ -133,11 +133,11 @@ var igvwebConfig = {
     }
 };
 ```
-`
+
 ### Track Registry
 
 The registry consists of a map linking genome ID to a list of track configuration files.   Each track configuration
-file defines a menu in the "Tracks" pulldown.   For example, the registry below defines 2 menus for genome hg19,
+file defines a menu in the _Tracks_ pulldown menu.   For example, the registry below defines two menus for genome hg19,
 and a single menu for hg38.
 
 ```json
@@ -155,7 +155,7 @@ and a single menu for hg38.
 
 
 Menu files specify a label for the menu, an optional description of the menu,  and a list of tracks configurations or a type property. 
-The example below defines a menu labeled "Annotations" with a single entry, a bed file of gene annotations.
+The example below defines a menu labeled "Annotations" with a single entry, a BED file of gene annotations.
 For a complete description of track configuration objects see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
 
 ```json

@@ -40,10 +40,10 @@ export function setURLShortener(obj) {
         } else if ("google" === obj.provider && obj.apiKey) {
             fn = googleShortener(obj.apiKey);
         } else {
-            AlertSingleton.present(`Unknown URL shortener provider: ${obj.provider}`);
+            AlertSingleton.present(new Error(`Unknown URL shortener provider: ${obj.provider}`));
         }
     } else {
-        AlertSingleton.present("URL shortener object must either be an object specifying a provider and apiKey, or a function")
+        AlertSingleton.present(new Error('URL shortener object must either be an object specifying a provider and apiKey, or a function'))
     }
 
     if (fn) {

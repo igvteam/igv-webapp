@@ -170,6 +170,9 @@ async function loadGenome(genome) {
 
     let g = undefined;
     try {
+        if(genome.tracks) {
+            genome.tracks.push({type: "sequence", order: Number.MIN_SAFE_INTEGER})
+        }
         g = await Globals.browser.loadGenome(genome);
         if(g.id) {
             localStorage.setItem("genomeID", g.id);

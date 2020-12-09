@@ -15,7 +15,7 @@ The IGV-Web app and igv.js require a modern web browser with support for JavaScr
 IGV-Web is a pure client web application consisting entirely of static files and can be served from virtually any 
 web server, e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3. A pre-built web content directory for the current 
 release can be downloaded from 
-[https://igv.org/app-archive/igv-webapp.1.4.5.zip](https://igv.org/app-archive/igv-webapp.1.4.5.zip). 
+[https://igv.org/app-archive/igv-webapp.1.4.6.zip](https://igv.org/app-archive/igv-webapp.1.4.6.zip). 
 Refer to your web server documentation for information on serving the web content. Some examples are provided 
 in the section on **Running the app** below.
 

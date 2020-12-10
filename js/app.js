@@ -104,6 +104,9 @@ async function initializationHelper(browser, $container, options) {
     creatGenomeWidgets(genomeWidgetConfigurator(googleEnabled))
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
+
+    const customDataModalConfigurations = {}
+
     const $main = $('#igv-main')
 
     createTrackWidgetsWithTrackRegistry($main,

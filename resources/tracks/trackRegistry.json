@@ -8,6 +8,10 @@
   ],
   "hg38": [
     "resources/tracks/hg38_annotations.json",
+    "resources/tracks/hg38_encode.json"
+  ],
+  "hg38_1kg": [
+    "resources/tracks/hg38_annotations.json",
     "resources/tracks/hg38_encode.json",
     "resources/tracks/hg38_1KG_lowCoverageCrams.json"
   ],

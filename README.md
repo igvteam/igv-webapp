@@ -10,16 +10,17 @@ The IGV-Web app and igv.js require a modern web browser with support for JavaScr
 
 ## Installation
 
-### Prebuilt packages
-
 IGV-Web is a pure client web application consisting entirely of static files and can be served from virtually any 
-web server, e.g.  Apache, Flask, Tomcat, nginx,  or Amazon S3. A pre-built web content directory for the current 
-release can be downloaded from 
-[https://igv.org/app-archive/igv-webapp.1.4.6.zip](https://igv.org/app-archive/igv-webapp.1.4.6.zip). 
-Refer to your web server documentation for information on serving the web content. Some examples are provided 
+web server, e.g.  Apache, Flask, Tomcat, nginx, or Amazon S3. You can install it from a pre-built distribution package or by building it from source code. To run the app, refer to your web server documentation for information on serving web content. Some examples are provided 
 in the section on **Running the app** below.
 
-### Building from source code
+### 1. Prebuilt packages
+
+A pre-built web content directory for the current  release can be downloaded from 
+[https://igv.org/app-archive/igv-webapp.1.4.6.zip](https://igv.org/app-archive/igv-webapp.1.4.6.zip). Older versions of the app can also be found in at the same https://igv.org/app-archive location.
+
+
+### 2. Building from source code
 
 * Requirements
   * Node >= v8.11.4
@@ -47,7 +48,7 @@ npm run build
 As noted above, refer to your web server documentation for instructions on serving the web content.  As examples, 
 instructions for use with the NPM package http-server and Amazon S3 follow.  
 
-### http-server
+### 1. http-server
 
 Instructions for running with http-server.  For more options, including
 installing http-server locally, see the [http-server documentation](https://www.npmjs.com/package/http-server).
@@ -66,7 +67,7 @@ or
 localhost:8080/index.html
 ````
 
-### Amazon S3
+### 2. Amazon S3
 
 To serve the app from Amazon S3, simply upload the contents from the IGV-Web content directory (i.e., the pre-packaged distribution described above, or the `dist` directory if building from source ) to an Amazon S3 bucket.  Keep the 
 directory structure intact, and make all files public.  Example of an S3 hosted app is at  
@@ -75,10 +76,9 @@ https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this is an example a
 
 ## Configuration
 
-**NOTE:** 
-
-You must rebuild the `dist` directory with ``` npm run build``` after making any changes to configuration files in ```resources```.  Alternatively, 
-you can manually copy the changed files to ```dist/resources```,  or just edit ```dist/resources``` directly.
+**NOTE:**  
+* If you installed a **pre-built** distribution package, the configuration files referred to below can be found in the ```resources``` directory. 
+* If you **built from the source code**, you must rebuild the `dist` directory with ``` npm run build``` after making any changes to configuration files in ```resources```.  Alternatively, you can manually copy the changed files to ```dist/resources```,  or just edit ```dist/resources``` directly. Note however, if you make changes directly to files in ```dist/resources```, they will be overwritten the next time you do a build.
 
 
 The IGV-Web app is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties

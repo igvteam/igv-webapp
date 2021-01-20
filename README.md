@@ -84,16 +84,14 @@ https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this is an example a
 The IGV-Web app is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties
 are customizable.
 
-* `genomes` - URL to a file containing a list of genome configuration objects.  This list populates the _Genomes_ 
-pulldown menu.  See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome-2.0) for a description of 
-the genome configuration object.  For an example see 
-the default genome list in ```resources/genomes```.
+* `genomes` - URL to a JSON file containing a list of genome configuration objects.  This list populates the _Genomes_ 
+pulldown menu.  The default genomes file is ```resources/genomes.json```. For a description of the genome configuration object, see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome) .  
 
-* `trackRegistryFile` - URL to a configuration file for the _Tracks_ pulldown menu.  Use this to define custom load menus.  The file contains
+* `trackRegistryFile` - URL to a configuration file for the _Tracks_ pulldown menu.  Use this to define custom track menus.  The file contains
 a JSON object with genomeIDs as keys and an array of URLs to JSON files defining menu entries in the _Tracks_ pulldown menu.
-For an example see the default configuration at ```resources/tracks/trackRegistry.json```.    Further details on configuring the tracks menu are available [below](#track-registry).
+The default track registry file is ```resources/tracks/trackRegistry.json```.  Further details on configuring the tracks menu are available [below](#track-registry).
 
-* `igvConfg` - An igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Configuration-2.0) for details.
+* `igvConfg` - An igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation) for details.
 
 * `clientId` - (_optional_) A Google clientId, used to enable OAuth for the Google picker and access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for
@@ -140,9 +138,7 @@ var igvwebConfig = {
 
 ### Track Registry
 
-The registry consists of a map linking genome ID to a list of track configuration files.   Each track configuration
-file defines a menu in the _Tracks_ pulldown menu.   For example, the registry below defines two menus for genome hg19,
-and a single menu for hg38.
+The _Tracks_ pulldown menu is different depending on the currently selected reference genome. A track registry file defines the menu. It consists of a map linking genome IDs to lists of track configuration files. Each track configuration file defines a menu item in the pulldown menu. For example, the registry below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38.
 
 ```json
 {
@@ -156,11 +152,8 @@ and a single menu for hg38.
   ]
 }
 ```
-
-
-Menu files specify a label for the menu, an optional description of the menu,  and a list of tracks configurations or a type property. 
-The example below defines a menu labeled "Annotations" with a single entry, a BED file of gene annotations.
-For a complete description of track configuration objects see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
+The label of each menu item is specifed in the track configuration file, along with an optional description, and either a list of one or more tracks or a type property. 
+The example below defines a menu item labeled "Annotations" with a single track, a BED file of gene annotations. The details of the track are defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
 
 ```json
 {

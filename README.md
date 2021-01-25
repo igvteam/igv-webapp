@@ -106,8 +106,6 @@ instructions on obtaining a clienId.  OAuth requests from igv.js will include th
 ### Default configuration
 
 ```javascript
-
-
 var igvwebConfig = {
     genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
@@ -138,13 +136,14 @@ var igvwebConfig = {
 
 ### Track Registry
 
-The _Tracks_ pulldown menu is different depending on the currently selected reference genome. A track registry file defines the menu. It consists of a map linking genome IDs to lists of track configuration files. Each track configuration file defines a menu item in the pulldown menu. For example, the registry below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38.
+The _Tracks_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined by a track registry file that links genome IDs to lists of track configuration files. For example, the registry below will result in three items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
 
 ```json
 {
   "hg19" : [
-    "resources/tracks/hg19_annotations.json",
-    "resources/tracks/hg19_platinum_genomes.json"
+    "resources/tracks/hg19_annotations.json", 
+    "resources/tracks/hg19_my_platinum_genomes.json",
+    "resources/tracks/hg19_encode.json"
   ],
 
   "hg38" : [
@@ -152,8 +151,15 @@ The _Tracks_ pulldown menu is different depending on the currently selected refe
   ]
 }
 ```
-The label of each menu item is specifed in the track configuration file, along with an optional description, and either a list of one or more tracks or a type property. 
-The example below defines a menu item labeled "Annotations" with a single track, a BED file of gene annotations. The details of the track are defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
+Each track configuration file defines a menu item's label, the set of tracks presented for selection when the user clicks on the menu item, and an optional description. The set of tracks can be:
+
+1. a simple list of tracks, or 
+2. an annotated table of tracks, or
+3. a table of tracks loaded from data hosted by the [ENCODE project](https://www.encodeproject.org/).   
+
+By default, it is assumed that the file defines a simple list of tracks. The other options are selected by setting a `type` property.
+
+**1.** The example below defines a menu item labeled "Annotations" that presents a list of just one track, a BED file of Gencode gene annotations. The details of the track are defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
 
 ```json
 {
@@ -162,18 +168,71 @@ The example below defines a menu item labeled "Annotations" with a single track,
   "tracks": [
 	{
 	  "type": "bed",
-	  "url": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
-	  "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
+	  "url": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed",
+	  "indexURL": "https://s3.amazonaws.com/igv.org.test/data/gencode.v18.collapsed.bed.idx",
 	  "name": "Gencode V18"
-	}]
+	}
+  ]
+}	
+```
+**2.** The example below defines a menu item labeled "My Favorite Platinum Genomes Trio" and the `type` property is set to "custom-data-modal' to specify a custom annotated table of tracks. Each row in the table corresponds to a track, and columns represent attributes of the track. The "columns" section in the configuration file defines which track attributes are presented in the table. The "data" section contains the details of the table rows (i.e. tracks). Each one is defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0) along with values for any additional meta-data properties defined in the "columns" section. An optional "columnDefs" section can rename the column headers. In the example below, the "name" property from the track configuration is displayed in one of the columns, but the column heading is displayed as "Sample". The resulting table can be sorted and filtered interactively by the user based on column values.
+ 
+```json
+{  
+  "label": "My Favorite Platinum Genomes Trio",
+  "type": "custom-data-modal",
+  "description": "Example custom data modal: Data from <a href=https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes target=_blank>Illumina Platinum Genomes hosted at Google</a>",
+
+  "columns":
+  [
+    "name",
+    "Relation",
+    "Population"
+  ],
+  "columnDefs":
+  {
+    "name":
+    {
+      "title": "Sample"
+    }
+  },
+
+  "data":
+  [
+    {
+      "Relation": "Daughter",
+      "Population": "CEPH",
+      "sourceType": "gcs",
+      "type": "alignment",
+      "url": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam",
+      "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam.bai",
+      "name": "NA12878"
+    },
+    {
+      "Relation": "Father",
+      "Population": "CEPH",
+      "sourceType": "gcs",
+      "type": "alignment",
+      "url": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam",
+      "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam.bai",
+      "name": "NA12891"
+    },
+    {
+      "Relation": "Mother",
+      "Population": "CEPH",
+      "sourceType": "gcs",
+      "type": "alignment",
+      "url": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam",
+      "indexURL": "gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam.bai",
+      "name": "NA12892"
+    }
+  ]
 }
-	
 ```
 
-The type property can be used in lieu of a track list to trigger pre-defined lists of tracks for special data sources.
-Currently the only recognized value is "ENCODE".   This property can be used to populate an ENCODE load widget for any
-genome assembly with data hosted by the [ENCODE project](https://www.encodeproject.org/).   Currently this includes
-assemblies for human (hg19, GRCh38),  mouse (mm10), worm (ce11), and fly (dm6).
+![](img/CustomModalTracks.png)
+
+**3.** Setting the `type` property to "ENCODE" will populate the table with tracks with data hosted by the [ENCODE project](https://www.encodeproject.org/). This is supported for the following reference genome assemlies: human (hg19, GRCh38),  mouse (mm10), worm (ce11), and fly (dm6). The `genomeID` property specifies which one to use. **Note:** due to the extremely large number of datasets hosted by ENCODE, this is actually split into two menu items in the _Tracks_ menu.
 
 ```json
 {
@@ -182,7 +241,6 @@ assemblies for human (hg19, GRCh38),  mouse (mm10), worm (ce11), and fly (dm6).
   "description": "<a href=hhttps://www.encodeproject.org/ target=_blank>Encylopedia of Genomic Elements</a>",
   "genomeID": "hg19"
 }
-
 ```
 
 ### Data Servers

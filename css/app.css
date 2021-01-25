@@ -111,6 +111,9 @@ select#igv-app-track-select-modal-select {
 body {
   padding-top: 48px; }
 
+#igv-custom-modal {
+  font-size: .9rem; }
+
 #igv-app-encode-signal-modal {
   font-size: .9rem; }
 

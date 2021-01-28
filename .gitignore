@@ -12,3 +12,4 @@
 /node_modules
 /igvwebConfig-private.js
 /deployConfig.sh
+/deployGenomes.sh

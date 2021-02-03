@@ -136,7 +136,7 @@ var igvwebConfig = {
 
 ### Track Registry
 
-The _Tracks_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined by a track registry file that links genome IDs to lists of track configuration files. For example, the registry below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
+The _Tracks_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined in the file specified by the `trackRegistryFile` property in _igvwebConfig.js_ by associating lists of track configuration files with genome IDs. For example, the registry below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
 
 ```json
 {
@@ -150,7 +150,7 @@ The _Tracks_ pulldown menu is different depending on the currently selected refe
   ]
 }
 ```
-Each .json track configuration file corresponds to one menu item presented in the _Tracks_ pulldown menu. The configuration file defines:
+Each .json track configuration file associated with a genome ID corresponds to one menu item presented in the _Tracks_ pulldown menu. The configuration file defines:
 
 * The label of the item in the menu. 
 * The set of tracks presented for selection when the user clicks on the menu item. The tracks can be presented as a simple list of names or as an annotated table; a simple list is the default.

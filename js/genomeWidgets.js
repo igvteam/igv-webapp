@@ -172,6 +172,8 @@ async function loadGenome(genome) {
     try {
         if(genome.tracks) {
             genome.tracks.push({type: "sequence", order: Number.MIN_SAFE_INTEGER})
+        } else {
+            genome.tracks = [{type: "sequence", order: Number.MIN_SAFE_INTEGER}]
         }
         g = await Globals.browser.loadGenome(genome);
         if(g.id) {

@@ -24,6 +24,7 @@
  * THE SOFTWARE.
  */
 
+import { igvxhr } from '../node_modules/igv-utils/src/index.js';
 import {AlertSingleton, createURLModal,EventBus,FileLoadManager,FileLoadWidget,GenomeFileLoad,Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js";
 
@@ -157,7 +158,7 @@ function genomeWidgetConfigurator(googleEnabled) {
             loadHandler: async configuration => {
                 await loadGenome(configuration);
             },
-            igvxhr: igv.xhr
+            igvxhr
 
         };
 

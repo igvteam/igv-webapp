@@ -136,7 +136,9 @@ var igvwebConfig = {
 
 ### Track Registry
 
-The _Tracks_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined in the file specified by the `trackRegistryFile` property in _igvwebConfig.js_ by associating lists of track configuration files with genome IDs. For example, the registry below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
+The _Tracks_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined in the file specified by the `trackRegistryFile` property in _igvwebConfig.js_ by associating lists of track configuration files with genome IDs. 
+
+The **example track registry file** below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
 
 ```json
 {
@@ -150,15 +152,15 @@ The _Tracks_ pulldown menu is different depending on the currently selected refe
   ]
 }
 ```
-Each .json track configuration file associated with a genome ID corresponds to one menu item presented in the _Tracks_ pulldown menu. The configuration file defines:
+Each .json **track configuration file** associated with a genome ID corresponds to one menu item presented in the _Tracks_ pulldown menu. The configuration file defines:
 
 * The label of the item in the menu. 
-* The set of tracks presented for selection when the user clicks on the menu item. The tracks can be presented as a simple list of names or as an annotated table; a simple list is the default.
 * An optional description.
+* The set of tracks presented for selection when the user clicks on the menu item. The tracks can be presented as 
+	* a **simple list** of track names (default), 
+	* or, an **annotated table of tracks**, defined inline in the JSON or in a separate file.  
 
-Below are two examples of track configuration files.
-
-**1.** This example defines a menu item labeled "Annotations" that presents a list of just one track, a BED file of Gencode gene annotations. The details of the track are defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
+**Simple list of track names.** The example below defines a menu item labeled "Annotations" that presents a list of just one track, a BED file of Gencode gene annotations. The details of the track are defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
 
 ```json
 {
@@ -174,7 +176,11 @@ Below are two examples of track configuration files.
   ]
 }	
 ```
-**2.** This example defines a menu item labeled "My Favorite Platinum Genomes Trio" and the `type` property is set to "custom-data-modal' to specify a custom annotated table of tracks. Each row in the table corresponds to a track, and columns represent attributes of the track. The "columns" section in the configuration file defines which track attributes are presented in the table. The "data" section contains the details of the table rows (i.e. tracks). Each one is defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0) along with values for any additional meta-data properties defined in the "columns" section. An optional "columnDefs" section can rename the column headers. In the JSON below, the "name" property from the track configuration is displayed in one of the columns, but the column heading is displayed as "Sample". The resulting table can be sorted and filtered interactively by the user based on column values.
+**Annotated table of tracks.** Setting a `type` property in the track configuration file to "custom-data-modal" specifies that a custom annotated table of tracks will be used. Each row in the table corresponds to a track, and columns represent attributes of the track. The resulting table can be sorted and filtered interactively by the user based on column values. Selecting a row in the table will load the corresponding track.  
+
+The `data` property in the configuration file defines the attribute values for each row, and also the details of the track to be loaded when the row is selected. The track details are used to create a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0). The `data` property can either point to an external tab- or comma-delimited file, or contain the data inline as JSON, as shown in the two examples below. The `columns` property in the configuration file defines which track attributes are displayed in the table. An optional `columnDefs` property can be used to rename the column headers displayed in the table.
+
+The following example defines a menu item labeled "My Favorite Platinum Genomes Trio", sets the `type` property to "custom-data-modal", and defines the data for the table inline as JSON. The resulting table has 3 tracks and displays 3 attributes for each. The property `columnDefs` is used to set the displayed column heading for the track attribute "name" to "Sample". 
  
 ```json
 {  
@@ -230,6 +236,40 @@ Below are two examples of track configuration files.
 ```
 
 ![](img/CustomModalTracks.png)
+
+The following example shows the track configuration file for the same menu item and table as the example above, but in this case the track details are in a file located in the *resources/tracks* directory, as specified by the `data` property. Alternatively, the `data` property can specify a URL to the file. 
+
+```json
+{  
+  "label": "My Favorite Platinum Genomes Trio",
+  "type": "custom-data-modal",
+  "description": "Example custom data modal: Data from <a href=https://cloud.google.com/genomics/docs/public-datasets/illumina-platinum-genomes target=_blank>Illumina Platinum Genomes hosted at Google</a>",
+
+  "columns":
+  [
+    "name",
+    "Relation",
+    "Population"
+  ],
+  "columnDefs":
+  {
+    "name":
+    {
+      "title": "Sample"
+    }
+  },
+
+  "data": "resources/tracks/my_custom_track_table.csv"
+}
+```
+The `data` file can be tab- or comma-separated, specified by setting a `delimeter` property to "," or "\t". If the property is not set, the .csv or .tab filename extensions specify the file type. The file in this example is a .csv file. It has the same information as the JSON example above, but formatted as follows:
+
+```
+Relation,Population,sourceType,type,url,indexURL,name
+Daughter,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam,gs://genomics-public-data/platinum-genomes/bam/NA12878_S1.bam.bai,NA12878
+Father,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam,gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam.bai,NA12891
+Mother,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam,gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam.bai,NA12892
+```
 
 ### Data Servers
 

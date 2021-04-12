@@ -36,6 +36,6 @@
   },
   "dependencies": {
     "igv-utils": "github:igvteam/igv-utils#9aa9d627",
-    "igv-widgets": "github:igvteam/igv-widgets#e6726f9b"
+    "igv-widgets": "github:igvteam/igv-widgets#1f260c36"
   }
 }

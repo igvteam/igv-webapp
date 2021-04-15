@@ -22,7 +22,7 @@
  */
 
 import { GoogleAuth} from '../node_modules/igv-utils/src/index.js';
-import { AlertSingleton, createSessionWidgets, createTrackWidgetsWithTrackRegistry, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import { AlertSingleton, createSessionWidgets, createTrackWidgetsWithTrackRegistry, updateTrackMenus, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import {creatGenomeWidgets, genomeWidgetConfigurator, initializeGenomeWidgets} from './genomeWidgets.js';
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js';
@@ -34,6 +34,8 @@ import version from "./version.js";
 $(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
 
 let googleEnabled = false;
+
+let currentGenomeId;
 
 async function main($container, config) {
 
@@ -161,7 +163,22 @@ async function initializationHelper(browser, $container, options) {
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
-    EventBus.globalBus.post({type: "DidChangeGenome", data: {genomeID: browser.genome.id}});
+    const genomeChangeListener = async event => {
+
+        const { data } = event;
+
+        if (currentGenomeId !== data.genomeId) {
+
+            currentGenomeId = data.genomeId;
+
+            await updateTrackMenus(data.genomeId, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
+
+        }
+    }
+
+    EventBus.globalBus.subscribe('DidChangeGenome', genomeChangeListener);
+
+    EventBus.globalBus.post({ type: "DidChangeGenome", data: { genomeId: browser.genome.id } });
 }
 
 function createAppBookmarkHandler($bookmark_button) {

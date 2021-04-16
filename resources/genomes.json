@@ -40,7 +40,7 @@
   },
   {
     "id": "hg19",
-    "name": "Human (CRCh37/hg19)",
+    "name": "Human (GRCh37/hg19)",
     "fastaURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta",
     "indexURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta.fai",
     "cytobandURL": "https://s3.dualstack.us-east-1.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/cytoBand.txt",

@@ -13,3 +13,5 @@
 /igvwebConfig-private.js
 /deployConfig.sh
 /deployGenomes.sh
+/deploy-snapshot.sh
+/package-lock.json

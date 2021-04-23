@@ -16,8 +16,7 @@ in the section on **Running the app** below.
 
 ### 1. Prebuilt packages
 
-A pre-built web content directory for the current  release can be downloaded from 
-[https://igv.org/app-archive/igv-webapp.1.4.6.zip](https://igv.org/app-archive/igv-webapp.1.4.6.zip). Older versions of the app can also be found in at the same https://igv.org/app-archive location.
+A pre-built zip containing can be downloaded from [https://igv.org/app-archive](https://igv.org/app-archive).
 
 
 ### 2. Building from source code

@@ -186,7 +186,7 @@ async function loadGenome(genome) {
     }
 
     if (g) {
-        EventBus.globalBus.post({type: "DidChangeGenome", data: {genomeID: g.id}});
+        EventBus.globalBus.post({type: "DidChangeGenome", data: g.id});
     }
 }
 

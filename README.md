@@ -1,4 +1,4 @@
-![build](https://github.com/igvteam/igv.js/actions/workflows/ci_build.yml/badge.svg)
+![build](https://github.com/igvteam/igv-webapp/actions/workflows/ci_build.yml/badge.svg)
 
 # IGV-Web App
 

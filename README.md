@@ -1,3 +1,5 @@
+![build](https://github.com/igvteam/igv.js/actions/workflows/ci_build.yml/badge.svg)
+
 # IGV-Web App
 
 The IGV-Web app is a pure-client "genome browser" application based on [igv.js](https://github.com/igvteam/igv.js).  It is developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team. You can use our hosted app at https://igv.org/app, or follow the directions below to install your own.

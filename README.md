@@ -1,4 +1,5 @@
 ![build](https://github.com/igvteam/igv-webapp/actions/workflows/ci_build.yml/badge.svg)
+[![](https://img.shields.io/github/last-commit/igvteam/igv-webapp.svg)](https://github.com/igvteam/igv-webapp)
 
 # IGV-Web App
 

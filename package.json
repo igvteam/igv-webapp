@@ -1,6 +1,6 @@
 {
   "name": "igv-webapp",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "igv web app",
   "keywords": [],
   "author": "Douglass Turner and Jim Robinson",
@@ -35,7 +35,7 @@
     "rollup-plugin-terser": "^7.0.2"
   },
   "dependencies": {
-    "igv-utils": "github:igvteam/igv-utils#v1.2.8",
+    "igv-utils": "github:igvteam/igv-utils#v1.2.9",
     "igv-widgets": "github:igvteam/igv-widgets#v1.2.3"
   }
 }

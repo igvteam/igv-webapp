@@ -6,7 +6,6 @@
   "author": "Douglass Turner and Jim Robinson",
   "license": "MIT",
   "scripts": {
-    "start": "npx http-server -a localhost dist",
     "build": "node scripts/updateVersion.js && node scripts/clean.js && rollup -c && node scripts/copyArtifacts.js"
   },
   "repository": {

@@ -21,10 +21,10 @@
  *
  */
 
-import { GoogleAuth} from '../node_modules/igv-utils/src/index.js';
-import { AlertSingleton, createSessionWidgets, createTrackWidgetsWithTrackRegistry, updateTrackMenus, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import {GoogleAuth, igvxhr} from '../node_modules/igv-utils/src/index.js';
+import { AlertSingleton, GenomeFileLoad, createSessionWidgets, createTrackWidgetsWithTrackRegistry, updateTrackMenus, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
-import {creatGenomeWidgets, genomeWidgetConfigurator, initializeGenomeWidgets} from './genomeWidgets.js';
+import {creatGenomeWidgets, loadGenome, initializeGenomeWidgets} from './genomeWidgets.js';
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js';
 import {sessionURL} from './shareHelper.js';
 import {createSVGWidget} from './svgWidget.js';
@@ -102,20 +102,38 @@ async function initializationHelper(browser, $container, options) {
     $('div#igv-session-dropdown-menu > :nth-child(1)').after(dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'));
     $('div#igv-session-dropdown-menu > :nth-child(2)').after(googleDriveDropdownItem('igv-app-dropdown-google-drive-session-file-button'));
 
-    creatGenomeWidgets(genomeWidgetConfigurator(googleEnabled))
-    await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
+    const $igvMain = $('#igv-main')
 
-    const $main = $('#igv-main')
+    const genomeFileLoadConfig =
+        {
+            localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
+            dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
+            googleEnabled,
+            googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
+            loadHandler: async configuration => {
+
+                if (configuration.id !== browser.genome.id) {
+                    await loadGenome(configuration)
+                }
+
+            },
+            igvxhr
+        };
+
+    creatGenomeWidgets({ $igvMain, urlModalId: 'igv-app-genome-from-url-modal', genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)})
+
+    await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
     const trackLoader = async configurations => {
         try {
             await browser.loadTrackList(configurations)
         } catch (e) {
-            AlertSingleton.present(e.message)
+            console.error(e)
+            AlertSingleton.present(e)
         }
     }
 
-    createTrackWidgetsWithTrackRegistry($main,
+    createTrackWidgetsWithTrackRegistry($igvMain,
         $('#igv-app-track-dropdown-menu'),
         $('#igv-app-dropdown-local-track-file-input'),
         $('#igv-app-dropdown-dropbox-track-file-button'),
@@ -132,7 +150,8 @@ async function initializationHelper(browser, $container, options) {
         try {
             return browser.toJSON();
         } catch (e) {
-            AlertSingleton.present(e.message)
+            console.error(e)
+            AlertSingleton.present(e)
             return undefined
         }
     }
@@ -141,11 +160,12 @@ async function initializationHelper(browser, $container, options) {
         try {
             await browser.loadSession(config)
         } catch (e) {
-            AlertSingleton.present(e.message)
+            console.error(e)
+            AlertSingleton.present(e)
         }
     }
 
-    createSessionWidgets($main,
+    createSessionWidgets($igvMain,
         'igv-webapp',
         'igv-app-dropdown-local-session-file-input',
         'igv-app-dropdown-dropbox-session-file-button',

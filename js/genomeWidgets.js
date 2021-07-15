@@ -24,13 +24,12 @@
  * THE SOFTWARE.
  */
 
-import { igvxhr } from '../node_modules/igv-utils/src/index.js';
-import {AlertSingleton, createURLModal,EventBus,FileLoadManager,FileLoadWidget,GenomeFileLoad,Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import {AlertSingleton, createURLModal,EventBus,FileLoadManager,FileLoadWidget,Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js";
 
 let fileLoadWidget;
 
-function creatGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
+function creatGenomeWidgets({ $igvMain, urlModalId, genomeFileLoad }) {
 
     const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
     $igvMain.append($urlModal);
@@ -49,8 +48,14 @@ function creatGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
     fileLoadWidget = new FileLoadWidget(config);
 
     Utils.configureModal(fileLoadWidget, $urlModal.get(0), async fileLoadWidget => {
-        await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths());
-        return true;
+
+        try {
+            await genomeFileLoad.loadPaths( fileLoadWidget.retrievePaths() )
+        } catch (e) {
+            console.error(e);
+            AlertSingleton.present(e)
+        }
+
     });
 }
 
@@ -130,7 +135,7 @@ function genomeDropdownLayout({browser, genomeMap, $dropdown_menu}) {
             const id = $button.data('id');
 
             if (id !== browser.genome.id) {
-                await loadGenome( value );
+                await loadGenome(value);
             }
 
         });
@@ -147,42 +152,23 @@ function genomeDropdownLayout({browser, genomeMap, $dropdown_menu}) {
 
 }
 
-function genomeWidgetConfigurator(googleEnabled) {
-
-    const genomeFileLoadConfig =
-        {
-            localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
-            dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
-            googleEnabled,
-            googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
-            loadHandler: async configuration => {
-                await loadGenome(configuration);
-            },
-            igvxhr
-
-        };
-
-    const genomeFileLoad = new GenomeFileLoad(genomeFileLoadConfig);
-
-    return {$igvMain: $('#igv-main'), urlModalId: 'igv-app-genome-from-url-modal', genomeFileLoad}
-}
-
-async function loadGenome(genome) {
+async function loadGenome(genomeConfiguration) {
 
     let g = undefined;
     try {
-        if(genome.tracks) {
-            genome.tracks.push({type: "sequence", order: Number.MIN_SAFE_INTEGER})
+        if(genomeConfiguration.tracks) {
+            genomeConfiguration.tracks.push({type: "sequence", order: Number.MIN_SAFE_INTEGER})
         } else {
-            genome.tracks = [{type: "sequence", order: Number.MIN_SAFE_INTEGER}]
+            genomeConfiguration.tracks = [{type: "sequence", order: Number.MIN_SAFE_INTEGER}]
         }
-        g = await Globals.browser.loadGenome(genome);
+        g = await Globals.browser.loadGenome(genomeConfiguration);
         if(g.id) {
             localStorage.setItem("genomeID", g.id);
         }
 
     } catch (e) {
-        AlertSingleton.present(e.message);
+        console.error(e);
+        AlertSingleton.present(e)
     }
 
     if (g) {
@@ -190,5 +176,5 @@ async function loadGenome(genome) {
     }
 }
 
-export {creatGenomeWidgets, initializeGenomeWidgets, genomeWidgetConfigurator}
+export {creatGenomeWidgets, loadGenome, initializeGenomeWidgets}
 

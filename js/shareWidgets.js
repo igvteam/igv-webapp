@@ -24,13 +24,13 @@
 import {AlertSingleton, QRCode} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import {setURLShortener, shortSessionURL} from './shareHelper.js'
 
-function createShareWidgets({browser, $container, $modal, $share_input, $copy_link_button, $tweet_button_container, $email_button, $qrcode_button, $qrcode_image, $embed_container, $embed_button, embedTarget}) {
+function createShareWidgets({browser, container, modal, share_input, copy_link_button, tweet_button_container, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
 
     if (undefined === embedTarget) {
         embedTarget = `https://igv.org/web/release/${igv.version()}/embed.html`;
     }
 
-    $modal.on('shown.bs.modal', async function (e) {
+    $(modal).on('shown.bs.modal', async () => {
 
         let href = window.location.href.slice();
         const idx = href.indexOf("?");
@@ -48,91 +48,100 @@ function createShareWidgets({browser, $container, $modal, $share_input, $copy_li
         if (session) {
 
             if (embedTarget) {
-                const snippet = getEmbeddableSnippet($container, embedTarget, session);
-                $embed_container.find('textarea').val(snippet);
-                $embed_container.find('textarea').get(0).select();
+                const snippet = getEmbeddableSnippet(container, embedTarget, session);
+                const textArea = embed_container.querySelector('textarea');
+                textArea.value = snippet;
+                textArea.select();
             }
 
             const shortURL = await shortSessionURL(href, session);
-            $share_input.val(shortURL);
-            $share_input.get(0).select();
-            $email_button.attr('href', 'mailto:?body=' + shortURL);
 
-            // QR code generation
-            $qrcode_image.empty();
-            const obj =
-                {
-                    width: 128,
-                    height: 128,
-                    correctLevel: QRCode.CorrectLevel.H
-                };
+            share_input.value = shortURL;
+            share_input.select();
+            email_button.setAttribute('href', `mailto:?body=${ shortURL }`);
 
-            const qrcode = new QRCode($qrcode_image.get(0), obj);
+            qrcode_image.innerHTML = '';
+            const qrcode = new QRCode(qrcode_image, { width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
             qrcode.makeCode(shortURL);
 
-            if ($tweet_button_container) {
-                $tweet_button_container.empty();
-                const obj = {text: ''};
-                window.twttr.widgets.createShareButton(shortURL, $tweet_button_container.get(0), obj);
+            if (tweet_button_container) {
+                tweet_button_container.innerHTML = '';
+                window.twttr.widgets.createShareButton(shortURL, tweet_button_container, { text: '' });
             }
         } else {
-            $modal.modal('hide');
+            $(modal).modal('hide');
         }
 
     });
 
-    $modal.on('hidden.bs.modal', function (e) {
-        $embed_container.hide();
-        $qrcode_image.hide();
+    $(modal).on('hidden.bs.modal', () => {
+        embed_container.style.display = 'none';
+        qrcode_image.style.display = 'none';
     });
 
-    $copy_link_button.on('click', function (e) {
-        $share_input.get(0).select();
+    copy_link_button.addEventListener('click', () => {
+        share_input.select();
         const success = document.execCommand('copy');
         if (success) {
-            $modal.modal('hide');
+            $(modal).modal('hide');
         } else {
-            console.log('fail!');
+            console.error('fail!');
         }
     });
 
 
     if (undefined === embedTarget) {
-        $embed_button.hide();
+        embed_button.style.display = 'none';
     } else {
-        $embed_container.find('button').on('click', function (e) {
-            var success;
+        const button = embed_container.querySelector('button');
+        button.addEventListener('click', () => {
 
-            $embed_container.find('textarea').get(0).select();
-            success = document.execCommand('copy');
+            const textArea = embed_container.querySelector('textarea');
+            textArea.select();
+
+            const success = document.execCommand('copy');
 
             if (success) {
-                $modal.modal('hide');
+                $(modal).modal('hide');
             } else {
-                console.log('fail!');
+                console.error('fail!');
             }
         });
 
-        $embed_button.on('click', function (e) {
-            $qrcode_image.hide();
-            $embed_container.toggle();
+        embed_button.addEventListener('click', () => {
+
+            qrcode_image.style.display = 'none';
+
+            if ('block' === embed_container.style.display) {
+                embed_container.style.display = 'none';
+            } else {
+                embed_container.style.display = 'block';
+            }
+
         });
     }
 
-    $qrcode_button.on('click', function (e) {
-        $embed_container.hide();
-        $qrcode_image.toggle();
+    qrcode_button.addEventListener('click', () => {
+
+        embed_container.style.display = 'none';
+
+        if ('block' === qrcode_image.style.display) {
+            qrcode_image.style.display = 'none';
+        } else {
+            qrcode_image.style.display = 'block';
+        }
+
     });
 
 }
 
-function getEmbeddableSnippet($container, embedTarget, session) {
-    const embedUrl = embedTarget + "?sessionURL=blob:" + session;
-    const height = $container.height() + 50;
+function getEmbeddableSnippet(container, embedTarget, session) {
+    const embedUrl = `${ embedTarget }?sessionURL=blob:${ session }`
+    const height = container.clientHeight + 50;
     return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 }
 
-function shareWidgetConfigurator(browser, $container, {urlShortener, embedTarget}) {
+function shareWidgetConfigurator(browser, container, {urlShortener, embedTarget}) {
 
     let urlShortenerFn;
 
@@ -140,23 +149,23 @@ function shareWidgetConfigurator(browser, $container, {urlShortener, embedTarget
         urlShortenerFn = setURLShortener(urlShortener) !== undefined;
     }
 
-    let $igv_app_tweet_button_container = $('#igv-app-tweet-button-container');
+    let igv_app_tweet_button_container = document.getElementById('igv-app-tweet-button-container');
     if (!urlShortenerFn) {
-        $igv_app_tweet_button_container.hide();
+        igv_app_tweet_button_container.style.display = 'none';
     }
 
     return {
         browser,
-        $container,
-        $modal: $('#igv-app-share-modal'),
-        $share_input: $('#igv-app-share-input'),
-        $copy_link_button: $('#igv-app-copy-link-button'),
-        $tweet_button_container: urlShortenerFn ? $igv_app_tweet_button_container : undefined,
-        $email_button: $('#igv-app-email-button'),
-        $qrcode_button: $('#igv-app-qrcode-button'),
-        $qrcode_image: $('#igv-app-qrcode-image'),
-        $embed_container: $('#igv-app-embed-container'),
-        $embed_button: $('#igv-app-embed-button'),
+        container,
+        modal: document.getElementById('igv-app-share-modal'),
+        share_input: document.getElementById('igv-app-share-input'),
+        copy_link_button: document.getElementById('igv-app-copy-link-button'),
+        tweet_button_container: urlShortenerFn ? igv_app_tweet_button_container : undefined,
+        email_button: document.getElementById('igv-app-email-button'),
+        qrcode_button: document.getElementById('igv-app-qrcode-button'),
+        qrcode_image: document.getElementById('igv-app-qrcode-image'),
+        embed_container: document.getElementById('igv-app-embed-container'),
+        embed_button: document.getElementById('igv-app-embed-button'),
         embedTarget
     };
 

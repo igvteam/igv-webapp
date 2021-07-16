@@ -22,61 +22,50 @@
  */
 
 
-function createSVGWidget ({ browser, $saveModal }) {
+function createSVGWidget ({ browser, saveModal }) {
 
     const input_default_value = 'igv-app.svg';
 
-    let $input = $saveModal.find('input');
+    const input = saveModal.querySelector('input');
 
-    $saveModal.on('show.bs.modal', (e) => {
-        $input.val(input_default_value);
-    });
+    $(saveModal).on('show.bs.modal', () => input.value = input_default_value);
 
-    $saveModal.on('hidden.bs.modal', (e) => {
-        $input.val(input_default_value);
-    });
+    $(saveModal).on('hidden.bs.modal', () => input.value = input_default_value);
 
-    let okHandler = () => {
+    const okHandler = () => {
 
-        let fn = $input.val();
+        let filename = input.value;
 
-        const extensions = new Set(['svg']);
-
-        if (undefined === fn || '' === fn) {
-
-            fn = $input.attr('placeholder');
-        } else if (!fn.endsWith(".svg")) {
-            fn = fn + '.svg';
+        if (undefined === filename || '' === filename) {
+            filename = input.getAttribute('placeholder');
+        } else if (!filename.endsWith(".svg")) {
+            filename = filename + '.svg';
         }
 
         // dismiss modal
-        $saveModal.modal('hide');
+        $(saveModal).modal('hide');
 
-        browser.saveSVGtoFile({ filename: fn });
+        browser.saveSVGtoFile({ filename });
     };
 
     // ok - button
-    let $ok = $saveModal.find('.modal-footer button:nth-child(2)');
+    const ok = saveModal.querySelector('.modal-footer button:nth-child(2)');
 
-    $ok.on('click', okHandler);
+    ok.addEventListener('click', okHandler);
 
-    $input.on('keyup', (e) => {
+    input.addEventListener('keyup', (e) => {
         if (13 === e.keyCode) {
             okHandler();
         }
     });
 
     // upper dismiss - x - button
-    let $dismiss = $saveModal.find('.modal-header button:nth-child(1)');
-    $dismiss.on('click', function () {
-        $saveModal.modal('hide');
-    });
+    let dismiss = saveModal.querySelector('.modal-header button');
+    dismiss.addEventListener('click', () => $(saveModal).modal('hide'));
 
     // lower dismiss - close - button
-    $dismiss = $saveModal.find('.modal-footer button:nth-child(1)');
-    $dismiss.on('click', function () {
-        $saveModal.modal('hide');
-    });
+    dismiss = saveModal.querySelector('.modal-footer button:nth-child(1)');
+    dismiss.addEventListener('click', () => $(saveModal).modal('hide'));
 
 }
 

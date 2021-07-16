@@ -31,14 +31,14 @@ import {createSVGWidget} from './svgWidget.js';
 import GtexUtils from "./gtexUtils.js";
 import version from "./version.js";
 
-$(document).ready(async () => main($('#igv-app-container'), igvwebConfig));
+$(document).ready(async () => main(document.getElementById('igv-app-container'), igvwebConfig));
 
 let googleEnabled = false;
 let currentGenomeId
 
-async function main($container, config) {
+async function main(container, config) {
 
-    AlertSingleton.init($container.get(0))
+    AlertSingleton.init(container)
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
@@ -78,15 +78,15 @@ async function main($container, config) {
         }
     }
 
-    const browser = await igv.createBrowser($container.get(0), igvConfig);
+    const browser = await igv.createBrowser(container, igvConfig);
 
     if (browser) {
         Globals.browser = browser;
-        await initializationHelper(browser, $container, config);
+        await initializationHelper(browser, container, config);
     }
 }
 
-async function initializationHelper(browser, $container, options) {
+async function initializationHelper(browser, container, options) {
 
     ['track', 'genome'].forEach(str => {
         let imgElement;
@@ -176,9 +176,9 @@ async function initializationHelper(browser, $container, options) {
         sessionLoader,
         sessionSaver);
 
-    createSVGWidget({browser, $saveModal: $('#igv-app-svg-save-modal')})
+    createSVGWidget({ browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
 
-    createShareWidgets(shareWidgetConfigurator(browser, $container, options));
+    createShareWidgets(shareWidgetConfigurator(browser, container, options));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 

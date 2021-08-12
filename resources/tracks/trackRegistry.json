@@ -1,4 +1,41 @@
 {
+  "bosTau8": [
+    "resources/tracks/bosTau8_annotations.json"
+  ],
+  "bosTau9": [
+    "resources/tracks/bosTau9_annotations.json"
+  ],
+  "canFam3": [
+    "resources/tracks/canFam3_annotations.json"
+  ],
+  "canFam5": [
+    "resources/tracks/canFam5_annotations.json"
+  ],
+  "ce11": [
+    "resources/tracks/ce11_annotations.json"
+  ],
+  "danRer10": [
+    "resources/tracks/danRer10_annotations.json"
+  ],
+  "danRer11": [
+    "resources/tracks/danRer11_annotations.json"
+  ],
+  "dm3": [
+    "resources/tracks/dm3_encode.json"
+  ],
+  "dm6": [
+    "resources/tracks/dm6_annotations.json",
+    "resources/tracks/dm6_encode.json"
+  ],
+  "galGal6": [
+    "resources/tracks/galGal6_annotations.json"
+  ],
+  "gorGor4": [
+    "resources/tracks/gorGor4_annotations.json"
+  ],
+  "gorGor6": [
+    "resources/tracks/gorGor6_annotations.json"
+  ],
   "hg19": [
     "resources/tracks/hg19_annotations.json",
     "resources/tracks/hg19_variants.json",
@@ -15,51 +52,26 @@
     "resources/tracks/hg38_encode.json",
     "resources/tracks/hg38_1KG_lowCoverageCrams.json"
   ],
+  "mm9": [
+    "resources/tracks/mm9_annotations.json"
+  ],
   "mm10": [
     "resources/tracks/mm10_annotations.json",
     "resources/tracks/mm10_encode.json"
   ],
-  "danRer11": [
-    "resources/tracks/danRer11_annotations.json"
-  ],
-  "danRer10": [
-    "resources/tracks/danRer10_annotations.json"
-  ],
-  "dm3" : [
-    "resources/tracks/dm3_encode.json"
-  ],
-  "dm6": [
-    "resources/tracks/dm6_annotations.json",
-    "resources/tracks/dm6_encode.json"
-  ],
-  "ce11": [
-    "resources/tracks/ce11_annotations.json"
-  ],
-  "rn6": [
-    "resources/tracks/rn6_annotations.json"
-  ],
-  "mm9": [
-    "resources/tracks/mm9_annotations.json"
-  ],
-  "susScr11": [
-    "resources/tracks/susScr11_annotations.json"
+  "panPan2": [
+    "resources/tracks/panPan2_annotations.json"
   ],
   "panTro4": [
     "resources/tracks/panTro4_annotations.json"
   ],
-  "panPan2": [
-    "resources/tracks/panPan2_annotations.json"
+  "rn6": [
+    "resources/tracks/rn6_annotations.json"
   ],
-  "gorGor4": [
-    "resources/tracks/gorGor4_annotations.json"
+  "rn7": [
+    "resources/tracks/rn7_annotations.json"
   ],
-  "canFam3": [
-    "resources/tracks/canFam3_annotations.json"
-  ],
-  "bosTau8": [
-    "resources/tracks/bosTau8_annotations.json"
-  ],
-  "bosTau9": [
-    "resources/tracks/bosTau9_annotations.json"
+  "susScr11": [
+    "resources/tracks/susScr11_annotations.json"
   ]
 }

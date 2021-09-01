@@ -33,7 +33,8 @@
       "visibilityWindow": 10000,
       "height": 30,
       "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi"
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi",
+      "infoURL": "https://www.ncbi.nlm.nih.gov/snp/?term=$$"
     },
     {
       "name": "Repeat Masker",

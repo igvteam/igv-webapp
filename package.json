@@ -33,6 +33,6 @@
     "rollup-plugin-strip": "^1.2.2",
     "rollup-plugin-terser": "^7.0.2",
     "igv-utils": "github:igvteam/igv-utils#v1.2.10",
-    "igv-widgets": "github:igvteam/igv-widgets#v1.2.6"
+    "igv-widgets": "github:igvteam/igv-widgets#v1.2.7"
   }
 }

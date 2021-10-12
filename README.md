@@ -28,9 +28,9 @@ A pre-built zip containing can be downloaded from [https://igv.org/app-archive](
   * Node >= v8.11.4
   * NPM >= v5.6.0
 
-* Clone this repository
+* Get the source code either (a) by downloading a zip file via the green `Code` button at https://github.com/igvteam/igv-webapp, or (b) by cloning the repository: 
 ````
-git clone git@github.com:igvteam/igv-webapp.git
+git clone https://github.com/igvteam/igv-webapp.git
 ````
 * Change directories to project
 ````

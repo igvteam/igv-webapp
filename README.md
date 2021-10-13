@@ -17,12 +17,12 @@ IGV-Web is a pure client web application consisting entirely of static files and
 web server, e.g.  Apache, Flask, Tomcat, nginx, or Amazon S3. You can install it from a pre-built distribution package or by building it from source code. To run the app, refer to your web server documentation for information on serving web content. Some examples are provided 
 in the section on **Running the app** below.
 
-### 1. Prebuilt packages
+### Option 1: Download a pre-built package
 
-A pre-built zip containing can be downloaded from [https://igv.org/app-archive](https://igv.org/app-archive).
+A zip file containing the pre-built app can be downloaded from [https://igv.org/app-archive](https://igv.org/app-archive).
 
 
-### 2. Building from source code
+### Option 2: Build from source code
 
 * Requirements
   * Node >= v8.11.4
@@ -50,10 +50,9 @@ npm run build
 As noted above, refer to your web server documentation for instructions on serving the web content.  As examples, 
 instructions for use with the NPM package http-server and Amazon S3 follow.  
 
-### 1. http-server
+### Example 1: Run with http-server
 
-Instructions for running with http-server.  For more options, including
-installing http-server locally, see the [http-server documentation](https://www.npmjs.com/package/http-server).
+For more information about http-server, including installing it locally, see the [http-server documentation](https://www.npmjs.com/package/http-server).
 
 * Start http-server on the web content directory (i.e., the downloaded pre-packaged distribution described above, or the `dist` directory if building from source )
 ````
@@ -69,7 +68,7 @@ or
 localhost:8080/index.html
 ````
 
-### 2. Amazon S3
+### Example 2: Host on Amazon S3
 
 To serve the app from Amazon S3, simply upload the contents from the IGV-Web content directory (i.e., the pre-packaged distribution described above, or the `dist` directory if building from source ) to an Amazon S3 bucket.  Keep the 
 directory structure intact, and make all files public.  Example of an S3 hosted app is at  
@@ -80,7 +79,7 @@ https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this is an example a
 
 **NOTE:**  
 * If you installed a **pre-built** distribution package, the configuration files referred to below can be found in the ```resources``` directory. 
-* If you **built from the source code**, you must rebuild the `dist` directory with ``` npm run build``` after making any changes to configuration files in ```resources```.  Alternatively, you can manually copy the changed files to ```dist/resources```,  or just edit ```dist/resources``` directly. Note however, if you make changes directly to files in ```dist/resources```, they will be overwritten the next time you do a build.
+* In the **the source code**, you will find the configuration files in the ```resources``` directory, but to deploy any changes you make there, you must rebuild the `dist` directory with ``` npm run build```. Alternatively, you can just directly update files in ```dist/resources```. Note however, any changes to files in ```dist``` will be overwritten the next time you do a build.
 
 
 The IGV-Web app is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties
@@ -142,7 +141,6 @@ var igvwebConfig = {
             ]
         }
 }
-
 ```
 
 ### Track Registry
@@ -171,7 +169,7 @@ Each .json **track configuration file** associated with a genome ID corresponds 
 	* a **simple list** of track names (default), 
 	* or, an **annotated table of tracks**, defined inline in the JSON or in a separate file.  
 
-**Simple list of track names.** The example below defines a menu item labeled "Annotations" that presents a list of just one track, a BED file of Gencode gene annotations. The details of the track are defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
+**1. Simple list of track names.** The example below defines a menu item labeled "Annotations" that presents a list of just one track, a BED file of Gencode gene annotations. The details of the track are defined by a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0).
 
 ```json
 {
@@ -187,7 +185,7 @@ Each .json **track configuration file** associated with a genome ID corresponds 
   ]
 }	
 ```
-**Annotated table of tracks.** Setting a `type` property in the track configuration file to "custom-data-modal" specifies that a custom annotated table of tracks will be used. Each row in the table corresponds to a track, and columns represent attributes of the track. The resulting table can be sorted and filtered interactively by the user based on column values. Selecting a row in the table will load the corresponding track.  
+**2. Annotated table of tracks.** Setting a `type` property in the track configuration file to "custom-data-modal" specifies that a custom annotated table of tracks will be used. Each row in the table corresponds to a track, and columns represent attributes of the track. The resulting table can be sorted and filtered interactively by the user based on column values. Selecting a row in the table will load the corresponding track.  
 
 The `data` property in the configuration file defines the attribute values for each row, and also the details of the track to be loaded when the row is selected. The track details are used to create a track configuration object as documented in the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Tracks-2.0). The `data` property can either point to an external tab- or comma-delimited file, or contain the data inline as JSON, as shown in the two examples below. The `columns` property in the configuration file defines which track attributes are displayed in the table. An optional `columnDefs` property can be used to rename the column headers displayed in the table.
 
@@ -284,7 +282,7 @@ Mother,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12892
 
 ### Data Servers
 
-IGV-Web uses igv.js, a JavasScript client. Servers for track data must support CORS access and Range requests.  See https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements  for more details.  
+IGV-Web uses igv.js, a JavasScript client. To host your own track data, note that the hosting server must support CORS access and Range requests.  See https://github.com/igvteam/igv.js/wiki/Data-Server-Requirements for more details.  
 
 
 ## License

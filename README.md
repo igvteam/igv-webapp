@@ -93,7 +93,7 @@ pulldown menu.  The default genomes file is ```resources/genomes.json```. For a 
 a JSON object with genomeIDs as keys and an array of URLs to JSON files defining menu entries in the _Tracks_ pulldown menu.
 The default track registry file is ```resources/tracks/trackRegistry.json```.  Further details on configuring the tracks menu are available [below](#track-registry).
 
-* `igvConfg` - An igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation) for details.
+* `igvConfig` - An igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation) for details.
 
 * `clientId` - (_optional_) A Google clientId, used to enable OAuth for the Google picker and access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for

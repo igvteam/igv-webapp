@@ -86,7 +86,7 @@ The IGV-Web app is configured with the global **igvwebConfig** defined in _igvwe
 are customizable.
 
 * `genomes` - URL to a JSON file containing a list of genome configuration objects.  This list populates the _Genomes_ 
-pulldown menu.  The default genomes file is ```resources/genomes.json```. For a description of the genome configuration object, see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome) .  
+pulldown menu.  The default genomes file can be found at ```https://s3.amazonaws.com/igv.org.genomes/genomes.json```. For a description of the genome configuration object, see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome) .  
 
 * `trackRegistryFile` - URL to a configuration file for the _Tracks_ pulldown menu.  Use this to define custom track menus.  The file contains
 a JSON object with genomeIDs as keys and an array of URLs to JSON files defining menu entries in the _Tracks_ pulldown menu.

@@ -1,6 +1,6 @@
 var igvwebConfig = {
 
-    genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
+    genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
     // Supply a Google client id to enable the Google file picker in the load menus.  This is optional

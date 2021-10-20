@@ -98,9 +98,9 @@ The default track registry file is ```resources/tracks/trackRegistry.json```.  F
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for
 instructions on obtaining a clienId.  OAuth requests from igv.js will include the following scopes.
 
-    * https://www.googleapis.com/auth/devstorage.read_only 
-    * https://www.googleapis.com/auth/userinfo.profile 
-    * https://www.googleapis.com/auth/drive.readonly'
+    * https://www.googleapis.com/auth/userinfo.profile - _**always**_
+    * https://www.googleapis.com/auth/devstorage.read_only  - _**if accessing protected Google Cloud Storage files**_
+    * https://www.googleapis.com/auth/drive.readonly' - _**if accessing files stored on Google Drive**_
   
 * `urlShortener` - An object or function defining a URL shortener to shorten links created by the **Share** button.  The value of this property can be replaced with a function, taking a single argument (the long URL) and returning the shortened URL, or an Object. 
 

@@ -17,6 +17,7 @@ var igvwebConfig = {
 
     igvConfig:
         {
+            genomeList: "resources/genomes.json",
             queryParametersSupported: true,
             showChromosomeWidget: true,
             genome: "hg38",

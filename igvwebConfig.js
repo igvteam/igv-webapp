@@ -15,7 +15,7 @@ var igvwebConfig = {
 
     //restoreLastGenome: true,
 
-    igvConfig:
+    __igvConfig__:
         {
             genomeList: "resources/genomes.json",
             queryParametersSupported: true,
@@ -31,5 +31,33 @@ var igvwebConfig = {
                 //     url: "https://www.encodeproject.org/files/ENCFF563PAW/@@download/ENCFF563PAW.bigWig"
                 // }
             ]
+        },
+
+    // JBrowse CircularView hack
+    igvConfig:
+        {
+            genome: "hg19",
+            locus: "chr17:64,040,802-64,045,633",
+            showCircularViewButton: false,
+            // showCircularView: true,
+            genomeList: "resources/genomes.json",
+            queryParametersSupported: true,
+            showChromosomeWidget: true,
+            showSVGButton: false,
+            tracks:
+                [
+                    {
+                        url: "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_550bp_pcrFREE_S1_L001_AND_L002_R1_001.101bp.bwamem.ill.mapped.sort.bam",
+                        indexURL: "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_550bp_pcrFREE_S1_L001_AND_L002_R1_001.101bp.bwamem.ill.mapped.sort.bam.bai",
+                        type: "alignment",
+                        format: "bam",
+                        name: "Alignments",
+                        showMismatches: false,
+                        height: 500,
+                        maxFragmentLength: 1000000,
+                        colorBy: "fragmentLength",
+                    }
+                ]
         }
+
 }

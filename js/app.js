@@ -21,7 +21,7 @@
  *
  */
 
-import {GoogleAuth, igvxhr} from '../node_modules/igv-utils/src/index.js';
+import {makeDraggable, GoogleAuth, igvxhr} from '../node_modules/igv-utils/src/index.js';
 import { AlertSingleton, GenomeFileLoad, createSessionWidgets, createTrackWidgetsWithTrackRegistry, updateTrackMenus, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import {creatGenomeWidgets, loadGenome, initializeGenomeWidgets} from './genomeWidgets.js';
@@ -35,6 +35,7 @@ $(document).ready(async () => main(document.getElementById('igv-app-container'),
 
 let googleEnabled = false;
 let currentGenomeId
+let circularView
 
 async function main(container, config) {
 
@@ -70,6 +71,18 @@ async function main(container, config) {
 
     const igvConfig = config.igvConfig;
 
+    // JBrowse CircularView hack
+    igvConfig.tracks[ 0 ].onclick = (features, e) => {
+        if (e.shiftKey) {
+            if (features) {
+                sendPairedAlignmentChord(features)
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     if(config.restoreLastGenome) {
         const lastGenomeId = localStorage.getItem("genomeID");
         if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
@@ -77,6 +90,7 @@ async function main(container, config) {
             igvConfig.tracks = [];
         }
     }
+
 
     const browser = await igv.createBrowser(container, igvConfig);
 
@@ -195,9 +209,55 @@ async function initializationHelper(browser, container, options) {
         }
     }
 
+    console.log(`Jbrowse Circular View ${ igv.CircularView.isInstalled() ? 'is' : 'IS NOT' } installed`)
+
+    if (true === igv.CircularView.isInstalled()) {
+
+        const circularViewContainer = document.getElementById('igv-circular-view-container')
+        makeDraggable(circularViewContainer, circularViewContainer)
+
+        circularView = new igv.CircularView(circularViewContainer, browser);
+        browser.circularView = circularView;
+
+        document.getElementById('igv-app-circular-view-nav-item').style.display = 'block'
+
+        const button = document.getElementById('igv-app-circular-view-presentation-button')
+        button.innerText = true === browser.circularViewVisible ? 'Hide' : 'Show'
+
+        button.addEventListener('click', e => {
+
+            browser.circularViewVisible = !browser.circularViewVisible
+            browser.setCircularViewVisibility(browser.circularViewVisible)
+
+            const str = e.target.innerText
+            e.target.innerText = 'Show' === str ? 'Hide' : 'Show'
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id});
+}
+
+function sendPairedAlignmentChord(features) {
+    circularView.selectAlignmentChord(features[0]);
+}
+
+function sendBedPEChords(features) {
+    circularView.addBedPEChords(features);
 }
 
 function createAppBookmarkHandler($bookmark_button) {

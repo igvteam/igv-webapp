@@ -209,15 +209,11 @@ async function initializationHelper(browser, container, options) {
         }
     }
 
-    console.log(`Jbrowse Circular View ${ igv.CircularView.isInstalled() ? 'is' : 'IS NOT' } installed`)
-
-    if (true === igv.CircularView.isInstalled()) {
+    if (true === circularViewIsInstalled()) {
 
         const circularViewContainer = document.getElementById('igv-circular-view-container')
         makeDraggable(circularViewContainer, circularViewContainer)
-
-        circularView = new igv.CircularView(circularViewContainer, browser);
-        browser.circularView = circularView;
+        browser.createCircularView(circularViewContainer, true);
 
         document.getElementById('igv-app-circular-view-nav-item').style.display = 'block'
 
@@ -227,24 +223,11 @@ async function initializationHelper(browser, container, options) {
         button.addEventListener('click', e => {
 
             browser.circularViewVisible = !browser.circularViewVisible
-            browser.setCircularViewVisibility(browser.circularViewVisible)
 
             const str = e.target.innerText
             e.target.innerText = 'Show' === str ? 'Hide' : 'Show'
         })
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
@@ -298,6 +281,10 @@ async function getGenomesArray(genomes) {
             AlertSingleton.present(e.message);
         }
     }
+}
+
+function circularViewIsInstalled() {
+    return window["JBrowseReactCircularGenomeView"] !== undefined && window["React"] !== undefined && window["ReactDOM"] !== undefined;
 }
 
 export {main}

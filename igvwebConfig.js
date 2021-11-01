@@ -47,6 +47,24 @@ var igvwebConfig = {
             tracks:
                 [
                     {
+                        id: 'bedpe-track',
+                        name: "SKBR3 translocations",
+                        url: "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_Sniffles_variants_tra.bedpe",
+                        color: "rgb(0,150,150)",
+                        height: 300
+                    },
+                    {
+                        id: "delly",
+                        url: "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_Illumina_delly.tra.pass.vcf",
+                        type: "variant",
+                        format: "vcf",
+                        name: "delly translocations",
+                        supportsWholeGenome: true,
+                        visibilityWindow: -1,
+                        showGenotypes: false,
+                        height: 40
+                    },
+                    {
                         url: "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_550bp_pcrFREE_S1_L001_AND_L002_R1_001.101bp.bwamem.ill.mapped.sort.bam",
                         indexURL: "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_550bp_pcrFREE_S1_L001_AND_L002_R1_001.101bp.bwamem.ill.mapped.sort.bam.bai",
                         type: "alignment",

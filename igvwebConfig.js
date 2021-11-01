@@ -51,7 +51,7 @@ var igvwebConfig = {
                         name: "SKBR3 translocations",
                         url: "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_Sniffles_variants_tra.bedpe",
                         color: "rgb(0,150,150)",
-                        height: 300
+                        height: 100
                     },
                     {
                         id: "delly",

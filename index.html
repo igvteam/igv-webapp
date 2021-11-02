@@ -35,10 +35,9 @@
     <!-- Development hack -- comment out the igv.js script includes above AND
          uncomment the code below and edit url to igv.js as appropriate to debug igv.js source -->
 <!--    <script type="module">-->
-<!--        import igv from 'http://localhost:63342/igv.js/js/index.js';-->
+<!--        import igv from './node_modules/igv/dist/igv.esm.js';-->
 <!--        window.igv = igv;-->
 <!--    </script>-->
-
 
     <!-- Dropbox Chooser API-->
     <script id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js"
@@ -128,8 +127,8 @@
                         </div>
 
                         <!-- URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal"
-                                data-target="#igv-app-genome-from-url-modal">URL ...
+                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">
+                            URL ...
                         </button>
 
                         <div id="igv-app-genome-dropdown-divider" class="dropdown-divider"></div>
@@ -205,7 +204,10 @@
                         <button id="igv-app-circular-view-presentation-button"  class="dropdown-item" type="button">
                             Show
                         </button>
-                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button">
+                        <button id="igv-app-circular-view-clear-chords-button"  class="dropdown-item" type="button">
+                            Clear Chords
+                        </button>
+                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-circular-view-resize-modal" style="display: none;">
                             Resize
                         </button>
                     </div>
@@ -488,6 +490,5 @@
 
 
 </body>
-
 
 </html>

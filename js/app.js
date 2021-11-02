@@ -30,6 +30,7 @@ import {sessionURL} from './shareHelper.js';
 import {createSVGWidget} from './svgWidget.js';
 import GtexUtils from "./gtexUtils.js";
 import version from "./version.js";
+import {createCircularViewResizeModal} from "./circularViewResizeModal.js";
 
 $(document).ready(async () => main(document.getElementById('igv-app-container'), igvwebConfig));
 
@@ -217,19 +218,43 @@ async function initializationHelper(browser, container, options) {
 
         document.getElementById('igv-app-circular-view-nav-item').style.display = 'block'
 
-        const button = document.getElementById('igv-app-circular-view-presentation-button')
-        button.innerText = true === browser.circularViewVisible ? 'Hide' : 'Show'
+        const dropdownButton = document.getElementById('igv-app-circular-view-dropdown-button')
+        dropdownButton.addEventListener('click', e => {
+            document.getElementById('igv-app-circular-view-presentation-button').innerText = browser.circularViewVisible ? 'Hide' : 'Show'
+            document.getElementById('igv-app-circular-view-resize-button').style.display = browser.circularViewVisible ? 'block' : 'none'
+        })
 
-        button.addEventListener('click', e => {
+        document.getElementById('igv-app-circular-view-presentation-button').addEventListener('click', e => {
             browser.circularViewVisible = !browser.circularViewVisible
             const str = e.target.innerText
             e.target.innerText = 'Show' === str ? 'Hide' : 'Show'
         })
 
-        const dropdownButton = document.getElementById('igv-app-circular-view-dropdown-button')
-        dropdownButton.addEventListener('click', e => {
-            button.innerText = browser.circularViewVisible ? 'Hide' : 'Show'
+        document.getElementById('igv-app-circular-view-clear-chords-button').addEventListener('click', () => browser.circularView.clearChords())
+
+        document.getElementById('igv-main').appendChild(createCircularViewResizeModal('igv-app-circular-view-resize-modal', 'Resize Circular View'));
+
+        document.getElementById('igv-app-circular-view-resize-modal-input').addEventListener('keyup', (event) => {
+            event.preventDefault()
+            event.stopPropagation()
+            if (13 === event.keyCode) {
+                const str = event.target.value;
+                circularViewContainer.style.width = `${ str }px`;
+                circularViewContainer.style.height = `${ str }px`;
+                browser.circularView.setSize(Number.parseInt(str));
+
+            }
         })
+
+        $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
+
+        // document.getElementById('igv-app-circular-view-resize-modal-cancel').addEventListener('click', () => {
+        //     $('#igv-app-circular-view-resize-modal').modal('hide')
+        // })
+        //
+        // document.getElementById('igv-app-circular-view-resize-modal-ok').addEventListener('click', () => {
+        //     $('#igv-app-circular-view-resize-modal').modal('hide')
+        // })
 
     }
 

@@ -221,12 +221,16 @@ async function initializationHelper(browser, container, options) {
         button.innerText = true === browser.circularViewVisible ? 'Hide' : 'Show'
 
         button.addEventListener('click', e => {
-
             browser.circularViewVisible = !browser.circularViewVisible
-
             const str = e.target.innerText
             e.target.innerText = 'Show' === str ? 'Hide' : 'Show'
         })
+
+        const dropdownButton = document.getElementById('igv-app-circular-view-dropdown-button')
+        dropdownButton.addEventListener('click', e => {
+            button.innerText = browser.circularViewVisible ? 'Hide' : 'Show'
+        })
+
     }
 
 

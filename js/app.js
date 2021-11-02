@@ -213,7 +213,7 @@ async function initializationHelper(browser, container, options) {
 
         const circularViewContainer = document.getElementById('igv-circular-view-container')
         makeDraggable(circularViewContainer, circularViewContainer)
-        browser.createCircularView(circularViewContainer, true);
+        browser.createCircularView(circularViewContainer, false);
 
         document.getElementById('igv-app-circular-view-nav-item').style.display = 'block'
 

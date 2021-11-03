@@ -111,6 +111,35 @@ select#igv-app-track-select-modal-select {
 body {
   padding-top: 48px; }
 
+.dropdown-item {
+  width: 100%; }
+
+label.dropdown-item {
+  margin-bottom: unset; }
+
+.dropdown-menu {
+  overflow-y: auto;
+  max-height: 640px;
+  font-size: .875rem; }
+
+#igv-app-genome-dropdown-menu {
+  min-width: 19rem; }
+
+.igv-app-dropdown-item-cloud-storage {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: .875rem;
+  height: 18px;
+  margin-top: 4px;
+  margin-bottom: 4px; }
+  .igv-app-dropdown-item-cloud-storage div:first-child {
+    margin-right: 4px; }
+  .igv-app-dropdown-item-cloud-storage div:last-child {
+    margin-left: 4px; }
+
 #igv-custom-modal {
   font-size: .9rem; }
 
@@ -145,37 +174,6 @@ ul.navbar-nav > li > div > a {
   outline: 0; }
 ul.navbar-nav > li > div > a:hover {
   color: #dfdfdf; }
-
-.dropdown-item {
-  cursor: pointer;
-  width: auto;
-  padding: .125rem 1rem; }
-
-label.dropdown-item {
-  margin-bottom: unset; }
-
-.dropdown-menu {
-  overflow-y: auto;
-  max-height: 640px;
-  font-size: .875rem; }
-
-#igv-app-genome-dropdown-menu {
-  min-width: 19rem; }
-
-.igv-app-dropdown-item-cloud-storage {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: .875rem;
-  height: 18px;
-  margin-top: 4px;
-  margin-bottom: 4px; }
-  .igv-app-dropdown-item-cloud-storage div:first-child {
-    margin-right: 4px; }
-  .igv-app-dropdown-item-cloud-storage div:last-child {
-    margin-left: 4px; }
 
 .modal-header {
   padding: .7rem 1.0rem; }

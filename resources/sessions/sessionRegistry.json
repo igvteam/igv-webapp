@@ -1,0 +1,44 @@
+{
+  "hg19":
+  [
+    {
+      "name": "My hg19 Session",
+      "description": "One Helluva hg19 Session",
+      "url": "resources/sessions/igv-seg-session.json"
+    },
+    {
+      "name": "Circular View Session",
+      "description": "Circular View Session",
+      "url": "resources/sessions/igv-session-hg19.json"
+    },
+    {
+      "name": "hg19 session at Dropbox",
+      "description": "One Helluva hg19 Session",
+      "url": "https://www.dropbox.com/s/h3soad4fgkr44rv/igv-app-session.json?dl=0"
+    }
+  ],
+  "hg38":
+  [
+    {
+      "name": "My hg38 Session",
+      "description": "One Helluva hg38 Session",
+      "url": "resources/sessions/igv-webapp.json"
+    }
+  ],
+  "galGal6":
+  [
+    {
+      "name": "Chicken Genome Session",
+      "description": "Tastes Like Chicken",
+      "url": "resources/sessions/igv-session-chicken-genome.json"
+    }
+  ],
+  "susScr11":
+  [
+    {
+      "name": "Pig Genome Session",
+      "description": "Oink Oink",
+      "url": "resources/sessions/igv-session-pig-genome.json"
+    }
+  ]
+}

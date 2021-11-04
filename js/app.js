@@ -21,7 +21,7 @@
  *
  */
 
-import {makeDraggable, GoogleAuth, igvxhr} from '../node_modules/igv-utils/src/index.js';
+import {FileUtils, DOMUtils, makeDraggable, GoogleAuth, igvxhr} from '../node_modules/igv-utils/src/index.js';
 import { AlertSingleton, GenomeFileLoad, createSessionWidgets, createTrackWidgetsWithTrackRegistry, updateTrackMenus, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import {creatGenomeWidgets, loadGenome, initializeGenomeWidgets} from './genomeWidgets.js';
@@ -197,7 +197,7 @@ async function initializationHelper(browser, container, options) {
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
-    const genomeChangeListener = event => {
+    const genomeChangeListener = async event => {
 
         const { data:genomeID } = event;
 
@@ -205,8 +205,9 @@ async function initializationHelper(browser, container, options) {
 
             currentGenomeId = genomeID;
 
-            updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
+            await updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
 
+            await updateSessionMenu(genomeID, 'igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
         }
     }
 
@@ -262,6 +263,63 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id});
+}
+
+async function updateSessionMenu(genomeID, sessionListDivider, sessionRegistryFile, sessionLoader) {
+
+    let response = undefined;
+    try {
+        response = await fetch(sessionRegistryFile);
+    } catch (e) {
+        console.error(e);
+    }
+
+    let sessionRegistry = undefined
+    if (response) {
+        sessionRegistry = await response.json();
+    } else {
+        const e = new Error("Error retrieving session registry");
+        AlertSingleton.present(e.message);
+        throw e;
+    }
+
+    const id_prefix = 'genome_specific_session_file'
+
+    const searchString = `[id^=${ id_prefix }]`
+    const elements = document.querySelectorAll(searchString)
+    if (elements.length > 0) {
+        for (let i = 0; i < elements.length; i++) {
+            elements[ i ].remove()
+        }
+    }
+
+    const sessions = sessionRegistry[ genomeID ]
+    if (sessions) {
+
+        for (let { name, url } of sessionRegistry[ genomeID ]) {
+
+            const referenceNode = document.getElementById(sessionListDivider)
+
+            const button_id = `${ id_prefix }_${ DOMUtils.guid() }`
+            const html = `<button id="${ button_id }" class="dropdown-item" type="button">${ name }</button>`
+            const fragment = document.createRange().createContextualFragment(html)
+
+            referenceNode.after(fragment.firstChild)
+
+            const button = document.getElementById(button_id)
+            button.addEventListener('click', () => {
+
+                const config = {};
+                const key = true === FileUtils.isFilePath(url) ? 'file' : 'url';
+                config[ key ] = url;
+
+                sessionLoader(config);
+
+            })
+        }
+
+    }
+
 }
 
 function sendPairedAlignmentChord(features) {

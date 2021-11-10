@@ -40,7 +40,6 @@ var igvwebConfig = {
             genome: "hg19",
             locus: "chr2:33,091,520-33,092,390",
             showCircularViewButton: false,
-            // showCircularView: true,
             genomeList: "resources/genomes.json",
             queryParametersSupported: true,
             showChromosomeWidget: true,

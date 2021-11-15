@@ -83,11 +83,11 @@ label.dropdown-item {
 
 .dropdown-menu {
   overflow-y: auto;
-  max-height: 640px;
+  max-height: 512px;
   font-size: .875rem;
 }
 
-#igv-app-genome-dropdown-menu {
+#igv-app-genome-dropdown-menu.dropdown-menu {
   min-width: 19rem;
 }
 

@@ -214,8 +214,12 @@ async function initializationHelper(browser, container, options) {
     if (true === circularViewIsInstalled()) {
 
         const circularViewContainer = document.getElementById('igv-circular-view-container')
-        makeDraggable(circularViewContainer, circularViewContainer)
-        browser.createCircularView(circularViewContainer, false);
+
+        browser.createCircularView(circularViewContainer, false)
+
+        makeDraggable(circularViewContainer, browser.circularView.toolbar)
+
+        browser.circularView.setSize(512)
 
         document.getElementById('igv-app-circular-view-nav-item').style.display = 'block'
 
@@ -242,23 +246,11 @@ async function initializationHelper(browser, container, options) {
             event.preventDefault()
             event.stopPropagation()
             if (13 === event.keyCode) {
-                const str = event.target.value;
-                circularViewContainer.style.width = `${ str }px`;
-                circularViewContainer.style.height = `${ str }px`;
-                browser.circularView.setSize(Number.parseInt(str));
-
+                browser.circularView.setSize(Number.parseInt(event.target.value));
             }
         })
 
         $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
-
-        // document.getElementById('igv-app-circular-view-resize-modal-cancel').addEventListener('click', () => {
-        //     $('#igv-app-circular-view-resize-modal').modal('hide')
-        // })
-        //
-        // document.getElementById('igv-app-circular-view-resize-modal-ok').addEventListener('click', () => {
-        //     $('#igv-app-circular-view-resize-modal').modal('hide')
-        // })
 
     }
 

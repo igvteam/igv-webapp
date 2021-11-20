@@ -51,10 +51,11 @@ async function main(container, config) {
 
     if (enableGoogle) {
 
-        // google drive support
-        const googleDrive = document.createElement('script');
-        googleDrive.src = 'https://apis.google.com/js/platform.js';
-        document.head.appendChild(googleDrive);
+        try {
+            await appendGoogleDriveAPIScript();
+        } catch (e) {
+            alert(e);
+        }
 
         try {
             await GoogleAuth.init({
@@ -251,6 +252,34 @@ async function getGenomesArray(genomes) {
             AlertSingleton.present(e.message);
         }
     }
+}
+
+async function appendGoogleDriveAPIScript() {
+
+    return new Promise((resolve, reject) => {
+
+        try {
+            const google = document.createElement('script');
+            google.setAttribute('type', 'text/javascript');
+            google.async = true;
+            google.setAttribute('src', 'https://platform.twitter.com/widgets.js');
+
+            google.addEventListener("load", (ev) => {
+                resolve({ status: true });
+            });
+
+            google.addEventListener("error", (ev) => {
+                reject({
+                    status: false,
+                    message: `Failed to load GoogleDrive API script`
+                });
+            });
+
+            document.head.appendChild(google);
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 
 function appendDropboxAPIScript() {

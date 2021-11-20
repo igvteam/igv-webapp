@@ -30,10 +30,12 @@
     <!-- IGV JS-->
 
 <!--<script src="https://cdn.jsdelivr.net/npm/igv@2.10.2/dist/igv.min.js"></script>-->
-    <script src="https://igv.org/web/snapshot/dist/igv.js"></script>
+<!--    <script src="https://igv.org/web/snapshot/dist/igv.js"></script>-->
 
-    <!-- Development hack -- comment out the igv.js script includes above AND
-         uncomment the code below and edit url to igv.js as appropriate to debug igv.js source -->
+    <script type="module">
+        import igv from './node_modules/igv/dist/igv.esm.js';
+        window.igv = igv;
+    </script>
 
     <!-- Dropbox Chooser API-->
     <script id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js"
@@ -320,7 +322,7 @@
 <main id="igv-main" role="main" class="container-fluid">
 
     <!-- JBrowser Circular Viewer Container -->
-    <div id="igv-circular-view-container" class="jbrowse-container"></div>
+    <div id="igv-circular-view-container" style="position: absolute; top:200px; left:20px; width: fit-content; height: fit-content;"></div>
 
     <!-- App container -->
     <div class="row">

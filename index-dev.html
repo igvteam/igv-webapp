@@ -27,10 +27,11 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/app.css">
 
-    <!-- Development hack -- uncomment the code below and edit url to igv.js as appropriate to debug igv.js source -->
+    <!-- IGV JS-->
+    <!-- Development hack -- adjust the url to igv esm module, which can be js/index.js in the igv.js repository -->
     <script type="module">
-        import igv from 'http://localhost:63342/igv.js/js/index.js';
-        window.igv = igv;
+        import igv from 'https://cdn.jsdelivr.net/npm/igv@2.10.4/dist/igv.esm.js'
+        window.igv = igv
     </script>
 
 
@@ -212,14 +213,16 @@
                         <!-- Google Drive -->
 
                         <!-- Session URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-url-modal">
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-session-url-modal">
                             Load URL ...
                         </button>
 
                         <div class="dropdown-divider"></div>
 
                         <!-- Save local session file -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-save-modal">
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-session-save-modal">
                             Save ...
                         </button>
 

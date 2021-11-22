@@ -29,14 +29,8 @@
 
     <!-- IGV JS-->
 
-    <script src="https://cdn.jsdelivr.net/npm/igv@2.10.4/dist/igv.min.js"></script>
-<!--    <script src="https://igv.org/web/snapshot/dist/igv.js"></script>-->
-
-    <!-- Development hack -- uncomment the code below and edit url to igv.js as appropriate to debug igv.js source -->
-<!--    <script type="module">-->
-<!--        import igv from './node_modules/igv/dist/igv.esm.js';-->
-<!--        window.igv = igv;-->
-<!--    </script>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/igv@2.10.4/dist/igv.min.js"></script>-->
+    <script src="https://igv.org/web/snapshot/dist/igv.js"></script>
 
     <!-- Bootstrap 4 and Dependancies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -95,7 +89,8 @@
                         <!-- Dropbox -->
                         <div class="dropdown-item">
 
-                            <div id="igv-app-dropdown-dropbox-genome-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-dropbox-genome-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
 
                                 <div>Dropbox</div>
                                 <div><img id="igv-app-genome-dropbox-button-image" width="18" height="18"></div>
@@ -153,7 +148,8 @@
                         <!-- Dropbox -->
                         <div class="dropdown-item">
 
-                            <div id="igv-app-dropdown-dropbox-track-file-button" class="igv-app-dropdown-item-cloud-storage">
+                            <div id="igv-app-dropdown-dropbox-track-file-button"
+                                 class="igv-app-dropdown-item-cloud-storage">
 
                                 <div>Dropbox</div>
                                 <div><img id="igv-app-track-dropbox-button-image" width="18" height="18"></div>
@@ -212,14 +208,16 @@
                         <!-- Google Drive -->
 
                         <!-- Session URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-url-modal">
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-session-url-modal">
                             Load URL ...
                         </button>
 
                         <div class="dropdown-divider"></div>
 
                         <!-- Save local session file -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-session-save-modal">
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-session-save-modal">
                             Save ...
                         </button>
 

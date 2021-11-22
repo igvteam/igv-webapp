@@ -41,7 +41,9 @@ async function main(container, config) {
 
     AlertSingleton.init(container)
 
-    appendDropboxAPIScript()
+    if (config.dropboxAPIKey) {
+        appendDropboxAPIScript(config.dropboxAPIKey)
+    }
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
@@ -50,12 +52,6 @@ async function main(container, config) {
         (window.location.protocol === "https:" || window.location.host === "localhost");
 
     if (enableGoogle) {
-
-        try {
-            await appendGoogleDriveAPIScript();
-        } catch (e) {
-            alert(e);
-        }
 
         try {
             await GoogleAuth.init({
@@ -100,10 +96,12 @@ async function initializationHelper(browser, container, options) {
     ['track', 'genome'].forEach(str => {
         let imgElement;
 
+        imgElement = document.querySelector(`img#igv-app-${str}-dropbox-button-image`);
         if (dropboxEnabled) {
-            imgElement = document.querySelector(`img#igv-app-${str}-dropbox-button-image`);
             imgElement.src = `data:image/svg+xml;base64,${dropboxButtonImageBase64()}`;
-
+        } else {
+            imgElement = document.querySelector(`#igv-app-dropdown-dropbox-${str}-file-button`);
+            imgElement.parentElement.style.display = 'none';
         }
 
         imgElement = document.querySelector(`img#igv-app-${str}-google-drive-button-image`);
@@ -121,7 +119,7 @@ async function initializationHelper(browser, container, options) {
     const genomeFileLoadConfig =
         {
             localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
-            dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
+            dropboxButton: dropboxEnabled ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
             googleEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
             loadHandler: async configuration => {
@@ -150,7 +148,7 @@ async function initializationHelper(browser, container, options) {
     createTrackWidgetsWithTrackRegistry($igvMain,
         $('#igv-app-track-dropdown-menu'),
         $('#igv-app-dropdown-local-track-file-input'),
-        $('#igv-app-dropdown-dropbox-track-file-button'),
+        dropboxEnabled ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
         googleEnabled,
         $('#igv-app-dropdown-google-drive-track-file-button'),
         ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
@@ -182,7 +180,7 @@ async function initializationHelper(browser, container, options) {
     createSessionWidgets($igvMain,
         'igv-webapp',
         'igv-app-dropdown-local-session-file-input',
-        'igv-app-dropdown-dropbox-session-file-button',
+        dropboxEnabled ? 'igv-app-dropdown-dropbox-session-file-button' : undefined,
         'igv-app-dropdown-google-drive-session-file-button',
         'igv-app-session-url-modal',
         'igv-app-session-save-modal',
@@ -254,41 +252,14 @@ async function getGenomesArray(genomes) {
     }
 }
 
-async function appendGoogleDriveAPIScript() {
-
-    return new Promise((resolve, reject) => {
-
-        try {
-            const google = document.createElement('script');
-            google.setAttribute('type', 'text/javascript');
-            google.async = true;
-            google.setAttribute('src', 'https://platform.twitter.com/widgets.js');
-
-            google.addEventListener("load", (ev) => {
-                resolve({ status: true });
-            });
-
-            google.addEventListener("error", (ev) => {
-                reject({
-                    status: false,
-                    message: `Failed to load GoogleDrive API script`
-                });
-            });
-
-            document.head.appendChild(google);
-        } catch (error) {
-            reject(error);
-        }
-    });
-}
-
-function appendDropboxAPIScript() {
+function appendDropboxAPIScript(dropboxAPIKey) {
 
     const dropbox = document.createElement('script');
 
     dropbox.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js');
     dropbox.setAttribute('id', 'dropboxjs');
-    dropbox.dataset.appKey = '8glijwyao9fq8we';
+    // dropbox.dataset.appKey = '8glijwyao9fq8we';
+    dropbox.dataset.appKey = dropboxAPIKey;
     dropbox.setAttribute('type', "text/javascript");
 
     document.head.appendChild(dropbox);

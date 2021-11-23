@@ -72,18 +72,6 @@ async function main(container, config) {
 
     const igvConfig = config.igvConfig;
 
-    // JBrowse CircularView hack
-    igvConfig.tracks[ 0 ].onclick = (features, e) => {
-        if (e.shiftKey) {
-            if (features) {
-                sendPairedAlignmentChord(features)
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     if(config.restoreLastGenome) {
         const lastGenomeId = localStorage.getItem("genomeID");
         if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
@@ -207,7 +195,10 @@ async function initializationHelper(browser, container, options) {
 
             await updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
 
-            await updateSessionMenu(genomeID, 'igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+            if (options.sessionRegistryFile) {
+                await updateSessionMenu(genomeID, 'igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+            }
+
         }
     }
 

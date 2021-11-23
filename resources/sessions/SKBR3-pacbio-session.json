@@ -1,0 +1,31 @@
+{
+	"version": "2.10.4",
+	"genome": "hg19",
+	"locus": "chr17:64,040,802-64,045,633",
+	"tracks": [
+
+		{
+			"id": "sniffles",
+			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/sniffles_tra.vcf",
+			"type": "variant",
+			"format": "vcf",
+			"name": "sniffles translocations",
+			"supportsWholeGenome": true,
+			"visibilityWindow": -1,
+			"showGenotypes": false,
+			"height": 40
+		},
+		{
+			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/reads_lr_skbr3.fa_ngmlr-0.2.3_mapped.bam",
+			"indexURL": "https://s3.amazonaws.com/igv.org.demo/SKBR3/reads_lr_skbr3.fa_ngmlr-0.2.3_mapped.bam.bai",
+			"type": "alignment",
+			"format": "bam",
+			"name": "Alignments",
+			"height": 500,
+			"visibilityWindow": 10000,
+			"hideSmallIndels": true,
+			"indelSizeThreshold": 100,
+			"showSoftClips": true
+		}
+	]
+}

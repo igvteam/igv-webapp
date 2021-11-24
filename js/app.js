@@ -89,6 +89,21 @@ async function main(container, config) {
 
 async function initializationHelper(browser, container, config) {
 
+    if (true === googleEnabled) {
+        document.querySelector('#igv-google-drive-dropdown-toggle').style.display = 'block'
+
+        $('#igv-google-drive-dropdown').on('show.bs.dropdown', () => {
+            if (gapi.auth2.getAuthInstance().currentUser.get().isSignedIn()) {
+                document.querySelector('#igv-google-drive-sign-out-button').style.display = 'block'
+            }
+        })
+
+        document.querySelector('#igv-google-drive-sign-out-button').addEventListener('click', () => {
+            GoogleAuth.signOut()
+        })
+
+    }
+
     ['track', 'genome'].forEach(str => {
         let imgElement;
 

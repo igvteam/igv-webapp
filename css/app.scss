@@ -20,6 +20,21 @@ body {
   padding-top: $igv-header-height;
 }
 
+#igv-google-drive-dropdown {
+
+  .dropdown-item {
+    width: 100%;
+  }
+
+}
+
+#igv-google-drive-dropdown-toggle {
+  color: transparent;
+  background-color: transparent;
+  border-color: transparent;
+  padding: unset;
+}
+
 #igv-custom-modal {
   font-size: .9rem;
 }

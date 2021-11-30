@@ -24,7 +24,7 @@
 import {GoogleAuth, igvxhr} from '../node_modules/igv-utils/src/index.js';
 import { AlertSingleton, GenomeFileLoad, createSessionWidgets, createTrackWidgetsWithTrackRegistry, updateTrackMenus, dropboxButtonImageBase64, dropboxDropdownItem, EventBus, googleDriveButtonImageBase64, googleDriveDropdownItem } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
-import {creatGenomeWidgets, loadGenome, initializeGenomeWidgets} from './genomeWidgets.js';
+import {createGenomeWidgets, loadGenome, initializeGenomeWidgets} from './genomeWidgets.js';
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js';
 import {sessionURL} from './shareHelper.js';
 import {createSVGWidget} from './svgWidget.js';
@@ -40,10 +40,6 @@ let currentGenomeId
 async function main(container, config) {
 
     AlertSingleton.init(container)
-
-    if (config.dropboxAPIKey) {
-        appendDropboxAPIScript(config.dropboxAPIKey)
-    }
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
@@ -91,13 +87,13 @@ async function main(container, config) {
     }
 }
 
-async function initializationHelper(browser, container, options) {
+async function initializationHelper(browser, container, config) {
 
     ['track', 'genome'].forEach(str => {
         let imgElement;
 
         imgElement = document.querySelector(`img#igv-app-${str}-dropbox-button-image`);
-        if (dropboxEnabled) {
+        if (config.dropboxAPIKey) {
             imgElement.src = `data:image/svg+xml;base64,${dropboxButtonImageBase64()}`;
         } else {
             imgElement = document.querySelector(`#igv-app-dropdown-dropbox-${str}-file-button`);
@@ -108,7 +104,7 @@ async function initializationHelper(browser, container, options) {
         imgElement.src = `data:image/svg+xml;base64,${googleDriveButtonImageBase64()}`;
     })
 
-    if (dropboxEnabled) {
+    if (config.dropboxAPIKey) {
         $('div#igv-session-dropdown-menu > :nth-child(1)').after(dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'));
     }
 
@@ -119,7 +115,8 @@ async function initializationHelper(browser, container, options) {
     const genomeFileLoadConfig =
         {
             localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
-            dropboxButton: dropboxEnabled ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
+            initializeDropbox,
+            dropboxButton: config.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
             googleEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
             loadHandler: async configuration => {
@@ -132,9 +129,13 @@ async function initializationHelper(browser, container, options) {
             igvxhr
         };
 
-    creatGenomeWidgets({ $igvMain, urlModalId: 'igv-app-genome-from-url-modal', genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)})
+    createGenomeWidgets({
+        $igvMain,
+        urlModalId: 'igv-app-genome-from-url-modal',
+        genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)
+    })
 
-    await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
+    await initializeGenomeWidgets(browser, config.genomes, $('#igv-app-genome-dropdown-menu'))
 
     const trackLoader = async configurations => {
         try {
@@ -148,14 +149,15 @@ async function initializationHelper(browser, container, options) {
     createTrackWidgetsWithTrackRegistry($igvMain,
         $('#igv-app-track-dropdown-menu'),
         $('#igv-app-dropdown-local-track-file-input'),
-        dropboxEnabled ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
+        initializeDropbox,
+        config.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
         googleEnabled,
         $('#igv-app-dropdown-google-drive-track-file-button'),
         ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
         'igv-app-track-select-modal',
         GtexUtils,
-        options.trackRegistryFile,
+        config.trackRegistryFile,
         trackLoader);
 
     const sessionSaver = () => {
@@ -180,7 +182,8 @@ async function initializationHelper(browser, container, options) {
     createSessionWidgets($igvMain,
         'igv-webapp',
         'igv-app-dropdown-local-session-file-input',
-        dropboxEnabled ? 'igv-app-dropdown-dropbox-session-file-button' : undefined,
+        initializeDropbox,
+        config.dropboxAPIKey ? 'igv-app-dropdown-dropbox-session-file-button' : undefined,
         'igv-app-dropdown-google-drive-session-file-button',
         'igv-app-session-url-modal',
         'igv-app-session-save-modal',
@@ -190,7 +193,7 @@ async function initializationHelper(browser, container, options) {
 
     createSVGWidget({ browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
 
-    createShareWidgets(shareWidgetConfigurator(browser, container, options));
+    createShareWidgets(shareWidgetConfigurator(browser, container, config));
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'));
 
@@ -202,7 +205,7 @@ async function initializationHelper(browser, container, options) {
 
             currentGenomeId = genomeID;
 
-            updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
+            updateTrackMenus(genomeID, undefined, config.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
 
         }
     }
@@ -252,28 +255,42 @@ async function getGenomesArray(genomes) {
     }
 }
 
-function appendDropboxAPIScript(dropboxAPIKey) {
+let didCompleteOneAttempt = false
+async function initializeDropbox() {
 
-    const dropbox = document.createElement('script');
+    if (true === didCompleteOneAttempt && false === dropboxEnabled) {
+        return Promise.resolve(false)
+    } else if (true === dropboxEnabled) {
+        return Promise.resolve(true)
+    } else {
+        return new Promise((resolve, reject) => {
 
-    dropbox.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js');
-    dropbox.setAttribute('id', 'dropboxjs');
-    // dropbox.dataset.appKey = '8glijwyao9fq8we';
-    dropbox.dataset.appKey = dropboxAPIKey;
-    dropbox.setAttribute('type', "text/javascript");
+            didCompleteOneAttempt = true
 
-    document.head.appendChild(dropbox);
+            const dropbox = document.createElement('script');
 
-    // success event
-    dropbox.addEventListener('load', () => {
-        console.log("Dropbox API loaded successfully");
-        dropboxEnabled = true;
-    });
+            dropbox.setAttribute('src', 'http://localhost:9999');
+            // dropbox.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js');
+            // dropbox.setAttribute('id', 'dropboxjs');
+            // dropbox.dataset.appKey = igvwebConfig.dropboxAPIKey;
+            dropbox.setAttribute('type', "text/javascript");
 
-    // error event
-    dropbox.addEventListener("error", (ev) => {
-        console.log("Error loading Dropbox API", ev);
-    });
+            document.head.appendChild(dropbox);
+
+            dropbox.addEventListener('load', () => {
+                console.log("Dropbox API loaded successfully")
+                dropboxEnabled = true
+                resolve(true)
+            });
+
+            // dropbox.addEventListener("error", event => {
+            //     console.log("Error loading Dropbox API", event)
+            //     reject(false)
+            // });
+
+        })
+    }
+
 }
 
 export {main}

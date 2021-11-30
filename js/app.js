@@ -269,10 +269,10 @@ async function initializeDropbox() {
 
             const dropbox = document.createElement('script');
 
-            dropbox.setAttribute('src', 'http://localhost:9999');
-            // dropbox.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js');
-            // dropbox.setAttribute('id', 'dropboxjs');
-            // dropbox.dataset.appKey = igvwebConfig.dropboxAPIKey;
+            // dropbox.setAttribute('src', 'http://localhost:9999');
+            dropbox.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js');
+            dropbox.setAttribute('id', 'dropboxjs');
+            dropbox.dataset.appKey = igvwebConfig.dropboxAPIKey;
             dropbox.setAttribute('type', "text/javascript");
 
             document.head.appendChild(dropbox);
@@ -282,11 +282,6 @@ async function initializeDropbox() {
                 dropboxEnabled = true
                 resolve(true)
             });
-
-            // dropbox.addEventListener("error", event => {
-            //     console.log("Error loading Dropbox API", event)
-            //     reject(false)
-            // });
 
         })
     }

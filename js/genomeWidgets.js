@@ -29,7 +29,7 @@ import Globals from "./globals.js";
 
 let fileLoadWidget;
 
-function creatGenomeWidgets({ $igvMain, urlModalId, genomeFileLoad }) {
+function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
 
     const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
     $igvMain.append($urlModal);
@@ -176,5 +176,5 @@ async function loadGenome(genomeConfiguration) {
     }
 }
 
-export {creatGenomeWidgets, loadGenome, initializeGenomeWidgets}
+export {createGenomeWidgets, loadGenome, initializeGenomeWidgets}
 

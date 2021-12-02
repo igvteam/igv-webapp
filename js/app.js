@@ -93,9 +93,8 @@ async function initializationHelper(browser, container, config) {
         document.querySelector('#igv-google-drive-dropdown-toggle').style.display = 'block'
 
         $('#igv-google-drive-dropdown').on('show.bs.dropdown', () => {
-            if (gapi.auth2.getAuthInstance().currentUser.get().isSignedIn()) {
-                document.querySelector('#igv-google-drive-sign-out-button').style.display = 'block'
-            }
+            const user = gapi.auth2.getAuthInstance().currentUser.get()
+            document.querySelector('#igv-google-drive-sign-out-button').style.display = user.isSignedIn() ? 'block' : 'none'
         })
 
         document.querySelector('#igv-google-drive-sign-out-button').addEventListener('click', () => {

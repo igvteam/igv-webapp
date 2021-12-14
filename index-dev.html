@@ -28,14 +28,13 @@
     <link rel="stylesheet" href="css/app.css">
 
     <!-- IGV JS-->
-    <script src="https://igv.org/web/snapshot/dist/igv.js"></script>
-
     <!-- Development hack -- adjust the url to igv esm module, which can be js/index.js in the igv.js repository -->
-<!--    <script type="module">-->
-<!--        // import igv from 'https://cdn.jsdelivr.net/npm/igv@2.10.4/dist/igv.esm.js'-->
-<!--        import igv from './node_modules/igv/dist/igv.esm.js'-->
-<!--        window.igv = igv-->
-<!--    </script>-->
+    <script type="module">
+        // import igv from 'https://cdn.jsdelivr.net/npm/igv@2.10.4/dist/igv.esm.js'
+        import igv from './node_modules/igv/dist/igv.esm.js'
+        window.igv = igv
+    </script>
+
 
     <!-- Dropbox Chooser API-->
     <script id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js"
@@ -55,7 +54,7 @@
     <!-- Twitter -->
     <script src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-    <script type="text/javascript" src="./igvwebConfig-private.js"></script>
+    <script type="text/javascript" src="./igvwebConfig.js"></script>
 
     <script type="module" src="js/app.js"></script>
 
@@ -295,7 +294,7 @@
                     </button>
 
                     <div class="dropdown-menu">
-                        <button id="igv-google-drive-sign-out-button" class="dropdown-item" type="button">Sign out</button>
+                        <button id="igv-google-drive-sign-out-button" class="dropdown-item" type="button" style="display: none;">Sign out</button>
                         <!--                        <button class="dropdown-item" type="button">Unused</button>-->
                         <!--                        <button class="dropdown-item" type="button">Unused</button>-->
                     </div>

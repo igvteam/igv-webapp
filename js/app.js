@@ -90,12 +90,6 @@ async function main(container, config) {
 async function initializationHelper(browser, container, config) {
 
     if (true === googleEnabled) {
-        document.querySelector('#igv-google-drive-dropdown-toggle').style.display = 'block'
-
-        $('#igv-google-drive-dropdown').on('show.bs.dropdown', () => {
-            const user = gapi.auth2.getAuthInstance().currentUser.get()
-            document.querySelector('#igv-google-drive-sign-out-button').style.display = user.isSignedIn() ? 'block' : 'none'
-        })
 
         document.querySelector('#igv-google-drive-sign-out-button').addEventListener('click', () => {
             GoogleAuth.signOut()
@@ -137,6 +131,7 @@ async function initializationHelper(browser, container, config) {
 
                 if (configuration.id !== browser.genome.id) {
                     await loadGenome(configuration)
+                    queryGoogleAuthenticationStatus()
                 }
 
             },
@@ -158,6 +153,8 @@ async function initializationHelper(browser, container, config) {
             console.error(e)
             AlertSingleton.present(e)
         }
+
+        queryGoogleAuthenticationStatus()
     }
 
     createTrackWidgetsWithTrackRegistry($igvMain,
@@ -191,6 +188,8 @@ async function initializationHelper(browser, container, config) {
             console.error(e)
             AlertSingleton.present(e)
         }
+
+        queryGoogleAuthenticationStatus()
     }
 
     createSessionWidgets($igvMain,
@@ -227,6 +226,26 @@ async function initializationHelper(browser, container, config) {
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id});
+}
+
+function queryGoogleAuthenticationStatus() {
+
+    const user = true === googleEnabled ? gapi.auth2.getAuthInstance().currentUser.get() : undefined
+
+    if (user) {
+        const profile = user.getBasicProfile()
+        const name = profile.getName()
+        const emailAddress = profile.getEmail()
+
+        const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
+        toggle.style.display = 'block'
+
+        const button = document.querySelector('#igv-google-drive-sign-out-button')
+        button.innerHTML = `Sign Out ${ emailAddress }`
+
+        console.log(`name: ${ name } email: ${ emailAddress}`)
+    }
+
 }
 
 function createAppBookmarkHandler($bookmark_button) {

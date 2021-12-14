@@ -62,14 +62,14 @@
 
 <body class="igv-app-body-footerized">
 
-<nav class="navbar fixed-top py-0 navbar-expand-sm navbar-dark justify-content-between">
+<nav class="navbar fixed-top py-0 navbar-expand-sm navbar-dark">
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#igv-app-navbar-navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="igv-app-navbar-navigation" class="collapse navbar-collapse">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
 
             <!-- Genome -->
             <li class="nav-item px-3">
@@ -155,8 +155,10 @@
 
                         <!-- Dropbox -->
                         <div class="dropdown-item">
+
                             <div id="igv-app-dropdown-dropbox-track-file-button"
                                  class="igv-app-dropdown-item-cloud-storage">
+
                                 <div>Dropbox</div>
                                 <div><img id="igv-app-track-dropbox-button-image" width="18" height="18"></div>
                                 <div>...</div>
@@ -280,6 +282,27 @@
             </li>
 
         </ul>
+
+        <!-- Google Authentication -->
+        <div class="btn-group">
+            <div class="btn-group dropleft" role="group">
+
+                <div id="igv-google-drive-dropdown" class="dropdown">
+
+                    <button id="igv-google-drive-dropdown-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="display: none;">
+                        <img src="img/google-drive-current.png" width="24" height="24">
+                    </button>
+
+                    <div class="dropdown-menu">
+                        <button id="igv-google-drive-sign-out-button" class="dropdown-item" type="button" style="display: none;">Sign out</button>
+                        <!--                        <button class="dropdown-item" type="button">Unused</button>-->
+                        <!--                        <button class="dropdown-item" type="button">Unused</button>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
 </nav>
@@ -459,8 +482,6 @@
 
 </footer>
 
-
 </body>
-
 
 </html>

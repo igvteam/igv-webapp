@@ -62,7 +62,15 @@ async function main(container, config) {
         }
 
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
-        console.log(`${ Date.now() } User is ${ true === isSignedIn ? 'signed in' : 'signed out' }`)
+        console.log(`User is ${ true === isSignedIn ? 'signed in' : 'signed out' }`)
+
+        gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
+
+            const user = gapi.auth2.getAuthInstance().currentUser.get()
+
+            console.log(`user did sign ${ status ? 'in' : 'out' }`)
+            queryGoogleAuthenticationStatus(user, status)
+        })
 
     }
 
@@ -100,16 +108,8 @@ async function initializationHelper(browser, container, config) {
         const button = document.querySelector('#igv-google-drive-sign-out-button')
 
         button.addEventListener('click', async () => {
-
             await GoogleAuth.signOut()
-
             toggle.style.display = 'none'
-
-            const user = gapi.auth2.getAuthInstance().currentUser.get()
-            const isSignedIn = user.isSignedIn()
-
-            console.log(`${ Date.now() } User is ${ true === isSignedIn ? 'signed in' : 'signed out' }`)
-
         })
 
     }
@@ -148,7 +148,6 @@ async function initializationHelper(browser, container, config) {
 
                 if (configuration.id !== browser.genome.id) {
                     await loadGenome(configuration)
-                    queryGoogleAuthenticationStatus()
                 }
 
             },
@@ -170,8 +169,6 @@ async function initializationHelper(browser, container, config) {
             console.error(e)
             AlertSingleton.present(e)
         }
-
-        queryGoogleAuthenticationStatus()
     }
 
     createTrackWidgetsWithTrackRegistry($igvMain,
@@ -205,8 +202,6 @@ async function initializationHelper(browser, container, config) {
             console.error(e)
             AlertSingleton.present(e)
         }
-
-        queryGoogleAuthenticationStatus()
     }
 
     createSessionWidgets($igvMain,
@@ -245,28 +240,20 @@ async function initializationHelper(browser, container, config) {
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id});
 }
 
-function queryGoogleAuthenticationStatus() {
+function queryGoogleAuthenticationStatus(user, isSignedIn) {
 
-    if (true === googleEnabled) {
+    if (true === isSignedIn) {
 
-        const user = gapi.auth2.getAuthInstance().currentUser.get()
-        const isSignedIn = user.isSignedIn()
+        const profile = user.getBasicProfile()
+        const emailAddress = profile.getEmail()
 
-        if (true === isSignedIn) {
+        const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
+        toggle.style.display = 'block'
 
-            const profile = user.getBasicProfile()
-            const name = profile.getName()
-            const emailAddress = profile.getEmail()
+        const button = document.querySelector('#igv-google-drive-sign-out-button')
+        button.innerHTML = `Sign Out ${ emailAddress }`
 
-            const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
-            toggle.style.display = 'block'
-
-            const button = document.querySelector('#igv-google-drive-sign-out-button')
-            button.innerHTML = `Sign Out ${ emailAddress }`
-
-            console.log(`name: ${ name } email: ${ emailAddress}`)
-        }
-
+        console.log(`name: ${ name } email: ${ emailAddress}`)
     }
 
 }

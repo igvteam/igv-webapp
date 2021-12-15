@@ -62,12 +62,15 @@ async function main(container, config) {
         }
 
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
+        if (true === isSignedIn) {
+            const user = gapi.auth2.getAuthInstance().currentUser.get()
+            queryGoogleAuthenticationStatus(user, isSignedIn)
+        }
+
         console.log(`User is ${ true === isSignedIn ? 'signed in' : 'signed out' }`)
 
         gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
-
             const user = gapi.auth2.getAuthInstance().currentUser.get()
-
             console.log(`user did sign ${ status ? 'in' : 'out' }`)
             queryGoogleAuthenticationStatus(user, status)
         })

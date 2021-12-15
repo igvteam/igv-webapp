@@ -60,6 +60,10 @@ async function main(container, config) {
             console.error(e);
             AlertSingleton.present(e.message)
         }
+
+        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
+        console.log(`${ Date.now() } User is ${ true === isSignedIn ? 'signed in' : 'signed out' }`)
+
     }
 
     // Load genomes for use by igv.js and webapp
@@ -91,8 +95,21 @@ async function initializationHelper(browser, container, config) {
 
     if (true === googleEnabled) {
 
-        document.querySelector('#igv-google-drive-sign-out-button').addEventListener('click', () => {
-            GoogleAuth.signOut()
+        const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
+
+        const button = document.querySelector('#igv-google-drive-sign-out-button')
+
+        button.addEventListener('click', async () => {
+
+            await GoogleAuth.signOut()
+
+            toggle.style.display = 'none'
+
+            const user = gapi.auth2.getAuthInstance().currentUser.get()
+            const isSignedIn = user.isSignedIn()
+
+            console.log(`${ Date.now() } User is ${ true === isSignedIn ? 'signed in' : 'signed out' }`)
+
         })
 
     }
@@ -230,20 +247,26 @@ async function initializationHelper(browser, container, config) {
 
 function queryGoogleAuthenticationStatus() {
 
-    const user = true === googleEnabled ? gapi.auth2.getAuthInstance().currentUser.get() : undefined
+    if (true === googleEnabled) {
 
-    if (user) {
-        const profile = user.getBasicProfile()
-        const name = profile.getName()
-        const emailAddress = profile.getEmail()
+        const user = gapi.auth2.getAuthInstance().currentUser.get()
+        const isSignedIn = user.isSignedIn()
 
-        const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
-        toggle.style.display = 'block'
+        if (true === isSignedIn) {
 
-        const button = document.querySelector('#igv-google-drive-sign-out-button')
-        button.innerHTML = `Sign Out ${ emailAddress }`
+            const profile = user.getBasicProfile()
+            const name = profile.getName()
+            const emailAddress = profile.getEmail()
 
-        console.log(`name: ${ name } email: ${ emailAddress}`)
+            const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
+            toggle.style.display = 'block'
+
+            const button = document.querySelector('#igv-google-drive-sign-out-button')
+            button.innerHTML = `Sign Out ${ emailAddress }`
+
+            console.log(`name: ${ name } email: ${ emailAddress}`)
+        }
+
     }
 
 }

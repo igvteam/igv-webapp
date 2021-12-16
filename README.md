@@ -94,6 +94,11 @@ The default track registry file is ```resources/tracks/trackRegistry.json```.  F
 
 * `igvConfig` - An igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation) for details.
 
+* `dropboxAPIKey` (_optional_)  A Dropbox "data-api-key" used to enable a Dropbox file picker in Genomes, Session, and 
+Track menus.  See [https://www.dropbox.com/developers/apps/create](https://www.dropbox.com/developers/apps/create)
+for instructions on obtaining an api key.  Note this is not needed to load dropbox files by URL, only for providing a 
+file picker.
+
 * `clientId` - (_optional_) A Google clientId, used to enable OAuth for the Google picker and access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for
 instructions on obtaining a clienId.  OAuth requests from igv.js will include the following scopes.

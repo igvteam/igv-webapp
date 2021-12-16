@@ -67,11 +67,8 @@ async function main(container, config) {
             queryGoogleAuthenticationStatus(user, isSignedIn)
         }
 
-        console.log(`User is ${ true === isSignedIn ? 'signed in' : 'signed out' }`)
-
         gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
             const user = gapi.auth2.getAuthInstance().currentUser.get()
-            console.log(`user did sign ${ status ? 'in' : 'out' }`)
             queryGoogleAuthenticationStatus(user, status)
         })
 
@@ -255,8 +252,6 @@ function queryGoogleAuthenticationStatus(user, isSignedIn) {
 
         const button = document.querySelector('#igv-google-drive-sign-out-button')
         button.innerHTML = `Sign Out ${ emailAddress }`
-
-        console.log(`name: ${ name } email: ${ emailAddress}`)
     }
 
 }
@@ -324,7 +319,6 @@ async function initializeDropbox() {
             document.head.appendChild(dropbox);
 
             dropbox.addEventListener('load', () => {
-                console.log("Dropbox API loaded successfully")
                 dropboxEnabled = true
                 resolve(true)
             });

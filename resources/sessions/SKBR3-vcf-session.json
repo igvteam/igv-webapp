@@ -1,0 +1,30 @@
+{
+	"version": "2.10.4",
+	"genome":  "hg19",
+	"tracks": [
+		{
+			"type": "sequence",
+			"order": -9007199254740991
+		},
+		{
+			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/sniffles_tra.vcf",
+			"type": "variant",
+			"format": "vcf",
+			"name": "sniffles translocations",
+			"supportsWholeGenome": true,
+			"visibilityWindow": -1,
+			"showGenotypes": false,
+			"color": "rgb(0,150,0)"
+		},
+		{
+			"id": "delly",
+			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_Illumina_delly.tra.pass.vcf",
+			"type": "variant",
+			"format": "vcf",
+			"name": "delly translocations",
+			"supportsWholeGenome": true,
+			"visibilityWindow": -1,
+			"showGenotypes": false
+		}
+	]
+}

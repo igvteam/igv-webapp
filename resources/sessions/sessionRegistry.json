@@ -1,0 +1,20 @@
+{
+  "hg19":
+  [
+    {
+      "name": "SKBR3 - Illumina (Schatz)",
+      "description": "SKBR3 - Illumina (Schatz)",
+      "url": "resources/sessions/SKBR3-illumina-session.json"
+    },
+    {
+      "name": "SKBR3 - Pacbio (Schatz)",
+      "description": "SKBR3 - Pacbio (Schatz)",
+      "url": "resources/sessions/SKBR3-pacbio-session.json"
+    },
+    {
+      "name": "SKBR3 - Sniffles and Delly VCF (Schatz)",
+      "description": "SKBR3 - Sniffles and Delly VCF (Schatz)",
+      "url": "resources/sessions/SKBR3-vcf-session.json"
+    }
+  ]
+}

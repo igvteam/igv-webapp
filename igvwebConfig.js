@@ -2,6 +2,7 @@ var igvwebConfig = {
 
     genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
+    sessionRegistryFile: "resources/sessions/sessionRegistry.json",
 
     // Supply a drobpox api key to enable the Dropbox file picker in the load menus.  This is optional
    // dropboxAPIKey: "...",
@@ -16,23 +17,16 @@ var igvwebConfig = {
         provider: "tinyURL"
     },
 
-    //restoreLastGenome: true,
-
     igvConfig:
         {
+            genome: "hg19",
+            locus: "all",
+            showCircularViewButton: false,
             genomeList: "resources/genomes.json",
             queryParametersSupported: true,
             showChromosomeWidget: true,
-            genome: "hg38",
             showSVGButton: false,
-            tracks: [
-                // TODO -- add default tracks here.  See github.com/igvteam/igv.js/wiki for details
-                // {
-                //     name: "CTCF - string url",
-                //     type: "wig",
-                //     format: "bigwig",
-                //     url: "https://www.encodeproject.org/files/ENCFF563PAW/@@download/ENCFF563PAW.bigWig"
-                // }
-            ]
+            tracks: []
         }
+
 }

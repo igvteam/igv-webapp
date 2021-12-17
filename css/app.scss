@@ -51,6 +51,12 @@ body {
   font-size:0.9rem;
 }
 
+#igv-circular-view-container {
+  .jss9 {
+    overflow: unset;
+  }
+}
+
 #igv-app-container {
   position: relative;
   top: 0;

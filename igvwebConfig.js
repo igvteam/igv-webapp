@@ -2,10 +2,9 @@ var igvwebConfig = {
 
     genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
-    sessionRegistryFile: "resources/sessions/sessionRegistry.json",
 
     // Supply a drobpox api key to enable the Dropbox file picker in the load menus.  This is optional
-   // dropboxAPIKey: "...",
+    //dropboxAPIKey: "...",
 
     // Supply a Google client id to enable the Google file picker in the load menus.  This is optional
     //clientId: "...",

@@ -17,11 +17,12 @@ var igvwebConfig = {
         provider: "tinyURL"
     },
 
+    enableCircularView: true,
+
     igvConfig:
         {
             genome: "hg19",
             locus: "all",
-            showCircularViewButton: false,
             genomeList: "resources/genomes.json",
             queryParametersSupported: true,
             showChromosomeWidget: true,

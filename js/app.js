@@ -57,6 +57,10 @@ async function main(container, config) {
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
 
+    if (config.enableCircularView) {
+        await initializeCircularView()
+    }
+
     const enableGoogle = (config.clientId || config.apiKey) &&
         (window.location.protocol === "https:" || window.location.host === "localhost")
 
@@ -84,7 +88,6 @@ async function main(container, config) {
             const user = gapi.auth2.getAuthInstance().currentUser.get()
             queryGoogleAuthenticationStatus(user, status)
         })
-
     }
 
     // Load genomes for use by igv.js and webapp
@@ -103,7 +106,6 @@ async function main(container, config) {
             igvConfig.tracks = []
         }
     }
-
 
     const browser = await igv.createBrowser(container, igvConfig)
 
@@ -252,7 +254,7 @@ async function initializationHelper(browser, container, options) {
         }
     }
 
-    if (true === circularViewIsInstalled()) {
+    if (true === options.enableCircularView) {
 
         const circularViewContainer = document.getElementById('igv-circular-view-container')
 
@@ -454,8 +456,31 @@ async function initializeDropbox() {
     }
 }
 
-function circularViewIsInstalled() {
-    return window["JBrowseReactCircularGenomeView"] !== undefined && window["React"] !== undefined && window["ReactDOM"] !== undefined
+async function initializeCircularView() {
+
+    return new Promise((resolve, reject) => {
+
+        const react = document.createElement('script')
+        react.setAttribute('src', 'https://unpkg.com/react@16/umd/react.development.js')
+        react.addEventListener('load', () => {
+            document.head.appendChild(reactDom)
+        })
+
+        const reactDom = document.createElement('script')
+        reactDom.setAttribute('src', 'https://unpkg.com/react-dom@16/umd/react-dom.development.js')
+        reactDom.addEventListener('load', () => {
+            document.head.appendChild(circView)
+        })
+
+        const circView = document.createElement('script')
+        circView.setAttribute('src', 'https://unpkg.com/@jbrowse/react-circular-genome-view/dist/react-circular-genome-view.umd.production.min.js')
+        circView.addEventListener('load', () => {
+            resolve(true)
+        })
+
+        document.head.appendChild(react)
+    })
 }
+
 
 export {main}

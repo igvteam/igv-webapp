@@ -93,7 +93,7 @@ file picker.
 
 * **Enabling Google access.** The property `clientId` - (_optional_) is a Google clientId, used to enable OAuth for the Google picker in the Genome, Session, and Tracks menus, and for access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for
-instructions on obtaining a clienId.  OAuth requests from igv.js will include the following scopes.
+instructions on obtaining a clientId.  OAuth requests from igv.js will include the following scopes.
 
     * https://www.googleapis.com/auth/userinfo.profile - _always_
     * https://www.googleapis.com/auth/devstorage.read_only  - _if accessing protected Google Cloud Storage files_
@@ -156,7 +156,7 @@ var igvwebConfig = {
 
 The set of pre-defined tracks presented in the _Tracks_ menu is different depending on the currently selected reference genome. The items presented in the menu are defined in the file specified by the `trackRegistryFile` property in _igvwebConfig.js_ by associating lists of track configuration files with genome IDs. 
 
-The **example track registry file** below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
+The **example track registry file** below will result in two items for the _Tracks_ menu when the hg19 genome is selected, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
 
 ```json
 {

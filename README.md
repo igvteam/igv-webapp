@@ -81,12 +81,8 @@ A number of IGV-Web app properties are customizable, and are configured through 
 
 * **Configuring the _Genome_ dropdown menu.** The property `genomes` defines a URL to a JSON file containing a list of genome configuration objects used to populate the menu. For a description of the genome configuration object, see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome) .  
 
-* **Configuring the _Tracks_ dropdown menu.** The property `trackRegistryFile` defines a URL to a configuration file which defines pre-defined tracks that can be loaded through the menu. The file contains a JSON object with genomeIDs as keys and an array of URLs to JSON files defining each menu entry.
+* **Configuring the _Tracks_ dropdown menu to include pre-defined tracks.** The property `trackRegistryFile` defines a URL to a configuration file that contains a JSON object with genomeIDs as keys and an array of URLs to JSON files defining each menu item. Clicking on a menu item will open up a simple list of pre-defined tracks or an annotated table of pre-defined tracks.
 The default track registry file is ```resources/tracks/trackRegistry.json```.  Further details on configuring the tracks menu are available [below](#track-registry).
-
-* **Configuring the _Session_ dropdown menu.** The property `sessionRegistryFile` (_optional_) defines a URL to a configuration file which defines pre-defined sessions that can be loaded through the menu. The file contains
-a JSON object with genomeIDs as keys and an array of URLs to JSON files defining each menu entry.
-By default, there is no session registry file, but an example can be found at ```resources/sessions/sessionRegistry.json```.  Further details on configuring the session menu are available [below](#session-registry).
 
 * **Configuring properties of the IGV browser and default tracks** The `igvConfig` property is an igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation) for details.
 
@@ -110,7 +106,7 @@ instructions on obtaining a clienId.  OAuth requests from igv.js will include th
 * If you installed a **pre-built** distribution package, the configuration files can be found in the ```resources``` folder. 
 * In the **the source code**, you will find the configuration files in the ```resources``` folder, but to deploy any changes you make there, you must rebuild the `dist` folder with ``` npm run build```. Alternatively, you can just directly update files in ```dist/resources```; although any changes to files in ```dist``` will be overwritten the next time you do a build.
 
-NOTE: if you change the configuration files, you may need to clear the browser cache before seeing the effect.
+> NOTE: if you change the configuration files, you may need to clear the browser cache before seeing the effect.
 
 ### Default configuration
 
@@ -158,7 +154,7 @@ var igvwebConfig = {
 
 ### Track Registry
 
-The _Tracks_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined in the file specified by the `trackRegistryFile` property in _igvwebConfig.js_ by associating lists of track configuration files with genome IDs. 
+The set of pre-defined tracks presented in the _Tracks_ menu is different depending on the currently selected reference genome. The items presented in the menu are defined in the file specified by the `trackRegistryFile` property in _igvwebConfig.js_ by associating lists of track configuration files with genome IDs. 
 
 The **example track registry file** below will result in two items for the _Tracks_ menu when the hg19 genome is seleted, and a single menu item for hg38. **Note:** make sure to include the comma after every item in the list, except the last one.
 
@@ -292,10 +288,6 @@ Daughter,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA128
 Father,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam,gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam.bai,NA12891
 Mother,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam,gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam.bai,NA12892
 ```
-
-### Session Registry
-
-The _Session_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined in the file specified by the `sessionRegistryFile` property in _igvwebConfig.js_ by associating lists of session configuration files with genome IDs. 
 
 ### Data Servers
 

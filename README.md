@@ -5,7 +5,7 @@
 
 The IGV-Web app is a pure-client "genome browser" application based on [igv.js](https://github.com/igvteam/igv.js).  It is developed by the [Integrative Genomics Viewer (IGV)](https://igv.org) team. You can use our hosted app at https://igv.org/app, or follow the directions below to install your own.
 
-**Note:  the instructions below are for developers or others wishing to install a copy of the IGV-Web app.  For user documentation see [https://igvteam.github.io/igv-webapp/](https://igvteam.github.io/igv-webapp/).** A link to the user documentation is also provided in the app's Help menu.
+Note:  the instructions below are **for developers or others wishing to install a copy of the IGV-Web app.**  For documentation about _using the app_, see [https://igvteam.github.io/igv-webapp/](https://igvteam.github.io/igv-webapp/). A link to the user documentation is also provided in the app's Help menu.
 
 ## Supported Browsers
 
@@ -14,17 +14,17 @@ The IGV-Web app and igv.js require a modern web browser with support for JavaScr
 ## Installation
 
 IGV-Web is a pure client web application consisting entirely of static files and can be served from virtually any 
-web server, e.g.  Apache, Flask, Tomcat, nginx, or Amazon S3. You can install it from a pre-built distribution package or by building it from source code. To run the app, refer to your web server documentation for information on serving web content. Some examples are provided 
+web server, e.g.  Apache, Flask, Tomcat, nginx, or Amazon S3. You can install it from the pre-built IGV-Web distribution package or by building it from source code. To run the app, refer to your web server documentation for information on serving web content. Some examples are provided 
 in the section on **Running the app** below.
 
-### Option 1: Download a pre-built package
+### Option 1: Download the pre-built package
 
 A zip file containing the pre-built app can be downloaded from [https://igv.org/app-archive](https://igv.org/app-archive).
 
 
 ### Option 2: Build from source code
 
-* Requirements
+* Pre-requisites
   * Node >= v8.11.4
   * NPM >= v5.6.0
 
@@ -40,23 +40,23 @@ cd ./igv-webapp
 ````
 npm install
 ````
-* Build
+* Build. This step creates a `dist` directory with the same contents as the pre-built package.
 ````
 npm run build
 ````
 
-## Running the app
+## Serving and running the app
 
 As noted above, refer to your web server documentation for instructions on serving the web content.  As examples, 
 instructions for use with the NPM package http-server and Amazon S3 follow.  
 
-### Example 1: Run with http-server
+### Example 1: http-server
 
 For more information about http-server, including installing it locally, see the [http-server documentation](https://www.npmjs.com/package/http-server).
 
-* Start http-server on the web content directory (i.e., the downloaded pre-packaged distribution described above, or the `dist` directory if building from source )
+* Start http-server and pass it the path to the built IGV-Web folder as a paramater. The folder is either the folder created when you downloaded the pre-packaged distribution described above, or it is the `dist` folder you built from the source code.
 ````
-npx http-server -a localhost <web content directory>
+npx http-server -a localhost <IGV-Web folder>
 ````
 
 * Open a browser and enter the following
@@ -68,57 +68,63 @@ or
 localhost:8080/index.html
 ````
 
-### Example 2: Host on Amazon S3
+### Example 2: Amazon S3
 
-To serve the app from Amazon S3, simply upload the contents from the IGV-Web content directory (i.e., the pre-packaged distribution described above, or the `dist` directory if building from source ) to an Amazon S3 bucket.  Keep the 
-directory structure intact, and make all files public.  Example of an S3 hosted app is at  
+To serve the app from Amazon S3, simply upload the contents from the IGV-Web content folder (i.e., the pre-packaged distribution described above, or the `dist` folder if building from source ) to an Amazon S3 bucket.  Keep the 
+directory structure intact, and make all files public. Example of an S3 hosted app is at  
 https://s3.amazonaws.com/igv.org.app/app/index.html.   Note this is an example and is not kept up-to-date.
 
 
 ## Configuration
 
-**NOTE:**  
-* If you installed a **pre-built** distribution package, the configuration files referred to below can be found in the ```resources``` directory. 
-* In the **the source code**, you will find the configuration files in the ```resources``` directory, but to deploy any changes you make there, you must rebuild the `dist` directory with ``` npm run build```. Alternatively, you can just directly update files in ```dist/resources```. Note however, any changes to files in ```dist``` will be overwritten the next time you do a build.
+A number of IGV-Web app properties are customizable, and are configured through the global `igvwebConfig`, which is defined in the file `igvwebConfig.js`:
 
+* **Configuring the _Genome_ dropdown menu.** The property `genomes` defines a URL to a JSON file containing a list of genome configuration objects used to populate the menu. For a description of the genome configuration object, see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome) .  
 
-The IGV-Web app is configured with the global **igvwebConfig** defined in _igvwebConfig.js_.  The following properties
-are customizable.
-
-* `genomes` - URL to a JSON file containing a list of genome configuration objects.  This list populates the _Genomes_ 
-pulldown menu. For a description of the genome configuration object, see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Reference-Genome) .  
-
-* `trackRegistryFile` - URL to a configuration file for the _Tracks_ pulldown menu.  Use this to define custom track menus.  The file contains
-a JSON object with genomeIDs as keys and an array of URLs to JSON files defining menu entries in the _Tracks_ pulldown menu.
+* **Configuring the _Tracks_ dropdown menu.** The property `trackRegistryFile` defines a URL to a configuration file which defines pre-defined tracks that can be loaded through the menu. The file contains a JSON object with genomeIDs as keys and an array of URLs to JSON files defining each menu entry.
 The default track registry file is ```resources/tracks/trackRegistry.json```.  Further details on configuring the tracks menu are available [below](#track-registry).
 
-* `igvConfig` - An igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation) for details.
+* **Configuring the _Session_ dropdown menu.** The property `sessionRegistryFile` (_optional_) defines a URL to a configuration file which defines pre-defined sessions that can be loaded through the menu. The file contains
+a JSON object with genomeIDs as keys and an array of URLs to JSON files defining each menu entry.
+By default, there is no session registry file, but an example can be found at ```resources/sessions/sessionRegistry.json```.  Further details on configuring the session menu are available [below](#session-registry).
 
-* `dropboxAPIKey` (_optional_)  A Dropbox "data-api-key" used to enable a Dropbox file picker in Genomes, Session, and 
-Track menus.  See [https://www.dropbox.com/developers/apps/create](https://www.dropbox.com/developers/apps/create)
+* **Configuring properties of the IGV browser and default tracks** The `igvConfig` property is an igv.js configuration object.   See the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation) for details.
+
+* **Enabling Dropbox access.** The property `dropboxAPIKey` (_optional_)  is a Dropbox "data-api-key" used to enable a Dropbox file picker in the Genome, Session, and 
+Tracks menus.  See [https://www.dropbox.com/developers/apps/create](https://www.dropbox.com/developers/apps/create)
 for instructions on obtaining an api key.  Note this is not needed to load dropbox files by URL, only for providing a 
 file picker.
 
-* `clientId` - (_optional_) A Google clientId, used to enable OAuth for the Google picker and access to protected
+* **Enabling Google access.** The property `clientId` - (_optional_) is a Google clientId, used to enable OAuth for the Google picker in the Genome, Session, and Tracks menus, and for access to protected
 Google resources.  See [Google Support](https://developers.google.com/identity/sign-in/web/sign-in) for
 instructions on obtaining a clienId.  OAuth requests from igv.js will include the following scopes.
 
-    * https://www.googleapis.com/auth/userinfo.profile - _**always**_
-    * https://www.googleapis.com/auth/devstorage.read_only  - _**if accessing protected Google Cloud Storage files**_
-    * https://www.googleapis.com/auth/drive.readonly' - _**if accessing files stored on Google Drive**_
+    * https://www.googleapis.com/auth/userinfo.profile - _always_
+    * https://www.googleapis.com/auth/devstorage.read_only  - _if accessing protected Google Cloud Storage files_
+    * https://www.googleapis.com/auth/drive.readonly - _if accessing files stored on Google Drive_
   
-* `urlShortener` - An object or function defining a URL shortener to shorten links created by the **Share** button.  The value of this property can be replaced with a function, taking a single argument (the long URL) and returning the shortened URL, or an Object. 
+* **Enabling shortening of shared URLs.** The property `urlShortener` (_optional_) is an object or function defining a URL shortener to shorten links created by the **Share** button.  The value of this property can be replaced with a function, taking a single argument (the long URL) and returning the shortened URL, or an Object. 
+
+### Where to find the configuration files
+
+* If you installed a **pre-built** distribution package, the configuration files can be found in the ```resources``` folder. 
+* In the **the source code**, you will find the configuration files in the ```resources``` folder, but to deploy any changes you make there, you must rebuild the `dist` folder with ``` npm run build```. Alternatively, you can just directly update files in ```dist/resources```; although any changes to files in ```dist``` will be overwritten the next time you do a build.
+
+NOTE: if you change the configuration files, you may need to clear the browser cache before seeing the effect.
 
 ### Default configuration
 
 ```javascript
 var igvwebConfig = {
 
-    genomes: "https://s3.amazonaws.com/igv.org.genomes/genomes.json",
+    genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
 
-    // Supply a Google client id  and apiKey to enable the Google file picker in the load menus.  This is optional
-    // clientId: "...",
+    // Supply a drobpox api key to enable the Dropbox file picker in the load menus.  This is optional
+    //dropboxAPIKey: "...",
+
+    // Supply a Google client id to enable the Google file picker in the load menus.  This is optional
+    //clientId: "...",
     // apiKey: "...",
 
     // Provide a URL shorterner function or object.   This is optional.  If not supplied
@@ -127,24 +133,26 @@ var igvwebConfig = {
         provider: "tinyURL"
     },
 
-    // The igv.js configuration object.  To customize see the [igv.js wiki](https://github.com/igvteam/igv.js/wiki/Browser-Creation).  If 
-    // using a custom reference genome use a ```reference``` object in lieu of the ```genome``` property as described in the igv.js wiki.
     igvConfig:
         {
+            genome: "hg19",
+            locus: "all",
+            genomeList: "resources/genomes.json",
             queryParametersSupported: true,
             showChromosomeWidget: true,
-            genome: "hg38",
             showSVGButton: false,
             tracks: [
-                // TODO -- add default tracks here.  See github.com/igvteam/igv.js/wiki for details
+	    // TODO -- add default tracks here.  See github.com/igvteam/igv.js/wiki for details.
+	    	// For example:
                 // {
                 //     name: "CTCF - string url",
                 //     type: "wig",
                 //     format: "bigwig",
                 //     url: "https://www.encodeproject.org/files/ENCFF563PAW/@@download/ENCFF563PAW.bigWig"
                 // }
-            ]
+	    ]
         }
+
 }
 ```
 
@@ -251,7 +259,7 @@ The following example defines a menu item labeled "My Favorite Platinum Genomes 
 
 ![](img/CustomModalTracks.png)
 
-The following example shows the track configuration file for the same menu item and table as the example above, but in this case the track details are in a file located in the *resources/tracks* directory, as specified by the `data` property. Alternatively, the `data` property can specify a URL to the file. 
+The following example shows the track configuration file for the same menu item and table as the example above, but in this case the track details are in a file located in the *resources/tracks* folder, as specified by the `data` property. Alternatively, the `data` property can specify a URL to the file. 
 
 ```json
 {  
@@ -284,6 +292,10 @@ Daughter,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA128
 Father,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam,gs://genomics-public-data/platinum-genomes/bam/NA12891_S1.bam.bai,NA12891
 Mother,CEPH,gcs,alignment,gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam,gs://genomics-public-data/platinum-genomes/bam/NA12892_S1.bam.bai,NA12892
 ```
+
+### Session Registry
+
+The _Session_ pulldown menu is different depending on the currently selected reference genome. The set of items presented in the menu are defined in the file specified by the `sessionRegistryFile` property in _igvwebConfig.js_ by associating lists of session configuration files with genome IDs. 
 
 ### Data Servers
 

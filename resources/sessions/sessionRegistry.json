@@ -15,6 +15,11 @@
       "name": "SKBR3 - Sniffles and Delly VCF (Schatz)",
       "description": "SKBR3 - Sniffles and Delly VCF (Schatz)",
       "url": "resources/sessions/SKBR3-vcf-session.json"
+  },
+  {
+    "name": "ChIA-Pet - Wei lab GSM3553630",
+    "description": "ChIA-Pet - Wei lab GSM3553630",
+    "url": "resources/sessions/ChIA-Pet-GSM3553630.json"
     }
   ]
 }

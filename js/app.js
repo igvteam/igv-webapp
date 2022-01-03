@@ -101,7 +101,7 @@ async function main(container, config) {
 
     if (config.restoreLastGenome) {
         const lastGenomeId = localStorage.getItem("genomeID")
-        if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
+        if (lastGenomeId && lastGenomeId !== igvConfig.genome && config.genomes.hasOwnProperty(lastGenomeId)) {
             igvConfig.genome = lastGenomeId
             igvConfig.tracks = []
         }

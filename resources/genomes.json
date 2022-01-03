@@ -603,5 +603,22 @@
         "height": 300
       }
     ]
+  },
+  {
+    "id": "t2t-chm13-v1.1",
+    "name": "Human (T2T-CHM13-v1.1)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/GCA_009914755.3_CHM13_T2T_v1.1_genomic.fna",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/GCA_009914755.3_CHM13_T2T_v1.1_genomic.fna.fai",
+    "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/cytoBandIdeo.bed",
+    "tracks": [
+      {
+        "name": "Annotations",
+        "format": "bigbed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/CHM13.combined.v4.bb",
+        "supportsWholeGenome": false,
+        "order": 1000000,
+        "description": "Annotations from <a target='_blank' href='https://genome.ucsc.edu/cgi-bin/hgTracks?db=hub_2395475_t2t-chm13-v1.1'>UCSC</a>.<br/>blue - protein coding<br/>green - non coding<br/>pink - psuedo gene"
+      }
+    ]
   }
 ]

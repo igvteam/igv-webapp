@@ -232,6 +232,10 @@ async function initializationHelper(browser, container, options) {
         sessionLoader,
         sessionSaver)
 
+    if (options.sessionRegistryFile) {
+        await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+    }
+
     createSVGWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
 
     createShareWidgets(shareWidgetConfigurator(browser, container, options))
@@ -248,9 +252,6 @@ async function initializationHelper(browser, container, options) {
 
             await updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
 
-            if (options.sessionRegistryFile) {
-                await updateSessionMenu(genomeID, 'igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
-            }
         }
     }
 
@@ -319,7 +320,7 @@ function queryGoogleAuthenticationStatus(user, isSignedIn) {
     }
 }
 
-async function updateSessionMenu(genomeID, sessionListDivider, sessionRegistryFile, sessionLoader) {
+async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessionLoader) {
 
     let response = undefined
     try {
@@ -328,16 +329,16 @@ async function updateSessionMenu(genomeID, sessionListDivider, sessionRegistryFi
         console.error(e)
     }
 
-    let sessionRegistry = undefined
+    let sessionJSON = undefined
     if (response) {
-        sessionRegistry = await response.json()
+        sessionJSON = await response.json()
     } else {
         const e = new Error("Error retrieving session registry")
         AlertSingleton.present(e.message)
         throw e
     }
 
-    const id_prefix = 'genome_specific_session_file'
+    const id_prefix = 'session_file'
 
     const searchString = `[id^=${id_prefix}]`
     const elements = document.querySelectorAll(searchString)
@@ -347,10 +348,11 @@ async function updateSessionMenu(genomeID, sessionListDivider, sessionRegistryFi
         }
     }
 
-    const sessions = sessionRegistry[genomeID]
-    if (sessions) {
+    if (sessionJSON) {
 
-        for (let {name, url} of sessionRegistry[genomeID]) {
+        const sessions = sessionJSON['sessions']
+
+        for (let {name, url} of sessions.reverse()) {
 
             const referenceNode = document.getElementById(sessionListDivider)
 

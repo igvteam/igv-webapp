@@ -234,6 +234,8 @@ async function initializationHelper(browser, container, options) {
 
     if (options.sessionRegistryFile) {
         await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+    } else {
+        document.querySelector('#igv-session-list-divider').style.display = 'none'
     }
 
     createSVGWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal')})

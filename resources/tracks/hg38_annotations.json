@@ -71,7 +71,7 @@
       "type": "annotation",
       "format": "cpgIslandExt",
       "displayMode": "EXPANDED",
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/cpgIslandExt.txt.gz",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/cpgIslandExt.bed.gz",
       "indexed": false
     },
     {

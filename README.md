@@ -17,9 +17,9 @@ IGV-Web is a pure client web application consisting entirely of static files and
 web server, e.g.  Apache, Flask, Tomcat, nginx, or Amazon S3. You can install it from the pre-built IGV-Web distribution package or by building it from source code. To run the app, refer to your web server documentation for information on serving web content. Some examples are provided 
 in the section on **Running the app** below.
 
-### Option 1: Download the pre-built package
+### Option 1: Download a pre-built package
 
-A zip file containing the pre-built app can be downloaded from [https://igv.org/app-archive](https://igv.org/app-archive).
+Zip files of the current and previous versions of the IGV-Web app are available for [download here](https://igv.org/app-archive).
 
 
 ### Option 2: Build from source code

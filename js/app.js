@@ -465,19 +465,22 @@ async function initializeCircularView() {
     return new Promise((resolve, reject) => {
 
         const react = document.createElement('script')
-        react.setAttribute('src', 'https://unpkg.com/react@16/umd/react.development.js')
+        react.setAttribute('src', 'https://unpkg.com/react@16/umd/react.production.min.js')
+
+        const reactDom = document.createElement('script')
+        reactDom.setAttribute('src', 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js')
+
+        const circView = document.createElement('script')
+        circView.setAttribute('src', 'https://unpkg.com/@jbrowse/react-circular-genome-view/dist/react-circular-genome-view.umd.production.min.js')
+        
         react.addEventListener('load', () => {
             document.head.appendChild(reactDom)
         })
 
-        const reactDom = document.createElement('script')
-        reactDom.setAttribute('src', 'https://unpkg.com/react-dom@16/umd/react-dom.development.js')
         reactDom.addEventListener('load', () => {
             document.head.appendChild(circView)
         })
 
-        const circView = document.createElement('script')
-        circView.setAttribute('src', 'https://unpkg.com/@jbrowse/react-circular-genome-view/dist/react-circular-genome-view.umd.production.min.js')
         circView.addEventListener('load', () => {
             resolve(true)
         })

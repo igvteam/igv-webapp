@@ -28,8 +28,8 @@
     <link rel="stylesheet" href="css/app.css">
 
     <!-- IGV JS-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/igv@2.11.0/dist/igv.min.js"></script>-->
-    <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/igv@2.11.2/dist/igv.min.js"></script>
+    <!--    <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>-->
 
     <!-- Bootstrap 4 and Dependancies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -120,7 +120,8 @@
                         </div>
 
                         <!-- URL -->
-                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-genome-from-url-modal">
+                        <button class="dropdown-item" type="button" data-toggle="modal"
+                                data-target="#igv-app-genome-from-url-modal">
                             URL ...
                         </button>
 
@@ -206,7 +207,8 @@
                                     Local File ...
                                 </div>
                                 <div>
-                                    <input id="igv-app-dropdown-local-session-file-input" type="file" name="file" style="display: none;">
+                                    <input id="igv-app-dropdown-local-session-file-input" type="file" name="file"
+                                           style="display: none;">
                                 </div>
                             </div>
                         </label>
@@ -268,16 +270,19 @@
             <li id="igv-app-circular-view-nav-item" class="nav-item px-3" style="display: none;">
                 <div id="igv-app-circular-view-dropdown" class="dropdown">
 
-                    <a id="igv-app-circular-view-dropdown-button" class="dropdown-toggle" href="#" data-toggle="dropdown">Circular View</a>
+                    <a id="igv-app-circular-view-dropdown-button" class="dropdown-toggle" href="#"
+                       data-toggle="dropdown">Circular View</a>
 
                     <div id="igv-app-circular-view-dropdown-menu" class="dropdown-menu">
-                        <button id="igv-app-circular-view-presentation-button"  class="dropdown-item" type="button">
+                        <button id="igv-app-circular-view-presentation-button" class="dropdown-item" type="button">
                             Show
                         </button>
-                        <button id="igv-app-circular-view-clear-chords-button"  class="dropdown-item" type="button">
+                        <button id="igv-app-circular-view-clear-chords-button" class="dropdown-item" type="button">
                             Clear All
                         </button>
-                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-circular-view-resize-modal" style="display: none;">
+                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button"
+                                data-toggle="modal" data-target="#igv-app-circular-view-resize-modal"
+                                style="display: none;">
                             Resize
                         </button>
                     </div>
@@ -313,14 +318,16 @@
 
                 <div id="igv-google-drive-dropdown" class="dropdown">
 
-                    <button id="igv-google-drive-dropdown-toggle" type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="display: none;">
+                    <button id="igv-google-drive-dropdown-toggle" type="button" class="btn dropdown-toggle"
+                            data-toggle="dropdown" style="display: none;">
                         <img src="img/google-drive-current.png" width="24" height="24">
                     </button>
 
                     <div class="dropdown-menu">
-                        <button id="igv-google-drive-sign-out-button" class="dropdown-item" type="button">Sign out</button>
-<!--                        <button class="dropdown-item" type="button">Unused</button>-->
-<!--                        <button class="dropdown-item" type="button">Unused</button>-->
+                        <button id="igv-google-drive-sign-out-button" class="dropdown-item" type="button">Sign out
+                        </button>
+                        <!--                        <button class="dropdown-item" type="button">Unused</button>-->
+                        <!--                        <button class="dropdown-item" type="button">Unused</button>-->
                     </div>
                 </div>
 
@@ -334,7 +341,8 @@
 <main id="igv-main" role="main" class="container-fluid">
 
     <!-- JBrowser Circular Viewer Container -->
-    <div id="igv-circular-view-container" style="position: absolute; top:200px; left:20px; width: fit-content; height: fit-content;"></div>
+    <div id="igv-circular-view-container"
+         style="position: absolute; top:200px; left:20px; width: fit-content; height: fit-content;"></div>
 
     <!-- App container -->
     <div class="row">

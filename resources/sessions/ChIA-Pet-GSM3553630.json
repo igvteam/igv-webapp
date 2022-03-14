@@ -10,8 +10,7 @@
   "tracks": [
     {
       "url": "https://s3.amazonaws.com/igv.org.demo/GSM3553630_HF-3177_chiapet.trans.chiasig.itx.ge2.bedpe.gz",
-      "name": "GSM3553630 HF-3177 CP Trans",
-      "derivedName": true,
+      "name": "Trans Interactions",
       "format": "bedpe",
       "type": "interact",
       "color": "rgb(180,25,137)",
@@ -27,8 +26,7 @@
     },
     {
       "url": "https://s3.amazonaws.com/igv.org.demo/GSM3553630_HF-3177_chiapet.cis.chiasig.sigf.itx.bedpe.gz",
-      "name": "GSM3553630 HF-3177 CP Cis",
-      "derivedName": true,
+      "name": "Cis Interactions",
       "format": "bedpe",
       "type": "interact",
       "color": "#ff2987",

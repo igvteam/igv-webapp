@@ -259,11 +259,13 @@ async function initializationHelper(browser, container, options) {
 
     if (true === options.enableCircularView) {
 
+        const { x:minX, y:minY } = document.querySelector('#igv-main').getBoundingClientRect()
+
         const circularViewContainer = document.getElementById('igv-circular-view-container')
 
         browser.createCircularView(circularViewContainer, false)
 
-        makeDraggable(circularViewContainer, browser.circularView.toolbar)
+        makeDraggable(circularViewContainer, browser.circularView.toolbar, { minX, minY } )
 
         browser.circularView.setSize(512)
 
@@ -274,8 +276,15 @@ async function initializationHelper(browser, container, options) {
 
             document.getElementById('igv-app-circular-view-presentation-button').innerText = browser.circularViewVisible ? 'Hide' : 'Show'
 
-            document.getElementById('igv-app-circular-view-resize-button').style.display = browser.circularViewVisible ? 'block' : 'none'
-            document.getElementById('igv-app-circular-view-clear-chords-button').style.display = browser.circularViewVisible ? 'block' : 'none'
+            if (browser.circularViewVisible) {
+                document.getElementById('igv-app-circular-view-resize-button').removeAttribute('disabled');
+                document.getElementById('igv-app-circular-view-clear-chords-button').removeAttribute('disabled');
+            } else {
+                document.getElementById('igv-app-circular-view-resize-button').setAttribute('disabled', '');
+                document.getElementById('igv-app-circular-view-clear-chords-button').setAttribute('disabled', '');
+            }
+
+
         })
 
         document.getElementById('igv-app-circular-view-presentation-button').addEventListener('click', e => {
@@ -472,7 +481,7 @@ async function initializeCircularView() {
 
         const circView = document.createElement('script')
         circView.setAttribute('src', 'https://unpkg.com/@jbrowse/react-circular-genome-view/dist/react-circular-genome-view.umd.production.min.js')
-        
+
         react.addEventListener('load', () => {
             document.head.appendChild(reactDom)
         })

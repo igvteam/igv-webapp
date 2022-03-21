@@ -54,7 +54,7 @@
     <!-- Google Platform JS -->
     <script src="https://apis.google.com/js/platform.js"></script>
 
-    <script type="text/javascript" src="./igvwebConfig.js"></script>
+    <script type="text/javascript" src="./igvwebConfig-private.js"></script>
 
     <script type="module" src="js/app.js"></script>
 
@@ -277,15 +277,21 @@
                     <a id="igv-app-circular-view-dropdown-button" class="dropdown-toggle" href="#" data-toggle="dropdown">Circular View</a>
 
                     <div id="igv-app-circular-view-dropdown-menu" class="dropdown-menu">
-                        <button id="igv-app-circular-view-presentation-button"  class="dropdown-item" type="button">
+
+                        <button id="igv-app-circular-view-presentation-button" class="dropdown-item" type="button">
                             Show
                         </button>
-                        <button id="igv-app-circular-view-clear-chords-button"  class="dropdown-item" type="button">
+
+                        <button id="igv-app-circular-view-clear-chords-button" class="dropdown-item" type="button" disabled>
                             Clear All
                         </button>
-                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#igv-app-circular-view-resize-modal" style="display: none;">
+
+                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button" disabled data-toggle="modal" data-target="#igv-app-circular-view-resize-modal">
                             Resize
                         </button>
+
+                        <a id="igv-app-circular-view-example-button" class="dropdown-item" type="button" href="https://github.com/igvteam/igv-webapp/wiki/Circular-View" target="_blank">Examples</a>
+
                     </div>
 
                 </div>

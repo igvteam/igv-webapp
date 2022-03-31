@@ -3,26 +3,26 @@
 	"genome":  "hg19",
 	"tracks": [
 		{
-			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/reads_lr_skbr3.fa_ngmlr-0.2.3_mapped.bam.sniffles1kb_auto_l8_s5_noalt_filtered.vcf.gz",
+			"id": "sniffles",
+			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/reads_lr_skbr3.fa_ngmlr-0.2.3_mapped.bam.sniffles1kb_auto_l8_s5_noalt_filtered.tra.vcf",
 			"type": "variant",
 			"format": "vcf",
-			"name": "Sniffles",
+			"name": "Translocations (Sniffles)",
 			"supportsWholeGenome": true,
 			"visibilityWindow": -1,
 			"showGenotypes": false,
-			"color": "rgb(0,150,0)",
-			"height": 350
+			"height": 40
 		},
 		{
-			"id": "Delly",
-			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_550bp_pcrFREE_S1_L001_AND_L002_R1_001.101bp.bwamem.ill.mapped.sort.bam.delly_noalt_filtered.vcf.gz",
+			"id": "delly",
+			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/SKBR3_550bp_pcrFREE_S1_L001_AND_L002_R1_001.101bp.bwamem.ill.mapped.sort.bam.delly_noalt_filtered.tra.vcf",
 			"type": "variant",
 			"format": "vcf",
-			"name": "delly translocations",
+			"name": "Translocations (Delly)",
 			"supportsWholeGenome": true,
 			"visibilityWindow": -1,
 			"showGenotypes": false,
-			"height": 350
+			"height": 40
 		}
 	]
 }

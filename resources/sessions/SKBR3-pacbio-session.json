@@ -3,13 +3,12 @@
 	"genome": "hg19",
 	"locus": "chr17:64,040,802-64,045,633",
 	"tracks": [
-
 		{
 			"id": "sniffles",
-			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/reads_lr_skbr3.fa_ngmlr-0.2.3_mapped.bam.sniffles1kb_auto_l8_s5_noalt_filtered.vcf.gz",
+			"url": "https://s3.amazonaws.com/igv.org.demo/SKBR3/reads_lr_skbr3.fa_ngmlr-0.2.3_mapped.bam.sniffles1kb_auto_l8_s5_noalt_filtered.tra.vcf",
 			"type": "variant",
 			"format": "vcf",
-			"name": "Sniffles",
+			"name": "Translocations (Sniffles)",
 			"supportsWholeGenome": true,
 			"visibilityWindow": -1,
 			"showGenotypes": false,

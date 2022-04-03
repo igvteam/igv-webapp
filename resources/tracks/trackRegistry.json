@@ -73,5 +73,13 @@
   ],
   "susScr11": [
     "resources/tracks/susScr11_annotations.json"
+  ],
+  "chm13v2.0": [
+    "resources/tracks/chm13v2.0/map.json",
+    "resources/tracks/chm13v2.0/varRep.json",
+    "resources/tracks/chm13v2.0/rna.json",
+    "resources/tracks/chm13v2.0/regulation.json",
+    "resources/tracks/chm13v2.0/compGeno.json"
+
   ]
 }

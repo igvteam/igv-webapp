@@ -1,0 +1,131 @@
+{
+    "tracks": [
+        {
+            "id": "clinVar20220313",
+            "name": "ClinVar Variants",
+            "format": "vcf",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.clinVar20220313.html\">ClinVar Variants 20220313 (lifted)</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.clinVar20220313/chm13v2.0_ClinVar20220313.ncbi-names.vcf.gz",
+            "indexURL": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.clinVar20220313/chm13v2.0_ClinVar20220313.ncbi-names.vcf.gz.tbi",
+            "visibilityWindow": -1
+        },
+        {
+            "id": "gwasSNPs2022-03-08",
+            "name": "GWAS Variants",
+            "format": "vcf",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.gwasSNPs2022-03-08.html\"> GWAS Variants 2022-03-08 (lifted)</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.gwasSNPs2022-03-08/chm13v2.0_GWASv1.0rsids_e100_r2022-03-08.ncbi-names.vcf.gz",
+            "indexURL": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.gwasSNPs2022-03-08/chm13v2.0_GWASv1.0rsids_e100_r2022-03-08.ncbi-names.vcf.gz.tbi",
+            "visibilityWindow": 10000000
+        },
+        {
+            "id": "dbSNP155",
+            "name": "dbSNP 155",
+            "format": "vcf",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.dbSNP155.html\">dbSNP 155 (lifted)</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.dbSNP155/chm13v2.0_dbSNPv155.ncbi-names.vcf.gz",
+            "indexURL": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.dbSNP155/chm13v2.0_dbSNPv155.ncbi-names.vcf.gz.tbi",
+            "visibilityWindow": 10000
+        },
+
+        {
+            "id": "repeatMaskerSINE",
+            "name": "SINE",
+            "format": "bigBed",
+            "description": "SINE Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.SINE.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerLINE",
+            "name": "LINE",
+            "format": "bigBed",
+            "description": "LINE Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.LINE.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerLTR",
+            "name": "LTR",
+            "format": "bigBed",
+            "description": "LTR Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.LTR.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerDNA",
+            "name": "DNA",
+            "format": "bigBed",
+            "description": "DNA Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.DNA.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerSimple",
+            "name": "Simple",
+            "format": "bigBed",
+            "description": "Simple Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.Simple.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerLowComplexity",
+            "name": "Low Complexity",
+            "format": "bigBed",
+            "description": "Low Complexity Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.Low_complexity.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerSatellite",
+            "name": "Satellite",
+            "format": "bigBed",
+            "description": "Satellite Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.Satellite.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerRNA",
+            "name": "RNA",
+            "format": "bigBed",
+            "description": "RNA Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.RNA.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "repeatMaskerOther",
+            "name": "Other",
+            "format": "bigBed",
+            "description": "Other Repeating Elements by RepeatMasker",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rmsk.Other.bb",
+            "parent": "repeatMasker"
+        },
+        {
+            "id": "simpleRepeat",
+            "name": "Simple Repeats",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.simpleRepeat\">Simple Tandem Repeats by TRF</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.simpleRepeat.bb",
+            "displayMode": "COLLAPSED"
+        },
+        {
+            "id": "windowMasker",
+            "name": "WM + SDust",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.windowMasker\">Genomic Intervals Masked by WindowMasker + SDust</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.windowMasker.bb",
+            "displayMode": "COLLAPSED"
+        },
+        {
+            "id": "sedefSegDups",
+            "name": "SEDEF Segmental Dups",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.sedefSegDups.html\">SEDEF Segmental Duplications</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.sedefSegDups/sedefSegDups.bb"
+        }
+    ],
+    "name": "varRep",
+    "label": "Variation and Repeats",
+    "priority": "7",
+    "defaultIsClosed": "0"
+}

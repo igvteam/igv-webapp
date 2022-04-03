@@ -1,5 +1,61 @@
 [
   {
+    "id": "chm13v2.0",
+    "name": "Human (T2T CHM13-v2.0)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0.fa",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0.fa.fai",
+    "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/CHM13_v2.0.cytoBandMapped.bed",
+    "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/GCA_009914755.4.chromAlias.txt",
+    "tracks": [
+      {
+        "id": "catLiftOffGenesV1",
+        "name": "CAT/Liftoff Genes",
+        "format": "bigbed",
+        "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.catLiftOffGenesV1.html\">CAT + Liftoff Gene Annotations</a>",
+        "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.catLiftOffGenesV1/catLiftOffGenesV1.bb",
+        "displayMode": "EXPANDED",
+        "height": 200,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false,
+        "order": 1000000
+      },
+      {
+        "id": "augustus",
+        "name": "Augustus",
+        "format": "bigbed",
+        "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.augustus\">Augustus Gene Predictions</a>",
+        "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.augustus.bb",
+        "displayMode": "EXPANDED",
+        "color": "rgb(180,0,0)",
+        "height": 200,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false,
+        "order": 1000001
+      }
+    ]
+  },
+  {
+    "id": "chm13v1.1",
+    "name": "Human (T2T CHM13-v1.1)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/GCA_009914755.3_CHM13_T2T_v1.1_genomic.fna",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/GCA_009914755.3_CHM13_T2T_v1.1_genomic.fna.fai",
+    "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/cytoBandIdeo.bed",
+    "tracks": [
+      {
+        "name": "Annotations",
+        "type": "annotation",
+        "format": "bigbed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/CHM13.combined.v4.bb",
+        "supportsWholeGenome": false,
+        "height": 500,
+        "displayMode": "EXPANDED",
+        "order": 1000000,
+        "description": "Annotations from <a target='_blank' href='https://genome.ucsc.edu/cgi-bin/hgTracks?db=hub_2395475_t2t-chm13-v1.1'>UCSC</a>.<br/>blue - protein coding<br/>green - non coding<br/>pink - psuedo gene",
+        "visibilityWindow": -1
+      }
+    ]
+  },
+  {
     "id": "hg38",
     "name": "Human (GRCh38/hg38)",
     "fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
@@ -10,9 +66,10 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.sorted.txt.gz",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.sorted.txt.gz.tbi",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz",
+        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz.tbi",
         "visibilityWindow": -1,
+        "supportsWholeGenome": false,
         "removable": false,
         "order": 1000000,
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
@@ -34,6 +91,7 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.sorted.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.sorted.txt.gz.tbi",
         "visibilityWindow": -1,
+        "supportsWholeGenome": false,
         "removable": false,
         "order": 1000000,
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
@@ -52,9 +110,11 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
+        "id": "hg19_genes",
         "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
         "visibilityWindow": -1,
+        "supportsWholeGenome": false,
         "removable": false,
         "order": 1000000,
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
@@ -76,7 +136,8 @@
         "indexed": false,
         "visibilityWindow": -1,
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "searchable": true
       }
     ],
     "chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
@@ -94,7 +155,9 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/mm39/ncbiRefSeq.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/mm39/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -152,7 +215,9 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/rn7/ncbiRefSeq.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/rn7/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -190,7 +255,9 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/gorGor6/ncbiRefSeq.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/gorGor6/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -209,7 +276,8 @@
         "indexed": false,
         "order": 1000000,
         "removable": false,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -227,7 +295,9 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/panTro6/ncbiRefSeq.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/panTro6/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -245,7 +315,9 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/panTro5/ncbiRefSeq.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/panTro5/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -264,7 +336,8 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/panTro4/refGene.sorted.txt.gz.tbi",
         "removable": false,
         "order": 1000000,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -283,7 +356,8 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/panPan2/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
         "order": 1000000,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -302,7 +376,8 @@
         "indexed": false,
         "removable": false,
         "order": 1000000,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -320,7 +395,9 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/canFam5/refGene.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/canFam5/refGene.txt.gz.tbi",
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -338,7 +415,8 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/bosTau9/ncbiRefSeq.sorted.txt.gz.tbi",
         "removable": false,
         "order": 1000000,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -356,7 +434,8 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/bosTau8/refGene.sorted.txt.gz.tbi",
         "removable": false,
         "order": 1000000,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -375,7 +454,8 @@
         "indexed": false,
         "removable": false,
         "order": 1000000,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -392,7 +472,8 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/galGal6/ncbiRefSeq.txt.gz",
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/galGal6/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "searable": true
       }
     ]
   },
@@ -411,7 +492,8 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/danRer11/ncbiRefSeq.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -430,7 +512,8 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/danRer10/ncbiRefSeq.sorted.txt.gz.tbi",
         "order": 1000000,
         "removable": false,
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false
       }
     ]
   },
@@ -445,11 +528,10 @@
         "name": "Refseq Genes",
         "format": "refgene",
         "url": "https://s3.amazonaws.com/igv.org.genomes/ce11/refGene.sorted.txt.gz",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/ce11/refGene.sorted.txt.gz.tbi",
         "indexed": false,
         "order": 1000000,
         "removable": false,
-        "visibilityWindow": -1
+        "searchable": true
       }
     ]
   },
@@ -467,7 +549,7 @@
         "indexed": false,
         "order": 1000000,
         "removable": false,
-        "visibilityWindow": -1
+        "searable": true
       }
     ]
   },
@@ -485,7 +567,7 @@
         "indexed": false,
         "order": 1000000,
         "removable": false,
-        "visibilityWindow": -1
+        "searchable": true
       }
     ]
   },
@@ -501,7 +583,8 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/dmel_r5.9/dmel-r5.9.transcripts.sorted.gff.gz",
         "indexed": false,
         "order": 1000000,
-        "removable": false
+        "removable": false,
+        "searable": true
       }
     ]
   },
@@ -517,7 +600,8 @@
         "format": "refgene",
         "displayMode": "EXPANDED",
         "url": "https://s3.amazonaws.com/igv.org.genomes/sacCer3/ncbiRefGene.txt.gz",
-        "indexed": false
+        "indexed": false,
+        "searable": true
       }
     ]
   },
@@ -581,7 +665,8 @@
         "url": "https://s3.amazonaws.com/igv.org.genomes/tair10/TAIR10_GFF3_genes.gff",
         "indexed": false,
         "removable": false,
-        "order": 1000000
+        "order": 1000000,
+        "searable": true
       }
     ]
   },
@@ -598,26 +683,10 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/GCA_003086295.2/GCF_003086295.2_arahy.Tifrunner.gnm1.KYV3_genomic.gff.gz.tbi",
         "removable": false,
         "order": 1000000,
-        "visibilityWindow": 0,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false,
         "displayMode": "EXPANDED",
         "height": 300
-      }
-    ]
-  },
-  {
-    "id": "t2t-chm13-v1.1",
-    "name": "Human (T2T-CHM13-v1.1)",
-    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/GCA_009914755.3_CHM13_T2T_v1.1_genomic.fna",
-    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/GCA_009914755.3_CHM13_T2T_v1.1_genomic.fna.fai",
-    "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/cytoBandIdeo.bed",
-    "tracks": [
-      {
-        "name": "Annotations",
-        "format": "bigbed",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/CHM13.combined.v4.bb",
-        "supportsWholeGenome": false,
-        "order": 1000000,
-        "description": "Annotations from <a target='_blank' href='https://genome.ucsc.edu/cgi-bin/hgTracks?db=hub_2395475_t2t-chm13-v1.1'>UCSC</a>.<br/>blue - protein coding<br/>green - non coding<br/>pink - psuedo gene"
       }
     ]
   }

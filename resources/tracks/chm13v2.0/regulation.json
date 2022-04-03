@@ -1,0 +1,24 @@
+{
+    "tracks": [
+        {
+            "id": "cpgIslandExt",
+            "name": "CpG Islands",
+            "format": "bigBed",
+            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.cpgIslands\">CpG Islands (Islands < 300 Bases are Light Green)</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.cpgIslandExt.bb",
+            "parent": "cpgIslands off"
+        },
+        {
+            "id": "cpgIslandExtUnmasked",
+            "name": "Unmasked CpG",
+            "format": "bigBed",
+            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.cpgIslands\">CpG Islands on All Sequence (Islands < 300 Bases are Light Green)</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.cpgIslandExtUnmasked.bb",
+            "parent": "cpgIslands on"
+        }
+    ],
+    "name": "regulation",
+    "label": "Expression and Regulation",
+    "priority": "5",
+    "defaultIsClosed": "0"
+}

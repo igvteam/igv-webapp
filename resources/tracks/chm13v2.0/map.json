@@ -6,7 +6,7 @@
             "format": "bigBed",
             "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.assembly\">Assembly</a>",
             "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.assembly.bb",
-            "displayMode": "EXPANDED",
+            "displayMode": "COLLAPSED",
             "color": "rgb(50,100,30)",
             "altColor": "rgb(230,170,4)",
             "colorBy": "strand",
@@ -33,7 +33,9 @@
             "format": "bigBed",
             "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.tanDups\">Paired exactly identical sequence survey over entire genome assembly</a>",
             "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.tandemDups.bb",
-            "parent": "tanDups on"
+            "parent": "tanDups on",
+            "visibilityWindow": -1,
+            "supportsWholeGenome": false
         },
         {
             "id": "rdnaModel",
@@ -52,6 +54,5 @@
     ],
     "name": "map",
     "label": "Mapping and Sequencing",
-    "priority": "2",
-    "defaultIsClosed": "0"
+    "description": "Data tracks from UCSC <a href=https://genome.ucsc.edu/h/GCA_009914755.4 target=_blank> Track Hub</a>"
 }

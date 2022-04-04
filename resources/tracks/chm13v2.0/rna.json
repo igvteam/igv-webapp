@@ -7,7 +7,10 @@
       "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.xenoRefGene\">RefSeq mRNAs mapped to this assembly</a>",
       "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.xenoRefGene.bb",
       "displayMode": "EXPANDED",
-      "color": "rgb(180,0,0)"
+      "color": "rgb(180,0,0)",
+      "visibilityWindow": -1,
+      "supportsWholeGenome": false
+
     },
     {
       "id": "proseq_default_POS",
@@ -120,6 +123,5 @@
   ],
   "name": "rna",
   "label": "mRNA and EST",
-  "priority": "4",
-  "defaultIsClosed": "0"
+  "description": "Data tracks from UCSC <a href=https://genome.ucsc.edu/h/GCA_009914755.4 target=_blank> Track Hub</a>"
 }

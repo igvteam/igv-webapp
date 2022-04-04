@@ -26,6 +26,5 @@
     ],
     "name": "genes",
     "label": "Genes and Gene Predictions",
-    "priority": "3",
-    "defaultIsClosed": "0"
+    "description": "Data tracks from UCSC <a href=https://genome.ucsc.edu/h/GCA_009914755.4 target=_blank> Track Hub</a>"
 }

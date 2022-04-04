@@ -47,7 +47,7 @@
         "format": "bigbed",
         "url": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/CHM13.combined.v4.bb",
         "supportsWholeGenome": false,
-        "height": 500,
+        "height": 200,
         "displayMode": "EXPANDED",
         "order": 1000000,
         "description": "Annotations from <a target='_blank' href='https://genome.ucsc.edu/cgi-bin/hgTracks?db=hub_2395475_t2t-chm13-v1.1'>UCSC</a>.<br/>blue - protein coding<br/>green - non coding<br/>pink - psuedo gene",
@@ -338,6 +338,26 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      }
+    ]
+  },
+  {
+    "id": "macFas5",
+    "name": "Macaca fascicularis (macFas5)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/macFas5/macFas5.fa",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/macFas5/macFas5.fa.fai",
+    "cytobandURL": "https://hgdownload.soe.ucsc.edu/goldenPath/macFas5/database/cytoBandIdeo.txt.gz",
+    "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/macFas5/chrAlias.tab.gz",
+    "tracks": [
+      {
+        "name": "Genes",
+        "format": "refgene",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/macFas5/ncbiRefSeq.txt.gz",
+        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/macFas5/ncbiRefSeq.txt.gz.tbi",
+        "removable": false,
+        "visibilityWindow": -1,
+        "supportsWholeGenome": false,
+        "order": 1000000
       }
     ]
   },

@@ -23,20 +23,20 @@ IGV displays data mapped to the genomic coordinates of a reference genome. When 
 
 #### Selecting a pre-defined genome
 
-The available pre-defined genomes are listed at the top of the menu. If you select any of these genomes, a corresponding gene annotation track will also be loaded.
+The available pre-defined genomes are listed in the menu. If you select any of these genomes, a corresponding gene annotation track will also be loaded.
 
-> Note: The menu includes the complete list of pre-defined genomes. Unlike IGV-Desktop, there is no `More...` entry at the bottom of the menu to access a longer list.
+> Note: The menu includes the complete list of available pre-defined genomes. Unlike IGV-Desktop, there is no `More...` entry at the bottom of the menu to access a longer list.
 
-#### Loading a genome file
+#### Loading a genome sequence file
 
-If you have an indexed FASTA file of your reference genome sequence, you can load it using one of the options in the bottom part of the menu: 
+If you have an indexed FASTA file of your reference genome sequence, you can load it using one of the options in the top part of the menu: 
 
 * `Local File`
 * `Dropbox`
 * `Google Drive`
 * `URL`
 
-Selecting the `URL` option will present a dialog to enter the full web link URL to the FASTA file and to the corresponding index file. For the other options, both the FASTA file and the index file must be selected from the file chooser that pops up.
+Selecting the `URL` option will present a dialog where you enter the full web link URL to the FASTA file and to the corresponding index file. For the other options, both the FASTA file and the index file must be selected from the file chooser that pops up.
 
 > **Note:** A FASTA file only has the sequence data and IGV cannot display the cytoband ideogram in the chromosome ruler or automatically load a corresponding gene annotation track. You can load a gene annotation file directly via the `Tracks` menu.
 
@@ -50,7 +50,7 @@ To load data and genomic annotations, click on the `Tracks` dropdown menu and ei
 
 #### Selecting a pre-defined track
 
-Categories of available pre-defined tracks are listed at the bottom of the menu. Clicking on a category will open a list of datasets. For example, if `ENCODE` is one of the menu items, clicking on it will bring up a list of datasets available from the ENCODE data portal (Encyclopedia of DNA Elements, <https://www.encodeproject.org>). 
+Categories of available pre-defined tracks are listed in the menu. Clicking on a category will open a list of datasets. For example, if `ENCODE` is one of the menu items, clicking on it will bring up a list of datasets available from the ENCODE data portal (Encyclopedia of DNA Elements, <https://www.encodeproject.org>). 
 
 > **Note:** The set of pre-defined tracks presented in the menu varies depending on the current reference genome. Some genomes do not come with any pre-defined tracks. 
 
@@ -63,7 +63,7 @@ To load track data from a file, use one of the options in the top part of the me
 * `Google Drive`
 * `URL`
 
-Selecting the `URL` option will present a dialog to enter the full web link URL to one data file and the corresponding index file, if there is one. For the other options, a file chooser pops up and you can select files for mulitple tracks, along with the corresponding index files. 
+Selecting the `URL` option will present a dialog where you enter the full web link URL to one data file and the corresponding index file, if there is one. For the other options, a file chooser pops up and you can select files for mulitple tracks, along with the corresponding index files. 
 
 > **Note:** For indexed files, e.g. BAM files, you must explicitly select the index file along with the data file. If you also use IGV-Desktop, you may be used to IGV automatically finding and loading the index file. This is not always possible from a web browser, so the behavior is different in IGV-Web.
 
@@ -80,13 +80,13 @@ IGV-Web provides several navigation controls for specifying the genomic region t
 * **Select a chromosome.** The chromosome dropdown menu in the toolbar includes an entry for every chromosome or contig in the current reference genome. Selecting a chromosome from the menu will set the view to include the whole chromosome. The ruler also includes a cytoband ideogram if you selected one of the pre-defined reference genomes.
 ![](./assets/images/ToolbarRulerChr1_2.png)
 
-* **Select chromosome "all"**. At the top of the list of chromosomes in the dropdown menu there is also the special entry `all` to view the whole genome, with all the chromosomes layed out side-by-side. 
+* **Select chromosome "all"**. At the top of the list of chromosomes in the dropdown menu there is also the special entry `all` to view the whole genome, with all the chromosomes layed out side-by-side. Or you can enter `all` in the text box where the genomic coordinates are displayed.
 ![](./assets/images/ToolbarRulerChrAll_2.png)   
 	* Clicking on a chromosome in the whole-genome ruler will set the view to that chromosome, just like selecting the chromosome from the dropdown menu.
 
 * **Enter genomic coordinates.** In the text box where the genomic coordinates are displayed, you can type the coordinates of the region you want to view (e.g. *chr17:41,195,312-41,278,500*). The thousands separator is optional, but the chromosome name is required. 
 
-* **Search by gene name.** In the text box where the genomic coordinates are displayed, type the name of a gene (e.g. *BRCA1*) and hit return or click on the magnifying glass. IGV will look up the genomic coordinates for that gene and set the viewing region accordingly. *Currently for human and mouse genomes only.*
+* **Search by gene name.** In the text box where the genomic coordinates are displayed, type the name of a gene (e.g. *BRCA1*) and hit return or click on the magnifying glass. IGV will look up the genomic coordinates for that gene and set the viewing region accordingly. *Currently supported for human and mouse genomes only.*
 
 * **Enter multiple loci.** In the text box, you can enter multiple regions by gene name, genomic coordinates, or a mixture of the two, separated by spaces (e.g. *BRCA2 BRCA2 KRAS*). This will split up the IGV view into multiple panels and display the regions side-by-side, each with its own ruler. 
 ![](./assets/images/ToolbarRulerMultilocus_2.png)   
@@ -153,7 +153,7 @@ When you load a data track, it will be positioned just above this gene annotatio
 
 By default, the annotations are displayed in a compact mode, where overlapping transcripts are collapsed into a single line:
 ![](./assets/images/GenesCollapsed.png)
-The track gear menu provides two different options for expanding the display to show the overlapping features on separate lines:
+The track gear menu provides two different options for expanding the display to show the overlapping features on separate lines: 
 ![](./assets/images/GenesExpanded.png)
 ![](./assets/images/GenesSquished.png)
 
@@ -170,7 +170,7 @@ Be aware that the saved state of an IGV session includes pointers to the data fi
 
 
 ### Session files
-To save a file that contains the state of the current IGV session, click on the `Session` dropdown menu and select `Save`. In the dialog that pops up, you can set the name of the file. As noted in the dialog, the filename must have the .json suffix, or it will not be recognized as a session file when later loaded into IGV-Web. Depending on your web browser settings, the file will be saved to your default downloads folder or you will be prompted to specify a destination folder. 
+To save a file that contains the state of the current IGV session, click on the `Session` dropdown menu, select `Save`, and enter a filename into the dialog that pops up. The filename must have the .json suffix, or it will not be recognized as a session file when later loaded into IGV-Web. Depending on your web browser settings, the file will be saved to your default downloads folder or you will be prompted to specify a destination folder. 
 
 You can share your session with others, for example by emailing it to them, or copying the saved file to a shared file system, or uploading it to Dropbox, Google Drive, or a web server.
 
@@ -184,10 +184,10 @@ To restore a session from a saved file, click on the `Session` dropdown menu and
 Selecting the `URL` option will present a dialog to enter the full web link URL to the session file. For the other options, a file chooser pops up. If you select the `Google Drive` option, you will be prompted to sign into a Google account, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. 
 
 #### Session files from IGV-Desktop
-Session files that were saved from the Java desktop version of IGV can also be loaded into IGV-Web via the `Session` dropdown menu. However, IGV-Desktop supports more features and file types than the IGV-Web app, and so the session may not be completely restored. Also note that session files saved in IGV-Web currently cannot be loaded into IGV-Desktop.
+Session files that were saved in the Java desktop version of IGV can also be loaded into IGV-Web via the `Session` dropdown menu. However, IGV-Desktop supports more features and file types than the IGV-Web app, and so the session may not be completely restored. Also note that session files saved in IGV-Web currently cannot be loaded into IGV-Desktop.
 
 ### Bookmarks
-To bookmark the current state of the IGV page in your web browser, first click on `Bookmark` in the IGV-Web menu bar. This will update the URL in the browser's address bar. Then you can use your browser to save a bookmark for the page (in most web browsers use `Command+D` on MacOS, `Ctrl+D` on Windows). 
+To bookmark the current state of the IGV page in your web browser, first click on `Bookmark` in the IGV-Web menu bar. This will update the URL in the web browser's address bar. Then you can use your browser to save a bookmark for the page (in most web browsers use `Command+D` on MacOS, `Ctrl+D` on Windows). 
 
 To restore a bookmarked session, use your browser's mechanism for going back to a bookmarked page.
 
@@ -206,10 +206,13 @@ To restore a session from URL, paste it into a browser address bar, or click on 
 Two options are provided for saving images from the IGV-Web app: 
 
 * Click on `Save SVG` in the app menu bar to create an image that includes all the data tracks as currently displayed, as well as the ruler and cytoband ideogram. The image file will be saved in SVG format, a scalable vector format that is useful for creating figures for publication. 
-* You can save the image of an individual track via the track *popup menu*. Select from SVG or PNG format. 
+* You can save the image of an individual track via the track *popup menu*. Select SVG or PNG format. 
 
 Depending on your web browser settings, the image files will be saved to your default downloads folder or you will be prompted to specify a destination folder. 
 
+
+# Circular View
+(Introduced in IGV-Web version 1.9.0) In collaboration with the JBrowse development team, we integrated the JBrowse 2 circular view component for exploring structural variants, chromatin interactions, and other long-distance interactions. Currently this integration supports structural variants from VCF files, paired-end and split-read alignments from BAM/CRAM files, and interaction pairs from bedPE and interact tracks. See [here](https://github.com/igvteam/igv-webapp/wiki/Circular-View) for more information about using the circular view with IGV-Web.
 
 # Help Menu
 
@@ -222,6 +225,6 @@ The `Help` dropdown menu provides links to:
 
 # Supported Browsers
 
-IGV-Web requires a modern web browser with support for JavaScript ECMAScript 2015. We try to test on the latest versions of Chrome, Safari, Firefox, and Edge. Internet Explorer (IE) is not supported.
+IGV-Web requires a modern web browser with support for JavaScript ECMAScript 2015. We try to test on the latest versions of Chrome, Safari, Firefox, and Edge. The Internet Explorer (IE) browser is not supported.
 
 *GitHub Pages theme adapted from [mattgraham](https://twitter.com/mattgraham)* 

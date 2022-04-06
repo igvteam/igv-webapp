@@ -92,16 +92,15 @@ async function main(container, config) {
 
     // Load genomes for use by igv.js and webapp
     if (config.genomes) {
-        let tmp = await getGenomesArray(config.genomes)
-        config.genomes = tmp
-        config.igvConfig.genomes = tmp
+        config.genomes = await getGenomesArray(config.genomes)
+        config.igvConfig.genomes = config.genomes
     }
 
     const igvConfig = config.igvConfig
 
     if (config.restoreLastGenome) {
         const lastGenomeId = localStorage.getItem("genomeID")
-        if (lastGenomeId && lastGenomeId !== igvConfig.genome && config.genomes.hasOwnProperty(lastGenomeId)) {
+        if (lastGenomeId && lastGenomeId !== igvConfig.genome && config.genomes.find( elem => elem.id === lastGenomeId)) {
             igvConfig.genome = lastGenomeId
             igvConfig.tracks = []
         }

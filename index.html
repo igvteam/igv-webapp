@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="css/app.css">
 
     <!-- IGV JS-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/igv@2.12.0/dist/igv.min.js"></script>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/igv@2.12.0/dist/igv.min.js"></script>-->
     <script src="https://igv.org/web/snapshot/dist/igv.min.js"></script>
 
     <!-- Bootstrap 4 and Dependancies -->
@@ -270,7 +270,8 @@
             <li id="igv-app-circular-view-nav-item" class="nav-item px-3" style="display: none;">
                 <div id="igv-app-circular-view-dropdown" class="dropdown">
 
-                    <a id="igv-app-circular-view-dropdown-button" class="dropdown-toggle" href="#" data-toggle="dropdown">Circular View</a>
+                    <a id="igv-app-circular-view-dropdown-button" class="dropdown-toggle" href="#"
+                       data-toggle="dropdown">Circular View</a>
 
                     <div id="igv-app-circular-view-dropdown-menu" class="dropdown-menu">
 
@@ -278,15 +279,19 @@
                             Show
                         </button>
 
-                        <button id="igv-app-circular-view-clear-chords-button" class="dropdown-item" type="button" disabled>
+                        <button id="igv-app-circular-view-clear-chords-button" class="dropdown-item" type="button"
+                                disabled>
                             Clear All
                         </button>
 
-                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button" disabled data-toggle="modal" data-target="#igv-app-circular-view-resize-modal">
+                        <button id="igv-app-circular-view-resize-button" class="dropdown-item" type="button" disabled
+                                data-toggle="modal" data-target="#igv-app-circular-view-resize-modal">
                             Resize
                         </button>
 
-                        <a id="igv-app-circular-view-example-button" class="dropdown-item" type="button" href="https://github.com/igvteam/igv-webapp/wiki/Circular-View" target="_blank">Documentation</a>
+                        <a id="igv-app-circular-view-example-button" class="dropdown-item" type="button"
+                           href="https://github.com/igvteam/igv-webapp/wiki/Circular-View"
+                           target="_blank">Documentation</a>
 
                     </div>
 
@@ -345,7 +350,7 @@
 
     <!-- JBrowser Circular Viewer Container -->
     <div id="igv-circular-view-container"
-         style="position: absolute; top:200px; left:20px; width: fit-content; height: fit-content;"></div>
+         style="position: absolute; top:200px; left:20px; width: fit-content; height: fit-content;z-index: 2048"></div>
 
     <!-- App container -->
     <div class="row">

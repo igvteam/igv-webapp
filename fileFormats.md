@@ -2,17 +2,27 @@
 
 * bam
 * bed
-* bedpe
 * bigbed
+* bedpe
 * bedgraph
-* bigwig
+* broadpeak
+* bp (rna secondary structure)
 * cram
 * fasta (for reference genome sequence)
+* genepred
+* genepredext
 * gff3
 * gtf
+* gwas
+* interact
+* maf (mutation annotation format)
+* mut
+* narrowpeak
+* seg
 * tdf
 * vcf
 * wig
+* bigwig
 
 ### Index file formats
 
@@ -24,4 +34,4 @@ Index files are required for bam and cram files, and strongly recommended for an
 * bed, bedgraph, gff3, gtf, vcf:  ".gz.tbi"  tabix index files
 * bed, gff3, gtf, vcf:  IGV/tribble ".idx" index files.  
 
-
+_Last updated April 2022_

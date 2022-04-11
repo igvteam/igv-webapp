@@ -5,7 +5,7 @@
             "name": "GRCh38/hg38 liftOver",
             "format": "bigChain",
             "description": "GRCh38/hg38 v1_nfLO liftOver alignments",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.hgLiftOver/chm13v2-hg38.over.chain.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.hgLiftOver/chm13v2-hg38.over.chain.bb",
             "displayMode": "COLLAPSED",
             "color": "rgb(120,20,0)",
             "parent": "hgLiftOver"
@@ -15,7 +15,7 @@
             "name": "GRCh37/hg19 liftOver",
             "format": "bigChain",
             "description": "GRCh37/hg19 v1_nfLO liftOver alignments",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.hgLiftOver/chm13v2-hg19.over.chain.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.hgLiftOver/chm13v2-hg19.over.chain.bb",
             "displayMode": "COLLAPSED",
             "color": "rgb(120,20,0)",
             "parent": "hgLiftOver"
@@ -25,7 +25,7 @@
             "name": "CHM13 unique for hg38",
             "format": "bigBed",
             "description": " CHM13 unique in comparison to GRCh38/hg38",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.hgUnique/hgUnique.hg38.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.hgUnique/hgUnique.hg38.bb",
             "displayMode": "COLLAPSED",
             "color": "rgb(100,0,200)",
             "parent": "hgUnique"
@@ -35,7 +35,7 @@
             "name": "CHM13 unique for hg19",
             "format": "bigBed",
             "description": " CHM13 unique in comparison to GRCh37/hg19",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.hgUnique/hgUnique.hg19.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.hgUnique/hgUnique.hg19.bb",
             "displayMode": "COLLAPSED",
             "color": "rgb(200,0,100)",
             "parent": "hgUnique"
@@ -45,7 +45,7 @@
             "name": "Human Chain",
             "format": "bigChain",
             "description": "Human (Dec. 2013 (GRCh38/hg38)) Chained Alignments",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.chainHg38.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.chainHg38.bb",
             "parent": "chainNetHg38Viewchain"
         },
         {
@@ -53,7 +53,7 @@
             "name": "Human synChain",
             "format": "bigChain",
             "description": "Human (Dec. 2013 (GRCh38/hg38)) Syntenic Chained Alignments",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.chainSynHg38.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.chainSynHg38.bb",
             "parent": "chainNetHg38Viewchain"
         },
         {
@@ -61,7 +61,7 @@
             "name": "Human rbChain",
             "format": "bigChain",
             "description": "Human (Dec. 2013 (GRCh38/hg38)) Reciprocal Best Chained Alignments",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.chainRBestHg38.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.chainRBestHg38.bb",
             "parent": "chainNetHg38Viewchain"
         },
         {
@@ -69,7 +69,7 @@
             "name": "Human net",
             "format": "bigMaf",
             "description": "Human (Dec. 2013 (GRCh38/hg38)) Net Alignment",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.hg38.net.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.hg38.net.bb",
             "parent": "mafNetHg38Viewnet"
         },
         {
@@ -77,7 +77,7 @@
             "name": "Human synNet",
             "format": "bigMaf",
             "description": "Human (Dec. 2013 (GRCh38/hg38)) Syntenic Net Alignment",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.hg38.synNet.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.hg38.synNet.bb",
             "parent": "mafNetHg38Viewnet"
         },
         {
@@ -85,7 +85,7 @@
             "name": "Human rbestNet",
             "format": "bigMaf",
             "description": "Human (Dec. 2013 (GRCh38/hg38)) Reciprocal Best Net Alignment",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.hg38.rbestNet.bb",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.hg38.rbestNet.bb",
             "parent": "mafNetHg38Viewnet"
         }
     ],

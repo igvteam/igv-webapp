@@ -4,8 +4,8 @@
             "id": "assembly",
             "name": "Assembly",
             "format": "bigBed",
-            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.assembly\">Assembly</a>",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.assembly.bb",
+            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_T2T-CHM13v2.0.assembly\">Assembly</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.assembly.bb",
             "displayMode": "COLLAPSED",
             "color": "rgb(50,100,30)",
             "altColor": "rgb(230,170,4)",
@@ -16,8 +16,8 @@
             "id": "gc5Base",
             "name": "GC Percent",
             "format": "bigWig",
-            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.gc5Base\">GC Percent in 5-Base Windows</a>",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.gc5Base.bw",
+            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_T2T-CHM13v2.0.gc5Base\">GC Percent in 5-Base Windows</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.gc5Base.bw",
             "displayMode": "EXPANDED",
             "color": "rgb(0,0,0)",
             "altColor": "rgb(128,128,128)",
@@ -31,8 +31,8 @@
             "id": "tandemDups",
             "name": "Tandem Dups",
             "format": "bigBed",
-            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.tanDups\">Paired exactly identical sequence survey over entire genome assembly</a>",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.tandemDups.bb",
+            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_T2T-CHM13v2.0.tanDups\">Paired exactly identical sequence survey over entire genome assembly</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.tandemDups.bb",
             "parent": "tanDups on",
             "visibilityWindow": -1,
             "supportsWholeGenome": false
@@ -41,15 +41,15 @@
             "id": "rdnaModel",
             "name": "rDNA models",
             "format": "bigBed",
-            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.rdnaModel.html\">Consensus rDNA models</a>",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.rdnaModel/rdnaModel.bb"
+            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_T2T-CHM13v2.0.rdnaModel.html\">Consensus rDNA models</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rdnaModel/rdnaModel.bb"
         },
         {
             "id": "censat",
             "name": "CenSat Annotation",
             "format": "bigBed",
-            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_CHM13_T2T_v2.0.censat.html\">Centromeric Satellite Annotation</a>",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_CHM13_T2T_v2.0.censat/censat.bb"
+            "description": "<a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/html/GCA_009914755.4_T2T-CHM13v2.0.censat.html\">Centromeric Satellite Annotation</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.censat/censat.bb"
         }
     ],
     "name": "map",

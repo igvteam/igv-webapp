@@ -479,7 +479,7 @@ async function initializeCircularView() {
         reactDom.setAttribute('src', 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js')
 
         const circView = document.createElement('script')
-        circView.setAttribute('src', 'https://unpkg.com/@jbrowse/react-circular-genome-view/dist/react-circular-genome-view.umd.production.min.js')
+        circView.setAttribute('src', 'https://unpkg.com/@jbrowse/react-circular-genome-view@1.6.9/dist/react-circular-genome-view.umd.production.min.js')
 
         react.addEventListener('load', () => {
             document.head.appendChild(reactDom)

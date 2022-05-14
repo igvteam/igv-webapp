@@ -4,13 +4,23 @@
   "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
-      "name": "Gencode v28 Basic",
+      "name": "Gencode v40",
       "type": "annotation",
-      "format": "gtf",
+      "format": "gff3",
       "displayMode": "EXPANDED",
       "height": 300,
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/gencode.v28.basic.annotation.sorted.gtf.gz.tbi",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/gencode.v40.annotation.gff3.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/gencode.v40.annotation.gff3.gz.tbi",
+      "visibilityWindow": 1000000
+    },
+    {
+      "name": "Gencode v36",
+      "type": "annotation",
+      "format": "gff3",
+      "displayMode": "EXPANDED",
+      "height": 300,
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/gencode.v36.annotation.gff3.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/gencode.v36.annotation.gff3.gz.tbi",
       "visibilityWindow": 1000000
     },
     {

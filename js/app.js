@@ -62,7 +62,7 @@ async function main(container, config) {
     }
 
     const enableGoogle = (config.clientId || config.apiKey) &&
-        (window.location.protocol === "https:" || window.location.host === "localhost")
+        (window.location.protocol === "https:" || window.location.host.startsWith("localhost"))
 
     if (enableGoogle) {
 
@@ -74,8 +74,10 @@ async function main(container, config) {
             })
             googleEnabled = true
         } catch (e) {
-            console.error(e)
-            AlertSingleton.present(e.message)
+            const message = e.message || "Error initializing Google Drive.  Are 3rd party cookies blocked?"
+            console.error(message)
+            alert(message)
+            //AlertSingleton.present(e.message)
         }
 
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()

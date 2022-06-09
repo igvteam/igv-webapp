@@ -163,7 +163,11 @@ async function loadGenome(genomeConfiguration) {
         }
         g = await Globals.browser.loadGenome(genomeConfiguration);
         if(g.id) {
-            localStorage.setItem("genomeID", g.id);
+            try {
+                localStorage.setItem("genomeID", g.id)
+            } catch (e) {
+                console.error(e)
+            }
         }
 
     } catch (e) {

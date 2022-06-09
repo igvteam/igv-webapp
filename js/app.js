@@ -101,10 +101,14 @@ async function main(container, config) {
     const igvConfig = config.igvConfig
 
     if (config.restoreLastGenome) {
-        const lastGenomeId = localStorage.getItem("genomeID")
-        if (lastGenomeId && lastGenomeId !== igvConfig.genome && config.genomes.find( elem => elem.id === lastGenomeId)) {
-            igvConfig.genome = lastGenomeId
-            igvConfig.tracks = []
+        try {
+            const lastGenomeId = localStorage.getItem("genomeID")
+            if (lastGenomeId && lastGenomeId !== igvConfig.genome && config.genomes.find(elem => elem.id === lastGenomeId)) {
+                igvConfig.genome = lastGenomeId
+                igvConfig.tracks = []
+            }
+        } catch (e) {
+            console.error(e)
         }
     }
 

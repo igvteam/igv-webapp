@@ -76,7 +76,7 @@ async function main(container, config) {
         } catch (e) {
             const message = e.message || "Error initializing Google Drive.  Are 3rd party cookies blocked?"
             console.error(message)
-            alert(message)
+            //alert(message)
             //AlertSingleton.present(e.message)
         }
 

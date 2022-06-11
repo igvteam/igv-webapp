@@ -43,7 +43,7 @@ import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 
-$(document).ready(async () => main(document.getElementById('igv-app-container'), igvwebConfig))
+document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
 let dropboxEnabled = false
 let googleEnabled = false
@@ -74,10 +74,9 @@ async function main(container, config) {
             })
             googleEnabled = true
         } catch (e) {
-            const message = e.message || "Error initializing Google Drive.  Are 3rd party cookies blocked?"
-            console.error(message)
-            //alert(message)
-            //AlertSingleton.present(e.message)
+            const str = `Error initializing Google Drive: ${ e.message || e.details }`
+            console.error(str)
+            AlertSingleton.present(str)
         }
 
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()

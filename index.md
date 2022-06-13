@@ -13,7 +13,7 @@ IGV-Web is developed by the same team that develops the IGV desktop application.
 
 In a [web browser](#supported-browsers), navigate to <https://igv.org/app>.   
 
-> **Note:** Make sure that popups are not disabled in your web browser as some features rely on them. For example, loading tracks and genomes from files in Google Drive may pop up a login window.
+> **Note:** Make sure that popups are not disabled in your web browser as some features rely on them. For example, loading tracks and genomes from files in Google Drive may pop up a login window. Also note that some options may not be available if cookies have been disabled in the web browser preferences.
 
 ### 2. Load a reference genome
 IGV displays data mapped to the genomic coordinates of a reference genome. When the IGV-Web page first loads, it will load the default reference genome **hg19**. To load a different genome, click on the `Genome` dropdown menu and either select from the list of pre-defined genomes, or use one of the options to load a genome sequence file that you specify.
@@ -40,7 +40,7 @@ Selecting the `URL` option will present a dialog where you enter the full web li
 
 > **Note:** A FASTA file only has the sequence data and IGV cannot display the cytoband ideogram in the chromosome ruler or automatically load a corresponding gene annotation track. You can load a gene annotation file directly via the `Tracks` menu.
 
-You will be prompted to sign into a Google account if you select the `Google Drive` option, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. 
+You will be prompted to sign into a Google account if you select the `Google Drive` option, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. The `Google Drive` option will not be presented if cookies are disabled in the web browser.
 
 > **Developers:** Another option is to create and load a .json genome file, which can include references to a cytoband file and a default gene annotation track. See the [igv.js developer documentation](https://github.com/igvteam/igv.js/wiki) for details on creating a reference genome object in JSON format.
 
@@ -67,7 +67,7 @@ Selecting the `URL` option will present a dialog where you enter the full web li
 
 > **Note:** For indexed files, e.g. BAM files, you must explicitly select the index file along with the data file. If you also use IGV-Desktop, you may be used to IGV automatically finding and loading the index file. This is not always possible from a web browser, so the behavior is different in IGV-Web.
 
-You will be prompted to sign into a Google account if you select the `Google Drive` option, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. 
+You will be prompted to sign into a Google account if you select the `Google Drive` option, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. The `Google Drive` option will not be presented if cookies are disabled in the web browser.
 
 See information on supported [file types](./fileFormats.html). 
 
@@ -181,7 +181,7 @@ To restore a session from a saved file, click on the `Session` dropdown menu and
 * `Google Drive`
 * `URL`
 
-Selecting the `URL` option will present a dialog to enter the full web link URL to the session file. For the other options, a file chooser pops up. If you select the `Google Drive` option, you will be prompted to sign into a Google account, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. 
+Selecting the `URL` option will present a dialog to enter the full web link URL to the session file. For the other options, a file chooser pops up. If you select the `Google Drive` option, you will be prompted to sign into a Google account, and a [Dropbox](https://www.dropbox.com) account is needed for the `Dropbox` option. The `Google Drive` option will not be presented if cookies are disabled in the web browser.
 
 #### Session files from IGV-Desktop
 Session files that were saved in the Java desktop version of IGV can also be loaded into IGV-Web via the `Session` dropdown menu. However, IGV-Desktop supports more features and file types than the IGV-Web app, and so the session may not be completely restored. Also note that session files saved in IGV-Web currently cannot be loaded into IGV-Desktop.
@@ -212,7 +212,7 @@ Depending on your web browser settings, the image files will be saved to your de
 
 
 # Circular View
-(Introduced in IGV-Web version 1.9.0) In collaboration with the JBrowse development team, we integrated the JBrowse 2 circular view component for exploring structural variants, chromatin interactions, and other long-distance interactions. Currently this integration supports structural variants from VCF files, paired-end and split-read alignments from BAM/CRAM files, and interaction pairs from bedPE and interact tracks. See [here](https://github.com/igvteam/igv-webapp/wiki/Circular-View) for more information about using the circular view with IGV-Web.
+(Introduced in IGV-Web version 1.9.0) In collaboration with the JBrowse development team, we integrated the JBrowse 2 circular view component for exploring structural variants, chromatin interactions, and other long-distance interactions. Currently this integration supports structural variants from VCF files, paired-end and split-read alignments from BAM/CRAM files, and interaction pairs from bedPE and interact tracks. See [here](https://github.com/igvteam/igv-webapp/wiki/Circular-View) for more information about using the circular view with IGV-Web. The circular view will not be available if the web browser preferences have been set to disable all cookies.
 
 # Help Menu
 

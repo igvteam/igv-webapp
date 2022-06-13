@@ -76,7 +76,7 @@ async function main(container, config) {
         } catch (e) {
             const str = `Error initializing Google Drive: ${ e.message || e.details }`
             console.error(str)
-            AlertSingleton.present(str)
+            //AlertSingleton.present(str)
         }
 
         const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()

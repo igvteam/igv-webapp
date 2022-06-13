@@ -58,6 +58,15 @@
       "type": "wig",
       "format": "bigwig",
       "url": "http://hgdownload.cse.ucsc.edu/gbdb/hg19/bbi/gc5BaseBw/gc5Base.bw"
+    },
+    {
+      "name": "GenCC",
+      "description" : "Annotations from the <a href='https://thegencc.org/' target='_blank'>The Gene Curation Coalition</a> courtesy of the UCSC Genome Browser team.  See the <a href='https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg38&g=genCC' target='_blank'>UCSC track settings page</a> for display conventions.",
+      "url": "http://hgdownload.soe.ucsc.edu/gbdb/hg19/bbi/genCC.bb",
+      "type": "annotation",
+      "format": "bigbed",
+      "height": 300,
+      "displayMode": "EXPANDED"
     }
   ]
 }

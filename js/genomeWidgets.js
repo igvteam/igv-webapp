@@ -156,11 +156,6 @@ async function loadGenome(genomeConfiguration) {
 
     let g = undefined;
     try {
-        // if(genomeConfiguration.tracks) {
-        //     genomeConfiguration.tracks.push({type: "sequence", order: Number.MIN_SAFE_INTEGER})
-        // } else {
-        //     genomeConfiguration.tracks = [{type: "sequence", order: Number.MIN_SAFE_INTEGER}]
-        // }
         g = await Globals.browser.loadGenome(genomeConfiguration);
         if(g.id) {
             try {

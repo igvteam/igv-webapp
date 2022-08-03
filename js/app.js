@@ -198,7 +198,7 @@ async function initializationHelper(browser, container, options) {
         options.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
         googleEnabled,
         $('#igv-app-dropdown-google-drive-track-file-button'),
-        ['igv-app-encode-signal-modal', 'igv-app-encode-others-modal'],
+        ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
         'igv-app-track-select-modal',
         GtexUtils,

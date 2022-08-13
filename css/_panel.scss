@@ -1,21 +1,24 @@
 
-// alert panel template
-$igv-webapp-panel-width: 300px;
-$igv-webapp-panel-height: 200px;
-$igv-webapp-panel-drag-container-height: 32px;
+// panel template
+$juicebox_panel_tool_panel_width: 512px;
+$juicebox_panel_tool_panel_height: 512px;
+$juicebox_panel_card_drag_container_height: 32px;
+$igv-menu-popup-grey: #7F7F7F;
 
 .card {
   position: absolute;
-  top: -1000px;
-  left: -1000px;
+  //top: -1000px;
+  //left: -1000px;
+  top: 64px;
+  left: 64px;
 
-  z-index: 1024;
+  z-index: 4096;
 
-  width: $igv-webapp-panel-width;
-  height: $igv-webapp-panel-height;
+  width: $juicebox_panel_tool_panel_width;
+  height: $juicebox_panel_tool_panel_height;
 
-  border-color: $spacewalk_aluminum;
-  background-color: $spacewalk_snow;
+  border-color: $igv-menu-popup-grey;
+  background-color: white;
 
   user-select: none;
 
@@ -24,17 +27,14 @@ $igv-webapp-panel-drag-container-height: 32px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
 
-    padding: unset;
+    padding: 0.125rem;
 
     width: 100%;
-    height: 100%;
 
-    border-radius: inherit;
-
-    .igv-webapp-panel-drag-container {
+    .spacewalk_card_drag_container {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
@@ -42,16 +42,12 @@ $igv-webapp-panel-drag-container-height: 32px;
       align-items: center;
 
       width: 100%;
-      height: $igv-webapp-panel-drag-container-height;
-
-      background-color: $spacewalk_silver;
-
-      border-top-left-radius: inherit;
-      border-top-right-radius: inherit;
+      height: $juicebox_panel_card_drag_container_height;
+      background-color: transparent;
 
       i {
         cursor: grab;
-        color: $spacewalk_steel;
+        color: $igv-menu-popup-grey;
         display: block;
       }
 
@@ -70,4 +66,3 @@ $igv-webapp-panel-drag-container-height: 32px;
   }
 
 }
-

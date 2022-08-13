@@ -1,0 +1,30 @@
+
+// juicebox panel
+#spacewalk_juicebox_panel.card {
+
+  width: auto;
+  height: auto;
+
+  align-items: center;
+
+  .card-body {
+
+    #spacewalk_hic_url_form_group {
+      width: 95%;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    #spacewalk_juicebox_root_container {
+
+      .hic-root {
+        margin: 0;
+        border-color: transparent;
+        border-width: thin;
+        border-radius: .25rem;
+      }
+    }
+
+  }
+
+}

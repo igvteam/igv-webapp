@@ -21,6 +21,9 @@
  *
  */
 
+import igv from '../node_modules/igv/dist/igv.esm.js'
+import juicebox from '../node_modules/juicebox.js/dist/juicebox.esm.js'
+
 import {DOMUtils, FileUtils, GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,
@@ -117,9 +120,14 @@ async function main(container, config) {
         Globals.browser = browser
         await initializationHelper(browser, container, config)
     }
+
+
 }
 
 async function initializationHelper(browser, container, options) {
+
+    await juiceboxInitialization(options.juiceboxConfig, document.querySelector('#spacewalk_juicebox_panel'))
+
 
     if (true === googleEnabled) {
 
@@ -319,6 +327,16 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
 }
 
+async function juiceboxInitialization(config, panel) {
+
+    const dragHandle = panel.querySelector('.spacewalk_card_drag_container')
+    makeDraggable(panel, dragHandle)
+
+    config.queryParametersSupported = false
+    const hicBrowser = await juicebox.init(panel.querySelector('#spacewalk_juicebox_root_container'), config)
+
+    return hicBrowser
+}
 
 function queryGoogleAuthenticationStatus(user, isSignedIn) {
 

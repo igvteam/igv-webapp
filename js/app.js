@@ -22,7 +22,6 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js'
-import juicebox from '../node_modules/juicebox.js/dist/juicebox.esm.js'
 
 import {DOMUtils, FileUtils, GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
 import {
@@ -45,6 +44,7 @@ import {createSVGWidget} from './svgWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
+import JuiceboxPanel from './juiceboxPanel.js'
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -52,6 +52,7 @@ let dropboxEnabled = false
 let googleEnabled = false
 let currentGenomeId
 let circularView
+let juiceboxPanel
 
 async function main(container, config) {
 
@@ -126,8 +127,8 @@ async function main(container, config) {
 
 async function initializationHelper(browser, container, options) {
 
-    await juiceboxInitialization(options.juiceboxConfig, document.querySelector('#spacewalk_juicebox_panel'))
-
+    juiceboxPanel = new JuiceboxPanel(document.querySelector('#spacewalk_juicebox_panel'), options.juiceboxConfig)
+    await juiceboxPanel.initialize()
 
     if (true === googleEnabled) {
 
@@ -325,17 +326,6 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
-}
-
-async function juiceboxInitialization(config, panel) {
-
-    const dragHandle = panel.querySelector('.spacewalk_card_drag_container')
-    makeDraggable(panel, dragHandle)
-
-    config.queryParametersSupported = false
-    const hicBrowser = await juicebox.init(panel.querySelector('#spacewalk_juicebox_root_container'), config)
-
-    return hicBrowser
 }
 
 function queryGoogleAuthenticationStatus(user, isSignedIn) {

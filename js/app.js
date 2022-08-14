@@ -127,7 +127,16 @@ async function main(container, config) {
 
 async function initializationHelper(browser, container, options) {
 
-    juiceboxPanel = new JuiceboxPanel(document.querySelector('#spacewalk_juicebox_panel'), options.juiceboxConfig)
+    let juiceboxPanelConfig =
+        {
+            igvBrowser: browser,
+            panel: document.querySelector('#spacewalk_juicebox_panel'),
+            queryParametersSupported: false
+        };
+
+    Object.assign(juiceboxPanelConfig,options.juiceboxConfig)
+    juiceboxPanel = new JuiceboxPanel(juiceboxPanelConfig)
+
     await juiceboxPanel.initialize()
 
     if (true === googleEnabled) {

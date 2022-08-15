@@ -37,6 +37,37 @@ function configureContactMapLoaders({
                 await hicBrowser.loadHicFile(config)
                 $('#hic-control-map-dropdown').removeClass('disabled')
             }
+
+
+            const genomeID = hicBrowser.genome.id
+
+            if (genomeID !== igvBrowser.genome.id) {
+
+                // genomeCallback(genomeID)
+
+                const config =
+                    {
+                        genome: genomeID,
+                        tracks:
+                            [
+                                {
+                                    id: "jb-interactions",
+                                    type: "interact",
+                                    name: "Contacts",
+                                    height: 125,
+                                    features:
+                                        [
+                                            // ! Important, signals track that features will be supplied explicitly
+                                        ],
+                                    order: 10000  // Just above gene track
+                                }
+                            ]
+                    }
+
+                await igvBrowser.loadSession(config)
+
+            }
+
         } catch (e) {
             AlertSingleton.present(`Error loading ${url}: ${e}`);
         }

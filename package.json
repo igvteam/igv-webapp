@@ -25,6 +25,7 @@
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "core-js": "^3.6.5",
+    "data-modal": "github:igvteam/data-modal#v1.3.0",
     "eslint": "^6.8.0",
     "fs-extra": "^8.1.0",
     "igv": "^2.13.1",

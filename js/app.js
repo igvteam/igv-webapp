@@ -44,7 +44,7 @@ import {createSVGWidget} from './svgWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
-import JuiceboxPanel from './juiceboxPanel.js'
+import JuiceboxPanel from './juicebox/juiceboxPanel.js'
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 

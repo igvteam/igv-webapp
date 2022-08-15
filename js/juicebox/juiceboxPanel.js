@@ -1,8 +1,9 @@
 import juicebox from '../../node_modules/juicebox.js/dist/juicebox.esm.js'
 import {makeDraggable} from '../../node_modules/igv-utils/src/index.js'
+import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
+import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
+import configureContactMapLoaders from './contactMapLoad.js'
 import throttle from "../utils.js"
-import {igvLocusChange, juiceboxLocusChange} from "./locusChange.js"
-import juiceboxCrosshairsHandler from "./juiceboxCrosshairs.js"
 
 class JuiceboxPanel {
     constructor(config) {
@@ -24,64 +25,41 @@ class JuiceboxPanel {
 
         this.config.igvBrowser.on('locuschange', throttle(igvLocusChange(this.browser, this.config.igvBrowser), 100))
 
-        configureContactMapLoaders(this.browser, this.config.igvBrowser, genomeID => {})
+        const $dropdowns = $('a[id$=-map-dropdown]').parent()
+
+        const contactMapLoadConfig =
+            {
+                hicBrowser: this.browser,
+                igvBrowser: this.config.igvBrowser,
+                rootContainer: document.querySelector('#hic-main'),
+                $dropdowns,
+
+                // Juicebox Archive maps
+                dataModalId: 'hic-contact-map-modal',
+
+                // ENCODE maps
+                encodeHostedModalId: 'hic-encode-hosted-contact-map-modal',
+
+                // Local maps
+                $localFileInputs: $dropdowns.find('input'),
+
+                // Dropbox maps
+                $dropboxButtons: $dropdowns.find('div[id$="-map-dropdown-dropbox-button"]'),
+
+                // Google Drive maps
+                $googleDriveButtons: $dropdowns.find('div[id$="-map-dropdown-google-drive-button"]'),
+                googleEnabled: this.config.googleEnabled || false,
+
+                // URL maps
+                urlLoadModalId: 'hic-load-url-modal',
+
+                mapMenu: this.config.mapMenu,
+            };
+
+        configureContactMapLoaders(contactMapLoadConfig)
+
+
     }
 }
-
-function configureContactMapLoaders(hicBrowser, igvBrowser, genomeCallback) {
-
-}
-
-function __configureContactMapLoaders(hicBrowser, igvBrowser, genomeCallback) {
-
-    const mapLoadHandler = async (url, name, mapType) => {
-
-        const isControl = ('control-map' === mapType);
-        if (!isControl) hicBrowser.reset();
-        await hicBrowser.loadHicFile({url, name, isControl});
-
-        const genomeID = hicBrowser.genome.id;
-        if (genomeID !== igvBrowser.genome.id) {
-
-            genomeCallback(genomeID);
-
-            await igvBrowser.loadSession({
-                genome: genomeID,
-                tracks:
-                    [{
-                        id: "jb-interactions",
-                        type: "interact",
-                        name: "Contacts",
-                        //color: "rgba(180, 25, 137, 0.05)",
-                        height: 125,
-                        features: [],   // ! Important, signals track that features will be supplied explicitly
-                        order: 10000  // Just above gene track
-                    }]
-            });
-
-
-
-        }
-    };
-
-    configureAidenlabMapModal('hic-contact-map-modal', mapLoadHandler);
-    configureEncodeMapModal('hic-encode-hosted-contact-map-modal', mapLoadHandler);
-    configureFileInput$1('#contact-map-local', mapLoadHandler);
-    configureLoadURLModal$1('#hic-load-url-modal', mapLoadHandler);
-}
-
-/*
-function updateTracksForGenome(genomeID) {
-
-    for(let type of encodeModals.keys()) {
-        const modal = encodeModals.get(type);
-        if(supportsGenome(genomeID)) {
-            modal.setDatasource((new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, type))));
-        } else {
-            modal.setDatasource(EmptyTableDataSource);
-        }
-    }
-}
-*/
 
 export default JuiceboxPanel

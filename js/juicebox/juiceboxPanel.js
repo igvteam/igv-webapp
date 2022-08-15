@@ -29,9 +29,16 @@ class JuiceboxPanel {
 
         const contactMapLoadConfig =
             {
+                // Juicebox browser
                 hicBrowser: this.browser,
+
+                // IGV browser
                 igvBrowser: this.config.igvBrowser,
+
+                // Root juicebox element
                 rootContainer: document.querySelector('#hic-main'),
+
+                // Contact and Control dropdown elements
                 $dropdowns,
 
                 // Juicebox Archive maps
@@ -53,6 +60,7 @@ class JuiceboxPanel {
                 // URL maps
                 urlLoadModalId: 'hic-load-url-modal',
 
+                //
                 mapMenu: this.config.mapMenu,
             };
 

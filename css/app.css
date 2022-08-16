@@ -119,17 +119,22 @@ select#igv-app-track-select-modal-select {
 
 #spacewalk_juicebox_panel.card {
   width: auto;
-  height: auto;
-  align-items: center; }
-  #spacewalk_juicebox_panel.card .card-body #spacewalk_hic_url_form_group {
-    width: 95%;
-    margin-top: 4px;
-    margin-bottom: 4px; }
+  height: auto; }
   #spacewalk_juicebox_panel.card .card-body #spacewalk_juicebox_root_container .hic-root {
     margin: 0;
     border-color: transparent;
     border-width: thin;
     border-radius: .25rem; }
+  #spacewalk_juicebox_panel.card .card-footer p {
+    font: 1.25rem 'Fira Sans', sans-serif; }
+  #spacewalk_juicebox_panel.card .card-footer label {
+    font: 1rem 'Fira Sans', sans-serif; }
+  #spacewalk_juicebox_panel.card .card-footer input {
+    margin: .6rem; }
+  #spacewalk_juicebox_panel.card .card-footer input[type=text] {
+    width: 64px; }
+  #spacewalk_juicebox_panel.card .card-footer input[type=range] {
+    width: 240px; }
 
 body {
   padding-top: 48px; }

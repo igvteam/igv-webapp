@@ -5,15 +5,7 @@
   width: auto;
   height: auto;
 
-  align-items: center;
-
   .card-body {
-
-    #spacewalk_hic_url_form_group {
-      width: 95%;
-      margin-top: 4px;
-      margin-bottom: 4px;
-    }
 
     #spacewalk_juicebox_root_container {
 
@@ -25,6 +17,29 @@
       }
     }
 
+  }
+
+  .card-footer {
+
+    p {
+      font: 1.25rem 'Fira Sans', sans-serif;
+    }
+
+    label {
+      font: 1rem 'Fira Sans', sans-serif;
+    }
+
+    input {
+      margin: .6rem;
+    }
+
+    input[type=text] {
+      width: 64px;
+    }
+
+    input[type=range] {
+      width: 240px;
+    }
   }
 
 }

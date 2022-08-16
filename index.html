@@ -509,6 +509,12 @@
                     </div>
 
                 </div>
+
+                <!-- Tools -->
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-dark" data-toggle="collapse" data-target="#igv-juicebox-tools" >Tools</button>
+                </div>
+
             </div>
 
         </div>
@@ -518,6 +524,33 @@
             <!-- juicebox browser container -->
             <div id="spacewalk_juicebox_root_container"></div>
 
+        </div>
+
+        <div id="igv-juicebox-tools" class="collapse">
+            <div class="card-footer">
+
+                <p>Contact Parameters</p>
+
+                <div>
+                    <input type="text" id="igv-juicebox-off-diagonal-bin-threshold" name="off-diagonal-bin-threshold" placeholder="enter">
+                    <label for="igv-juicebox-off-diagonal-bin-threshold">Off Diagonal Bin Threshold</label>
+                </div>
+
+                <div>
+                    <input type="range" id="igv-juicebox-percentile-threshold" name="percentile-threshold" min="0" max="100" value="2">
+                    <label for="igv-juicebox-percentile-threshold">Percentile Threshold</label>
+                </div>
+
+                <div>
+                    <input type="range" id="igv-juicebox-alpha-modifier" name="alpha-modifier" min="0.0" max="1.0" step="0.01" value="0.5">
+                    <label for="igv-juicebox-alpha-modifier">Alpha Modifier</label>
+                </div>
+
+                <div>
+                    <button id="igv-juicebox-update-contacts-button" type="button" class="btn btn-sm btn-outline-dark">Update Contacts</button>
+                </div>
+
+            </div>
         </div>
 
     </div>

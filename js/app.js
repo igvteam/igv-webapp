@@ -319,24 +319,7 @@ async function initializationHelper(browser, container, options) {
 
     }
 
-    let juiceboxPanelConfig =
-        {
-            igvBrowser: browser,
-            panel: document.querySelector('#spacewalk_juicebox_panel'),
-            queryParametersSupported: false
-        };
-
-    Object.assign(juiceboxPanelConfig,options.juiceboxConfig)
-    
-    juiceboxPanel = new JuiceboxPanel(juiceboxPanelConfig)
-    await juiceboxPanel.initialize()
-
-    const juiceboxPresentationButton = document.querySelector('#juicebox-panel-present-button')
-
-    juiceboxPresentationButton.addEventListener('click', e => juiceboxPanel.toggle())
-
-    EventBus.globalBus.subscribe("DidPresentJuiceboxPanel", () => juiceboxPresentationButton.innerText = 'Hide')
-    EventBus.globalBus.subscribe("DidDismissJuiceboxPanel", () => juiceboxPresentationButton.innerText = 'Show')
+    await createJuiceboxPanel(Object.assign({ browser }, options))
 
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 
@@ -523,6 +506,29 @@ async function initializeCircularView() {
 
         document.head.appendChild(react)
     })
+}
+
+async function createJuiceboxPanel(config) {
+
+    let juiceboxPanelConfig =
+        {
+            igvBrowser: config.browser,
+            panel: document.querySelector('#spacewalk_juicebox_panel'),
+            queryParametersSupported: false
+        };
+
+    Object.assign(juiceboxPanelConfig,config.juiceboxConfig)
+
+    juiceboxPanel = new JuiceboxPanel(juiceboxPanelConfig)
+    await juiceboxPanel.initialize()
+
+    const juiceboxPresentationButton = document.querySelector('#juicebox-panel-present-button')
+
+    juiceboxPresentationButton.addEventListener('click', e => juiceboxPanel.toggle())
+
+    EventBus.globalBus.subscribe("DidPresentJuiceboxPanel", () => juiceboxPresentationButton.innerText = 'Hide')
+    EventBus.globalBus.subscribe("DidDismissJuiceboxPanel", () => juiceboxPresentationButton.innerText = 'Show')
+
 }
 
 

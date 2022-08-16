@@ -20,17 +20,12 @@ $igv-menu-popup-grey: #7F7F7F;
 
   user-select: none;
 
-  .card-body {
+  .card-header {
 
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 0.125rem;
-
-    width: 100%;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: rgba(0, 0, 0, 0.13);
 
     .spacewalk_card_drag_container {
       display: flex;
@@ -60,6 +55,26 @@ $igv-menu-popup-grey: #7F7F7F;
         margin-right: 8px;
       }
     }
+
+    a {
+      margin-top: .25rem;
+      margin-left: .75rem;
+      margin-right: .75rem;
+    }
+
+  }
+
+  .card-body {
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0.125rem;
+
+    width: 100%;
 
   }
 

@@ -56,10 +56,17 @@ $igv-menu-popup-grey: #7F7F7F;
       }
     }
 
-    a {
-      margin-top: .25rem;
-      margin-left: .75rem;
-      margin-right: .75rem;
+    >div:last-child {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-evenly;
+      align-items: center;
+
+      a {
+        color:$igv-menu-popup-grey;
+      }
+
     }
 
   }

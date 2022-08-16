@@ -211,134 +211,6 @@
                 </div>
             </li>
 
-            <!-- Juicebox Contact Maps -->
-            <li class="nav-item px-2">
-                <div class="dropdown">
-
-                    <a id="hic-contact-map-dropdown" class="dropdown-toggle" href="#" data-toggle="dropdown">
-                        Contact Maps
-                    </a>
-
-                    <div id="hic-contact-map-dropdown-menu" class="dropdown-menu">
-
-                        <!-- Juicebox Archive -->
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-contact-map-modal">
-                            Juicebox Archive
-                        </a>
-
-                        <!-- ENCODE hosted maps -->
-                        <button id="hic-encode-hosted-contact-map-presentation-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#hic-encode-hosted-contact-map-modal">
-                            ENCODE
-                        </button>
-
-                        <!-- Local Map File -->
-                        <label class="dropdown-item btn btn-default btn-file">
-                            <div class="igv-app-dropdown-item-cloud-storage">
-                                <div>
-                                    Local File
-                                </div>
-                                <div>
-                                    <input name="contact-map" type="file" style="display: none;">
-                                </div>
-                            </div>
-                        </label>
-
-                        <!-- Dropbox -->
-                        <div class="dropdown-item">
-
-                            <div id="hic-contact-map-dropdown-dropbox-button" class="igv-app-dropdown-item-cloud-storage">
-
-                                <div>Dropbox File</div>
-                                <div>
-                                    <img src="./img/dropbox-dropdown-menu-item.png" width="18" height="18">
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Google Drive -->
-                        <div class="dropdown-item">
-                            <div id="hic-contact-map-dropdown-google-drive-button" class="igv-app-dropdown-item-cloud-storage">
-                                <div>Google Drive File</div>
-                                <div>
-                                    <img src="./img/googledrive-dropdown-menu-item.png" width="18" height="18">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- URL -->
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-load-url-modal">
-                            URL
-                        </a>
-                    </div>
-
-                </div>
-            </li>
-
-            <!-- Juicebox Control Map -->
-            <li class="nav-item px-2">
-                <div class="dropdown">
-
-                    <a id="hic-control-map-dropdown" class="dropdown-toggle" href="#" data-toggle="dropdown">
-                        Control Maps
-                    </a>
-
-                    <div id="hic-control-map-dropdown-menu" class="dropdown-menu">
-
-                        <!-- Juicebox Archive -->
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-contact-map-modal">
-                            Juicebox Archive
-                        </a>
-
-                        <!-- ENCODE hosted maps -->
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-encode-hosted-contact-map-modal">
-                            ENCODE
-                        </a>
-
-                        <!-- Local Map File -->
-                        <label class="dropdown-item btn btn-default btn-file">
-                            <div class="igv-app-dropdown-item-cloud-storage">
-                                <div>
-                                    Local File
-                                </div>
-                                <div>
-                                    <input name="control-map" type="file" style="display: none;">
-                                </div>
-                            </div>
-                        </label>
-
-                        <!-- Dropbox -->
-                        <div class="dropdown-item">
-
-                            <div id="hic-control-map-dropdown-dropbox-button" class="igv-app-dropdown-item-cloud-storage">
-
-                                <div>Dropbox File</div>
-                                <div>
-                                    <img src="./img/dropbox-dropdown-menu-item.png" width="18" height="18">
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Google Drive -->
-                        <div class="dropdown-item">
-                            <div id="hic-control-map-dropdown-google-drive-button" class="igv-app-dropdown-item-cloud-storage">
-                                <div>Google Drive File</div>
-                                <div><img src="./img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
-                            </div>
-                        </div>
-
-                        <!-- URL -->
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-load-url-modal">
-                            URL
-                        </a>
-                    </div>
-
-                </div>
-            </li>
-
             <!-- Session -->
             <li class="nav-item px-2">
                 <div class="dropdown">
@@ -513,8 +385,132 @@
 
             </div>
 
-            <a href="#" class="btn btn-sm btn-secondary">Contact Maps</a>
-            <a href="#" class="btn btn-sm btn-secondary">Control Maps</a>
+            <div>
+                <!-- Contact Map -->
+                <div class="dropdown">
+
+                    <a id="hic-contact-map-dropdown" class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        Contact Maps
+                    </a>
+
+                    <div id="hic-contact-map-dropdown-menu" class="dropdown-menu">
+
+                        <!-- Juicebox Archive -->
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-contact-map-modal">
+                            Juicebox Archive
+                        </a>
+
+                        <!-- ENCODE hosted maps -->
+                        <button id="hic-encode-hosted-contact-map-presentation-button" class="dropdown-item" type="button" data-toggle="modal" data-target="#hic-encode-hosted-contact-map-modal">
+                            ENCODE
+                        </button>
+
+                        <!-- Local Map File -->
+                        <label class="dropdown-item btn btn-default btn-file">
+                            <div class="igv-app-dropdown-item-cloud-storage">
+                                <div>
+                                    Local File
+                                </div>
+                                <div>
+                                    <input name="contact-map" type="file" style="display: none;">
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Dropbox -->
+                        <div class="dropdown-item">
+
+                            <div id="hic-contact-map-dropdown-dropbox-button" class="igv-app-dropdown-item-cloud-storage">
+
+                                <div>Dropbox File</div>
+                                <div>
+                                    <img src="./img/dropbox-dropdown-menu-item.png" width="18" height="18">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Google Drive -->
+                        <div class="dropdown-item">
+                            <div id="hic-contact-map-dropdown-google-drive-button" class="igv-app-dropdown-item-cloud-storage">
+                                <div>Google Drive File</div>
+                                <div>
+                                    <img src="./img/googledrive-dropdown-menu-item.png" width="18" height="18">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- URL -->
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-load-url-modal">
+                            URL
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Control Map -->
+                <div class="dropdown">
+
+                    <a id="hic-control-map-dropdown" class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        Control Maps
+                    </a>
+
+                    <div id="hic-control-map-dropdown-menu" class="dropdown-menu">
+
+                        <!-- Juicebox Archive -->
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-contact-map-modal">
+                            Juicebox Archive
+                        </a>
+
+                        <!-- ENCODE hosted maps -->
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-encode-hosted-contact-map-modal">
+                            ENCODE
+                        </a>
+
+                        <!-- Local Map File -->
+                        <label class="dropdown-item btn btn-default btn-file">
+                            <div class="igv-app-dropdown-item-cloud-storage">
+                                <div>
+                                    Local File
+                                </div>
+                                <div>
+                                    <input name="control-map" type="file" style="display: none;">
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Dropbox -->
+                        <div class="dropdown-item">
+
+                            <div id="hic-control-map-dropdown-dropbox-button" class="igv-app-dropdown-item-cloud-storage">
+
+                                <div>Dropbox File</div>
+                                <div>
+                                    <img src="./img/dropbox-dropdown-menu-item.png" width="18" height="18">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Google Drive -->
+                        <div class="dropdown-item">
+                            <div id="hic-control-map-dropdown-google-drive-button" class="igv-app-dropdown-item-cloud-storage">
+                                <div>Google Drive File</div>
+                                <div><img src="./img/googledrive-dropdown-menu-item.png" width="18" height="18"></div>
+                            </div>
+                        </div>
+
+                        <!-- URL -->
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#hic-load-url-modal">
+                            URL
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
         <div class="card-body p-0">

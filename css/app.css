@@ -100,10 +100,14 @@ select#igv-app-track-select-modal-select {
       .card .card-header .spacewalk_card_drag_container i:last-child {
         cursor: pointer;
         margin-right: 8px; }
-    .card .card-header a {
-      margin-top: .25rem;
-      margin-left: .75rem;
-      margin-right: .75rem; }
+    .card .card-header > div:last-child {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-evenly;
+      align-items: center; }
+      .card .card-header > div:last-child a {
+        color: #7F7F7F; }
   .card .card-body {
     display: flex;
     flex-direction: column;

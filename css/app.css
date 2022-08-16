@@ -67,8 +67,8 @@ select#igv-app-track-select-modal-select {
 
 .card {
   position: absolute;
-  top: 64px;
-  left: 64px;
+  top: -1000px;
+  left: -1000px;
   z-index: 4096;
   width: 512px;
   height: 512px;

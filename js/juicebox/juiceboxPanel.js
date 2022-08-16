@@ -1,18 +1,24 @@
 import juicebox from '../../node_modules/juicebox.js/dist/juicebox.esm.js'
+import { EventBus } from '../../node_modules/igv-widgets/dist/igv-widgets.js'
 import {makeDraggable} from '../../node_modules/igv-utils/src/index.js'
 import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
 import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
 import configureContactMapLoaders from './contactMapLoad.js'
-import throttle from "../utils.js"
+import throttle from '../utils.js'
 
 class JuiceboxPanel {
     constructor(config) {
+
+        this.config = config
 
         const dragHandle = config.panel.querySelector('.spacewalk_card_drag_container')
         makeDraggable(config.panel, dragHandle)
 
         this.container = config.panel.querySelector('#spacewalk_juicebox_root_container')
-        this.config = config
+
+        const button = config.panel.querySelector('#juicebox-panel-dismiss-button')
+        button.addEventListener('click', e => this.dismiss())
+
     }
 
     async initialize() {
@@ -66,8 +72,27 @@ class JuiceboxPanel {
 
         configureContactMapLoaders(contactMapLoadConfig)
 
-
     }
+
+    toggle() {
+        'block' === this.config.panel.style.display ? this.dismiss() : this.present()
+    }
+
+
+    present() {
+        this.config.panel.style.left = `128px`
+        this.config.panel.style.top = `128px`
+        this.config.panel.style.display = 'block'
+        EventBus.globalBus.post({ type: "DidPresentJuiceboxPanel", data: this })
+    }
+
+    dismiss() {
+        this.config.panel.style.display = 'none'
+        this.config.panel.style.left = `-1000px`
+        this.config.panel.style.top = `-1000px`
+        EventBus.globalBus.post({ type: "DidDismissJuiceboxPanel", data: this })
+    }
+
 }
 
 export default JuiceboxPanel

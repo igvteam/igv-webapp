@@ -4,6 +4,7 @@ import {makeDraggable} from '../../node_modules/igv-utils/src/index.js'
 import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
 import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
 import configureContactMapLoaders from './contactMapLoad.js'
+import {projectContacts, updateContactParameters} from './projectContacts.js'
 import throttle from '../utils.js'
 
 class JuiceboxPanel {
@@ -71,6 +72,19 @@ class JuiceboxPanel {
             };
 
         configureContactMapLoaders(contactMapLoadConfig)
+
+        this.config.updateContactsButton.addEventListener('click', () => {
+
+            const binThreshold = parseFloat(this.config.offDiagonalBinThresholdInput.value) || 0
+            const percentileThreshold = parseFloat(this.config.percentileThresholdInput.value) || 0
+            const alphaModifiler = parseFloat(this.config.alphaModifierInput.value) || 0
+
+            updateContactParameters(binThreshold, percentileThreshold, alphaModifiler)
+
+            projectContacts(this.browser, this.config.igvBrowser)
+
+        })
+
 
     }
 

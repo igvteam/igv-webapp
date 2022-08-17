@@ -514,7 +514,11 @@ async function createJuiceboxPanel(config) {
         {
             igvBrowser: config.browser,
             panel: document.querySelector('#spacewalk_juicebox_panel'),
-            queryParametersSupported: false
+            queryParametersSupported: false,
+            offDiagonalBinThresholdInput: document.querySelector('#igv-juicebox-off-diagonal-bin-threshold'),
+            percentileThresholdInput: document.querySelector('#igv-juicebox-percentile-threshold'),
+            alphaModifierInput: document.querySelector('#igv-juicebox-alpha-modifier'),
+            updateContactsButton: document.querySelector('#igv-juicebox-update-contacts-button'),
         };
 
     Object.assign(juiceboxPanelConfig,config.juiceboxConfig)

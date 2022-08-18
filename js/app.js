@@ -248,24 +248,7 @@ async function initializationHelper(browser, container, options) {
         document.querySelector('#igv-session-list-divider').style.display = 'none'
     }
 
-    createSVGWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
-
-    createShareWidgets(shareWidgetConfigurator(browser, container, options))
-
-    createAppBookmarkHandler($('#igv-app-bookmark-button'))
-
-    const genomeChangeListener = async event => {
-
-        const {data: genomeID} = event
-
-        if (currentGenomeId !== genomeID) {
-
-            currentGenomeId = genomeID
-
-            await updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
-
-        }
-    }
+    await createJuiceboxPanel(Object.assign({ browser }, options))
 
     if (true === options.enableCircularView) {
 
@@ -319,7 +302,37 @@ async function initializationHelper(browser, container, options) {
 
     }
 
-    await createJuiceboxPanel(Object.assign({ browser }, options))
+    createSVGWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
+
+    let shareConfig =
+        {
+            igvBrowser: browser,
+            hicBrowser: juiceboxPanel.browser,
+            container
+        }
+
+    Object.assign(shareConfig, options)
+
+    if (undefined === options.embedTarget) {
+        Object.assign(shareConfig, { embedTarget: `https://igv.org/web/release/${igv.version()}/embed.html` })
+    }
+
+    createShareWidgets(shareWidgetConfigurator(shareConfig))
+
+    createAppBookmarkHandler($('#igv-app-bookmark-button'))
+
+    const genomeChangeListener = async event => {
+
+        const {data: genomeID} = event
+
+        if (currentGenomeId !== genomeID) {
+
+            currentGenomeId = genomeID
+
+            await updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
+
+        }
+    }
 
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 

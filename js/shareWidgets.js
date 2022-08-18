@@ -21,15 +21,11 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js'
 import {AlertSingleton, QRCode} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import {BGZip} from "../node_modules/igv-utils/src/index.js"
 import {setURLShortener, shortSessionURL} from './shareHelper.js'
 
-function createShareWidgets({browser, container, modal, share_input, copy_link_button, tweet_button_container, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
-
-    if (undefined === embedTarget) {
-        embedTarget = `https://igv.org/web/release/${igv.version()}/embed.html`;
-    }
+function createShareWidgets({igvBrowser, hicBrowser, container, modal, share_input, copy_link_button, tweet_button_container, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
 
     $(modal).on('shown.bs.modal', async () => {
 
@@ -39,12 +35,16 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
             href = href.substring(0, idx);
         }
 
-        let session = undefined
-        try {
-            session = browser.compressedSession();
-        } catch (e) {
-            AlertSingleton.present(e.message)
-        }
+        // let session
+        // try {
+        //     session = igvBrowser.compressedSession();
+        // } catch (e) {
+        //     AlertSingleton.present(e.message)
+        // }
+
+        const json = { "igv": igvBrowser.toJSON(), "juicebox": hicBrowser.toJSON() }
+        const jsonString = JSON.stringify(json)
+        const session = BGZip.compressString(jsonString)
 
         if (session) {
 
@@ -142,7 +142,7 @@ function getEmbeddableSnippet(container, embedTarget, session) {
     return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 }
 
-function shareWidgetConfigurator(browser, container, {urlShortener, embedTarget}) {
+function shareWidgetConfigurator({ igvBrowser, hicBrowser, container, urlShortener, embedTarget }) {
 
     let urlShortenerFn;
 
@@ -156,7 +156,8 @@ function shareWidgetConfigurator(browser, container, {urlShortener, embedTarget}
     }
 
     return {
-        browser,
+        igvBrowser,
+        hicBrowser,
         container,
         modal: document.getElementById('igv-app-share-modal'),
         share_input: document.getElementById('igv-app-share-input'),

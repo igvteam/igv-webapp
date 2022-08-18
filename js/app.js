@@ -22,7 +22,6 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js'
-
 import {DOMUtils, FileUtils, GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,
@@ -126,6 +125,12 @@ async function main(container, config) {
 }
 
 async function initializationHelper(browser, container, options) {
+    
+    await createJuiceboxPanel(Object.assign({ browser }, options))
+
+    if (true === options.enableCircularView) {
+        createCircularView(browser)
+    }
 
     if (true === googleEnabled) {
 
@@ -213,6 +218,7 @@ async function initializationHelper(browser, container, options) {
 
     const sessionSaver = () => {
         try {
+
             return browser.toJSON()
         } catch (e) {
             console.error(e)
@@ -246,60 +252,6 @@ async function initializationHelper(browser, container, options) {
         await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
     } else {
         document.querySelector('#igv-session-list-divider').style.display = 'none'
-    }
-
-    await createJuiceboxPanel(Object.assign({ browser }, options))
-
-    if (true === options.enableCircularView) {
-
-        const { x:minX, y:minY } = document.querySelector('#igv-main').getBoundingClientRect()
-
-        const circularViewContainer = document.getElementById('igv-circular-view-container')
-
-        browser.createCircularView(circularViewContainer, false)
-
-        makeDraggable(circularViewContainer, browser.circularView.toolbar, { minX, minY } )
-
-        browser.circularView.setSize(512)
-
-        document.getElementById('igv-app-circular-view-nav-item').style.display = 'block'
-
-        const dropdownButton = document.getElementById('igv-app-circular-view-dropdown-button')
-        dropdownButton.addEventListener('click', e => {
-
-            document.getElementById('igv-app-circular-view-presentation-button').innerText = browser.circularViewVisible ? 'Hide' : 'Show'
-
-            if (browser.circularViewVisible) {
-                document.getElementById('igv-app-circular-view-resize-button').removeAttribute('disabled');
-                document.getElementById('igv-app-circular-view-clear-chords-button').removeAttribute('disabled');
-            } else {
-                document.getElementById('igv-app-circular-view-resize-button').setAttribute('disabled', '');
-                document.getElementById('igv-app-circular-view-clear-chords-button').setAttribute('disabled', '');
-            }
-
-
-        })
-
-        document.getElementById('igv-app-circular-view-presentation-button').addEventListener('click', e => {
-            browser.circularViewVisible = !browser.circularViewVisible
-            const str = e.target.innerText
-            e.target.innerText = 'Show' === str ? 'Hide' : 'Show'
-        })
-
-        document.getElementById('igv-app-circular-view-clear-chords-button').addEventListener('click', () => browser.circularView.clearChords())
-
-        document.getElementById('igv-main').appendChild(createCircularViewResizeModal('igv-app-circular-view-resize-modal', 'Resize Circular View'))
-
-        document.getElementById('igv-app-circular-view-resize-modal-input').addEventListener('keyup', (event) => {
-            event.preventDefault()
-            event.stopPropagation()
-            if (13 === event.keyCode) {
-                browser.circularView.setSize(Number.parseInt(event.target.value))
-            }
-        })
-
-        $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
-
     }
 
     createSVGWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
@@ -519,6 +471,59 @@ async function initializeCircularView() {
 
         document.head.appendChild(react)
     })
+}
+
+function createCircularView (browser) {
+
+    const { x:minX, y:minY } = document.querySelector('#igv-main').getBoundingClientRect()
+
+    const circularViewContainer = document.getElementById('igv-circular-view-container')
+
+    browser.createCircularView(circularViewContainer, false)
+
+    makeDraggable(circularViewContainer, browser.circularView.toolbar, { minX, minY } )
+
+    browser.circularView.setSize(512)
+
+    document.getElementById('igv-app-circular-view-nav-item').style.display = 'block'
+
+    const dropdownButton = document.getElementById('igv-app-circular-view-dropdown-button')
+    dropdownButton.addEventListener('click', e => {
+
+        document.getElementById('igv-app-circular-view-presentation-button').innerText = browser.circularViewVisible ? 'Hide' : 'Show'
+
+        if (browser.circularViewVisible) {
+            document.getElementById('igv-app-circular-view-resize-button').removeAttribute('disabled');
+            document.getElementById('igv-app-circular-view-clear-chords-button').removeAttribute('disabled');
+        } else {
+            document.getElementById('igv-app-circular-view-resize-button').setAttribute('disabled', '');
+            document.getElementById('igv-app-circular-view-clear-chords-button').setAttribute('disabled', '');
+        }
+
+
+    })
+
+    document.getElementById('igv-app-circular-view-presentation-button').addEventListener('click', e => {
+        browser.circularViewVisible = !browser.circularViewVisible
+        const str = e.target.innerText
+        e.target.innerText = 'Show' === str ? 'Hide' : 'Show'
+    })
+
+    document.getElementById('igv-app-circular-view-clear-chords-button').addEventListener('click', () => browser.circularView.clearChords())
+
+    document.getElementById('igv-main').appendChild(createCircularViewResizeModal('igv-app-circular-view-resize-modal', 'Resize Circular View'))
+
+    document.getElementById('igv-app-circular-view-resize-modal-input').addEventListener('keyup', (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        if (13 === event.keyCode) {
+            browser.circularView.setSize(Number.parseInt(event.target.value))
+        }
+    })
+
+    $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
+
+
 }
 
 async function createJuiceboxPanel(config) {

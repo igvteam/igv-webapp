@@ -4,6 +4,7 @@ $juicebox_panel_tool_panel_width: 512px;
 $juicebox_panel_tool_panel_height: 512px;
 $juicebox_panel_card_drag_container_height: 32px;
 $igv-menu-popup-grey: #7F7F7F;
+$igv-juicebox-card-background-color:rgba(0, 0, 0, 0.13);
 
 .card {
   position: absolute;
@@ -25,7 +26,7 @@ $igv-menu-popup-grey: #7F7F7F;
     padding-top: 0;
     padding-left: 0;
     padding-right: 0;
-    background-color: rgba(0, 0, 0, 0.13);
+    background-color: $igv-juicebox-card-background-color;
 
     .spacewalk_card_drag_container {
       display: flex;

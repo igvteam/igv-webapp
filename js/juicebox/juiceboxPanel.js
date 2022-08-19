@@ -85,13 +85,19 @@ class JuiceboxPanel {
 
         })
 
+        this.config.percentileThresholdInput.addEventListener('input', e => {
+            document.querySelector('#igv-juicebox-percentile-threshold-output').innerHTML = e.currentTarget.value
+        })
+
+        this.config.alphaModifierInput.addEventListener('input', e => {
+            document.querySelector('#igv-juicebox-alpha-modifier-output').innerHTML = e.currentTarget.value
+        })
 
     }
 
     toggle() {
         'block' === this.config.panel.style.display ? this.dismiss() : this.present()
     }
-
 
     present() {
         this.config.panel.style.left = `128px`

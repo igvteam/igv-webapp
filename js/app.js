@@ -21,7 +21,8 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js'
+import igv from '../node_modules/igv/js/index.js'
+import juicebox from '../node_modules/juicebox.js/dist/juicebox.esm.js'
 import {DOMUtils, FileUtils, GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,
@@ -125,7 +126,7 @@ async function main(container, config) {
 }
 
 async function initializationHelper(browser, container, options) {
-    
+
     await createJuiceboxPanel(Object.assign({ browser }, options))
 
     if (true === options.enableCircularView) {
@@ -217,22 +218,35 @@ async function initializationHelper(browser, container, options) {
         trackLoader)
 
     const sessionSaver = () => {
-        try {
+        const session =
+            {
+                "juicebox": juiceboxPanel.browser.toJSON(),
+                "igv": browser.toJSON()
+            }
 
-            return browser.toJSON()
-        } catch (e) {
-            console.error(e)
-            AlertSingleton.present(e)
-            return undefined
-        }
+        return session
     }
 
     const sessionLoader = async config => {
+
+        const igvConfig = config.igv || config
+
         try {
-            await browser.loadSession(config)
+            await browser.loadSession(igvConfig)
         } catch (e) {
             console.error(e)
             AlertSingleton.present(e)
+        }
+
+        if (config.juicebox) {
+
+            try {
+                await juicebox.restoreSession(document.querySelector('#spacewalk_juicebox_root_container'), config.juicebox)
+            } catch (e) {
+                console.error(e)
+                AlertSingleton.present(e)
+            }
+
         }
     }
 

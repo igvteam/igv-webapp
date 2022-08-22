@@ -22,43 +22,19 @@ var igvwebConfig = {
     igvConfig:
         {
             genome: "hg19",
-            locus: "chr8:125,435,405-133,904,633",
+            locus: "all",
             genomeList: "resources/genomes.json",
             queryParametersSupported: true,
             showChromosomeWidget: true,
             showSVGButton: false,
             tracks:
                 [
-                    {
-                        id: "jb-interactions",
-                        type: "interact",
-                        name: "Contacts",
-                        height: 125,
-                        features:
-                            [
-
-                            ],   // ! Important, signals track that features will be supplied explicitly
-                        order: 10000  // Just above gene track
-                    }
 
                 ]
         },
 
     juiceboxConfig:
         {
-            "url": "https://hicfiles.s3.amazonaws.com/hiseq/gm12878/dilution/combined.hic",
-            "name": "GM12878",
-            "state": "8,8,6,5019.8614387040925,5017.416175745596,640,640,1.7275014631202374,NONE",
-            "colorScale": "568,255,0,0",
-            "nvi": "11664249584,33929",
-            "tracks":
-                [
-                    {
-                        "url": "https://www.encodeproject.org/files/ENCFF817TXQ/@@download/ENCFF817TXQ.bedpe.gz",
-                        "name": "HAP-1 HiC",
-                        "color": "rgb(180,25,137)"
-                    }
-                ],
             mapMenu:
                 {
                     id: 'contact-map-datalist',

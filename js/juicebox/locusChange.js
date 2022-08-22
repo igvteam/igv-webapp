@@ -11,7 +11,15 @@ let jbLocusChageTS = 0
  */
 function igvLocusChange(hicBrowser, igvBrowser) {
     return (referenceFrameList) => {
-        if (Date.now() - jbLocusChageTS < 1000) return
+
+        if (undefined === hicBrowser.dataset) {
+            return
+        }
+
+        if (Date.now() - jbLocusChageTS < 1000) {
+            return
+        }
+
         igvLocusChangeTS = Date.now()
         const locusString = referenceFrameList.map(rf => `${rf.chr}:${Math.max(1, Math.ceil(rf.start))}-${Math.floor(rf.end)}`).join(' ')
         hicBrowser.parseGotoInput(locusString)

@@ -69,7 +69,7 @@ select#igv-app-track-select-modal-select {
   position: absolute;
   top: -1000px;
   left: -1000px;
-  z-index: 4096;
+  z-index: 2048;
   width: 512px;
   height: 512px;
   border-color: #7F7F7F;
@@ -142,6 +142,9 @@ select#igv-app-track-select-modal-select {
     padding-left: 4px;
     padding-right: 4px;
     background-color: rgba(0, 0, 0, 0.13); }
+
+.hic-menu {
+  width: 384px; }
 
 body {
   padding-top: 48px; }
@@ -223,6 +226,9 @@ label.dropdown-item {
     margin-right: 4px; }
   .igv-app-dropdown-item-cloud-storage div:last-child {
     margin-left: 4px; }
+
+.modal {
+  z-index: 3072; }
 
 .modal-header {
   padding: .7rem 1.0rem; }

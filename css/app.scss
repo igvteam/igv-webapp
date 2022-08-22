@@ -4,7 +4,7 @@
 @import "track-select";
 @import "panel";
 @import "juicebox_panel";
-
+@import "juicebox-customization";
 //
 $igv-app-light-color: #f7f7f7;
 $igv-app-medium-color: #a6a6a6;
@@ -135,6 +135,10 @@ label.dropdown-item {
     margin-left: 4px;
   }
 
+}
+
+.modal {
+  z-index: 3072;
 }
 
 .modal-header {

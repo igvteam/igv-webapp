@@ -8,6 +8,24 @@ let mapType = undefined;
 let encodeHostedContactMapModal;
 let contactMapModal;
 
+const igvConfig =
+    {
+        tracks:
+            [
+                {
+                    id: "jb-interactions",
+                    type: "interact",
+                    name: "Contacts",
+                    height: 125,
+                    features:
+                        [
+
+                        ],
+                    order: 10000
+                }
+            ]
+    }
+
 function configureContactMapLoaders({
                                         hicBrowser,
                                         igvBrowser,
@@ -38,34 +56,13 @@ function configureContactMapLoaders({
                 $('#hic-control-map-dropdown').removeClass('disabled')
             }
 
-
-            const genomeID = hicBrowser.genome.id
-
-            if (genomeID !== igvBrowser.genome.id) {
-
-                // genomeCallback(genomeID)
-
-                const config =
-                    {
-                        genome: genomeID,
-                        tracks:
-                            [
-                                {
-                                    id: "jb-interactions",
-                                    type: "interact",
-                                    name: "Contacts",
-                                    height: 125,
-                                    features:
-                                        [
-                                            // ! Important, signals track that features will be supplied explicitly
-                                        ],
-                                    order: 10000  // Just above gene track
-                                }
-                            ]
-                    }
-
-                await igvBrowser.loadSession(config)
-
+            if (hicBrowser.genome.id !== igvBrowser.genome.id) {
+                await igvBrowser.loadSession(Object.assign({ genome: hicBrowser.genome.id }, igvConfig))
+            } else {
+                const list = igvBrowser.findTracks('id', 'jb-interactions')
+                if (0 === list.length) {
+                    await igvBrowser.loadSession(Object.assign({ genome: igvBrowser.genome.id }, igvConfig))
+                }
             }
 
         } catch (e) {

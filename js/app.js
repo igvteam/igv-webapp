@@ -21,8 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/js/index.js'
-import juicebox from '../node_modules/juicebox.js/js/index.js'
+import igv from '../node_modules/igv/dist/igv.esm.js'
 import {DOMUtils, FileUtils, GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,

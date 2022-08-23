@@ -36,9 +36,8 @@ import {
     updateTrackMenus
 } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
-import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
-import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'
-import {sessionURL} from './shareHelper.js'
+import {createGenomeWidgets, loadGenome} from './genomeWidgets.js'
+import {createAppBookmarkHandler, createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'
 import {createSVGWidget} from './svgWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
@@ -185,13 +184,14 @@ async function initializationHelper(browser, container, options) {
             igvxhr
         }
 
-    createGenomeWidgets({
+    await createGenomeWidgets({
         $igvMain,
         urlModalId: 'igv-app-genome-from-url-modal',
-        genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)
+        genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig),
+        browser,
+        genomes: options.genomes,
+        $dropdownMenu: $('#igv-app-genome-dropdown-menu')
     })
-
-    await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
 
     const trackLoader = async configurations => {
         try {
@@ -380,27 +380,6 @@ function sendPairedAlignmentChord(features) {
 
 function sendBedPEChords(features) {
     circularView.addBedPEChords(features)
-}
-
-function createAppBookmarkHandler($bookmark_button) {
-
-    $bookmark_button.on('click', (e) => {
-
-        let url = undefined
-        try {
-            url = sessionURL()
-        } catch (e) {
-            AlertSingleton.present(e.message)
-        }
-
-        if (url) {
-            window.history.pushState({}, "IGV", url)
-
-            const str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl')
-            const blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.'
-            alert(blurb)
-        }
-    })
 }
 
 async function getGenomesArray(genomes) {

@@ -29,7 +29,7 @@ import Globals from "./globals.js";
 
 let fileLoadWidget;
 
-function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
+async function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad, browser, genomes, $dropdownMenu }) {
 
     const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
     $igvMain.append($urlModal);
@@ -56,7 +56,10 @@ function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
             AlertSingleton.present(e)
         }
 
-    });
+    })
+
+    await initializeGenomeWidgets(browser, genomes, $dropdownMenu)
+
 }
 
 async function initializeGenomeWidgets(browser, genomes, $dropdown_menu) {
@@ -71,6 +74,7 @@ async function initializeGenomeWidgets(browser, genomes, $dropdown_menu) {
     } catch (e) {
         AlertSingleton.present(e.message)
     }
+
 }
 
 async function getAppLaunchGenomes(genomes) {
@@ -175,5 +179,5 @@ async function loadGenome(genomeConfiguration) {
     }
 }
 
-export {createGenomeWidgets, loadGenome, initializeGenomeWidgets}
+export {createGenomeWidgets, loadGenome}
 

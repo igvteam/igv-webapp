@@ -23,7 +23,7 @@
 
 import {AlertSingleton, QRCode} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import {BGZip} from "../node_modules/igv-utils/src/index.js"
-import {setURLShortener, shortSessionURL} from './shareHelper.js'
+import {sessionURL, setURLShortener, shortSessionURL} from './shareHelper.js'
 
 function createShareWidgets({igvBrowser, hicBrowser, container, modal, share_input, copy_link_button, tweet_button_container, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
 
@@ -173,4 +173,25 @@ function shareWidgetConfigurator({ igvBrowser, hicBrowser, container, urlShorten
 
 }
 
-export {createShareWidgets, shareWidgetConfigurator}
+function createAppBookmarkHandler($bookmark_button) {
+
+    $bookmark_button.on('click', (e) => {
+
+        let url = undefined
+        try {
+            url = sessionURL()
+        } catch (e) {
+            AlertSingleton.present(e.message)
+        }
+
+        if (url) {
+            window.history.pushState({}, "IGV", url)
+
+            const str = (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl')
+            const blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.'
+            alert(blurb)
+        }
+    })
+}
+
+export {createShareWidgets, shareWidgetConfigurator, createAppBookmarkHandler}

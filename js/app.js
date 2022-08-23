@@ -22,7 +22,7 @@
  */
 
 import igv from '../node_modules/igv/js/index.js'
-import juicebox from '../node_modules/juicebox.js/dist/juicebox.esm.js'
+import juicebox from '../node_modules/juicebox.js/js/index.js'
 import {DOMUtils, FileUtils, GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,
@@ -218,13 +218,10 @@ async function initializationHelper(browser, container, options) {
         trackLoader)
 
     const sessionSaver = () => {
-        const session =
-            {
+        return {
                 "juicebox": juiceboxPanel.browser.toJSON(),
                 "igv": browser.toJSON()
             }
-
-        return session
     }
 
     const sessionLoader = async config => {
@@ -241,7 +238,7 @@ async function initializationHelper(browser, container, options) {
         if (config.juicebox) {
 
             try {
-                await juicebox.restoreSession(document.querySelector('#spacewalk_juicebox_root_container'), config.juicebox)
+                await juiceboxPanel.loadSession(config.juicebox)
             } catch (e) {
                 console.error(e)
                 AlertSingleton.present(e)

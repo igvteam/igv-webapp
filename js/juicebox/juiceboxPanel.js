@@ -1,6 +1,6 @@
-import juicebox from '../../node_modules/juicebox.js/dist/juicebox.esm.js'
+import juicebox from '../../node_modules/juicebox.js/js/index.js'
 import { EventBus } from '../../node_modules/igv-widgets/dist/igv-widgets.js'
-import {makeDraggable} from '../../node_modules/igv-utils/src/index.js'
+import {makeDraggable,StringUtils} from '../../node_modules/igv-utils/src/index.js'
 import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
 import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
 import configureContactMapLoaders from './contactMapLoad.js'
@@ -111,6 +111,14 @@ class JuiceboxPanel {
         this.config.panel.style.left = `-1000px`
         this.config.panel.style.top = `-1000px`
         EventBus.globalBus.post({ type: "DidDismissJuiceboxPanel", data: this })
+    }
+
+    async loadSession(session) {
+
+        juicebox.processSession(session)
+
+        await this.browser.init(session)
+
     }
 
 }

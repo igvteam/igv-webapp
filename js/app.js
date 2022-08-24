@@ -35,7 +35,7 @@ import {
     updateTrackMenus
 } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
-import {createGenomeWidgets, loadGenome} from './genomeWidgets.js'
+import {createGenomeWidgets, getGenomesArray, loadGenome} from './genomeUtils.js'
 import {createAppBookmarkHandler, createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'
 import {createSVGWidget} from './svgWidget.js'
 import GtexUtils from "./gtexUtils.js"
@@ -276,33 +276,6 @@ function queryGoogleAuthenticationStatus(user, isSignedIn) {
 
         const button = document.querySelector('#igv-google-drive-sign-out-button')
         button.innerHTML = `Sign Out ${emailAddress}`
-    }
-}
-
-function sendPairedAlignmentChord(features) {
-    circularView.selectAlignmentChord(features[0])
-}
-
-function sendBedPEChords(features) {
-    circularView.addBedPEChords(features)
-}
-
-async function getGenomesArray(genomes) {
-
-    if (undefined === genomes) {
-        return undefined
-    }
-    if (Array.isArray(genomes)) {
-        return genomes
-    } else {
-
-        let response = undefined
-        try {
-            response = await fetch(genomes)
-            return response.json()
-        } catch (e) {
-            AlertSingleton.present(e.message)
-        }
     }
 }
 

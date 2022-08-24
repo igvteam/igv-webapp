@@ -179,5 +179,24 @@ async function loadGenome(genomeConfiguration) {
     }
 }
 
-export {createGenomeWidgets, loadGenome}
+async function getGenomesArray(genomes) {
+
+    if (undefined === genomes) {
+        return undefined
+    }
+    if (Array.isArray(genomes)) {
+        return genomes
+    } else {
+
+        let response = undefined
+        try {
+            response = await fetch(genomes)
+            return response.json()
+        } catch (e) {
+            AlertSingleton.present(e.message)
+        }
+    }
+}
+
+export {createGenomeWidgets, loadGenome, getGenomesArray}
 

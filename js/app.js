@@ -21,7 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/js/index.js'
+import igv from '../node_modules/igv/dist/igv.esm.js'
 import {GoogleAuth, igvxhr, makeDraggable, BGZip} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,

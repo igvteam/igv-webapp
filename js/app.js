@@ -65,7 +65,7 @@ async function main(container, config) {
     if (query.sessionURL) {
         const session = JSON.parse(BGZip.uncompressString(query.sessionURL.substring(5)))
         config.igvConfig = Object.assign( { queryParametersSupported:false }, session.igv)
-        config.juiceboxConfig = Object.assign( { queryParametersSupported:false }, session.juicebox)
+        config.juiceboxConfig = Object.assign( { queryParametersSupported:false }, (session.juicebox || config.juiceboxConfig))
     }
 
     if (config.enableCircularView) {

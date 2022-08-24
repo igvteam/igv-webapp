@@ -21,8 +21,10 @@
  *
  */
 import {AlertSingleton} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import {BGZip} from '../node_modules/igv-utils/src/index.js'
 import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
 import Globals from "./globals.js";
+import { juiceboxPanel } from './app.js'
 
 let urlShortener;
 
@@ -59,16 +61,14 @@ export function setURLShortener(obj) {
 
 export function sessionURL() {
 
-    let surl,
-        path,
-        idx;
+    const json = { "igv": Globals.browser.toJSON(), "juicebox": juiceboxPanel.browser.toJSON() }
+    const jsonString = JSON.stringify(json)
 
-    path = window.location.href.slice();
-    idx = path.indexOf("?");
+    const path = window.location.href.slice()
+    const index = path.indexOf("?")
+    const sessionURL = `${ (index > 0 ? path.substring(0, index) : path) }?sessionURL=blob:${ BGZip.compressString(jsonString) }`
 
-    surl = (idx > 0 ? path.substring(0, idx) : path) + "?sessionURL=blob:" + Globals.browser.compressedSession();
-
-    return surl;
+    return sessionURL;
 }
 
 export function shortSessionURL(base, session) {

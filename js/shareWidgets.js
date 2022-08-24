@@ -35,13 +35,6 @@ function createShareWidgets({igvBrowser, hicBrowser, container, modal, share_inp
             href = href.substring(0, idx);
         }
 
-        // let session
-        // try {
-        //     session = igvBrowser.compressedSession();
-        // } catch (e) {
-        //     AlertSingleton.present(e.message)
-        // }
-
         const json = { "igv": igvBrowser.toJSON(), "juicebox": hicBrowser.toJSON() }
         const jsonString = JSON.stringify(json)
         const session = BGZip.compressString(jsonString)

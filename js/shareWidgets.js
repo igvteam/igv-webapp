@@ -37,18 +37,18 @@ function createShareWidgets({igvBrowser, hicBrowser, container, modal, share_inp
 
         const json = { "igv": igvBrowser.toJSON(), "juicebox": hicBrowser.toJSON() }
         const jsonString = JSON.stringify(json)
-        const session = BGZip.compressString(jsonString)
+        const compressString = BGZip.compressString(jsonString)
 
-        if (session) {
+        if (compressString) {
 
             if (embedTarget) {
-                const snippet = getEmbeddableSnippet(container, embedTarget, session);
+                const snippet = getEmbeddableSnippet(container, embedTarget, compressString);
                 const textArea = embed_container.querySelector('textarea');
                 textArea.value = snippet;
                 textArea.select();
             }
 
-            const shortURL = await shortSessionURL(href, session);
+            const shortURL = await shortSessionURL(href, compressString);
 
             share_input.value = shortURL;
             share_input.select();

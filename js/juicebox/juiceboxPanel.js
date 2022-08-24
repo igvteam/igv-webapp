@@ -5,7 +5,7 @@ import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
 import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
 import configureContactMapLoaders from './contactMapLoad.js'
 import {projectContacts, updateContactParameters} from './projectContacts.js'
-import throttle from '../utils.js'
+import { throttle } from '../utils.js'
 
 class JuiceboxPanel {
     constructor(config) {

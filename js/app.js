@@ -21,8 +21,8 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js'
-import {GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
+import igv from '../node_modules/igv/js/index.js'
+import {GoogleAuth, igvxhr, makeDraggable, BGZip} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,
     createTrackWidgetsWithTrackRegistry,
@@ -43,6 +43,7 @@ import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 import JuiceboxPanel from './juicebox/juiceboxPanel.js'
 import {configureSessionWidgets} from './session.js'
+import {extractQuery} from './utils.js'
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -58,6 +59,14 @@ async function main(container, config) {
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
+
+    const query = extractQuery()
+
+    if (query.sessionURL) {
+        const session = JSON.parse(BGZip.uncompressString(query.sessionURL.substring(5)))
+        config.igvConfig = Object.assign( { queryParametersSupported:false }, session.igv)
+        config.juiceboxConfig = Object.assign( { queryParametersSupported:false }, session.juicebox)
+    }
 
     if (config.enableCircularView) {
         await initializeCircularView()

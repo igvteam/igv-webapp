@@ -1,12 +1,11 @@
 import {AlertSingleton, createSessionWidgets} from "../node_modules/igv-widgets/dist/igv-widgets.js"
 import {DOMUtils, FileUtils} from '../node_modules/igv-utils/src/index.js'
-import { juiceboxPanel } from './app.js'
 
 async function configureSessionWidgets({ $igvMain, browser, initializeDropbox, options, googleEnabled }) {
 
     const sessionSaver = () => {
         return {
-            "juicebox": juiceboxPanel.browser.toJSON(),
+            "juicebox": browser.juiceboxPanel.browser.toJSON(),
             "igv": browser.toJSON()
         }
     }
@@ -25,7 +24,7 @@ async function configureSessionWidgets({ $igvMain, browser, initializeDropbox, o
         if (session.juicebox) {
 
             try {
-                await juiceboxPanel.loadSession(session.juicebox)
+                await browser.juiceboxPanel.loadSession(session.juicebox)
             } catch (e) {
                 console.error(e)
                 AlertSingleton.present(e)

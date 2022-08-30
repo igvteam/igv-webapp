@@ -21,7 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js'
+import igv from '../node_modules/igv/js/index.js'
 import {GoogleAuth, igvxhr, makeDraggable, BGZip} from '../node_modules/igv-utils/src/index.js'
 import {
     AlertSingleton,
@@ -50,8 +50,6 @@ document.addEventListener("DOMContentLoaded", async (event) => await main(docume
 let dropboxEnabled = false
 let googleEnabled = false
 let currentGenomeId
-let circularView
-let juiceboxPanel
 
 async function main(container, config) {
 
@@ -232,7 +230,7 @@ async function initializationHelper(browser, container, options) {
     let shareConfig =
         {
             igvBrowser: browser,
-            hicBrowser: juiceboxPanel.browser,
+            hicBrowser: browser.juiceboxPanel.browser,
             container
         }
 
@@ -408,16 +406,18 @@ async function createJuiceboxPanel(config) {
 
     Object.assign(juiceboxPanelConfig,config.juiceboxConfig)
 
-    juiceboxPanel = new JuiceboxPanel(juiceboxPanelConfig)
-    await juiceboxPanel.initialize()
+    config.browser.juiceboxPanel = new JuiceboxPanel(juiceboxPanelConfig)
+    await config.browser.juiceboxPanel.initialize()
+
+
 
     const juiceboxPresentationButton = document.querySelector('#juicebox-panel-present-button')
 
-    juiceboxPresentationButton.addEventListener('click', e => juiceboxPanel.toggle())
+    juiceboxPresentationButton.addEventListener('click', e => config.browser.juiceboxPanel.toggle())
 
     EventBus.globalBus.subscribe("DidPresentJuiceboxPanel", () => juiceboxPresentationButton.innerText = 'Hide')
     EventBus.globalBus.subscribe("DidDismissJuiceboxPanel", () => juiceboxPresentationButton.innerText = 'Show')
 
 }
 
-export {main, juiceboxPanel}
+export {main}

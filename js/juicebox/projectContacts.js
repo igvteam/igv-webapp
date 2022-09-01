@@ -5,27 +5,19 @@
  */
 
 
-
 let diagonalBinThreshold = 10
-let percntileThreshold = 2
+let percentileThreshold = 2
 let alphaModifier = 0.5
 
-function updateContactParameters(bThreshold, pThreshold, aModifier) {
-    diagonalBinThreshold = bThreshold
-    percntileThreshold = pThreshold
-    alphaModifier = aModifier
-}
+async function projectContacts({ hicBrowser, igvBrowser, diagonalBinThresholdValue, percentileThresholdValue, alphaModifierValue }) {
 
-async function projectContacts(hicBrowser, igvBrowser) {
+    diagonalBinThreshold = diagonalBinThresholdValue
+    percentileThreshold = percentileThresholdValue
+    alphaModifier = alphaModifierValue
 
-    const viewportWidth = hicBrowser.contactMatrixView.$viewport[0].clientWidth
-    const {chr1Name, chr2Name, binSize, binX, binY, pixelSize} = hicBrowser.getSyncState()
-    const widthInBP = viewportWidth * binSize / pixelSize
-    const region1 = {chr: chr1Name, start: binX * binSize, end: binX * binSize + widthInBP}
-    const region2 = {chr: chr2Name, start: binY * binSize, end: binY * binSize + widthInBP}
-    const normalization = hicBrowser.state.normalization || "NONE"
-    const records = await hicBrowser.dataset.getContactRecords(normalization, region1, region2, "BP", binSize)
-    //console.log(records)
+    const { width } = hicBrowser.contactMatrixView.getViewDimensions()
+    const syncState = hicBrowser.getSyncState()
+    const records = await hicBrowser.dataset.getContactRecordsWithSyncState(syncState, (hicBrowser.state.normalization || 'NONE'), width)
 
     // Count statistics
     const counts = []
@@ -34,19 +26,20 @@ async function projectContacts(hicBrowser, igvBrowser) {
             counts.push(rec.counts)
         }
     }
-    const threshold = percentile(counts, 100-percntileThreshold)
 
+    const { chr1Name, chr2Name, binSize } = syncState
     const features = []
-    for (let rec of records) {
+    const threshold = percentile(counts, 100-percentileThreshold)
 
-        const {bin1, bin2, counts} = rec
+    for (const { bin1, bin2, counts } of records) {
+
         // Skip diagonal
         if (Math.abs(bin1 - bin2) <= diagonalBinThreshold) continue
 
         if (counts < threshold) continue
 
-        const color = hicBrowser.contactMatrixView.colorScale.getColor(counts)
-        const rgba = `rgba(${color.red},${color.green},${color.blue},${alphaModifier * color.alpha / 255})`
+        const { red, green, blue, alpha } = hicBrowser.contactMatrixView.colorScale.getColor(counts)
+        const rgba = `rgba(${red},${green},${blue},${alphaModifier * alpha / 255})`
 
         features.push({
             chr1: igvBrowser.genome.getChromosomeName(chr1Name),
@@ -58,6 +51,7 @@ async function projectContacts(hicBrowser, igvBrowser) {
             value: counts,
             color: rgba
         })
+
         if (chr1Name !== chr2Name) {
             features.push({
                 chr2: igvBrowser.genome.getChromosomeName(chr1Name),
@@ -77,15 +71,15 @@ async function projectContacts(hicBrowser, igvBrowser) {
             feature.end = Math.max(feature.end1, feature.end2)
         }
     }
-    const itracks = igvBrowser.findTracks("id", "jb-interactions")
-    if (itracks.length > 0) {
-        const interactionTrack = itracks[0]
+
+    const tracks = igvBrowser.findTracks("id", "jb-interactions")
+    if (tracks.length > 0) {
+        const interactionTrack = tracks[0]
         interactionTrack.featureSource.updateFeatures(features)
         interactionTrack.clearCachedFeatures()
         interactionTrack.updateViews()
     }
 }
-
 
 function percentile(array, p) {
 
@@ -99,5 +93,4 @@ function percentile(array, p) {
 
 }
 
-
-export {projectContacts, updateContactParameters}
+export {projectContacts}

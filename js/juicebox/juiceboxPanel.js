@@ -4,7 +4,7 @@ import {makeDraggable,StringUtils} from '../../node_modules/igv-utils/src/index.
 import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
 import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
 import configureContactMapLoaders from './contactMapLoad.js'
-import {projectContacts, updateContactParameters} from './projectContacts.js'
+import {projectContacts} from './projectContacts.js'
 import { throttle } from '../utils.js'
 
 class JuiceboxPanel {
@@ -75,13 +75,18 @@ class JuiceboxPanel {
 
         this.config.updateContactsButton.addEventListener('click', () => {
 
-            const binThreshold = parseFloat(this.config.offDiagonalBinThresholdInput.value) || 0
-            const percentileThreshold = parseFloat(this.config.percentileThresholdInput.value) || 0
-            const alphaModifiler = parseFloat(this.config.alphaModifierInput.value) || 0
+            console.log(`${ Date.now() } click event - updateContactsButton() -> projectContacts()`)
 
-            updateContactParameters(binThreshold, percentileThreshold, alphaModifiler)
+            const projectContactsConfig =
+                {
+                    hicBrowser: this.browser,
+                    igvBrowser: this.config.igvBrowser,
+                    diagonalBinThresholdValue : parseFloat(this.config.offDiagonalBinThresholdInput.value) || 0,
+                    percentileThresholdValue : parseFloat(this.config.percentileThresholdInput.value) || 0,
+                    alphaModifierValue : parseFloat(this.config.alphaModifierInput.value) || 0,
 
-            projectContacts(this.browser, this.config.igvBrowser)
+                }
+            projectContacts(projectContactsConfig)
 
         })
 

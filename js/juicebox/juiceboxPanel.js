@@ -75,7 +75,7 @@ class JuiceboxPanel {
 
         this.config.updateContactsButton.addEventListener('click', () => {
 
-            console.log(`${ Date.now() } click event - updateContactsButton() -> projectContacts()`)
+            // console.log(`${ Date.now() } click event - updateContactsButton() -> projectContacts()`)
 
             const projectContactsConfig =
                 {

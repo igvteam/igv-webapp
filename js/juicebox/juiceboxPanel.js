@@ -4,8 +4,10 @@ import {makeDraggable,StringUtils} from '../../node_modules/igv-utils/src/index.
 import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
 import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
 import configureContactMapLoaders from './contactMapLoad.js'
-import {projectContacts} from './projectContacts.js'
+import {createFeatureList, projectContacts} from './projectContacts.js'
 import { throttle } from '../utils.js'
+import ContactProjectionDatasource from "./contactProjectionDatasource.js"
+import {loadIGVTrack} from '../app.js'
 
 class JuiceboxPanel {
     constructor(config) {
@@ -27,10 +29,6 @@ class JuiceboxPanel {
         this.browser = await juicebox.init(this.container, this.config)
 
         this.browser.setCustomCrosshairsHandler(juiceboxCrosshairsHandler(this.browser, this.config.igvBrowser))
-
-        this.browser.eventBus.subscribe("LocusChange", throttle(juiceboxLocusChange(this.browser, this.config.igvBrowser), 1000))
-
-        this.config.igvBrowser.on('locuschange', throttle(igvLocusChange(this.browser, this.config.igvBrowser), 100))
 
         const $dropdowns = $('a[id$=-map-dropdown]').parent()
 
@@ -75,8 +73,6 @@ class JuiceboxPanel {
 
         this.config.updateContactsButton.addEventListener('click', () => {
 
-            // console.log(`${ Date.now() } click event - updateContactsButton() -> projectContacts()`)
-
             const projectContactsConfig =
                 {
                     hicBrowser: this.browser,
@@ -97,6 +93,73 @@ class JuiceboxPanel {
         this.config.alphaModifierInput.addEventListener('input', e => {
             document.querySelector('#igv-juicebox-alpha-modifier-output').innerHTML = e.currentTarget.value
         })
+
+        this.config.igvBrowser.on('locuschange', throttle(igvLocusChange(this.browser, this.config.igvBrowser), 100))
+
+        this.browser.eventBus.subscribe("LocusChange", throttle(juiceboxLocusChange(this.browser, this.config.igvBrowser), 1000))
+
+        this.browser.eventBus.subscribe("MapLoad", event => {
+            console.log(`${ Date.now() } JuiceboxPanel - jb fired MapLoad event`)
+            loadIGVTrack(this.browser, this.config.igvBrowser)
+        })
+
+    }
+
+    createIGVConfigurationTemplate(genome, type) {
+
+        const getFeaturesHelper = async ({ chr, start, end }) => {
+
+            const state = await this.browser.createStateWithLocus(chr, start, end)
+
+            const projectContactsConfig =
+                {
+                    viewWidth: this.browser.contactMatrixView.getViewDimensions().width,
+                    dataset: this.browser.dataset,
+                    state,
+                    colorScale: this.browser.contactMatrixView.colorScale,
+                    genome: this.config.igvBrowser.genome,
+                    diagonalBinThresholdValue : parseFloat(this.config.offDiagonalBinThresholdInput.value) || 0,
+                    percentileThresholdValue : parseFloat(this.config.percentileThresholdInput.value) || 0,
+                    alphaModifierValue : parseFloat(this.config.alphaModifierInput.value) || 0,
+                };
+
+            return createFeatureList(projectContactsConfig)
+        }
+
+        const featureSource = new ContactProjectionDatasource({ getFeaturesHelper })
+
+        if ('session' === type) {
+
+            const session =
+                {
+                    genome,
+                    tracks:
+                        [
+                            {
+                                id: "jb-interactions",
+                                type: "interact",
+                                name: "Contacts",
+                                height: 125,
+                                featureSource
+                            }
+                        ]
+                };
+
+            return session
+
+        } else {
+
+            const track =
+                {
+                    id: "jb-interactions",
+                    type: "interact",
+                    name: "Contacts",
+                    height: 125,
+                    featureSource
+                };
+
+            return track
+        }
 
     }
 

@@ -3,28 +3,11 @@ import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/dist/
 import {FileUtils, GooglePicker} from '../../node_modules/igv-utils/src/index.js';
 import {aidenLabContactMapDatasourceConfigurator} from './aidenLabContactMapDatasourceConfig.js'
 import {encodeContactMapDatasourceConfiguration} from "./encodeContactMapDatasourceConfig.js"
+import {loadIGVTrack} from "../app.js"
 
 let mapType = undefined;
 let encodeHostedContactMapModal;
 let contactMapModal;
-
-const igvConfig =
-    {
-        tracks:
-            [
-                {
-                    id: "jb-interactions",
-                    type: "interact",
-                    name: "Contacts",
-                    height: 125,
-                    features:
-                        [
-
-                        ],
-                    order: 10000
-                }
-            ]
-    }
 
 function configureContactMapLoaders({
                                         hicBrowser,
@@ -56,14 +39,7 @@ function configureContactMapLoaders({
                 $('#hic-control-map-dropdown').removeClass('disabled')
             }
 
-            if (hicBrowser.genome.id !== igvBrowser.genome.id) {
-                await igvBrowser.loadSession(Object.assign({ genome: hicBrowser.genome.id }, igvConfig))
-            } else {
-                const list = igvBrowser.findTracks('id', 'jb-interactions')
-                if (0 === list.length) {
-                    await igvBrowser.loadSession(Object.assign({ genome: igvBrowser.genome.id }, igvConfig))
-                }
-            }
+            // await loadIGVTrack(hicBrowser, igvBrowser)
 
         } catch (e) {
             AlertSingleton.present(`Error loading ${url}: ${e}`);

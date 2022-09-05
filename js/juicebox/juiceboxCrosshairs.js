@@ -9,10 +9,12 @@
  * @returns {(function(*): void)|*}
  */
 
+import juicebox from '../../node_modules/juicebox.js/js/index.js'
+
 export default function juiceboxCrosshairsHandler(hicBrowser, igvBrowser) {
     return (s) => {
 
-        const binSize = hicBrowser.getSyncState().binSize
+        const binSize = juicebox.getSyncState(hicBrowser.dataset, hicBrowser.state).binSize
         const gsx = hicBrowser.genomicState('x')
         const gsy = hicBrowser.genomicState('y')
 

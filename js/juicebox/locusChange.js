@@ -22,7 +22,7 @@ function igvLocusChange(hicBrowser, igvBrowser) {
 
         igvLocusChangeTS = Date.now()
 
-        igvBrowser.juiceboxPanel.config.updateContactsButton.click()
+        // igvBrowser.juiceboxPanel.config.updateContactsButton.click()
 
         const locusString = referenceFrameList.map(rf => `${rf.chr}:${Math.max(1, Math.ceil(rf.start))}-${Math.floor(rf.end)}`).join(' ')
         hicBrowser.parseGotoInput(locusString)
@@ -97,7 +97,7 @@ function juiceboxLocusChange(hicBrowser, igvBrowser) {
 
         }
 
-        igvBrowser.juiceboxPanel.config.updateContactsButton.click()
+        // igvBrowser.juiceboxPanel.config.updateContactsButton.click()
     }
 }
 

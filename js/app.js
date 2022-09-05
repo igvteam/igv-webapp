@@ -420,4 +420,20 @@ async function createJuiceboxPanel(config) {
 
 }
 
-export {main}
+async function loadIGVTrack(hicBrowser, igvBrowser) {
+
+    if (hicBrowser.genome.id !== igvBrowser.genome.id) {
+
+        const config = igvBrowser.juiceboxPanel.createIGVConfigurationTemplate(hicBrowser.genome.id, 'session')
+        await igvBrowser.loadSession(config)
+    } else {
+        const list = igvBrowser.findTracks('id', 'jb-interactions')
+        if (0 === list.length) {
+
+            const trackConfiguration = igvBrowser.juiceboxPanel.createIGVConfigurationTemplate(igvBrowser.genome.id, 'track')
+            await igvBrowser.loadTrack(trackConfiguration)
+        }
+    }
+}
+
+export {main, loadIGVTrack}

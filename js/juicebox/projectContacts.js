@@ -4,6 +4,7 @@
  * TODO -- define what is "significant", perhaps with user input.
  */
 
+import juicebox from '../../node_modules/juicebox.js/js/index.js'
 
 let diagonalBinThreshold = 10
 let percentileThreshold = 2
@@ -11,15 +12,39 @@ let alphaModifier = 0.5
 
 async function projectContacts({ hicBrowser, igvBrowser, diagonalBinThresholdValue, percentileThresholdValue, alphaModifierValue }) {
 
+    const config =
+        {
+            viewWidth: hicBrowser.contactMatrixView.getViewDimensions().width,
+            dataset: hicBrowser.dataset,
+            state: hicBrowser.state,
+            colorScale: hicBrowser.contactMatrixView.colorScale,
+            genome: igvBrowser.genome,
+            diagonalBinThresholdValue,
+            percentileThresholdValue,
+            alphaModifierValue
+        }
+
+    const features = await createFeatureList(config)
+
+    const tracks = igvBrowser.findTracks("id", "jb-interactions")
+    if (tracks.length > 0) {
+        const interactionTrack = tracks[0]
+        interactionTrack.featureSource.updateFeatures(features)
+        interactionTrack.clearCachedFeatures()
+        interactionTrack.updateViews()
+    }
+}
+
+async function createFeatureList({ viewWidth, dataset, state, colorScale, genome, diagonalBinThresholdValue, percentileThresholdValue, alphaModifierValue }) {
+
     diagonalBinThreshold = diagonalBinThresholdValue
     percentileThreshold = percentileThresholdValue
     alphaModifier = alphaModifierValue
 
-    const { width } = hicBrowser.contactMatrixView.getViewDimensions()
-    const syncState = hicBrowser.getSyncState()
-    const records = await hicBrowser.dataset.getContactRecordsWithSyncState(syncState, (hicBrowser.state.normalization || 'NONE'), width)
+    const syncState = juicebox.getSyncState(dataset, state)
 
-    // Count statistics
+    const records = await dataset.getContactRecordsWithSyncState(syncState, (state.normalization || 'NONE'), viewWidth)
+
     const counts = []
     for (let rec of records) {
         if (Math.abs(rec.bin1 - rec.bin2) > diagonalBinThreshold) {
@@ -38,14 +63,14 @@ async function projectContacts({ hicBrowser, igvBrowser, diagonalBinThresholdVal
 
         if (counts < threshold) continue
 
-        const { red, green, blue, alpha } = hicBrowser.contactMatrixView.colorScale.getColor(counts)
+        const { red, green, blue, alpha } = colorScale.getColor(counts)
         const rgba = `rgba(${red},${green},${blue},${alphaModifier * alpha / 255})`
 
         features.push({
-            chr1: igvBrowser.genome.getChromosomeName(chr1Name),
+            chr1: genome.getChromosomeName(chr1Name),
             start1: bin1 * binSize,
             end1: bin1 * binSize + binSize,
-            chr2: igvBrowser.genome.getChromosomeName(chr2Name),
+            chr2: genome.getChromosomeName(chr2Name),
             start2: bin2 * binSize,
             end2: bin2 * binSize + binSize,
             value: counts,
@@ -54,10 +79,10 @@ async function projectContacts({ hicBrowser, igvBrowser, diagonalBinThresholdVal
 
         if (chr1Name !== chr2Name) {
             features.push({
-                chr2: igvBrowser.genome.getChromosomeName(chr1Name),
+                chr2: genome.getChromosomeName(chr1Name),
                 start2: bin1 * binSize,
                 end2: bin1 * binSize + binSize,
-                chr1: igvBrowser.genome.getChromosomeName(chr2Name),
+                chr1: genome.getChromosomeName(chr2Name),
                 start1: bin2 * binSize,
                 end1: bin2 * binSize + binSize,
                 value: counts,
@@ -72,13 +97,8 @@ async function projectContacts({ hicBrowser, igvBrowser, diagonalBinThresholdVal
         }
     }
 
-    const tracks = igvBrowser.findTracks("id", "jb-interactions")
-    if (tracks.length > 0) {
-        const interactionTrack = tracks[0]
-        interactionTrack.featureSource.updateFeatures(features)
-        interactionTrack.clearCachedFeatures()
-        interactionTrack.updateViews()
-    }
+    return features
+
 }
 
 function percentile(array, p) {
@@ -93,4 +113,4 @@ function percentile(array, p) {
 
 }
 
-export {projectContacts}
+export { projectContacts, createFeatureList }

@@ -105,7 +105,7 @@ class JuiceboxPanel {
 
     }
 
-    createIGVConfigurationTemplate(genome, type) {
+    createIGVConfiguration(genome, type) {
 
         const getFeaturesHelper = async ({ chr, start, end }) => {
 

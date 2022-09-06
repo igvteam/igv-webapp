@@ -35,6 +35,8 @@ var igvwebConfig = {
 
     juiceboxConfig:
         {
+            width: 512,
+            height: 512,
             mapMenu:
                 {
                     id: 'contact-map-datalist',

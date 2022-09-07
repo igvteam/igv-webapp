@@ -21,7 +21,7 @@ async function configureSessionWidgets({ $igvMain, browser, initializeDropbox, o
             AlertSingleton.present(e)
         }
 
-        if (session.juicebox) {
+        if (session.juicebox && 0 !== Object.entries(session.juicebox).length) {
 
             try {
                 await browser.juiceboxPanel.loadSession(session.juicebox)

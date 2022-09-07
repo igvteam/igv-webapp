@@ -109,6 +109,7 @@ class JuiceboxPanel {
 
         const getFeaturesHelper = async ({ chr, start, end }) => {
 
+            console.log(`get features helper ${ chr } ${ StringUtils.numberFormatter(start) } ${ StringUtils.numberFormatter(end) }`)
             const state = await this.browser.createStateWithLocus(chr, start, end)
 
             const projectContactsConfig =

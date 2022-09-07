@@ -5,6 +5,7 @@
  */
 
 import juicebox from '../../node_modules/juicebox.js/js/index.js'
+import {StringUtils} from '../../node_modules/igv-utils/src/index.js'
 
 let diagonalBinThreshold = 10
 let percentileThreshold = 2
@@ -44,6 +45,8 @@ async function createFeatureList({ viewWidth, dataset, state, colorScale, genome
     const syncState = juicebox.getSyncState(dataset, state)
 
     const records = await dataset.getContactRecordsWithSyncState(syncState, (state.normalization || 'NONE'), viewWidth)
+
+    console.log(`createFeatureList - contactRecords(${StringUtils.numberFormatter(records.length)})`)
 
     const counts = []
     for (let rec of records) {
@@ -90,12 +93,15 @@ async function createFeatureList({ viewWidth, dataset, state, colorScale, genome
             })
         }
 
+
         for (let feature of features) {
             feature.chr = feature.chr1
             feature.start = Math.min(feature.start1, feature.start2)
             feature.end = Math.max(feature.end1, feature.end2)
         }
     }
+
+    console.log(`createFeatureList - features(${StringUtils.numberFormatter(features.length)})`)
 
     return features
 

@@ -1,8 +1,8 @@
 
 class ContactProjectionDatasource {
 
-    constructor(config) {
-        this.getFeaturesHelper = config.getFeaturesHelper
+    constructor(getFeaturesHelper) {
+        this.getFeaturesHelper = getFeaturesHelper
     }
 
     async getFeatures({chr, start, end}) {

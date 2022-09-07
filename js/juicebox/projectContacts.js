@@ -93,7 +93,6 @@ async function createFeatureList({ viewWidth, dataset, state, colorScale, genome
             })
         }
 
-
         for (let feature of features) {
             feature.chr = feature.chr1
             feature.start = Math.min(feature.start1, feature.start2)
@@ -101,7 +100,7 @@ async function createFeatureList({ viewWidth, dataset, state, colorScale, genome
         }
     }
 
-    console.log(`createFeatureList - features(${StringUtils.numberFormatter(features.length)})`)
+    console.log(`createFeatureList - contactRecords(${StringUtils.numberFormatter(records.length)}) features(${StringUtils.numberFormatter(features.length)})`)
 
     return features
 

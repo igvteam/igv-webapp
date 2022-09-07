@@ -130,7 +130,7 @@ class JuiceboxPanel {
             return featureList
         }
 
-        const featureSource = new ContactProjectionDatasource({ getFeaturesHelper })
+        const featureSource = new ContactProjectionDatasource(getFeaturesHelper)
 
         if ('session' === type) {
 

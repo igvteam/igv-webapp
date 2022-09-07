@@ -109,7 +109,6 @@ class JuiceboxPanel {
 
         const getFeaturesHelper = async ({ chr, start, end }) => {
 
-            console.log(`get features helper ${ chr } ${ StringUtils.numberFormatter(start) } ${ StringUtils.numberFormatter(end) }`)
             const state = await this.browser.createStateWithLocus(chr, start, end)
 
             const projectContactsConfig =
@@ -124,7 +123,11 @@ class JuiceboxPanel {
                     alphaModifierValue : parseFloat(this.config.alphaModifierInput.value) || 0,
                 };
 
-            return createFeatureList(projectContactsConfig)
+            const featureList = await createFeatureList(projectContactsConfig)
+
+            console.log(`getFeaturesHelper features(${ StringUtils.numberFormatter(featureList.length) }) ${ chr } ${ StringUtils.numberFormatter(start) } ${ StringUtils.numberFormatter(end) }`)
+
+            return featureList
         }
 
         const featureSource = new ContactProjectionDatasource({ getFeaturesHelper })

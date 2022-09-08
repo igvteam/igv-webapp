@@ -39,8 +39,6 @@ function configureContactMapLoaders({
                 $('#hic-control-map-dropdown').removeClass('disabled')
             }
 
-            // await loadIGVTrack(hicBrowser, igvBrowser)
-
         } catch (e) {
             AlertSingleton.present(`Error loading ${url}: ${e}`);
         }

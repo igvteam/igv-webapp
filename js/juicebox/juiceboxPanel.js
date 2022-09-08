@@ -28,8 +28,6 @@ class JuiceboxPanel {
 
         this.browser = await juicebox.init(this.container, this.config)
 
-        this.browser.setCustomCrosshairsHandler(juiceboxCrosshairsHandler(this.browser, this.config.igvBrowser))
-
         const $dropdowns = $('a[id$=-map-dropdown]').parent()
 
         const contactMapLoadConfig =
@@ -103,21 +101,23 @@ class JuiceboxPanel {
             loadIGVTrack(this.browser, this.config.igvBrowser)
         })
 
+        this.browser.setCustomCrosshairsHandler(juiceboxCrosshairsHandler(this.browser, this.config.igvBrowser))
+
     }
 
-    createIGVConfiguration(genome, type) {
+    createIGVConfiguration(hicBrowser, igvBrowser, genome, type) {
 
         const getFeaturesHelper = async ({ chr, start, end }) => {
 
-            const state = await this.browser.createStateWithLocus(chr, start, end)
+            const state = await hicBrowser.createStateWithLocus(chr, start, end)
 
             const projectContactsConfig =
                 {
-                    viewWidth: this.browser.contactMatrixView.getViewDimensions().width,
-                    dataset: this.browser.dataset,
+                    viewWidth: hicBrowser.contactMatrixView.getViewDimensions().width,
+                    dataset: hicBrowser.dataset,
                     state,
-                    colorScale: this.browser.contactMatrixView.colorScale,
-                    genome: this.config.igvBrowser.genome,
+                    colorScale: hicBrowser.contactMatrixView.colorScale,
+                    genome: igvBrowser.genome,
                     diagonalBinThresholdValue : parseFloat(this.config.offDiagonalBinThresholdInput.value) || 0,
                     percentileThresholdValue : parseFloat(this.config.percentileThresholdInput.value) || 0,
                     alphaModifierValue : parseFloat(this.config.alphaModifierInput.value) || 0,

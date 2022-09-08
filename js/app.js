@@ -424,13 +424,13 @@ async function loadIGVTrack(hicBrowser, igvBrowser) {
 
     if (hicBrowser.genome.id !== igvBrowser.genome.id) {
 
-        const config = igvBrowser.juiceboxPanel.createIGVConfiguration(hicBrowser.genome.id, 'session')
+        const config = igvBrowser.juiceboxPanel.createIGVConfiguration(hicBrowser, igvBrowser, hicBrowser.genome.id, 'session')
         await igvBrowser.loadSession(config)
     } else {
         const list = igvBrowser.findTracks('id', 'jb-interactions')
         if (0 === list.length) {
 
-            const trackConfiguration = igvBrowser.juiceboxPanel.createIGVConfiguration(igvBrowser.genome.id, 'track')
+            const trackConfiguration = igvBrowser.juiceboxPanel.createIGVConfiguration(hicBrowser, igvBrowser, igvBrowser.genome.id, 'track')
             await igvBrowser.loadTrack(trackConfiguration)
         }
     }

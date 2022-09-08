@@ -92,6 +92,43 @@ class JuiceboxPanel {
             document.querySelector('#igv-juicebox-alpha-modifier-output').innerHTML = e.currentTarget.value
         })
 
+        this.config.offDiagonalBinThresholdInput.addEventListener('keyup', e => {
+
+            if (13 === e.keyCode) {
+
+                console.log(`diagonal bin threshold ${ e.currentTarget.value }`)
+
+                const [ interactionTrack ] = this.config.igvBrowser.findTracks('id', 'jb-interactions')
+                if (interactionTrack) {
+                    interactionTrack.updateViews()
+                }
+
+            }
+
+        })
+
+        this.config.percentileThresholdInput.addEventListener('mouseup', e => {
+
+            console.log(`percentile threshold ${ e.currentTarget.value }`)
+
+            const [ interactionTrack ] = this.config.igvBrowser.findTracks('id', 'jb-interactions')
+            if (interactionTrack) {
+                interactionTrack.updateViews()
+            }
+
+        })
+
+        this.config.alphaModifierInput.addEventListener('mouseup', e => {
+
+            console.log(`alpha modifier ${ e.currentTarget.value }`)
+
+            const [ interactionTrack ] = this.config.igvBrowser.findTracks('id', 'jb-interactions')
+            if (interactionTrack) {
+                interactionTrack.updateViews()
+            }
+
+        })
+
         this.config.igvBrowser.on('locuschange', throttle(igvLocusChange(this.browser, this.config.igvBrowser), 100))
 
         this.browser.eventBus.subscribe("LocusChange", throttle(juiceboxLocusChange(this.browser, this.config.igvBrowser), 1000))

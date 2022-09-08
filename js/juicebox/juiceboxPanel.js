@@ -69,6 +69,13 @@ class JuiceboxPanel {
 
         configureContactMapLoaders(contactMapLoadConfig)
 
+        configurePercentileThresholdInput(this.config.percentileThresholdInput, this.config.igvBrowser)
+
+        configureAlphaModifierInput(this.config.alphaModifierInput, this.config.igvBrowser)
+
+        configureOffDiagonalBinThresholdInput(this.config.offDiagonalBinThresholdInput, this.config.igvBrowser)
+
+        /*
         this.config.updateContactsButton.addEventListener('click', () => {
 
             const projectContactsConfig =
@@ -83,51 +90,7 @@ class JuiceboxPanel {
             projectContacts(projectContactsConfig)
 
         })
-
-        this.config.percentileThresholdInput.addEventListener('input', e => {
-            document.querySelector('#igv-juicebox-percentile-threshold-output').innerHTML = e.currentTarget.value
-        })
-
-        this.config.alphaModifierInput.addEventListener('input', e => {
-            document.querySelector('#igv-juicebox-alpha-modifier-output').innerHTML = e.currentTarget.value
-        })
-
-        this.config.offDiagonalBinThresholdInput.addEventListener('keyup', e => {
-
-            if (13 === e.keyCode) {
-
-                console.log(`diagonal bin threshold ${ e.currentTarget.value }`)
-
-                const [ interactionTrack ] = this.config.igvBrowser.findTracks('id', 'jb-interactions')
-                if (interactionTrack) {
-                    interactionTrack.updateViews()
-                }
-
-            }
-
-        })
-
-        this.config.percentileThresholdInput.addEventListener('mouseup', e => {
-
-            console.log(`percentile threshold ${ e.currentTarget.value }`)
-
-            const [ interactionTrack ] = this.config.igvBrowser.findTracks('id', 'jb-interactions')
-            if (interactionTrack) {
-                interactionTrack.updateViews()
-            }
-
-        })
-
-        this.config.alphaModifierInput.addEventListener('mouseup', e => {
-
-            console.log(`alpha modifier ${ e.currentTarget.value }`)
-
-            const [ interactionTrack ] = this.config.igvBrowser.findTracks('id', 'jb-interactions')
-            if (interactionTrack) {
-                interactionTrack.updateViews()
-            }
-
-        })
+        */
 
         this.config.igvBrowser.on('locuschange', throttle(igvLocusChange(this.browser, this.config.igvBrowser), 100))
 
@@ -228,6 +191,53 @@ class JuiceboxPanel {
 
         await this.browser.init(session)
 
+    }
+
+}
+
+function configurePercentileThresholdInput(inputElement, igvBrowser){
+
+    inputElement.addEventListener('input', e => {
+        document.querySelector('#igv-juicebox-percentile-threshold-output').innerHTML = e.currentTarget.value
+    })
+
+    inputElement.addEventListener('mouseup', e => {
+        console.log(`percentile threshold ${ e.currentTarget.value }`)
+        updateTrack(igvBrowser)
+    })
+
+}
+
+function configureAlphaModifierInput(inputElement, igvBrowser){
+
+    inputElement.addEventListener('input', e => {
+        document.querySelector('#igv-juicebox-alpha-modifier-output').innerHTML = e.currentTarget.value
+    })
+
+    inputElement.addEventListener('mouseup', e => {
+        console.log(`alpha modifier ${ e.currentTarget.value }`)
+        updateTrack(igvBrowser)
+    })
+
+}
+
+function configureOffDiagonalBinThresholdInput(inputElement, igvBrowser){
+
+    inputElement.addEventListener('keyup', e => {
+
+        if (13 === e.keyCode) {
+            console.log(`diagonal bin threshold ${ e.currentTarget.value }`)
+            updateTrack(igvBrowser)
+        }
+
+    })
+}
+
+function updateTrack(igvBrowser) {
+
+    const [ interactionTrack ] = igvBrowser.findTracks('id', 'jb-interactions')
+    if (interactionTrack) {
+        interactionTrack.updateViews()
     }
 
 }

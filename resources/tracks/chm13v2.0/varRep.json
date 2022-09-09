@@ -33,105 +33,12 @@
             "visibilityWindow": 10000,
             "supportsWholeGenome": false
         },
-
         {
-            "id": "repeatMaskerSINE",
-            "name": "RMSK SINE",
+            "id": "repeatMasker",
+            "name": "Repeat Masker",
             "format": "bigBed",
-            "description": "SINE Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.SINE.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 10000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerLINE",
-            "name": "RMSK LINE",
-            "format": "bigBed",
-            "description": "LINE Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.LINE.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 10000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerLTR",
-            "name": "RMSK LTR",
-            "format": "bigBed",
-            "description": "LTR Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.LTR.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 10000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerDNA",
-            "name": "RMSK DNA",
-            "format": "bigBed",
-            "description": "DNA Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.DNA.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 10000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerSimple",
-            "name": "RMSK Simple",
-            "format": "bigBed",
-            "description": "Simple Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.Simple.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 10000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerLowComplexity",
-            "name": "RMSK Low Complexity",
-            "format": "bigBed",
-            "description": "Low Complexity Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.Low_complexity.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 10000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerSatellite",
-            "name": "RMSK Satellite",
-            "format": "bigBed",
-            "description": "Satellite Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.Satellite.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 50000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerRNA",
-            "name": "RMSK RNA",
-            "format": "bigBed",
-            "description": "RNA Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.RNA.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 50000000,
-            "supportsWholeGenome": false
-
-        },
-        {
-            "id": "repeatMaskerOther",
-            "name": "RMSK Other",
-            "format": "bigBed",
-            "description": "Other Repeating Elements by RepeatMasker",
-            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.rmsk.Other.bb",
-            "parent": "repeatMasker",
-            "visibilityWindow": 100000000,
-            "supportsWholeGenome": false
-
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/009/914/755/GCA_009914755.4/bbi/GCA_009914755.4_T2T-CHM13v2.0.t2tRepeatMasker/chm13v2.0_rmsk.bb",
+            "height": 300
         },
         {
             "id": "simpleRepeat",

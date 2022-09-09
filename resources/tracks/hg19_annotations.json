@@ -27,16 +27,6 @@
       "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/annotations/gwasCatalog.txt.gz.tbi"
     },
     {
-      "name": "Common SNPs (150)",
-      "type": "snp",
-      "format": "snp",
-      "visibilityWindow": 10000,
-      "height": 30,
-      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz",
-      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/snp150Common.txt.gz.tbi",
-      "infoURL": "https://www.ncbi.nlm.nih.gov/snp/?term=$$"
-    },
-    {
       "name": "Repeat Masker",
       "type": "annotation",
       "format": "rmsk",
@@ -61,12 +51,13 @@
     },
     {
       "name": "GenCC",
-      "description" : "Annotations from the <a href='https://thegencc.org/' target='_blank'>The Gene Curation Coalition</a> courtesy of the UCSC Genome Browser team.  See the <a href='https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg38&g=genCC' target='_blank'>UCSC track settings page</a> for display conventions.",
-      "url": "http://hgdownload.soe.ucsc.edu/gbdb/hg19/bbi/genCC.bb",
+      "description" : "Annotations from the <a href='https://thegencc.org/' target='_blank'>The Gene Curation Coalition</a> courtesy of the UCSC Genome Browser team.  See the <a href='https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg38&g=genCC' target='_blank'>UCSC track settings page</a> for more details.",
+      "url": "https://hgdownload.soe.ucsc.edu/gbdb/hg19/bbi/genCC.bb",
       "type": "annotation",
       "format": "bigbed",
       "height": 300,
-      "displayMode": "EXPANDED"
+      "displayMode": "EXPANDED",
+      "hoverTextFields": ["disease_title"]
     }
   ]
 }

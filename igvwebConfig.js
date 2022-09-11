@@ -17,6 +17,8 @@ var igvwebConfig = {
         provider: "tinyURL"
     },
 
+    restoreLastGenome: true,
+
     enableCircularView: true,
 
     igvConfig:

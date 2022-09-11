@@ -4,7 +4,6 @@ import {makeDraggable,StringUtils} from '../../node_modules/igv-utils/src/index.
 import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'
 import juiceboxCrosshairsHandler from './juiceboxCrosshairs.js'
 import configureContactMapLoaders from './contactMapLoad.js'
-import {createFeatureList, projectContacts} from './projectContacts.js'
 import { throttle } from '../utils.js'
 import ContactProjectionDatasource from "./contactProjectionDatasource.js"
 import {loadIGVTrack} from '../app.js'
@@ -75,23 +74,6 @@ class JuiceboxPanel {
 
         configureOffDiagonalBinThresholdInput(this.config.offDiagonalBinThresholdInput, this.config.igvBrowser)
 
-        /*
-        this.config.updateContactsButton.addEventListener('click', () => {
-
-            const projectContactsConfig =
-                {
-                    hicBrowser: this.browser,
-                    igvBrowser: this.config.igvBrowser,
-                    diagonalBinThresholdValue : parseFloat(this.config.offDiagonalBinThresholdInput.value) || 0,
-                    percentileThresholdValue : parseFloat(this.config.percentileThresholdInput.value) || 0,
-                    alphaModifierValue : parseFloat(this.config.alphaModifierInput.value) || 0,
-
-                }
-            projectContacts(projectContactsConfig)
-
-        })
-        */
-
         this.config.igvBrowser.on('locuschange', throttle(igvLocusChange(this.browser, this.config.igvBrowser), 100))
 
         this.browser.eventBus.subscribe("LocusChange", throttle(juiceboxLocusChange(this.browser, this.config.igvBrowser), 1000))
@@ -107,30 +89,7 @@ class JuiceboxPanel {
 
     createIGVConfiguration(hicBrowser, igvBrowser, genome, type) {
 
-        const getFeaturesHelper = async ({ chr, start, end }) => {
-
-            const state = await hicBrowser.createStateWithLocus(chr, start, end)
-
-            const projectContactsConfig =
-                {
-                    viewWidth: hicBrowser.contactMatrixView.getViewDimensions().width,
-                    dataset: hicBrowser.dataset,
-                    state,
-                    colorScale: hicBrowser.contactMatrixView.colorScale,
-                    genome: igvBrowser.genome,
-                    diagonalBinThresholdValue : parseFloat(this.config.offDiagonalBinThresholdInput.value) || 0,
-                    percentileThresholdValue : parseFloat(this.config.percentileThresholdInput.value) || 0,
-                    alphaModifierValue : parseFloat(this.config.alphaModifierInput.value) || 0,
-                };
-
-            const featureList = await createFeatureList(projectContactsConfig)
-
-            console.log(`getFeaturesHelper features(${ StringUtils.numberFormatter(featureList.length) }) ${ chr } ${ StringUtils.numberFormatter(start) } ${ StringUtils.numberFormatter(end) }`)
-
-            return featureList
-        }
-
-        const featureSource = new ContactProjectionDatasource(getFeaturesHelper)
+        const featureSource = new ContactProjectionDatasource(hicBrowser, igvBrowser.genome)
 
         if ('session' === type) {
 

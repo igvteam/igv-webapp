@@ -9,7 +9,7 @@
  * @returns {(function(*): void)|*}
  */
 
-import juicebox from '../../node_modules/juicebox.js/js/index.js'
+import juicebox from '../../node_modules/juicebox.js/dist/juicebox.esm.js'
 
 export default function juiceboxCrosshairsHandler(hicBrowser, igvBrowser) {
     return (s) => {

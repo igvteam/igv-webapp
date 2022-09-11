@@ -1,4 +1,4 @@
-import juicebox from '../../node_modules/juicebox.js/js/index.js'
+import juicebox from '../../node_modules/juicebox.js/dist/juicebox.esm.js'
 import { EventBus } from '../../node_modules/igv-widgets/dist/igv-widgets.js'
 import {makeDraggable,StringUtils} from '../../node_modules/igv-utils/src/index.js'
 import {igvLocusChange, juiceboxLocusChange} from './locusChange.js'

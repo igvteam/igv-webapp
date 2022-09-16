@@ -24,6 +24,7 @@
  * THE SOFTWARE.
  */
 
+import igv from '../node_modules/igv/dist/igv.esm.js'
 import {AlertSingleton, createURLModal,EventBus,FileLoadManager,FileLoadWidget,Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js";
 

@@ -1,3 +1,4 @@
+import igv from '../node_modules/igv/dist/igv.esm.js'
 import { igvxhr } from '../node_modules/igv-utils/src/index.js';
 
 const GtexUtils = {

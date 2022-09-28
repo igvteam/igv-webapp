@@ -27,7 +27,7 @@
     "core-js": "^3.6.5",
     "eslint": "^6.8.0",
     "fs-extra": "^8.1.0",
-    "igv": "^2.13.2",
+    "igv": "^2.13.3",
     "igv-utils": "github:igvteam/igv-utils#v1.3.12",
     "igv-widgets": "github:igvteam/igv-widgets#v1.4.3",
     "regenerator-runtime": "^0.13.7",

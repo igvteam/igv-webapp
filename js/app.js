@@ -51,6 +51,8 @@ let googleEnabled = false
 let currentGenomeId
 let circularView
 
+const googleWarningFlag = "googleWarningShown"
+
 async function main(container, config) {
 
     AlertSingleton.init(container)
@@ -74,23 +76,31 @@ async function main(container, config) {
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
             googleEnabled = true
+
+            const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
+            if (true === isSignedIn) {
+                const user = gapi.auth2.getAuthInstance().currentUser.get()
+                queryGoogleAuthenticationStatus(user, isSignedIn)
+            }
+
+            gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
+                const user = gapi.auth2.getAuthInstance().currentUser.get()
+                queryGoogleAuthenticationStatus(user, status)
+            })
+
+            // Reset google warning flag on success
+            localStorage.removeItem(googleWarningFlag)
+
         } catch (e) {
-            const str = `Error initializing Google Drive: ${ e.message || e.details }`
+            const str = `Error initializing Google Drive: ${e.message || e.details}`
             console.error(str)
+            const googleWarning = "true" === localStorage.getItem(googleWarningFlag)
             //AlertSingleton.present(str)
-            alert(str)
+            if(!googleWarning) {
+                localStorage.setItem(googleWarningFlag, "true")
+                alert(str)
+            }
         }
-
-        const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
-        if (true === isSignedIn) {
-            const user = gapi.auth2.getAuthInstance().currentUser.get()
-            queryGoogleAuthenticationStatus(user, isSignedIn)
-        }
-
-        gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
-            const user = gapi.auth2.getAuthInstance().currentUser.get()
-            queryGoogleAuthenticationStatus(user, status)
-        })
     }
 
     // Load genomes for use by igv.js and webapp
@@ -265,13 +275,13 @@ async function initializationHelper(browser, container, options) {
 
     if (true === options.enableCircularView) {
 
-        const { x:minX, y:minY } = document.querySelector('#igv-main').getBoundingClientRect()
+        const {x: minX, y: minY} = document.querySelector('#igv-main').getBoundingClientRect()
 
         const circularViewContainer = document.getElementById('igv-circular-view-container')
 
         browser.createCircularView(circularViewContainer, false)
 
-        makeDraggable(circularViewContainer, browser.circularView.toolbar, { minX, minY } )
+        makeDraggable(circularViewContainer, browser.circularView.toolbar, {minX, minY})
 
         browser.circularView.setSize(512)
 
@@ -283,11 +293,11 @@ async function initializationHelper(browser, container, options) {
             document.getElementById('igv-app-circular-view-presentation-button').innerText = browser.circularViewVisible ? 'Hide' : 'Show'
 
             if (browser.circularViewVisible) {
-                document.getElementById('igv-app-circular-view-resize-button').removeAttribute('disabled');
-                document.getElementById('igv-app-circular-view-clear-chords-button').removeAttribute('disabled');
+                document.getElementById('igv-app-circular-view-resize-button').removeAttribute('disabled')
+                document.getElementById('igv-app-circular-view-clear-chords-button').removeAttribute('disabled')
             } else {
-                document.getElementById('igv-app-circular-view-resize-button').setAttribute('disabled', '');
-                document.getElementById('igv-app-circular-view-clear-chords-button').setAttribute('disabled', '');
+                document.getElementById('igv-app-circular-view-resize-button').setAttribute('disabled', '')
+                document.getElementById('igv-app-circular-view-clear-chords-button').setAttribute('disabled', '')
             }
 
 

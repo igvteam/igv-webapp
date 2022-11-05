@@ -255,7 +255,9 @@ The following example defines a menu item labeled "My Favorite Platinum Genomes 
 
 ![](img/CustomModalTracks.png)
 
-The following example shows the track configuration file for the same menu item and table as the example above, but in this case the track details are in a file located in the *resources/tracks* folder, as specified by the `data` property. Alternatively, the `data` property can specify a URL to the file. 
+
+The following example shows the track configuration file for the same menu item and table as the example above, but in this case the track details are in a tab or comma delimited file describing a table with column headers.  Each column header is mapped to a track configuration json property.  A ```url```
+column is required to load the track.   The table file is specified with the "data" property, and can be either a relative local path or URL.   
 
 ```json
 {  
@@ -276,7 +278,7 @@ The following example shows the track configuration file for the same menu item 
       "title": "Sample"
     }
   },
-
+  "delimiter": ",",
   "data": "resources/tracks/my_custom_track_table.csv"
 }
 ```

@@ -1,0 +1,28 @@
+{
+  "label": "4DN tracks",
+  "type": "custom-data-modal",
+  "description": "Nucleomic data from the <a href=https://data.4dnucleome.org/ target=_blank>4D Nucleome Data Portal</a>",
+
+  "columns":
+  [
+    "Project",
+    "Type",
+    "Biosource",
+    "Assay",
+    "Replicate",
+    "Dataset",
+    "name",
+    "Lab",
+    "Publications",
+    "Accession"
+  ],
+  "columnDefs":
+  {
+    "name":
+    {
+      "title": "Description"
+    }
+  },
+  "delimiter": "\t",
+  "data": "https://s3.amazonaws.com/igv.org.app/4dn/hic/4dn_dm6_tracks.txt"
+}

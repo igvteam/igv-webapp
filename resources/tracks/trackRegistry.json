@@ -18,14 +18,16 @@
     "resources/tracks/danRer10_annotations.json"
   ],
   "danRer11": [
-    "resources/tracks/danRer11_annotations.json"
+    "resources/tracks/danRer11_annotations.json",
+    "resources/tracks/danRer11_4dn.json"
   ],
   "dm3": [
     "resources/tracks/dm3_encode.json"
   ],
   "dm6": [
     "resources/tracks/dm6_annotations.json",
-    "resources/tracks/dm6_encode.json"
+    "resources/tracks/dm6_encode.json",
+    "resources/tracks/dm6_4dn.json"
   ],
   "galGal6": [
     "resources/tracks/galGal6_annotations.json"
@@ -45,19 +47,22 @@
   ],
   "hg38": [
     "resources/tracks/hg38_annotations.json",
-    "resources/tracks/hg38_encode.json"
+    "resources/tracks/hg38_encode.json",
+    "resources/tracks/hg38_4dn.json"
   ],
   "hg38_1kg": [
     "resources/tracks/hg38_annotations.json",
     "resources/tracks/hg38_encode.json",
-    "resources/tracks/hg38_1KG_lowCoverageCrams.json"
+    "resources/tracks/hg38_1KG_lowCoverageCrams.json",
+    "resources/tracks/hg38_4dn.json"
   ],
   "mm9": [
     "resources/tracks/mm9_annotations.json"
   ],
   "mm10": [
     "resources/tracks/mm10_annotations.json",
-    "resources/tracks/mm10_encode.json"
+    "resources/tracks/mm10_encode.json",
+    "resources/tracks/mm10_4dn.json"
   ],
   "panPan2": [
     "resources/tracks/panPan2_annotations.json"

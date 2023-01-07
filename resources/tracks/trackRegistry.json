@@ -86,6 +86,12 @@
     "resources/tracks/chm13v2.0/rna.json",
     "resources/tracks/chm13v2.0/regulation.json",
     "resources/tracks/chm13v2.0/compGeno.json"
-
+  ],
+  "GCA_011100615.1": [
+    "resources/tracks/GCA_011100615.1_genes.json",
+    "resources/tracks/GCA_011100615.1_map.json",
+    "resources/tracks/GCA_011100615.1_regulation.json",
+    "resources/tracks/GCA_011100615.1_rna.json",
+    "resources/tracks/GCA_011100615.1_varRep.json"
   ]
 }

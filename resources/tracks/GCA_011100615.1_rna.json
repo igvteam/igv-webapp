@@ -1,0 +1,17 @@
+{
+    "tracks": [
+        {
+            "id": "xenoRefGene",
+            "name": "RefSeq mRNAs",
+            "format": "bigGenePred",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/html/GCA_011100615.1_Macaca_fascicularis_6.0.xenoRefGene\">RefSeq mRNAs mapped to this assembly</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/bbi/GCA_011100615.1_Macaca_fascicularis_6.0.xenoRefGene.bb",
+            "displayMode": "EXPANDED",
+            "color": "rgb(180,0,0)"
+        }
+    ],
+    "name": "rna",
+    "label": "mRNA and EST",
+    "priority": "4",
+    "defaultIsClosed": "0"
+}

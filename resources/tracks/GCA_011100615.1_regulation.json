@@ -1,0 +1,26 @@
+{
+    "tracks": [
+        {
+            "id": "cpgIslandExt",
+            "name": "CpG Islands",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/html/GCA_011100615.1_Macaca_fascicularis_6.0.cpgIslands\">CpG Islands (Islands < 300 Bases are Light Green)</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/bbi/GCA_011100615.1_Macaca_fascicularis_6.0.cpgIslandExt.bb",
+            "displayMode": "EXPANDED",
+            "parent": "cpgIslands off"
+        },
+        {
+            "id": "cpgIslandExtUnmasked",
+            "name": "Unmasked CpG",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/html/GCA_011100615.1_Macaca_fascicularis_6.0.cpgIslands\">CpG Islands on All Sequence (Islands < 300 Bases are Light Green)</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs//GCA/011/100/615/GCA_011100615.1/bbi/GCA_011100615.1_Macaca_fascicularis_6.0.cpgIslandExtUnmasked.bb",
+            "displayMode": "EXPANDED",
+            "parent": "cpgIslands on"
+        }
+    ],
+    "name": "regulation",
+    "label": "Expression and Regulation",
+    "priority": "5",
+    "defaultIsClosed": "0"
+}

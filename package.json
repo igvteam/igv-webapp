@@ -1,6 +1,6 @@
 {
   "name": "igv-webapp",
-  "version": "1.12.8",
+  "version": "1.12.9",
   "description": "igv web app",
   "keywords": [],
   "author": "Douglass Turner and Jim Robinson",
@@ -27,7 +27,7 @@
     "core-js": "^3.6.5",
     "eslint": "^6.8.0",
     "fs-extra": "^8.1.0",
-    "igv": "^2.13.10",
+    "igv": "^2.13.11",
     "igv-utils": "github:igvteam/igv-utils#v1.3.14",
     "igv-widgets": "github:igvteam/igv-widgets#v1.4.5",
     "regenerator-runtime": "^0.13.7",

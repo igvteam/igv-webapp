@@ -22,7 +22,8 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js'
-import {DOMUtils, FileUtils, GoogleAuth, igvxhr, makeDraggable} from '../node_modules/igv-utils/src/index.js'
+import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
+import {makeDraggable} from "./draggable.js"
 import {
     AlertSingleton,
     createSessionWidgets,
@@ -77,16 +78,16 @@ async function main(container, config) {
             })
             googleEnabled = true
 
-            const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get()
-            if (true === isSignedIn) {
-                const user = gapi.auth2.getAuthInstance().currentUser.get()
-                queryGoogleAuthenticationStatus(user, isSignedIn)
+            const currentUserProfile = await GoogleAuth.getCurrentUserProfile()
+            if (currentUserProfile) {
+                queryGoogleAuthenticationStatus(currentUserProfile)
             }
 
-            gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
-                const user = gapi.auth2.getAuthInstance().currentUser.get()
-                queryGoogleAuthenticationStatus(user, status)
-            })
+            // TODO -- we can't listen anymore
+            // gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
+            //     const user = gapi.auth2.getAuthInstance().currentUser.get()
+            //     queryGoogleAuthenticationStatus(user, status)
+            // })
 
             // Reset google warning flag on success
             localStorage.removeItem(googleWarningFlag)
@@ -182,8 +183,7 @@ async function initializationHelper(browser, container, options) {
                     await loadGenome(configuration)
                 }
 
-            },
-            igvxhr
+            }
         }
 
     createGenomeWidgets({
@@ -331,20 +331,29 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
 }
 
+/**
+Example user profile
+{
+    "id": "111663833909385335699",
+    "name": "James Robinson",
+    "given_name": "James",
+    "family_name": "Robinson",
+    "link": "https://plus.google.com/111663833909385335699",
+    "picture": "https://lh3.googleusercontent.com/a/AGNmyxaBq1lOsih0zE_TR9h1ENowVCAUbElUKDvlSdXMpQ=s96-c",
+    "locale": "en"
+}
+ */
 
-function queryGoogleAuthenticationStatus(user, isSignedIn) {
+function queryGoogleAuthenticationStatus(user) {
 
-    if (true === isSignedIn) {
-
-        const profile = user.getBasicProfile()
-        const emailAddress = profile.getEmail()
+        const name = user.name
 
         const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
         toggle.style.display = 'block'
 
         const button = document.querySelector('#igv-google-drive-sign-out-button')
-        button.innerHTML = `Sign Out ${emailAddress}`
-    }
+        button.innerHTML = `Sign Out ${name}`
+
 }
 
 async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessionLoader) {
@@ -383,7 +392,7 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
 
             const referenceNode = document.getElementById(sessionListDivider)
 
-            const button_id = `${id_prefix}_${DOMUtils.guid()}`
+            const button_id = `${id_prefix}_${guid()}`
             const html = `<button id="${button_id}" class="dropdown-item" type="button">${name}</button>`
             const fragment = document.createRange().createContextualFragment(html)
 
@@ -393,7 +402,7 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
             button.addEventListener('click', () => {
 
                 const config = {}
-                const key = true === FileUtils.isFilePath(url) ? 'file' : 'url'
+                const key = true === isFilePath(url) ? 'file' : 'url'
                 config[key] = url
 
                 sessionLoader(config)
@@ -512,6 +521,19 @@ async function initializeCircularView() {
 
         document.head.appendChild(react)
     })
+}
+
+function guid  () {
+    return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
+}
+
+function isFile(object) {
+    if(!object) {
+        return false;
+    }
+    return typeof object !== 'function' &&
+        (object instanceof File ||
+            (object.hasOwnProperty("name") && typeof object.slice === 'function' && typeof object.arrayBuffer === 'function'))
 }
 
 

@@ -7,10 +7,11 @@
 /js/igv.js
 /js/igv.min.js
 /igvjs/
+/node_modules
 /igvwebConfig-dev.js
 /igvwebConfig-bak.js
-/node_modules
 /igvwebConfig-private.js
+/oauthConfig-private.js
 /deployConfig.sh
 /deployGenomes.sh
 /deploy-snapshot.sh

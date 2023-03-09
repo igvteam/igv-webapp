@@ -47,8 +47,8 @@ import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
-let dropboxEnabled = false
-let googleEnabled = false
+let isDropboxEnabled = false
+let isGoogleEnabled = false
 let currentGenomeId
 let circularView
 
@@ -65,10 +65,9 @@ async function main(container, config) {
         await initializeCircularView()
     }
 
-    const enableGoogle = (config.clientId || config.apiKey) &&
-        (window.location.protocol === "https:" || window.location.host.startsWith("localhost"))
+    const doEnableGoogle = undefined === config.clientId ? false : true
 
-    if (enableGoogle) {
+    if (doEnableGoogle) {
 
         try {
             await GoogleAuth.init({
@@ -76,18 +75,7 @@ async function main(container, config) {
                 apiKey: config.apiKey,
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
-            googleEnabled = true
-
-            const currentUserProfile = await GoogleAuth.getCurrentUserProfile()
-            if (currentUserProfile) {
-                queryGoogleAuthenticationStatus(currentUserProfile)
-            }
-
-            // TODO -- we can't listen anymore
-            // gapi.auth2.getAuthInstance().isSignedIn.listen(status => {
-            //     const user = gapi.auth2.getAuthInstance().currentUser.get()
-            //     queryGoogleAuthenticationStatus(user, status)
-            // })
+            isGoogleEnabled = true
 
             // Reset google warning flag on success
             localStorage.removeItem(googleWarningFlag)
@@ -134,19 +122,6 @@ async function main(container, config) {
 
 async function initializationHelper(browser, container, options) {
 
-    if (true === googleEnabled) {
-
-        const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
-
-        const button = document.querySelector('#igv-google-drive-sign-out-button')
-
-        button.addEventListener('click', async () => {
-            await GoogleAuth.signOut()
-            toggle.style.display = 'none'
-        })
-
-    }
-
     ['track', 'genome'].forEach(str => {
         let imgElement
 
@@ -162,6 +137,8 @@ async function initializationHelper(browser, container, options) {
         imgElement.src = `data:image/svg+xml;base64,${googleDriveButtonImageBase64()}`
     })
 
+    configureGoogleSignInButton()
+
     if (options.dropboxAPIKey) {
         $('div#igv-session-dropdown-menu > :nth-child(1)').after(dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'))
     }
@@ -175,7 +152,7 @@ async function initializationHelper(browser, container, options) {
             localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
             initializeDropbox,
             dropboxButton: options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
-            googleEnabled,
+            isGoogleEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
             loadHandler: async configuration => {
 
@@ -208,7 +185,7 @@ async function initializationHelper(browser, container, options) {
         $('#igv-app-dropdown-local-track-file-input'),
         initializeDropbox,
         options.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
-        googleEnabled,
+        isGoogleEnabled,
         $('#igv-app-dropdown-google-drive-track-file-button'),
         ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
@@ -244,7 +221,7 @@ async function initializationHelper(browser, container, options) {
         'igv-app-dropdown-google-drive-session-file-button',
         'igv-app-session-url-modal',
         'igv-app-session-save-modal',
-        googleEnabled,
+        isGoogleEnabled,
         sessionLoader,
         sessionSaver)
 
@@ -331,18 +308,43 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
 }
 
-/**
-Example user profile
-{
-    "id": "111663833909385335699",
-    "name": "James Robinson",
-    "given_name": "James",
-    "family_name": "Robinson",
-    "link": "https://plus.google.com/111663833909385335699",
-    "picture": "https://lh3.googleusercontent.com/a/AGNmyxaBq1lOsih0zE_TR9h1ENowVCAUbElUKDvlSdXMpQ=s96-c",
-    "locale": "en"
+function configureGoogleSignInButton() {
+
+    if (true === isGoogleEnabled) {
+
+        const dropdownToggle = document.querySelector('#igv-google-drive-dropdown-toggle')
+        dropdownToggle.style.display = 'block'
+
+        const signInOutButton = document.querySelector('#igv-google-drive-sign-out-button')
+
+        let currentUserProfile = undefined
+
+        $('#igv-google-drive-dropdown').on('show.bs.dropdown', async () => {
+
+            currentUserProfile = await GoogleAuth.getCurrentUserProfile()
+
+            if (currentUserProfile) {
+                const { name } = currentUserProfile
+                signInOutButton.innerText = `Sign Out ${ name }`
+            } else {
+                signInOutButton.innerText = 'Sign In'
+            }
+
+        })
+
+        signInOutButton.addEventListener('click', async () => {
+
+            if (currentUserProfile) {
+                await GoogleAuth.signOut()
+            } else {
+                await GoogleAuth.signIn()
+            }
+
+        })
+
+    }
+
 }
- */
 
 function queryGoogleAuthenticationStatus(user) {
 
@@ -466,9 +468,9 @@ let didCompleteOneAttempt = false
 
 async function initializeDropbox() {
 
-    if (true === didCompleteOneAttempt && false === dropboxEnabled) {
+    if (true === didCompleteOneAttempt && false === isDropboxEnabled) {
         return Promise.resolve(false)
-    } else if (true === dropboxEnabled) {
+    } else if (true === isDropboxEnabled) {
         return Promise.resolve(true)
     } else {
         return new Promise((resolve, reject) => {
@@ -486,7 +488,7 @@ async function initializeDropbox() {
             document.head.appendChild(dropbox)
 
             dropbox.addEventListener('load', () => {
-                dropboxEnabled = true
+                isDropboxEnabled = true
                 resolve(true)
             })
 

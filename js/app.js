@@ -44,7 +44,6 @@ import {createSVGWidget} from './svgWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
-import oauthConfig from '../oauthConfig.js'
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -66,12 +65,16 @@ async function main(container, config) {
         await initializeCircularView()
     }
 
-    const doEnableGoogle = undefined === oauthConfig.client_id ? false : true
+    const doEnableGoogle = undefined === config.clientId ? false : true
 
     if (doEnableGoogle) {
 
         try {
-            await GoogleAuth.init(oauthConfig)
+            await GoogleAuth.init({
+                client_id: config.clientId,
+                apiKey: config.apiKey,
+                scope: 'https://www.googleapis.com/auth/userinfo.profile',
+            })
             isGoogleEnabled = true
 
             // Reset google warning flag on success

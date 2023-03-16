@@ -50,8 +50,6 @@ document.addEventListener("DOMContentLoaded", async (event) => await main(docume
 let isDropboxEnabled = false
 let isGoogleEnabled = false
 let currentGenomeId
-let circularView
-
 const googleWarningFlag = "googleWarningShown"
 
 async function main(container, config) {
@@ -60,10 +58,6 @@ async function main(container, config) {
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
-
-    if (config.enableCircularView) {
-        await initializeCircularView()
-    }
 
     const doEnableGoogle = undefined === config.clientId ? false : true
 
@@ -404,7 +398,7 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
             button.addEventListener('click', () => {
 
                 const config = {}
-                const key = true === isFilePath(url) ? 'file' : 'url'
+                const key = true === isFile(url) ? 'file' : 'url'
                 config[key] = url
 
                 sessionLoader(config)
@@ -414,14 +408,6 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
 
     }
 
-}
-
-function sendPairedAlignmentChord(features) {
-    circularView.selectAlignmentChord(features[0])
-}
-
-function sendBedPEChords(features) {
-    circularView.addBedPEChords(features)
 }
 
 function createAppBookmarkHandler($bookmark_button) {
@@ -496,34 +482,6 @@ async function initializeDropbox() {
     }
 }
 
-async function initializeCircularView() {
-
-    return new Promise((resolve, reject) => {
-
-        const react = document.createElement('script')
-        react.setAttribute('src', 'https://unpkg.com/react@16.14.0/umd/react.production.min.js')
-
-        const reactDom = document.createElement('script')
-        reactDom.setAttribute('src', 'https://unpkg.com/react-dom@16.14.0/umd/react-dom.production.min.js')
-
-        const circView = document.createElement('script')
-        circView.setAttribute('src', 'https://unpkg.com/@jbrowse/react-circular-genome-view@1.6.9/dist/react-circular-genome-view.umd.production.min.js')
-
-        react.addEventListener('load', () => {
-            document.head.appendChild(reactDom)
-        })
-
-        reactDom.addEventListener('load', () => {
-            document.head.appendChild(circView)
-        })
-
-        circView.addEventListener('load', () => {
-            resolve(true)
-        })
-
-        document.head.appendChild(react)
-    })
-}
 
 function guid  () {
     return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);

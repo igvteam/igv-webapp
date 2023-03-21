@@ -219,16 +219,16 @@ Depending on your web browser settings, the image files will be saved to your de
 
 You can identify one or more genomic regions as special _Regions of Interest_. 
 
-* To **create** a region of interest, hold down the Shift key and sweep out the region in the genome ruler (without the Shift key, sweeping out a region in the ruler will zoom in to that region). 
+* To **create** a region of interest, hold down the Shift key and sweep out the region in the genome ruler. (Note: without the Shift key, sweeping out a region in the ruler will zoom in to that region). 
 
-Regions of interest are visually indicated with a green bar below the ruler and a light grey area across all tracks, as shown in the screenshot below.
+Regions of interest are visually indicated by a green bar below the ruler and a light grey area across all tracks, as shown in the screenshot below.
 
 ![](./assets/images/RegionsOfInterest.png)
 
-* To provide a **label or description** for a region of interest, click on the green bar and select `Set Description` and then enter the description.
-* To **delete** a region of interest, click on the green bar and select `Delete Region`.
+* To provide a **label or description** for a region of interest, click on the green bar and select `Set Description` from the popup menu and then enter the description.
+* To **delete** a region of interest, click on the green bar and select `Delete Region` from the popup menu.
 
-* To pop up a **table summary of all regions** of interest, click on the `ROI table` button in the toolbar. If you select a row in the table and click on the `Go To` button, the IGV browser will change the view to that region. Selecting multiple rows will set the view to a multi-locus view of all selected regions side by side.
+* To display a **table summary of all regions** of interest, click on the `ROI table` button in the toolbar. If you select a row in the table and click on the `Go To` button, the IGV browser will change the view to that region. Selecting multiple rows will set the view to a multi-locus view of all selected regions side by side.
 
 
 ## BLAT

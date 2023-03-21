@@ -211,8 +211,50 @@ Two options are provided for saving images from the IGV-Web app:
 Depending on your web browser settings, the image files will be saved to your default downloads folder or you will be prompted to specify a destination folder. 
 
 
-# Circular View
-(Introduced in IGV-Web version 1.9.0) In collaboration with the JBrowse development team, we integrated the JBrowse 2 circular view component for exploring structural variants, chromatin interactions, and other long-distance interactions. Currently this integration supports structural variants from VCF files, paired-end and split-read alignments from BAM/CRAM files, and interaction pairs from bedPE and interact tracks. See [here](https://github.com/igvteam/igv-webapp/wiki/Circular-View) for more information about using the circular view with IGV-Web. The circular view will not be available if the web browser preferences have been set to disable all cookies.
+# Miscellaneous Tools
+
+## Regions of Interest
+
+*(Introduced in IGV-Web version 1.12.9)*
+
+You can identify one or more genomic regions as special _Regions of Interest_. 
+
+* To **create** a region of interest, hold down the Shift key and sweep out the region in the genome ruler (without the Shift key, sweeping out a region in the ruler will zoom in to that region). 
+
+Regions of interest are visually indicated with a green bar below the ruler and a light grey area across all tracks, as shown in the screenshot below.
+
+![](./assets/images/RegionsOfInterest.png)
+
+* To provide a **label or description** for a region of interest, click on the green bar and select `Set Description` and then enter the description.
+* To **delete** a region of interest, click on the green bar and select `Delete Region`.
+
+* To pop up a **table summary of all regions** of interest, click on the `ROI table` button in the toolbar. If you select a row in the table and click on the `Go To` button, the IGV browser will change the view to that region. Selecting multiple rows will set the view to a multi-locus view of all selected regions side by side.
+
+
+## BLAT
+
+*(Introduced in IGV-Web version 1.12.10)* 
+
+IGV-Web supports [BLAT](http://en.wikipedia.org/wiki/BLAT_%28bioinformatics%29) (*BLAST-like Alignment Tool*) 
+for on-the-fly alignment of query sequences from reads in alignment tracks. 
+* Right-click on a read of interest in an alignment track (BAM or CRAM), and select `BLAT read sequence` from the popup menu. 
+* If soft clips are displayed and are of sufficient length, the popup menu will also include options to BLAT the soft-clipped sequence. 
+
+The sequence query is sent to an external BLAT search engine hosted at 
+the [UCSC Genome Browser](https://genome.ucsc.edu/cgi-bin/hgBlat). UCSC's BLAT search supports most UCSC
+derived genomes including human and mouse genomes. 
+
+
+The results of a BLAT search are presented in two different ways:
+
+* as a new **feature track** in the lower panel of IGV's display, where each feature in the track represents a hit; and
+* as a **results table** that is displayed in a separate popup window.
+ 
+
+## Circular View
+*(Introduced in IGV-Web version 1.9.0)* 
+
+In collaboration with the JBrowse development team, we integrated the JBrowse 2 circular view component for exploring structural variants, chromatin interactions, and other long-distance interactions. Currently this integration supports structural variants from VCF files, paired-end and split-read alignments from BAM/CRAM files, and interaction pairs from bedPE and interact tracks. See [here](https://github.com/igvteam/igv-webapp/wiki/Circular-View) for more information about using the circular view with IGV-Web. The circular view will not be available if the web browser preferences have been set to disable all cookies.
 
 # Help Menu
 

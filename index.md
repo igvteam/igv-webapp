@@ -233,10 +233,11 @@ Regions of interest are visually indicated by a green bar below the ruler and a 
 
 ## BLAT
 
-*(Introduced in IGV-Web version 1.12.10)* 
+*(Introduced in IGV-Web version 1.13.0)* 
 
 IGV-Web supports [BLAT](http://en.wikipedia.org/wiki/BLAT_%28bioinformatics%29) (*BLAST-like Alignment Tool*) 
 for on-the-fly alignment of query sequences from reads in alignment tracks. 
+
 * Right-click on a read of interest in an alignment track (BAM or CRAM), and select `BLAT read sequence` from the popup menu. 
 * If soft clips are displayed and are of sufficient length, the popup menu will also include options to BLAT the soft-clipped sequence. 
 
@@ -247,8 +248,8 @@ derived genomes including human and mouse genomes.
 
 The results of a BLAT search are presented in two different ways:
 
-* as a new **feature track** in the lower panel of IGV's display, where each feature in the track represents a hit; and
-* as a **results table** that is displayed in a separate popup window.
+* As a new **feature track** in the lower panel of IGV's display, where each feature in the track represents a hit; and
+* As a **results table** that is displayed in a separate popup window. If you select a row in the table and click on the `Go To` button, the IGV browser will change the view to that region. Selecting multiple rows will set the view to a multi-locus view of all selected regions side by side.
  
 
 ## Circular View

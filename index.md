@@ -249,7 +249,9 @@ derived genomes including human and mouse genomes.
 The results of a BLAT search are presented in two different ways:
 
 * As a new **feature track** in the lower panel of IGV's display, where each feature in the track represents a hit; and
-* As a **results table** that is displayed in a separate popup window. If you select a row in the table and click on the `Go To` button, the IGV browser will change the view to that region. Selecting multiple rows will set the view to a multi-locus view of all selected regions side by side.
+* As a **results table** that is displayed in a separate popup window. If you close the table window, you can open it again by selecting `Open table view` from the gear menu of the corresponding results feature track.
+
+If you select a row in the results table and click on the `Go To` button, the IGV browser will change the view to that region. Selecting multiple rows will set the view to a multi-locus view of all selected regions side by side.
  
 
 ## Circular View

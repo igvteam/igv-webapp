@@ -1,7 +1,4 @@
-import nodeResolve from "@rollup/plugin-node-resolve";
-import babel from "@rollup/plugin-babel";
 import strip from 'rollup-plugin-strip';
-import commonjs from "@rollup/plugin-commonjs";
 import {terser} from "rollup-plugin-terser"
 const pkg = require('./package.json');
 
@@ -22,9 +19,6 @@ export default [
                 // defaults to `[ 'console.*', 'assert.*' ]`
                 functions: ['console.log', 'assert.*', 'debug'],
             }),
-            commonjs(),
-            nodeResolve(),
-            babel()
         ]
     }
 ];

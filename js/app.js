@@ -146,7 +146,7 @@ async function initializationHelper(browser, container, options) {
             localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
             initializeDropbox,
             dropboxButton: options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
-            isGoogleEnabled,
+            googleEnabled: isGoogleEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
             loadHandler: async configuration => {
 

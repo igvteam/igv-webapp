@@ -19,6 +19,8 @@ var igvwebConfig = {
 
     enableCircularView: true,
 
+    restoreLastGenome: true,
+
     igvConfig:
         {
             genome: "hg19",

@@ -1,6 +1,6 @@
 {
   "name": "igv-webapp",
-  "version": "1.13.1",
+  "version": "1.13.2",
   "description": "igv web app",
   "keywords": [],
   "author": "Douglass Turner and Jim Robinson",
@@ -18,8 +18,8 @@
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
     "fs-extra": "^8.1.0",
-    "igv": "^2.15.1",
-    "igv-widgets": "github:igvteam/igv-widgets#v1.5.2",
+    "igv": "^2.15.2",
+    "igv-widgets": "github:igvteam/igv-widgets#v1.5.3",
     "google-utils": "github:igvteam/google-utils#v1.0.1",
     "rollup": "^2.28.1",
     "rollup-plugin-copy": "^3.3.0",

@@ -1,4 +1,4 @@
-const _version = "1.13.1"
+const _version = "1.13.2"
 function version() {
     return _version;
 }

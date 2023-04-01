@@ -318,7 +318,7 @@ function configureGoogleSignInButton() {
             currentUserProfile = await GoogleAuth.getCurrentUserProfile()
 
             if (currentUserProfile) {
-                const { name } = currentUserProfile
+                const name = currentUserProfile.email || currentUserProfile.name || ''
                 signInOutButton.innerText = `Sign Out ${ name }`
             } else {
                 signInOutButton.innerText = 'Sign In'

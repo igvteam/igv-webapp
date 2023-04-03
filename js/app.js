@@ -48,7 +48,7 @@ import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
 let isDropboxEnabled = false
-let isGoogleEnabled = false
+let googleEnabled = false
 let currentGenomeId
 const googleWarningFlag = "googleWarningShown"
 
@@ -69,7 +69,7 @@ async function main(container, config) {
                 apiKey: config.apiKey,
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
-            isGoogleEnabled = true
+            googleEnabled = true
 
             // Reset google warning flag on success
             localStorage.removeItem(googleWarningFlag)
@@ -146,7 +146,7 @@ async function initializationHelper(browser, container, options) {
             localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
             initializeDropbox,
             dropboxButton: options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
-            googleEnabled: isGoogleEnabled,
+            googleEnabled: googleEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
             loadHandler: async configuration => {
 
@@ -179,7 +179,7 @@ async function initializationHelper(browser, container, options) {
         $('#igv-app-dropdown-local-track-file-input'),
         initializeDropbox,
         options.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
-        isGoogleEnabled,
+        googleEnabled,
         $('#igv-app-dropdown-google-drive-track-file-button'),
         ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
@@ -215,7 +215,7 @@ async function initializationHelper(browser, container, options) {
         'igv-app-dropdown-google-drive-session-file-button',
         'igv-app-session-url-modal',
         'igv-app-session-save-modal',
-        isGoogleEnabled,
+        googleEnabled,
         sessionLoader,
         sessionSaver)
 
@@ -304,7 +304,7 @@ async function initializationHelper(browser, container, options) {
 
 function configureGoogleSignInButton() {
 
-    if (true === isGoogleEnabled) {
+    if (true === googleEnabled) {
 
         const dropdownToggle = document.querySelector('#igv-google-drive-dropdown-toggle')
         dropdownToggle.style.display = 'block'

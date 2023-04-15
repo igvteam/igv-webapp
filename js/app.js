@@ -167,6 +167,11 @@ async function initializationHelper(browser, container, options) {
 
     const trackLoader = async configurations => {
         try {
+            // Add "searchable" attribute to non-indexed annotation tracks
+            for(let c of configurations) {
+
+
+            }
             await browser.loadTrackList(configurations)
         } catch (e) {
             console.error(e)

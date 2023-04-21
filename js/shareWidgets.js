@@ -25,7 +25,7 @@ import igv from '../node_modules/igv/dist/igv.esm.js'
 import {AlertSingleton, QRCode} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import {setURLShortener, shortSessionURL} from './shareHelper.js'
 
-function createShareWidgets({browser, container, modal, share_input, copy_link_button, tweet_button_container, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
+function createShareWidgets({browser, container, modal, share_input, copy_link_button, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
 
     if (undefined === embedTarget) {
         embedTarget = `https://igv.org/web/release/${igv.version()}/embed.html`;
@@ -65,10 +65,6 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
             const qrcode = new QRCode(qrcode_image, { width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
             qrcode.makeCode(shortURL);
 
-            if (tweet_button_container) {
-                tweet_button_container.innerHTML = '';
-                window.twttr.widgets.createShareButton(shortURL, tweet_button_container, { text: '' });
-            }
         } else {
             $(modal).modal('hide');
         }
@@ -150,18 +146,12 @@ function shareWidgetConfigurator(browser, container, {urlShortener, embedTarget}
         urlShortenerFn = setURLShortener(urlShortener) !== undefined;
     }
 
-    let igv_app_tweet_button_container = document.getElementById('igv-app-tweet-button-container');
-    if (!urlShortenerFn) {
-        igv_app_tweet_button_container.style.display = 'none';
-    }
-
     return {
         browser,
         container,
         modal: document.getElementById('igv-app-share-modal'),
         share_input: document.getElementById('igv-app-share-input'),
         copy_link_button: document.getElementById('igv-app-copy-link-button'),
-        tweet_button_container: urlShortenerFn ? igv_app_tweet_button_container : undefined,
         email_button: document.getElementById('igv-app-email-button'),
         qrcode_button: document.getElementById('igv-app-qrcode-button'),
         qrcode_image: document.getElementById('igv-app-qrcode-image'),

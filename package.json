@@ -18,7 +18,7 @@
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
     "fs-extra": "^8.1.0",
-    "igv": "github:igvteam/igv.js",
+    "igv": "github:igvteam/igv.js#dat_sample_info",
     "igv-widgets": "github:igvteam/igv-widgets#v1.5.4",
     "google-utils": "github:igvteam/google-utils#v1.0.2",
     "rollup": "^2.28.1",

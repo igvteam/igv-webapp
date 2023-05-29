@@ -58,18 +58,16 @@
   {
     "id": "hg38",
     "name": "Human (GRCh38/hg38)",
-    "fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
-    "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa.fai",
+    "fastaURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/seq/hg38/hg38.fa",
+    "indexURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/seq/hg38/hg38.fa.fai",
     "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/cytoBandIdeo.txt.gz",
     "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/hg38_alias.tab",
     "tracks": [
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz.tbi",
-        "visibilityWindow": -1,
-        "supportsWholeGenome": false,
+        "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeq.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
@@ -79,19 +77,19 @@
   },
   {
     "id": "hg38_1kg",
+    "ucscID": "hg38",
+    "blatDB": "hg38",
     "name": "Human (hg38 1kg/GATK)",
-    "compressedFastaURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/Homo_sapiens_assembly38.fasta.gz",
-    "fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
-    "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa.fai",
+    "fastaURL": "https://1000genomes.s3.amazonaws.com/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa",
+    "indexURL": "https://1000genomes.s3.amazonaws.com/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa.fai",
     "cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/cytoBandIdeo.txt.gz",
     "tracks": [
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.sorted.txt.gz",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.sorted.txt.gz.tbi",
-        "visibilityWindow": -1,
-        "supportsWholeGenome": false,
+        "id": "hg19_genes",
+        "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeq.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
@@ -102,19 +100,17 @@
   {
     "id": "hg19",
     "name": "Human (GRCh37/hg19)",
-    "fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta",
-    "indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta.fai",
-    "cytobandURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/cytoBand.txt",
+    "fastaURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/seq/hg19/hg19.fasta",
+    "indexURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/seq/hg19/hg19.fasta.fai",
+    "cytobandURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/seq/hg19/cytoBand.txt",
     "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/hg19_alias.tab",
     "tracks": [
       {
         "name": "Refseq Genes",
         "format": "refgene",
         "id": "hg19_genes",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
-        "visibilityWindow": -1,
-        "supportsWholeGenome": false,
+        "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/ncbiRefSeq.txt.gz",
+        "indexed": false,
         "removable": false,
         "order": 1000000,
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
@@ -148,16 +144,15 @@
     "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/mm39/mm39.fa",
     "indexURL": "https://s3.amazonaws.com/igv.org.genomes/mm39/mm39.fa.fai",
     "cytobandURL": "https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/cytoBandIdeo.txt.gz",
+    "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/mm39/mm39_alias.tab",
     "tracks": [
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/mm39/ncbiRefSeq.txt.gz",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/mm39/ncbiRefSeq.txt.gz.tbi",
+        "url": "https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/ncbiRefSeq.txt.gz",
+        "indexed": false,
         "removable": false,
-        "order": 1000000,
-        "visibilityWindow": -1,
-        "supportsWholeGenome": false
+        "order": 1000000
       }
     ]
   },
@@ -172,12 +167,10 @@
       {
         "name": "Refseq Genes",
         "format": "refgene",
-        "url": "https://s3.amazonaws.com/igv.org.genomes/mm10/ncbiRefSeq.sorted.txt.gz",
-        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/mm10/ncbiRefSeq.sorted.txt.gz.tbi",
-        "order": 1000000,
+        "url": "https://hgdownload.soe.ucsc.edu/goldenPath/mm10/database/ncbiRefSeq.txt.gz",
+        "indexed": false,
         "removable": false,
-        "visibilityWindow": -1,
-        "supportsWholeGenome": false
+        "order": 1000000
       }
     ]
   },
@@ -362,6 +355,27 @@
     ]
   },
   {
+    "id": "GCA_011100615.1",
+    "blatDB": "GCA_011100615.1",
+    "name": "Macaca fascicularis 6.0 (GCA_011100615.1)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/GCA_011100615.1/Macaca_fascicularis.Macaca_fascicularis_6.0.dna.toplevel.fa.gz",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/GCA_011100615.1/Macaca_fascicularis.Macaca_fascicularis_6.0.dna.toplevel.fa.gz.fai",
+    "compressedIndexURL": "https://s3.amazonaws.com/igv.org.genomes/GCA_011100615.1/Macaca_fascicularis.Macaca_fascicularis_6.0.dna.toplevel.fa.gz.gzi",
+    "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/GCA_011100615.1/GCA_011100615.1_chromAlias.tab",
+    "tracks": [
+      {
+        "name": "Annotations",
+        "format": "gff3",
+        "description": " <a target = \"_blank\" href = \"https://uswest.ensembl.org/Macaca_fascicularis/Info/Annotation\">Ensembl gene annotation 8-11-2022</a>",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/GCA_011100615.1/Macaca_fascicularis.Macaca_fascicularis_6.0.108.sorted.gff3.gz",
+        "indexURL": "https://s3.amazonaws.com/igv.org.genomes/GCA_011100615.1/Macaca_fascicularis.Macaca_fascicularis_6.0.108.sorted.gff3.gz.tbi",
+        "visibilityWindow": -1,
+        "displayMode": "EXPANDED",
+        "height": 200
+      }
+    ]
+  },
+  {
     "id": "panPan2",
     "name": "Bonobo (MPI-EVA panpan1.1/panPan2)",
     "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/panPan2/panPan2.fa",
@@ -398,6 +412,24 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      }
+    ]
+  },
+  {
+    "id": "canFam4",
+    "name": "Dog (UU_Cfam_GSD_1.0/canFam4)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/canFam4/canFam4.fa",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/canFam4/canFam4.fa.fai",
+    "cytobandURL": "https://hgdownload.soe.ucsc.edu/goldenPath/canFam4/database/cytoBandIdeo.txt.gz",
+    "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/canFam5/chrAlias.tab.gz",
+    "tracks": [
+      {
+        "name": "Genes",
+        "format": "refgene",
+        "url": "https://hgdownload.soe.ucsc.edu/goldenPath/canFam4/database/ncbiRefSeq.txt.gz",
+        "indexed": false,
+        "removable": false,
+        "order": 1000000
       }
     ]
   },
@@ -493,7 +525,7 @@
         "indexURL": "https://s3.amazonaws.com/igv.org.genomes/galGal6/ncbiRefSeq.txt.gz.tbi",
         "removable": false,
         "order": 1000000,
-        "searable": true
+        "searchable": true
       }
     ]
   },
@@ -569,7 +601,7 @@
         "indexed": false,
         "order": 1000000,
         "removable": false,
-        "searable": true
+        "searchable": true
       }
     ]
   },
@@ -604,7 +636,7 @@
         "indexed": false,
         "order": 1000000,
         "removable": false,
-        "searable": true
+        "searchable": true
       }
     ]
   },
@@ -621,7 +653,7 @@
         "displayMode": "EXPANDED",
         "url": "https://s3.amazonaws.com/igv.org.genomes/sacCer3/ncbiRefGene.txt.gz",
         "indexed": false,
-        "searable": true
+        "searchable": true
       }
     ]
   },
@@ -661,6 +693,7 @@
     "name": "Sars-CoV-2 (ASM985889v3)",
     "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna",
     "indexURL": "https://s3.amazonaws.com/igv.org.genomes/ASM985889v3/GCF_009858895.2_ASM985889v3_genomic.fna.fai",
+    "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/ASM985889v3/alias.tab",
     "order": 1000000,
     "tracks": [
       {
@@ -686,7 +719,7 @@
         "indexed": false,
         "removable": false,
         "order": 1000000,
-        "searable": true
+        "searchable": true
       }
     ]
   },
@@ -707,6 +740,39 @@
         "supportsWholeGenome": false,
         "displayMode": "EXPANDED",
         "height": 300
+      }
+    ]
+  },
+  {
+    "id": "GCF_001433935.1",
+    "name": "O. sativa IRGSP-1.0 (GCF_001433935.1)",
+    "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/GCF_001433935.1/GCF_001433935.1_IRGSP-1.0_genomic.fna.gz",
+    "indexURL": "https://s3.amazonaws.com/igv.org.genomes/GCF_001433935.1/GCF_001433935.1_IRGSP-1.0_genomic.fna.gz.fai",
+    "compressedIndexURL": "https://s3.amazonaws.com/igv.org.genomes/GCF_001433935.1/GCF_001433935.1_IRGSP-1.0_genomic.fna.gz.gzi",
+    "aliasURL": "https://s3.amazonaws.com/igv.org.genomes/GCF_001433935.1/GCF_001433935.1_chromAlias.tab",
+    "tracks": [
+      {
+        "name": "MSU V7 genes",
+        "format": "gff3",
+        "description": " <a target = \"_blank\" href = \"http://rice.uga.edu/\">Rice Genome Annotation Project</a>",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/GCF_001433935.1/MSU_V7.gff3.gz",
+        "displayMode": "EXPANDED",
+        "height": 200
+      }
+    ]
+  },
+  {
+    "id": "NC_016856.1",
+    "name": "Salmonella enterica subsp. enterica serovar Typhimurium str. 14028S",
+    "fastaURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/NC_016856.1/NC_016856.1.fna",
+    "indexURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/NC_016856.1/NC_016856.1.fna.fai",
+    "tracks": [
+      {
+        "url": "https://igv-genepattern-org.s3.amazonaws.com/genomes/NC_016856.1/NC_016856.1.gff.gz",
+        "name": "NC_016856.1.gff.gz",
+        "format": "gff3",
+        "type": "annotation",
+        "searchable": true
       }
     ]
   }

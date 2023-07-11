@@ -23,6 +23,7 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js'
 import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
+import * as GooglePicker from '../node_modules/google-utils/src/googleFilePicker.js'
 import {makeDraggable} from "./draggable.js"
 import {
     AlertSingleton,
@@ -34,7 +35,10 @@ import {
     GenomeFileLoad,
     googleDriveButtonImageBase64,
     googleDriveDropdownItem,
-    updateTrackMenus
+    updateTrackMenus,
+    FileLoadManager,
+    FileLoadWidget,
+    Utils
 } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
@@ -116,7 +120,7 @@ async function main(container, config) {
 
 async function initializationHelper(browser, container, options) {
 
-    ['track', 'genome'].forEach(str => {
+    ['track', 'genome', 'sample-info'].forEach(str => {
         let imgElement
 
         imgElement = document.querySelector(`img#igv-app-${str}-dropbox-button-image`)
@@ -178,6 +182,15 @@ async function initializationHelper(browser, container, options) {
             AlertSingleton.present(e)
         }
     }
+
+    createSampleInfoMenu(document.getElementById('igv-main'),
+        document.getElementById('igv-app-sample-info-dropdown-local-track-file-input'),
+        initializeDropbox,
+        options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-sample-info-file-button') : undefined,
+        googleEnabled,
+        document.getElementById('igv-app-dropdown-google-drive-sample-info-file-button'),
+        'igv-app-sample-info-from-url-modal',
+        trackLoader)
 
     createTrackWidgetsWithTrackRegistry($igvMain,
         $('#igv-app-track-dropdown-menu'),
@@ -305,6 +318,132 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
+}
+
+function createSampleInfoMenu(igvMain,
+                              localFileInput,
+                              initializeDropbox,
+                              dropboxButton,
+                              googleEnabled,
+                              googleDriveButton,
+                              urlModalId,
+                              trackLoadHandler) {
+
+    // local file
+    localFileInput.addEventListener('change', async () => {
+
+        const {files} = localFileInput
+
+        const paths = Array.from(files)
+
+        localFileInput.value = ''
+
+        await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+    })
+
+    //  Dropbox
+    if (dropboxButton) dropboxButton.addEventListener('click', async () => {
+
+        const result = await initializeDropbox()
+
+        if (true === result) {
+
+            const obj =
+                {
+                    success: dbFiles => {
+
+                        const configList = dbFiles.map(( { link } ) => {
+                            return { type: 'sampleinfo', url: link }
+                        })
+
+                        trackLoadHandler(configList)
+                    },
+                    cancel: () => {},
+                    linkType: "preview",
+                    multiselect: false,
+                    folderselect: false,
+                }
+
+            Dropbox.choose(obj)
+
+        } else {
+            AlertSingleton.present('Cannot connect to Dropbox')
+        }
+    })
+
+    // Google Drive
+    if (!googleEnabled) {
+        googleDriveButton.parentElement.style.display = 'none'
+    } else {
+
+        googleDriveButton.addEventListener('click', () => {
+
+            const filePickerHandler = async responses => {
+                const paths = responses.map(({ url }) => url)
+                await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+            }
+
+            GooglePicker.createDropdownButtonPicker(false, filePickerHandler)
+        })
+
+    }
+
+    // URL
+    const html =
+        `<div id="${ urlModalId }" class="modal">
+
+            <div class="modal-dialog modal-lg">
+    
+                <div class="modal-content">
+    
+                    <div class="modal-header">
+                        <div class="modal-title">Sample Info URL</div>
+    
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+    
+                    </div>
+    
+                    <div class="modal-body">
+                    </div>
+    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+    
+                </div>
+    
+            </div>
+
+        </div>`
+
+    const fragment = document.createRange().createContextualFragment(html)
+
+    const urlModal = fragment.firstChild
+
+    igvMain.appendChild(urlModal)
+
+    const fileLoadWidgetConfig =
+        {
+            widgetParent: urlModal.querySelector('.modal-body'),
+            dataTitle: 'Sample Info',
+            indexTitle: 'Index',
+            mode: 'url',
+            fileLoadManager: new FileLoadManager(),
+            dataOnly: false,
+            doURL: true
+        };
+
+    const fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
+
+    Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
+        const paths = fileLoadWidget.retrievePaths()
+        await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+        return true
+    })
+
 }
 
 function configureGoogleSignInButton() {

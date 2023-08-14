@@ -40,7 +40,7 @@ import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'
 import {sessionURL} from './shareHelper.js'
-import {createSVGWidget} from './svgWidget.js'
+import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
@@ -230,7 +230,9 @@ async function initializationHelper(browser, container, options) {
         document.querySelector('#igv-session-list-divider').style.display = 'none'
     }
 
-    createSVGWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
+    createSaveImageWidget(browser, 'svg')
+
+    createSaveImageWidget(browser, 'png')
 
     createShareWidgets(shareWidgetConfigurator(browser, container, options))
 

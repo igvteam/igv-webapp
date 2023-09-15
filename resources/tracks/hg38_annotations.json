@@ -1,7 +1,7 @@
 {
   "label": "Annotations",
   "description": "Annotations from the <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a> , <a href=https://www.gencodegenes.org  target=_blank>GENCODE</a>, and <a href=https://www.ensembl.org/downloads.html target=_blank>Ensembl</a>",
-  "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+  "link": "https://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
       "name": "Gencode v40",

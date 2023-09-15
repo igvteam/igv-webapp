@@ -1,0 +1,18 @@
+{
+    "tracks": [
+        {
+            "id": "xenoRefGene",
+            "name": "RefSeq mRNAs",
+            "format": "bigGenePred",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/html/GCA_000182895.1_CC3.xenoRefGene\">RefSeq mRNAs mapped to this assembly</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/bbi/GCA_000182895.1_CC3.xenoRefGene.bb",
+            "displayMode": "EXPANDED",
+            "color": "rgb(180,0,0)",
+            "infoURL": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/https://www.ncbi.nlm.nih.gov/nuccore/$$"
+        }
+    ],
+    "name": "rna",
+    "label": "mRNA and EST",
+    "priority": "4",
+    "defaultIsClosed": "0"
+}

@@ -1,0 +1,26 @@
+{
+    "tracks": [
+        {
+            "id": "cpgIslandExt",
+            "name": "CpG Islands",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.cpgIslands\">CpG Islands (Islands < 300 Bases are Light Green)</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.cpgIslandExt.bb",
+            "displayMode": "EXPANDED",
+            "parent": "cpgIslands off"
+        },
+        {
+            "id": "cpgIslandExtUnmasked",
+            "name": "Unmasked CpG",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.cpgIslands\">CpG Islands on All Sequence (Islands < 300 Bases are Light Green)</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.cpgIslandExtUnmasked.bb",
+            "displayMode": "EXPANDED",
+            "parent": "cpgIslands on"
+        }
+    ],
+    "name": "regulation",
+    "label": "Expression and Regulation",
+    "priority": "5",
+    "defaultIsClosed": "0"
+}

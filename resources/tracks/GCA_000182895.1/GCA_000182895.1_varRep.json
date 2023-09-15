@@ -1,0 +1,24 @@
+{
+    "tracks": [
+        {
+            "id": "simpleRepeat",
+            "name": "Simple Repeats",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/html/GCA_000182895.1_CC3.simpleRepeat\">Simple Tandem Repeats by TRF</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/bbi/GCA_000182895.1_CC3.simpleRepeat.bb",
+            "displayMode": "COLLAPSED"
+        },
+        {
+            "id": "windowMasker",
+            "name": "WM + SDust",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/html/GCA_000182895.1_CC3.windowMasker\">Genomic Intervals Masked by WindowMasker + SDust</a>",
+            "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/bbi/GCA_000182895.1_CC3.windowMasker.bb",
+            "displayMode": "COLLAPSED"
+        }
+    ],
+    "name": "varRep",
+    "label": "Variation and Repeats",
+    "priority": "7",
+    "defaultIsClosed": "0"
+}

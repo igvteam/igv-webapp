@@ -93,5 +93,19 @@
     "resources/tracks/GCA_011100615.1_regulation.json",
     "resources/tracks/GCA_011100615.1_rna.json",
     "resources/tracks/GCA_011100615.1_varRep.json"
-  ]
+  ],
+  "GCF_016699485.2": [
+    "resources/tracks/GCF_016699485.2/GCF_016699485.2_genes.json",
+    "resources/tracks/GCF_016699485.2/GCF_016699485.2_map.json",
+    "resources/tracks/GCF_016699485.2/GCF_016699485.2_regulation.json",
+    "resources/tracks/GCF_016699485.2/GCF_016699485.2_rna.json",
+    "resources/tracks/GCF_016699485.2/GCF_016699485.2_varRep.json"
+  ],
+  "GCA_000182895.1": [
+  "resources/tracks/GCA_000182895.1/GCA_000182895.1_genes.json",
+  "resources/tracks/GCA_000182895.1/GCA_000182895.1_map.json",
+  "resources/tracks/GCA_000182895.1/GCA_000182895.1_regulation.json",
+  "resources/tracks/GCA_000182895.1/GCA_000182895.1_rna.json",
+  "resources/tracks/GCA_000182895.1/GCA_000182895.1_varRep.json"
+]
 }

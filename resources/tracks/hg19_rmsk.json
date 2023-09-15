@@ -1,6 +1,6 @@
 {
   "label": "Repeat Masker",
-  "description": "Repeat masker tracks from <a href=http://genomewiki.ucsc.edu/index.php/RepeatMasker>UCSC</a>",
+  "description": "Repeat masker tracks from <a href=https://genomewiki.ucsc.edu/index.php/RepeatMasker>UCSC</a>",
   "tracks": [
     {
       "name": "SINE",

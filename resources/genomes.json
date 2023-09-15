@@ -31,6 +31,13 @@
         "visibilityWindow": -1,
         "supportsWholeGenome": false,
         "order": 1000001
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/chm13v2.0/chm13v2.0_geneLocations.short.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -52,6 +59,13 @@
         "order": 1000000,
         "description": "Annotations from <a target='_blank' href='https://genome.ucsc.edu/cgi-bin/hgTracks?db=hub_2395475_t2t-chm13-v1.1'>UCSC</a>.<br/>blue - protein coding<br/>green - non coding<br/>pink - psuedo gene",
         "visibilityWindow": -1
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/t2t-chm13-v1.1/CHM13.names.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -191,6 +205,13 @@
         "removable": false,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_mm9.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -211,6 +232,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_rn7.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -231,6 +259,13 @@
         "removable": false,
         "supportsWholeGenome": false,
         "visibilityWindow": -1
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_rn6.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -251,6 +286,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_gorGor6.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -291,6 +333,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_panTro6.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -311,6 +360,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_panTro5.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -331,6 +387,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_panTro4.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -351,6 +414,13 @@
         "visibilityWindow": -1,
         "supportsWholeGenome": false,
         "order": 1000000
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_macFas5.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -372,6 +442,13 @@
         "visibilityWindow": -1,
         "displayMode": "EXPANDED",
         "height": 200
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/GCA_011100615.1/GCA_011100615.1_ucsc_ensGene.bed",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -392,6 +469,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_panPan2.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -412,6 +496,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_canFam3.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -450,6 +541,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_canFam5.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -469,6 +567,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_bosTau9.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -488,6 +593,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_bosTau8.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -508,6 +620,13 @@
         "order": 1000000,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_susScr11.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -530,6 +649,33 @@
     ]
   },
   {
+    "id": "GCF_016699485.2",
+    "name": "Gallus gallus (GCF_016699485.2)",
+    "fastaURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/GCF_016699485.2/GCF_016699485.2.fa",
+    "indexURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/GCF_016699485.2/GCF_016699485.2.fa.fai",
+    "aliasURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/GCF_016699485.2/GCF_016699485.2_chromAlias.tab",
+    "blatDB": "GCF_016699485.2",
+    "tracks": [
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://igv-genepattern-org.s3.amazonaws.com/genomes/GCF_016699485.2/GCF_016699485.2_gene_names.bed",
+        "hidden": true,
+        "displayMode": "COLLAPSED"
+      },
+      {
+        "id": "ncbiRefSeqCurated",
+        "name": "RefSeq Transcripts",
+        "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.refSeqComposite\">NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)</a>",
+        "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.ncbiRefSeqCurated.bb",
+        "displayMode": "EXPANDED",
+        "color": "rgb(12,12,120)",
+        "parent": "refSeqComposite on",
+        "height": 300
+      }
+    ]
+  },
+  {
     "id": "danRer11",
     "name": "Zebrafish (GRCZ11/danRer11)",
     "fastaURL": "https://s3.amazonaws.com/igv.org.genomes/danRer11/danRer11.fa",
@@ -546,6 +692,13 @@
         "removable": false,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_danRer11.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -566,6 +719,13 @@
         "removable": false,
         "visibilityWindow": -1,
         "supportsWholeGenome": false
+      },
+      {
+        "name": "Genes",
+        "format": "bed",
+        "url": "https://s3.amazonaws.com/igv.org.genomes/locations/geneLocations_danRer10.bed.gz",
+        "hidden": true,
+        "searchable": true
       }
     ]
   },
@@ -773,6 +933,28 @@
         "format": "gff3",
         "type": "annotation",
         "searchable": true
+      }
+    ]
+  },
+  {
+    "id": "GCA_000182895.1",
+    "name": "Coprinopsis cinerea okayama7#130 (GCA_000182895.1)",
+    "fastaURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/GCA_000182895.1/GCA_000182895.1.fa",
+    "indexURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/GCA_000182895.1/GCA_000182895.1.fa.fai",
+    "aliasURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/GCA_000182895.1/GCA_000182895.1_chromAlias.tab",
+    "blatDB": "GCA_000182895.1",
+    "tracks": [
+      {
+        "id": "ncbiGene",
+        "name": "Gene models",
+        "format": "bigGenePred",
+        "description": " <a target = \"_blank\" href = \"https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/html/GCA_000182895.1_CC3.ncbiGene\">Gene models submitted to NCBI</a>",
+        "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/bbi/GCA_000182895.1_CC3.ncbiGene.bb",
+        "displayMode": "EXPANDED",
+        "color": "rgb(0,80,150)",
+        "altColor": "rgb(0,150,80)",
+        "colorBy": "strand",
+        "infoURL": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/182/895/GCA_000182895.1/https://www.ncbi.nlm.nih.gov/gene/?term=$$"
       }
     ]
   }

@@ -1,0 +1,76 @@
+{
+    "tracks": [
+        {
+            "id": "assembly",
+            "name": "Assembly",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.assembly\">Assembly</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.assembly.bb",
+            "displayMode": "EXPANDED",
+            "color": "rgb(50,100,30)",
+            "altColor": "rgb(230,170,4)",
+            "colorBy": "strand",
+            "infoURL": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/https://www.ncbi.nlm.nih.gov/nuccore/$$"
+        },
+        {
+            "id": "gap",
+            "name": "Gap (AGP defined)",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.gap\">AGP gap</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.gap.bb",
+            "displayMode": "COLLAPSED",
+            "color": "rgb(0,0,0)"
+        },
+        {
+            "id": "cytoBandIdeo",
+            "name": "Chromosome Band (Ideogram)",
+            "format": "bigBed",
+            "description": "Ideogram for Orientation",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.cytoBand.bb",
+            "displayMode": "COLLAPSED"
+        },
+        {
+            "id": "gc5Base",
+            "name": "GC Percent",
+            "format": "bigWig",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.gc5Base\">GC Percent in 5-Base Windows</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.gc5Base.bw",
+            "displayMode": "EXPANDED",
+            "color": "rgb(0,0,0)",
+            "altColor": "rgb(128,128,128)",
+            "min": 30.0,
+            "max": 70.0,
+            "maxHeight": 128,
+            "height": 36,
+            "minHeight": 16
+        },
+        {
+            "id": "gapOverlap",
+            "name": "Gap Overlaps",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.tanDups\">Paired exactly identical sequence on each side of a gap</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.gapOverlap.bb",
+            "parent": "tanDups on"
+        },
+        {
+            "id": "tandemDups",
+            "name": "Tandem Dups",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.tanDups\">Paired exactly identical sequence survey over entire genome assembly</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.tandemDups.bb",
+            "parent": "tanDups on"
+        },
+        {
+            "id": "allGaps",
+            "name": "All Gaps",
+            "format": "bigBed",
+            "description": " <a target = \"_blank\" href = \"https://hgdownload.gi.ucsc.edu/hubs/birds/https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/html/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.allGaps\">All gaps of unknown nucleotides (N's), including AGP annotated gaps</a>",
+            "url": "https://hgdownload.gi.ucsc.edu/hubs/birds/../GCF/016/699/485/GCF_016699485.2/bbi/GCF_016699485.2_bGalGal1.mat.broiler.GRCg7b.allGaps.bb",
+            "displayMode": "COLLAPSED"
+        }
+    ],
+    "name": "map",
+    "label": "Mapping and Sequencing",
+    "priority": "2",
+    "defaultIsClosed": "0"
+}

@@ -1,7 +1,7 @@
 {
   "label": "Annotations",
   "description": "Annotations from the <a href=https://genome.ucsc.edu/ target=_blank>UCSC Genome Browser</a>",
-  "link": "http://hgdownload.soe.ucsc.edu/downloads.html",
+  "link": "https://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
       "name": "NCBI RefSeq",

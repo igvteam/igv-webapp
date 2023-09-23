@@ -4,6 +4,26 @@
   "link": "https://hgdownload.soe.ucsc.edu/downloads.html",
   "tracks": [
     {
+      "name": "Gencode v44",
+      "type": "annotation",
+      "format": "gff3",
+      "displayMode": "EXPANDED",
+      "height": 300,
+      "url": "https://igv-genepattern-org.s3.amazonaws.com/genomes/hg38/gencode.v44.basic.annotation.gff3.gz",
+      "indexURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/hg38/gencode.v44.basic.annotation.gff3.gz.tbi",
+      "visibilityWindow": 500000
+    },
+    {
+      "name": "Gencode v44 lncRNAss",
+      "type": "annotation",
+      "format": "gff3",
+      "displayMode": "EXPANDED",
+      "height": 300,
+      "url": "https://igv-genepattern-org.s3.amazonaws.com/genomes/hg38/gencode.v44.long_noncoding_RNAs.gff3.gz",
+      "indexURL": "https://igv-genepattern-org.s3.amazonaws.com/genomes/hg38/gencode.v44.long_noncoding_RNAs.gff3.gz.tbi",
+      "visibilityWindow": -1
+    },
+    {
       "name": "Gencode v40",
       "type": "annotation",
       "format": "gff3",

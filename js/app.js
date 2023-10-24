@@ -34,7 +34,8 @@ import {
     GenomeFileLoad,
     googleDriveButtonImageBase64,
     googleDriveDropdownItem,
-    updateTrackMenus
+    getPathsWithTrackRegistryFile,
+    updateTrackMenusWithTrackConfigurations
 } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
@@ -59,7 +60,7 @@ async function main(container, config) {
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
 
-    const doEnableGoogle = undefined === config.clientId ? false : true
+    const doEnableGoogle = undefined !== config.clientId
 
     if (doEnableGoogle) {
 
@@ -110,7 +111,20 @@ async function main(container, config) {
 
     if (browser) {
         Globals.browser = browser
-        await initializationHelper(browser, container, config)
+
+        const paramHash = parseURLParams(window.location.href)
+        let hub
+        let trackConfigs
+        if (paramHash.hubURL) {
+            hub = await igv.Hub.loadHub(paramHash.hubURL)
+            trackConfigs = hub.getTrackConfigurations()
+        }
+
+        if (trackConfigs) {
+            console.log(trackConfigs)
+        }
+
+        await initializationHelper(browser, container, trackConfigs ? Object.assign(config, { trackConfigs }) : config)
     }
 }
 
@@ -244,8 +258,12 @@ async function initializationHelper(browser, container, options) {
 
             currentGenomeId = genomeID
 
-            await updateTrackMenus(genomeID, undefined, options.trackRegistryFile, $('#igv-app-track-dropdown-menu'))
+            let trackConfigurations = await getPathsWithTrackRegistryFile(genomeID, options.trackRegistryFile)
 
+            if (undefined === trackConfigurations && options.trackConfigs) {
+                trackConfigurations = options.trackConfigs
+            }
+            await updateTrackMenusWithTrackConfigurations(genomeID, undefined, trackConfigurations, $('#igv-app-track-dropdown-menu'))
         }
     }
 
@@ -305,6 +323,17 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
 
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
+}
+
+function parseURLParams(url) {
+    const searchParams = new URL(url).searchParams;
+    const params = {};
+
+    for (const [key, value] of searchParams) {
+        params[key] = value;
+    }
+
+    return params;
 }
 
 function configureGoogleSignInButton() {

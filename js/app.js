@@ -119,11 +119,7 @@ async function main(container, config) {
             hub = await igv.Hub.loadHub(paramHash.hubURL)
             trackConfigs = hub.getTrackConfigurations()
         }
-
-        if (trackConfigs) {
-            console.log(trackConfigs)
-        }
-
+        
         await initializationHelper(browser, container, trackConfigs ? Object.assign(config, { trackConfigs }) : config)
     }
 }

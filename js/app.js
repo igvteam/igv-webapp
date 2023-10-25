@@ -119,7 +119,7 @@ async function main(container, config) {
             hub = await igv.Hub.loadHub(paramHash.hubURL)
             trackConfigs = hub.getTrackConfigurations()
         }
-        
+
         await initializationHelper(browser, container, trackConfigs ? Object.assign(config, { trackConfigs }) : config)
     }
 }
@@ -220,6 +220,14 @@ async function initializationHelper(browser, container, options) {
             console.error(e)
             AlertSingleton.present(e)
         }
+
+        if (config.url && config.url.endsWith('hub.txt')) {
+            const hub = await igv.Hub.loadHub(config.url)
+            const { id } = hub.getGenomeConfig()
+            const trackConfigs = hub.getTrackConfigurations()
+            await updateTrackMenusWithTrackConfigurations(id, undefined, trackConfigs, $('#igv-app-track-dropdown-menu'))
+        }
+
     }
 
     createSessionWidgets($igvMain,

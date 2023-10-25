@@ -151,6 +151,18 @@ async function initializationHelper(browser, container, options) {
 
     const $igvMain = $('#igv-main')
 
+    const genomeLoader = async configuration => {
+
+        if (configuration.url && configuration.url.endsWith('hub.txt')) {
+            const hub = await igv.Hub.loadHub(configuration.url)
+            await Globals.browser.loadSession({ url: configuration.url })
+            await updateTrackMenusWithTrackHub(hub)
+        } else if (configuration.id !== browser.genome.id) {
+            await loadGenome(configuration)
+        }
+
+    }
+
     const genomeFileLoadConfig =
         {
             localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
@@ -158,13 +170,7 @@ async function initializationHelper(browser, container, options) {
             dropboxButton: options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
             googleEnabled: googleEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
-            loadHandler: async configuration => {
-
-                if (configuration.id !== browser.genome.id) {
-                    await loadGenome(configuration)
-                }
-
-            }
+            loadHandler: genomeLoader
         }
 
     createGenomeWidgets({

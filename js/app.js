@@ -223,9 +223,7 @@ async function initializationHelper(browser, container, options) {
 
         if (config.url && config.url.endsWith('hub.txt')) {
             const hub = await igv.Hub.loadHub(config.url)
-            const { id } = hub.getGenomeConfig()
-            const trackConfigs = hub.getTrackConfigurations()
-            await updateTrackMenusWithTrackConfigurations(id, undefined, trackConfigs, $('#igv-app-track-dropdown-menu'))
+            await updateTrackMenusWithTrackHub(hub)
         }
 
     }
@@ -329,6 +327,11 @@ async function initializationHelper(browser, container, options) {
     EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
 }
 
+async function updateTrackMenusWithTrackHub(hub) {
+    const { id } = hub.getGenomeConfig()
+    const trackConfigs = hub.getTrackConfigurations()
+    await updateTrackMenusWithTrackConfigurations(id, undefined, trackConfigs, $('#igv-app-track-dropdown-menu'))
+}
 function parseURLParams(url) {
     const searchParams = new URL(url).searchParams;
     const params = {};

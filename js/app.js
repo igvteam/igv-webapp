@@ -236,14 +236,7 @@ async function initializationHelper(browser, container, options) {
             AlertSingleton.present(e)
         }
 
-        if (isFile(config.url)) {
-
-            if ('hub.txt' === config.url.name) {
-                const hub = await igv.Hub.loadHub(config.url)
-                await updateTrackMenusWithTrackHub(hub)
-            }
-
-        } else if (config.url.endsWith('hub.txt')) {
+        if (false === isFile(config.url) && config.url.endsWith('hub.txt')) {
             const hub = await igv.Hub.loadHub(config.url)
             await updateTrackMenusWithTrackHub(hub)
         }

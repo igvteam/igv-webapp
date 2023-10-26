@@ -36,7 +36,7 @@ import {
     googleDriveDropdownItem,
     getPathsWithTrackRegistryFile,
     updateTrackMenusWithTrackConfigurations
-} from '../node_modules/igv-widgets/src/index.js'
+} from '../node_modules/igv-widgets/dist/igv-widgets'
 import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'

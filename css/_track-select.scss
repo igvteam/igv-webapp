@@ -6,4 +6,8 @@ select#igv-app-track-select-modal-select {
     font-size: 01.0rem;
   }
 
+  option[disabled] {
+    color: rgba(0, 0, 0, 0.1);
+  }
+
 }

@@ -36,7 +36,7 @@ import {
     googleDriveDropdownItem,
     getPathsWithTrackRegistryFile,
     updateTrackMenusWithTrackConfigurations
-} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+} from '../node_modules/igv-widgets/src/index.js'
 import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'
@@ -195,6 +195,14 @@ async function initializationHelper(browser, container, options) {
         }
     }
 
+    const trackMenuHandler = urlList => {
+        for (const { element, url } of urlList) {
+            // element.setAttribute('disabled', true)
+            console.log(`${ url }`)
+        }
+
+    }
+
     createTrackWidgetsWithTrackRegistry($igvMain,
         $('#igv-app-track-dropdown-menu'),
         $('#igv-app-dropdown-local-track-file-input'),
@@ -207,7 +215,8 @@ async function initializationHelper(browser, container, options) {
         'igv-app-track-select-modal',
         GtexUtils,
         options.trackRegistryFile,
-        trackLoader)
+        trackLoader,
+        trackMenuHandler)
 
     const sessionSaver = () => {
         try {
@@ -227,7 +236,14 @@ async function initializationHelper(browser, container, options) {
             AlertSingleton.present(e)
         }
 
-        if (config.url && config.url.endsWith('hub.txt')) {
+        if (isFile(config.url)) {
+
+            if ('hub.txt' === config.url.name) {
+                const hub = await igv.Hub.loadHub(config.url)
+                await updateTrackMenusWithTrackHub(hub)
+            }
+
+        } else if (config.url.endsWith('hub.txt')) {
             const hub = await igv.Hub.loadHub(config.url)
             await updateTrackMenusWithTrackHub(hub)
         }

@@ -196,9 +196,15 @@ async function initializationHelper(browser, container, options) {
     }
 
     const trackMenuHandler = urlList => {
+
+        const urlSet = browser.getTrackURLs()
+
         for (const { element, url } of urlList) {
-            // element.setAttribute('disabled', true)
-            console.log(`${ url }`)
+            if (urlSet.has(url)) {
+                element.setAttribute('disabled', true)
+            } else {
+                element.removeAttribute('disabled')
+            }
         }
 
     }

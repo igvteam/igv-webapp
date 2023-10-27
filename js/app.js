@@ -30,7 +30,6 @@ import {
     createTrackWidgetsWithTrackRegistry,
     dropboxButtonImageBase64,
     dropboxDropdownItem,
-    EventBus,
     GenomeFileLoad,
     googleDriveButtonImageBase64,
     googleDriveDropdownItem,
@@ -111,16 +110,7 @@ async function main(container, config) {
 
     if (browser) {
         Globals.browser = browser
-
-        const paramHash = parseURLParams(window.location.href)
-        let hub
-        let trackConfigs
-        if (paramHash.hubURL) {
-            hub = await igv.Hub.loadHub(paramHash.hubURL)
-            trackConfigs = hub.getTrackConfigurations()
-        }
-
-        await initializationHelper(browser, container, trackConfigs ? Object.assign(config, { trackConfigs }) : config)
+        await initializationHelper(browser, container, config)
     }
 }
 
@@ -235,18 +225,14 @@ async function initializationHelper(browser, container, options) {
     }
 
     const sessionLoader = async config => {
+
         try {
             await browser.loadSession(config)
         } catch (e) {
             console.error(e)
             AlertSingleton.present(e)
         }
-
-        if (false === isFile(config.url) && config.url.endsWith('hub.txt')) {
-            const hub = await igv.Hub.loadHub(config.url)
-            await updateTrackMenusWithTrackHub(hub)
-        }
-
+        
     }
 
     createSessionWidgets($igvMain,
@@ -272,23 +258,6 @@ async function initializationHelper(browser, container, options) {
     createShareWidgets(shareWidgetConfigurator(browser, container, options))
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'))
-
-    const genomeChangeListener = async event => {
-
-        const {data: genomeID} = event
-
-        if (currentGenomeId !== genomeID) {
-
-            currentGenomeId = genomeID
-
-            let trackConfigurations = await getPathsWithTrackRegistryFile(genomeID, options.trackRegistryFile)
-
-            if (undefined === trackConfigurations && options.trackConfigs) {
-                trackConfigurations = options.trackConfigs
-            }
-            await updateTrackMenusWithTrackConfigurations(genomeID, undefined, trackConfigurations, $('#igv-app-track-dropdown-menu'))
-        }
-    }
 
     if (true === options.enableCircularView) {
 
@@ -342,10 +311,24 @@ async function initializationHelper(browser, container, options) {
 
     }
 
+    const genomeChangeListener = async genome => {
 
-    EventBus.globalBus.subscribe("DidChangeGenome", genomeChangeListener)
+        if (currentGenomeId !== genome.id) {
 
-    EventBus.globalBus.post({type: "DidChangeGenome", data: browser.genome.id})
+            currentGenomeId = genome.id
+
+            let trackConfigurations = await getPathsWithTrackRegistryFile(genome.id, options.trackRegistryFile)
+
+            if (undefined === trackConfigurations) {
+                trackConfigurations = genome.getTrackConfigurations()
+            }
+            await updateTrackMenusWithTrackConfigurations(genome.id, undefined, trackConfigurations, $('#igv-app-track-dropdown-menu'))
+        }
+    }
+
+    browser.on('genomechange', genomeChangeListener)
+
+    browser.fireEvent('genomechange', [ browser.genome ])
 }
 
 async function updateTrackMenusWithTrackHub(hub) {

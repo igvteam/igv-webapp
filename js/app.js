@@ -232,7 +232,7 @@ async function initializationHelper(browser, container, options) {
             console.error(e)
             AlertSingleton.present(e)
         }
-        
+
     }
 
     createSessionWidgets($igvMain,
@@ -320,7 +320,7 @@ async function initializationHelper(browser, container, options) {
             let trackConfigurations = await getPathsWithTrackRegistryFile(genome.id, options.trackRegistryFile)
 
             if (undefined === trackConfigurations) {
-                trackConfigurations = genome.getTrackConfigurations()
+                trackConfigurations = genome.trackConfigurations
             }
             await updateTrackMenusWithTrackConfigurations(genome.id, undefined, trackConfigurations, $('#igv-app-track-dropdown-menu'))
         }

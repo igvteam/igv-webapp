@@ -311,24 +311,27 @@ async function initializationHelper(browser, container, options) {
 
     }
 
-    const genomeChangeListener = async genome => {
+    browser.on('genomechange', async ({genome, trackConfigurations}) => {
 
-        if (currentGenomeId !== genome.id) {
+            if (currentGenomeId !== genome.id) {
 
-            currentGenomeId = genome.id
+                currentGenomeId = genome.id
 
-            let trackConfigurations = await getPathsWithTrackRegistryFile(genome.id, options.trackRegistryFile)
+                let configs = await getPathsWithTrackRegistryFile(genome.id, options.trackRegistryFile)
 
-            if (undefined === trackConfigurations) {
-                trackConfigurations = genome.trackConfigurations
+                if (undefined === configs) {
+                    configs = trackConfigurations
+                }
+
+                if (configs) {
+                    await updateTrackMenusWithTrackConfigurations(genome.id, undefined, configs, $('#igv-app-track-dropdown-menu'))
+                }
+
             }
-            await updateTrackMenusWithTrackConfigurations(genome.id, undefined, trackConfigurations, $('#igv-app-track-dropdown-menu'))
         }
-    }
+    )
 
-    browser.on('genomechange', genomeChangeListener)
-
-    browser.fireEvent('genomechange', [ browser.genome ])
+    browser.fireEvent('genomechange', [ { genome: browser.genome, trackConfigurations: undefined } ])
 }
 
 async function updateTrackMenusWithTrackHub(hub) {

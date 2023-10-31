@@ -129,7 +129,7 @@ select#igv-app-track-select-modal-select option {
   font-size: 1rem;
 }
 select#igv-app-track-select-modal-select option[disabled] {
-  color: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.3);
 }
 
 body {

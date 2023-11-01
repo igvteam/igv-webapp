@@ -106,6 +106,28 @@ async function main(container, config) {
         }
     }
 
+    igvConfig.listeners = {
+
+        'genomechange': async ({genome, trackConfigurations}) => {
+
+            if (currentGenomeId !== genome.id) {
+
+                currentGenomeId = genome.id
+
+                let configs = await getPathsWithTrackRegistryFile(genome.id, config.trackRegistryFile)
+
+                if (undefined === configs) {
+                    configs = trackConfigurations
+                }
+
+                if (configs) {
+                    await updateTrackMenusWithTrackConfigurations(genome.id, undefined, configs, $('#igv-app-track-dropdown-menu'))
+                }
+
+            }
+        }
+    }
+
     const browser = await igv.createBrowser(container, igvConfig)
 
     if (browser) {
@@ -306,27 +328,6 @@ async function initializationHelper(browser, container, options) {
 
     }
 
-    browser.on('genomechange', async ({genome, trackConfigurations}) => {
-
-            if (currentGenomeId !== genome.id) {
-
-                currentGenomeId = genome.id
-
-                let configs = await getPathsWithTrackRegistryFile(genome.id, options.trackRegistryFile)
-
-                if (undefined === configs) {
-                    configs = trackConfigurations
-                }
-
-                if (configs) {
-                    await updateTrackMenusWithTrackConfigurations(genome.id, undefined, configs, $('#igv-app-track-dropdown-menu'))
-                }
-
-            }
-        }
-    )
-
-    browser.fireEvent('genomechange', [ { genome: browser.genome, trackConfigurations: undefined } ])
 }
 
 async function updateTrackMenusWithTrackHub(hub) {

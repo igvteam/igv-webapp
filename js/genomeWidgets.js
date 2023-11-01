@@ -170,9 +170,9 @@ async function loadGenome(genomeConfiguration) {
         AlertSingleton.present(e)
     }
 
-    if (g) {
-        EventBus.globalBus.post({type: "DidChangeGenome", data: g.id});
-    }
+    // if (g) {
+    //     EventBus.globalBus.post({type: "DidChangeGenome", data: g.id});
+    // }
 }
 
 export {createGenomeWidgets, loadGenome, initializeGenomeWidgets}

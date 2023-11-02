@@ -106,6 +106,45 @@ async function main(container, config) {
         }
     }
 
+    const trackLoader = async configurations => {
+        try {
+            await browser.loadTrackList(configurations)
+        } catch (e) {
+            console.error(e)
+            AlertSingleton.present(e)
+        }
+    }
+
+    const trackMenuHandler = urlList => {
+
+        const urlSet = browser.getTrackURLs()
+
+        for (const { element, url } of urlList) {
+            if (urlSet.has(url)) {
+                element.setAttribute('disabled', true)
+            } else {
+                element.removeAttribute('disabled')
+            }
+        }
+
+    }
+
+    const $igvMain = $('#igv-main')
+    createTrackWidgetsWithTrackRegistry($igvMain,
+        $('#igv-app-track-dropdown-menu'),
+        $('#igv-app-dropdown-local-track-file-input'),
+        initializeDropbox,
+        config.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
+        googleEnabled,
+        $('#igv-app-dropdown-google-drive-track-file-button'),
+        ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
+        'igv-app-track-from-url-modal',
+        'igv-app-track-select-modal',
+        GtexUtils,
+        config.trackRegistryFile,
+        trackLoader,
+        trackMenuHandler)
+
     igvConfig.listeners = {
 
         'genomechange': async ({genome, trackConfigurations}) => {
@@ -187,50 +226,7 @@ async function initializationHelper(browser, container, options) {
     })
 
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
-
-    const trackLoader = async configurations => {
-        try {
-            // Add "searchable" attribute to non-indexed annotation tracks
-            for(let c of configurations) {
-
-
-            }
-            await browser.loadTrackList(configurations)
-        } catch (e) {
-            console.error(e)
-            AlertSingleton.present(e)
-        }
-    }
-
-    const trackMenuHandler = urlList => {
-
-        const urlSet = browser.getTrackURLs()
-
-        for (const { element, url } of urlList) {
-            if (urlSet.has(url)) {
-                element.setAttribute('disabled', true)
-            } else {
-                element.removeAttribute('disabled')
-            }
-        }
-
-    }
-
-    createTrackWidgetsWithTrackRegistry($igvMain,
-        $('#igv-app-track-dropdown-menu'),
-        $('#igv-app-dropdown-local-track-file-input'),
-        initializeDropbox,
-        options.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
-        googleEnabled,
-        $('#igv-app-dropdown-google-drive-track-file-button'),
-        ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
-        'igv-app-track-from-url-modal',
-        'igv-app-track-select-modal',
-        GtexUtils,
-        options.trackRegistryFile,
-        trackLoader,
-        trackMenuHandler)
-
+    
     const sessionSaver = () => {
         try {
             return browser.toJSON()

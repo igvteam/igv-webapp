@@ -23,6 +23,7 @@
 
 import igv from '../node_modules/igv/dist/igv.esm.js'
 import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
+import * as GooglePicker from '../node_modules/google-utils/src/googleFilePicker.js'
 import {makeDraggable} from "./draggable.js"
 import {
     AlertSingleton,
@@ -34,13 +35,16 @@ import {
     googleDriveButtonImageBase64,
     googleDriveDropdownItem,
     getPathsWithTrackRegistryFile,
-    updateTrackMenusWithTrackConfigurations
+    updateTrackMenusWithTrackConfigurations,
+    FileLoadManager,
+    FileLoadWidget,
+    Utils
 } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'
 import {sessionURL} from './shareHelper.js'
-import {createSVGWidget} from './svgWidget.js'
+import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
@@ -226,7 +230,30 @@ async function initializationHelper(browser, container, options) {
     })
 
     await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
-    
+
+    const trackLoader = async configurations => {
+        try {
+            // Add "searchable" attribute to non-indexed annotation tracks
+            for(let c of configurations) {
+
+
+            }
+            await browser.loadTrackList(configurations)
+        } catch (e) {
+            console.error(e)
+            AlertSingleton.present(e)
+        }
+    }
+
+    createSampleInfoMenu(document.getElementById('igv-main'),
+        document.getElementById('igv-app-sample-info-dropdown-local-track-file-input'),
+        initializeDropbox,
+        options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-sample-info-file-button') : undefined,
+        googleEnabled,
+        document.getElementById('igv-app-dropdown-google-drive-sample-info-file-button'),
+        'igv-app-sample-info-from-url-modal',
+        trackLoader)
+
     const sessionSaver = () => {
         try {
             return browser.toJSON()
@@ -266,7 +293,9 @@ async function initializationHelper(browser, container, options) {
         document.querySelector('#igv-session-list-divider').style.display = 'none'
     }
 
-    createSVGWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal')})
+    createSaveImageWidget({ browser, saveModal: document.getElementById('igv-app-svg-save-modal'), imageType: 'svg' })
+
+    createSaveImageWidget({ browser, saveModal: document.getElementById('igv-app-png-save-modal'), imageType: 'png' })
 
     createShareWidgets(shareWidgetConfigurator(browser, container, options))
 
@@ -326,22 +355,131 @@ async function initializationHelper(browser, container, options) {
 
 }
 
-async function updateTrackMenusWithTrackHub(hub) {
-    const { id } = hub.getGenomeConfig()
-    const trackConfigs = hub.getTrackConfigurations()
-    await updateTrackMenusWithTrackConfigurations(id, undefined, trackConfigs, $('#igv-app-track-dropdown-menu'))
-}
-function parseURLParams(url) {
-    const searchParams = new URL(url).searchParams;
-    const params = {};
+function createSampleInfoMenu(igvMain,
+                              localFileInput,
+                              initializeDropbox,
+                              dropboxButton,
+                              googleEnabled,
+                              googleDriveButton,
+                              urlModalId,
+                              trackLoadHandler) {
 
-    for (const [key, value] of searchParams) {
-        params[key] = value;
+    // local file
+    localFileInput.addEventListener('change', async () => {
+
+        const {files} = localFileInput
+
+        const paths = Array.from(files)
+
+        localFileInput.value = ''
+
+        await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+    })
+
+    //  Dropbox
+    if (dropboxButton) dropboxButton.addEventListener('click', async () => {
+
+        const result = await initializeDropbox()
+
+        if (true === result) {
+
+            const obj =
+                {
+                    success: dbFiles => {
+
+                        const configList = dbFiles.map(( { link } ) => {
+                            return { type: 'sampleinfo', url: link }
+                        })
+
+                        trackLoadHandler(configList)
+                    },
+                    cancel: () => {},
+                    linkType: "preview",
+                    multiselect: false,
+                    folderselect: false,
+                }
+
+            Dropbox.choose(obj)
+
+        } else {
+            AlertSingleton.present('Cannot connect to Dropbox')
+        }
+    })
+
+    // Google Drive
+    if (!googleEnabled) {
+        googleDriveButton.parentElement.style.display = 'none'
+    } else {
+
+        googleDriveButton.addEventListener('click', () => {
+
+            const filePickerHandler = async responses => {
+                const paths = responses.map(({ url }) => url)
+                await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+            }
+
+            GooglePicker.createDropdownButtonPicker(false, filePickerHandler)
+        })
+
     }
 
-    return params;
-}
+    // URL
+    const html =
+        `<div id="${ urlModalId }" class="modal">
 
+            <div class="modal-dialog modal-lg">
+    
+                <div class="modal-content">
+    
+                    <div class="modal-header">
+                        <div class="modal-title">Sample Info URL</div>
+    
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+    
+                    </div>
+    
+                    <div class="modal-body">
+                    </div>
+    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+    
+                </div>
+    
+            </div>
+
+        </div>`
+
+    const fragment = document.createRange().createContextualFragment(html)
+
+    const urlModal = fragment.firstChild
+
+    igvMain.appendChild(urlModal)
+
+    const fileLoadWidgetConfig =
+        {
+            widgetParent: urlModal.querySelector('.modal-body'),
+            dataTitle: 'Sample Info',
+            indexTitle: 'Index',
+            mode: 'url',
+            fileLoadManager: new FileLoadManager(),
+            dataOnly: false,
+            doURL: true
+        };
+
+    const fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
+
+    Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
+        const paths = fileLoadWidget.retrievePaths()
+        await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+        return true
+    })
+
+}
 function configureGoogleSignInButton() {
 
     if (true === googleEnabled) {
@@ -377,18 +515,6 @@ function configureGoogleSignInButton() {
         })
 
     }
-
-}
-
-function queryGoogleAuthenticationStatus(user) {
-
-        const name = user.name
-
-        const toggle = document.querySelector('#igv-google-drive-dropdown-toggle')
-        toggle.style.display = 'block'
-
-        const button = document.querySelector('#igv-google-drive-sign-out-button')
-        button.innerHTML = `Sign Out ${name}`
 
 }
 
@@ -521,7 +647,6 @@ async function initializeDropbox() {
         })
     }
 }
-
 
 function guid  () {
     return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);

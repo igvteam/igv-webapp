@@ -181,7 +181,7 @@ async function main(container, config) {
 
 async function initializationHelper(browser, container, options) {
 
-    ['track', 'genome'].forEach(str => {
+    ['track', 'genome', 'sample-info'].forEach(str => {
         let imgElement
 
         imgElement = document.querySelector(`img#igv-app-${str}-dropbox-button-image`)

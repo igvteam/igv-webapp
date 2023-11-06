@@ -20,11 +20,9 @@
  * THE SOFTWARE.
  *
  */
+function createSaveImageWidget ({ browser, saveModal, imageType }) {
 
-
-function createSVGWidget ({ browser, saveModal }) {
-
-    const input_default_value = 'igv-app.svg';
+    const input_default_value = `igv-app.${imageType}`;
 
     const input = saveModal.querySelector('input');
 
@@ -38,14 +36,14 @@ function createSVGWidget ({ browser, saveModal }) {
 
         if (undefined === filename || '' === filename) {
             filename = input.getAttribute('placeholder');
-        } else if (!filename.endsWith(".svg")) {
-            filename = filename + '.svg';
+        } else if (!filename.endsWith(`.${imageType}`)) {
+            filename = `${filename}.${imageType}`
         }
 
         // dismiss modal
         $(saveModal).modal('hide');
 
-        browser.saveSVGtoFile({ filename });
+        imageType === 'svg' ? browser.saveSVGtoFile({ filename }) : browser.savePNGtoFile(filename)
     };
 
     // ok - button
@@ -69,4 +67,4 @@ function createSVGWidget ({ browser, saveModal }) {
 
 }
 
-export { createSVGWidget }
+export { createSaveImageWidget }

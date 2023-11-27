@@ -350,6 +350,11 @@ label.dropdown-item {
   }
 }
 
+// override Bootstrap's invasive css'ing
+svg {
+  vertical-align: unset;
+}
+
 // prevent button glow outline
 .btn:focus,.btn:active {
   outline: none !important;

@@ -406,6 +406,10 @@ label.dropdown-item {
   z-index: -1;
 }
 
+svg {
+  vertical-align: unset;
+}
+
 .btn:focus, .btn:active {
   outline: none !important;
   box-shadow: none;

@@ -48,6 +48,7 @@ import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
+import {convertToHubURL} from "./ucscUtils.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -101,9 +102,16 @@ async function main(container, config) {
     if (config.restoreLastGenome) {
         try {
             const lastGenomeId = localStorage.getItem("genomeID")
-            if (lastGenomeId && lastGenomeId !== igvConfig.genome && config.genomes.find(elem => elem.id === lastGenomeId)) {
-                igvConfig.genome = lastGenomeId
-                igvConfig.tracks = []
+            if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
+                if (config.genomes.find(elem => elem.id === lastGenomeId)) {
+                    igvConfig.genome = lastGenomeId
+                    igvConfig.tracks = []
+                } else if((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13) {
+                    const hubURL = convertToHubURL(lastGenomeId)
+                    igvConfig.genome = {
+                        hubURL: hubURL
+                    }
+                }
             }
         } catch (e) {
             console.error(e)

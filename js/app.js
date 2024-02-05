@@ -48,7 +48,6 @@ import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
-import {convertToHubURL} from "./ucscUtils.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -84,7 +83,7 @@ async function main(container, config) {
             console.error(str)
             const googleWarning = "true" === localStorage.getItem(googleWarningFlag)
             //AlertSingleton.present(str)
-            if(!googleWarning) {
+            if (!googleWarning) {
                 localStorage.setItem(googleWarningFlag, "true")
                 alert(str)
             }
@@ -103,14 +102,11 @@ async function main(container, config) {
         try {
             const lastGenomeId = localStorage.getItem("genomeID")
             if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
-                if (config.genomes.find(elem => elem.id === lastGenomeId)) {
+                if (config.genomes.find(elem => elem.id === lastGenomeId) ||
+                    ((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13))
+                {
                     igvConfig.genome = lastGenomeId
                     igvConfig.tracks = []
-                } else if((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13) {
-                    const hubURL = convertToHubURL(lastGenomeId)
-                    igvConfig.genome = {
-                        hubURL: hubURL
-                    }
                 }
             }
         } catch (e) {
@@ -131,7 +127,7 @@ async function main(container, config) {
 
         const urlSet = browser.getTrackURLs()
 
-        for (const { element, url } of urlList) {
+        for (const {element, url} of urlList) {
             if (urlSet.has(url)) {
                 element.setAttribute('disabled', true)
             } else {
@@ -242,7 +238,7 @@ async function initializationHelper(browser, container, options) {
     const trackLoader = async configurations => {
         try {
             // Add "searchable" attribute to non-indexed annotation tracks
-            for(let c of configurations) {
+            for (let c of configurations) {
 
 
             }
@@ -301,9 +297,9 @@ async function initializationHelper(browser, container, options) {
         document.querySelector('#igv-session-list-divider').style.display = 'none'
     }
 
-    createSaveImageWidget({ browser, saveModal: document.getElementById('igv-app-svg-save-modal'), imageType: 'svg' })
+    createSaveImageWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal'), imageType: 'svg'})
 
-    createSaveImageWidget({ browser, saveModal: document.getElementById('igv-app-png-save-modal'), imageType: 'png' })
+    createSaveImageWidget({browser, saveModal: document.getElementById('igv-app-png-save-modal'), imageType: 'png'})
 
     createShareWidgets(shareWidgetConfigurator(browser, container, options))
 
@@ -381,7 +377,7 @@ function createSampleInfoMenu(igvMain,
 
         localFileInput.value = ''
 
-        await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+        await trackLoadHandler([{type: 'sampleinfo', url: paths[0]}])
     })
 
     //  Dropbox
@@ -395,13 +391,14 @@ function createSampleInfoMenu(igvMain,
                 {
                     success: dbFiles => {
 
-                        const configList = dbFiles.map(( { link } ) => {
-                            return { type: 'sampleinfo', url: link }
+                        const configList = dbFiles.map(({link}) => {
+                            return {type: 'sampleinfo', url: link}
                         })
 
                         trackLoadHandler(configList)
                     },
-                    cancel: () => {},
+                    cancel: () => {
+                    },
                     linkType: "preview",
                     multiselect: false,
                     folderselect: false,
@@ -422,8 +419,8 @@ function createSampleInfoMenu(igvMain,
         googleDriveButton.addEventListener('click', () => {
 
             const filePickerHandler = async responses => {
-                const paths = responses.map(({ url }) => url)
-                await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+                const paths = responses.map(({url}) => url)
+                await trackLoadHandler([{type: 'sampleinfo', url: paths[0]}])
             }
 
             GooglePicker.createDropdownButtonPicker(false, filePickerHandler)
@@ -433,7 +430,7 @@ function createSampleInfoMenu(igvMain,
 
     // URL
     const html =
-        `<div id="${ urlModalId }" class="modal">
+        `<div id="${urlModalId}" class="modal">
 
             <div class="modal-dialog modal-lg">
     
@@ -477,17 +474,18 @@ function createSampleInfoMenu(igvMain,
             fileLoadManager: new FileLoadManager(),
             dataOnly: false,
             doURL: true
-        };
+        }
 
     const fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
 
     Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
         const paths = fileLoadWidget.retrievePaths()
-        await trackLoadHandler([ { type: 'sampleinfo', url: paths[ 0 ] } ])
+        await trackLoadHandler([{type: 'sampleinfo', url: paths[0]}])
         return true
     })
 
 }
+
 function configureGoogleSignInButton() {
 
     if (true === googleEnabled) {
@@ -505,7 +503,7 @@ function configureGoogleSignInButton() {
 
             if (currentUserProfile) {
                 const name = currentUserProfile.email || currentUserProfile.name || ''
-                signInOutButton.innerText = `Sign Out ${ name }`
+                signInOutButton.innerText = `Sign Out ${name}`
             } else {
                 signInOutButton.innerText = 'Sign In'
             }
@@ -656,13 +654,13 @@ async function initializeDropbox() {
     }
 }
 
-function guid  () {
-    return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
+function guid() {
+    return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4)
 }
 
 function isFile(object) {
-    if(!object) {
-        return false;
+    if (!object) {
+        return false
     }
     return typeof object !== 'function' &&
         (object instanceof File ||

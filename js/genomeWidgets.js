@@ -27,7 +27,9 @@
 import {AlertSingleton, createURLModal,EventBus,FileLoadManager,FileLoadWidget,Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js";
 
+const MAX_CUSTOM_GENOMES = 5
 let fileLoadWidget;
+let knownGenomeIds = new Set();
 
 function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
 
@@ -59,13 +61,27 @@ function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
     });
 }
 
+/**
+ * Initialize the genome selection widget with pre-defined and user-defined genomes.  Because of the way these
+ * items are added in 'genomeDropdownLayout' they are added in reverse order.
+ *
+ * @param browser
+ * @param genomes
+ * @param $dropdown_menu
+ * @returns {Promise<void>}
+ */
 async function initializeGenomeWidgets(browser, genomes, $dropdown_menu) {
     try {
 
-        const genomeMap = await getAppLaunchGenomes(genomes);
+        // Start with predefined genomes.  This can return undefined.
+        let genomeMap = await getAppLaunchGenomes(genomes);
 
-        if (genomeMap) {
-            genomeDropdownLayout({ browser, genomeMap, $dropdown_menu });
+        // Add user loaded genomes
+        genomeMap = addCustomGenomes(genomeMap || new Map())
+
+        if(genomeMap.size > 0) {
+            genomeDropdownLayout({browser, genomeMap, $dropdown_menu});
+            knownGenomeIds = new Set(genomeMap.keys())
         }
 
     } catch (e) {
@@ -78,7 +94,6 @@ async function getAppLaunchGenomes(genomes) {
     if (undefined === genomes) {
         return undefined;
     }
-
     if (Array.isArray(genomes)) {
         return buildMap(genomes);
     } else {
@@ -96,6 +111,20 @@ async function getAppLaunchGenomes(genomes) {
         }
 
     }
+}
+
+function addCustomGenomes(genomeMap) {
+    const customGenomeString = localStorage.getItem("customGenomes")
+    if(customGenomeString) {
+        const customGenomeJson = JSON.parse(customGenomeString)
+        if(customGenomeJson.length > 0) {
+            genomeMap.set('-', '-')
+            for (let json of customGenomeJson.reverse()) {
+                genomeMap.set(json.id, json)
+            }
+        }
+    }
+    return genomeMap
 }
 
 function buildMap(arrayOrJson) {
@@ -118,27 +147,35 @@ function buildMap(arrayOrJson) {
 function genomeDropdownLayout({browser, genomeMap, $dropdown_menu}) {
 
     // discard all buttons preceeding the divider div
+    // TODO -- does this use of find assume there is 1 dropdown-divider?  Searching by ID would be more robust.
     let $divider = $dropdown_menu.find('.dropdown-divider');
     $divider.nextAll().remove();
 
     for (let [ key, value ] of genomeMap) {
 
-        const $button = createButton(value.name);
-        $button.insertAfter($divider);
+        if('-' === key) {
+           // Add separator
+           // TODO -- style this, <hr> is a hack
+           $('<div class="dropdown-divider"></div>').insertAfter($divider)
 
-        $button.data('id', key);
+        } else {
+            const $button = createButton(value.name);
+            $button.insertAfter($divider);
 
-        const str = `click.genome-dropdown.${ key }`;
+            $button.data('id', key);
 
-        $button.on(str, async () => {
+            const str = `click.genome-dropdown.${key}`;
 
-            const id = $button.data('id');
+            $button.on(str, async () => {
 
-            if (id !== browser.genome.id) {
-                await loadGenome(value);
-            }
+                const id = $button.data('id');
 
-        });
+                if (id !== browser.genome.id) {
+                    await loadGenome(value);
+                }
+
+            });
+        }
 
     } // for (...)
 
@@ -159,7 +196,22 @@ async function loadGenome(genomeConfiguration) {
         g = await Globals.browser.loadGenome(genomeConfiguration);
         if(g.id) {
             try {
+
+                // Last loaded genome ID, reloaded automatically on next page load
                 localStorage.setItem("genomeID", g.id)
+
+                // If this is a previously unknown genome add it to the custom list.
+                if(!knownGenomeIds.has(g.id)) {
+                    knownGenomeIds.add(g.id)
+                    const customGenomeString = localStorage.getItem("customGenomes")
+                    let customGenomeJson = customGenomeString ? JSON.parse(customGenomeString) : []
+                    customGenomeJson.unshift(g)
+                    if(customGenomeJson.length > MAX_CUSTOM_GENOMES) {
+                        customGenomeJson = customGenomeJson.slice(0,MAX_CUSTOM_GENOMES)
+                    }
+                    localStorage.setItem("customGenomes", JSON.stringify(customGenomeJson))
+                }
+
             } catch (e) {
                 console.error(e)
             }

@@ -98,6 +98,7 @@ async function main(container, config) {
 
     const igvConfig = config.igvConfig
 
+    const igvConfigGenome = igvConfig.genome
     if (config.restoreLastGenome) {
         try {
             const lastGenomeId = localStorage.getItem("genomeID")
@@ -175,7 +176,19 @@ async function main(container, config) {
         }
     }
 
-    const browser = await igv.createBrowser(container, igvConfig)
+    // TODO -- fix this hack.  We are assuming th eerror is due to the "last genome loaded, it could be anything.
+    let browser
+    try {
+         browser = await igv.createBrowser(container, igvConfig)
+    } catch (e) {
+        if(igvConfigGenome !== igvConfig.genome) {
+            igv.removeAllBrowsers()
+            igvConfig.genome = igvConfigGenome
+            browser = await igv.createBrowser(container, igvConfig)
+        } else {
+            console.error(e)
+        }
+    }
 
     if (browser) {
         Globals.browser = browser

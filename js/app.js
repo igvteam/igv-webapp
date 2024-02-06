@@ -21,7 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/js/index.js'
+import igv from '../node_modules/igv/dist/igv.esm.min.js'
 import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
 import * as GooglePicker from '../node_modules/google-utils/src/googleFilePicker.js'
 import {makeDraggable} from "./draggable.js"

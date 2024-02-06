@@ -253,7 +253,7 @@ async function initializationHelper(browser, container, options) {
         genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)
     })
 
-    await initializeGenomeWidgets(browser, options.genomes, $('#igv-app-genome-dropdown-menu'))
+    await initializeGenomeWidgets(options.genomes)
 
     const trackLoader = async configurations => {
         try {

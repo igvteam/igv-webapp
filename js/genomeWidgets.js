@@ -24,41 +24,48 @@
  * THE SOFTWARE.
  */
 
-import {AlertSingleton, createURLModal,EventBus,FileLoadManager,FileLoadWidget,Utils} from '../node_modules/igv-widgets/dist/igv-widgets.js'
-import Globals from "./globals.js";
+import {
+    AlertSingleton,
+    createURLModal,
+    FileLoadManager,
+    FileLoadWidget,
+    Utils
+} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import Globals from "./globals.js"
 
 const MAX_CUSTOM_GENOMES = 5
-let fileLoadWidget;
-let knownGenomeIds = new Set();
+
+let knownGenomeIds
 
 function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
 
+    // URL modal
     const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
-    $igvMain.append($urlModal);
+    $igvMain.append($urlModal)
 
-    let config =
-        {
-            widgetParent: $urlModal.find('.modal-body').get(0),
-            dataTitle: 'Genome',
-            indexTitle: 'Index',
-            mode: 'url',
-            fileLoadManager: new FileLoadManager(),
-            dataOnly: false,
-            doURL: true
-        };
 
-    fileLoadWidget = new FileLoadWidget(config);
+    // File widget
+    const fileLoadWidget = new FileLoadWidget({
+        widgetParent: $urlModal.find('.modal-body').get(0),
+        dataTitle: 'Genome',
+        indexTitle: 'Index',
+        mode: 'url',
+        fileLoadManager: new FileLoadManager(),
+        dataOnly: false,
+        doURL: true
+    })
 
+    // Configures both file widget and url modal, a bit confusing
     Utils.configureModal(fileLoadWidget, $urlModal.get(0), async fileLoadWidget => {
 
         try {
-            await genomeFileLoad.loadPaths( fileLoadWidget.retrievePaths() )
+            await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths())
         } catch (e) {
-            console.error(e);
+            console.error(e)
             AlertSingleton.present(e)
         }
 
-    });
+    })
 }
 
 /**
@@ -74,14 +81,14 @@ async function initializeGenomeWidgets(browser, genomes, $dropdown_menu) {
     try {
 
         // Start with predefined genomes.  This can return undefined.
-        let genomeMap = await getAppLaunchGenomes(genomes);
+        knownGenomeIds = genomes ? new Set(genomes.map(g => g.id)) : new Set()
+        let genomeList = await getAppLaunchGenomes(genomes)
 
         // Add user loaded genomes
-        genomeMap = addCustomGenomes(genomeMap || new Map())
+        genomeList = addCustomGenomes(genomeList || [])
 
-        if(genomeMap.size > 0) {
-            genomeDropdownLayout({browser, genomeMap, $dropdown_menu});
-            knownGenomeIds = new Set(genomeMap.keys())
+        if (genomeList.length > 0) {
+            updateGenomeList({browser, genomeList, $dropdown_menu})
         }
 
     } catch (e) {
@@ -92,39 +99,38 @@ async function initializeGenomeWidgets(browser, genomes, $dropdown_menu) {
 async function getAppLaunchGenomes(genomes) {
 
     if (undefined === genomes) {
-        return undefined;
+        return undefined
     }
     if (Array.isArray(genomes)) {
-        return buildMap(genomes);
+        return genomes
     } else {
 
-        let response = undefined;
+        let response = undefined
         try {
-            response = await fetch(genomes);
+            response = await fetch(genomes)
         } catch (e) {
-            AlertSingleton.present(e.message);
+            AlertSingleton.present(e.message)
         }
 
         if (response) {
-            let json = await response.json();
-            return buildMap(json);
+            let json = await response.json()
+            return json
         }
-
     }
 }
 
-function addCustomGenomes(genomeMap) {
-    const customGenomeString = localStorage.getItem("customGenomes")
-    if(customGenomeString) {
+function addCustomGenomes(genomeList) {
+    const customGenomeString = localStorage.getItem("recentGenomes")
+    if (customGenomeString) {
         const customGenomeJson = JSON.parse(customGenomeString)
-        if(customGenomeJson.length > 0) {
-            genomeMap.set('-', '-')
+        if (customGenomeJson.length > 0) {
+            genomeList.push('-')
             for (let json of customGenomeJson.reverse()) {
-                genomeMap.set(json.id, json)
+                genomeList.push(json)
             }
         }
     }
-    return genomeMap
+    return genomeList
 }
 
 function buildMap(arrayOrJson) {
@@ -144,73 +150,76 @@ function buildMap(arrayOrJson) {
     return map
 }
 
-function genomeDropdownLayout({browser, genomeMap, $dropdown_menu}) {
+function updateGenomeList({browser, genomeList, $dropdown_menu}) {
 
     // discard all buttons preceeding the divider div
     // TODO -- does this use of find assume there is 1 dropdown-divider?  Searching by ID would be more robust.
-    let $divider = $dropdown_menu.find('.dropdown-divider');
-    $divider.nextAll().remove();
+    let $divider = $dropdown_menu.find('.dropdown-divider')
+    $divider.nextAll().remove()
 
-    for (let [ key, value ] of genomeMap) {
+    for (let genomeJson of genomeList) {
 
-        if('-' === key) {
-           // Add separator
-           // TODO -- style this, <hr> is a hack
-           $('<div class="dropdown-divider"></div>').insertAfter($divider)
+        const key = genomeJson.id
+        const value = genomeJson
 
+        if ('-' === genomeJson) {
+            $('<div class="dropdown-divider"></div>').insertAfter($divider)
         } else {
-            const $button = createButton(value.name);
-            $button.insertAfter($divider);
+            const $button = createButton(value.name)
+            $button.insertAfter($divider)
 
-            $button.data('id', key);
+            $button.data('id', key)
 
-            const str = `click.genome-dropdown.${key}`;
+            const str = `click.genome-dropdown.${key}`
 
             $button.on(str, async () => {
 
-                const id = $button.data('id');
+                const id = $button.data('id')
 
                 if (id !== browser.genome.id) {
-                    await loadGenome(value);
+                    await loadGenome(value)
                 }
 
-            });
+            })
         }
 
     } // for (...)
 
     function createButton(title) {
 
-        let $button = $('<button>', {class: 'dropdown-item', type: 'button'});
-        $button.text(title);
+        let $button = $('<button>', {class: 'dropdown-item', type: 'button'})
+        $button.text(title)
 
-        return $button;
+        return $button
     }
 
 }
 
-async function loadGenome(genomeConfiguration) {
+async function loadGenome(genomeConfiguration, custom = false) {
 
-    let g = undefined;
+    let g = undefined
     try {
-        g = await Globals.browser.loadGenome(genomeConfiguration);
-        if(g.id) {
+        g = await Globals.browser.loadGenome(genomeConfiguration)
+        if (g.id) {
             try {
 
                 // Last loaded genome ID, reloaded automatically on next page load
                 localStorage.setItem("genomeID", g.id)
 
-                // If this is a previously unknown genome add it to the custom list.
-                if(!knownGenomeIds.has(g.id)) {
-                    knownGenomeIds.add(g.id)
-                    const customGenomeString = localStorage.getItem("customGenomes")
-                    let customGenomeJson = customGenomeString ? JSON.parse(customGenomeString) : []
-                    customGenomeJson.unshift(g)
-                    if(customGenomeJson.length > MAX_CUSTOM_GENOMES) {
-                        customGenomeJson = customGenomeJson.slice(0,MAX_CUSTOM_GENOMES)
-                    }
-                    localStorage.setItem("customGenomes", JSON.stringify(customGenomeJson))
+                // Update the recently loaded list
+                // hub.txt genomes are indirect, record name and id
+                if (!genomeConfiguration.id) genomeConfiguration.id = g.id
+                if (!genomeConfiguration.name) genomeConfiguration.name = g.name
+
+                const recentGenomesString = localStorage.getItem("recentGenomes")
+                let recentGenomes = recentGenomesString ? JSON.parse(recentGenomesString) : []
+                recentGenomes = recentGenomes.filter(r => r.id !== g.id)  // If already present, replace
+                recentGenomes.unshift(genomeConfiguration)
+                if (recentGenomes.length > MAX_CUSTOM_GENOMES) {
+                    recentGenomes = recentGenomes.slice(0, MAX_CUSTOM_GENOMES)
                 }
+                localStorage.setItem("recentGenomes", JSON.stringify(recentGenomes))
+
 
             } catch (e) {
                 console.error(e)
@@ -218,7 +227,7 @@ async function loadGenome(genomeConfiguration) {
         }
 
     } catch (e) {
-        console.error(e);
+        console.error(e)
         AlertSingleton.present(e)
     }
 

@@ -21,7 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.js'
+import igv from '../node_modules/igv/js/index.js'
 import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
 import * as GooglePicker from '../node_modules/google-utils/src/googleFilePicker.js'
 import {makeDraggable} from "./draggable.js"
@@ -96,16 +96,22 @@ async function main(container, config) {
         config.igvConfig.genomes = config.genomes
     }
 
-    const igvConfig = config.igvConfig
+    // Custom (user loaded) genomes
+    let recentGenomes
+    const customGenomeString = localStorage.getItem("recentGenomes")
+    if (customGenomeString) {
+        recentGenomes = JSON.parse(customGenomeString)
+    }
 
-    const igvConfigGenome = igvConfig.genome
+    const igvConfig = config.igvConfig
+    const igvConfigGenome = igvConfig.genome   // the genome specified in the configuration file
     if (config.restoreLastGenome) {
         try {
             const lastGenomeId = localStorage.getItem("genomeID")
             if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
-                if (config.genomes.find(elem => elem.id === lastGenomeId) ||
-                    ((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13))
-                {
+                if (config.genomes && config.genomes.find(elem => elem.id === lastGenomeId) ||
+                    (recentGenomes && recentGenomes.find(elem => elem.id === lastGenomeId)) ||
+                    ((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13)) {
                     igvConfig.genome = lastGenomeId
                     igvConfig.tracks = []
                 }
@@ -176,12 +182,12 @@ async function main(container, config) {
         }
     }
 
-    // TODO -- fix this hack.  We are assuming th eerror is due to the "last genome loaded, it could be anything.
+    // TODO -- fix this hack.  We are assuming th error is due to the "last genome loaded, it could be anything.
     let browser
     try {
-         browser = await igv.createBrowser(container, igvConfig)
+        browser = await igv.createBrowser(container, igvConfig)
     } catch (e) {
-        if(igvConfigGenome !== igvConfig.genome) {
+        if (igvConfigGenome !== igvConfig.genome) {
             igv.removeAllBrowsers()
             igvConfig.genome = igvConfigGenome
             browser = await igv.createBrowser(container, igvConfig)
@@ -240,6 +246,7 @@ async function initializationHelper(browser, container, options) {
 
         }
 
+    // Create widgets for URL and File loads.
     createGenomeWidgets({
         $igvMain,
         urlModalId: 'igv-app-genome-from-url-modal',

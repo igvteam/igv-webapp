@@ -33,7 +33,7 @@ import {
 } from '../node_modules/igv-widgets/dist/igv-widgets.js'
 import Globals from "./globals.js"
 
-const MAX_CUSTOM_GENOMES = 5
+const MAX_CUSTOM_GENOMES = 10
 
 let predefinedGenomeIds
 let predefinedGenomes
@@ -121,8 +121,12 @@ function getCustomGenomes() {
 function updateGenomeList() {
 
     const $dropdown_menu = $('#igv-app-genome-dropdown-menu')
-    // discard all buttons preceeding the divider div
-    let $divider = $dropdown_menu.find('.dropdown-divider')
+
+    // NOTE:  MUST USE ID HERE, THERE CAN BE MULTIPLE DIVIDERS.  JQUERY DOES WEIRD THINGS IN THE CODE THAT FOLLOWS IF $divider IS A COLLECTION
+    const $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider')
+
+    // discard all buttons following the divider div
+    $divider.nextAll().off()
     $divider.nextAll().remove()
 
     const addEntryFor = (genomeJson) => {
@@ -155,7 +159,7 @@ function updateGenomeList() {
     const customGenomes = getCustomGenomes()
     if (customGenomes && customGenomes.length > 0) {
         $('<div class="dropdown-divider"></div>').insertAfter($divider)
-        for (let genomeJson of customGenomes) {
+        for (let genomeJson of customGenomes.reverse()) {
             addEntryFor(genomeJson)
         }
 

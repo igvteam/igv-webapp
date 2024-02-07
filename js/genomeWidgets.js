@@ -80,7 +80,7 @@ function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
  */
 async function initializeGenomeWidgets(genomes) {
     try {
-        predefinedGenomes = await getAppLaunchGenomes(genomes)// Default genome list
+        predefinedGenomes = (await getAppLaunchGenomes(genomes)).reverse() // Default genome list
         predefinedGenomeIds = new Set(predefinedGenomes.map(g => g.id))
         updateGenomeList()
 
@@ -114,7 +114,7 @@ async function getAppLaunchGenomes(genomes) {
 
 function getCustomGenomes() {
     const customGenomeString = localStorage.getItem("customGenomes")
-    return customGenomeString ? JSON.parse(customGenomeString) : []
+    return customGenomeString ? JSON.parse(customGenomeString).reverse() : []
 }
 
 
@@ -151,7 +151,7 @@ function updateGenomeList() {
     // TODO -- why do we need to add everthing in reverse?
 
     if (predefinedGenomes && predefinedGenomes.length > 0) {
-        for (let genomeJson of predefinedGenomes.reverse()) {
+        for (let genomeJson of predefinedGenomes) {
             addEntryFor(genomeJson)
         }
     }
@@ -159,7 +159,7 @@ function updateGenomeList() {
     const customGenomes = getCustomGenomes()
     if (customGenomes && customGenomes.length > 0) {
         $('<div class="dropdown-divider"></div>').insertAfter($divider)
-        for (let genomeJson of customGenomes.reverse()) {
+        for (let genomeJson of customGenomes) {
             addEntryFor(genomeJson)
         }
 

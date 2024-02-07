@@ -179,6 +179,7 @@ async function loadGenome(genomeConfiguration, custom = false) {
 
     let g = undefined
     try {
+        Globals.browser.startSpinner()
         g = await Globals.browser.loadGenome(genomeConfiguration)
         if (g.id) {
             try {
@@ -211,6 +212,8 @@ async function loadGenome(genomeConfiguration, custom = false) {
     } catch (e) {
         console.error(e)
         AlertSingleton.present(e)
+    } finally {
+        Globals.browser.stopSpinner()
     }
 
     // if (g) {

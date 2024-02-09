@@ -24,22 +24,15 @@
 import igv from '../node_modules/igv/dist/igv.esm.min.js'
 import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
 import * as GooglePicker from '../node_modules/google-utils/src/googleFilePicker.js'
-import {makeDraggable} from "./draggable.js"
-import {
-    AlertSingleton,
-    createSessionWidgets,
-    createTrackWidgetsWithTrackRegistry,
-    dropboxButtonImageBase64,
-    dropboxDropdownItem,
-    GenomeFileLoad,
-    googleDriveButtonImageBase64,
-    googleDriveDropdownItem,
-    getPathsWithTrackRegistryFile,
-    updateTrackMenusWithTrackConfigurations,
-    FileLoadManager,
-    FileLoadWidget,
-    Utils
-} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import makeDraggable from "./widgets/utils/draggable.js"
+import AlertSingleton from "./widgets/alertSingleton.js"
+import {createSessionWidgets} from "./widgets/sessionWidgets.js"
+import {updateTrackMenusWithTrackConfigurations, createTrackWidgetsWithTrackRegistry, getPathsWithTrackRegistryFile} from "./widgets/trackWidgets.js"
+import {dropboxDropdownItem, dropboxButtonImageBase64, googleDriveButtonImageBase64, googleDriveDropdownItem} from "./widgets/markupFactory.js"
+import GenomeFileLoad from "./widgets/genomeFileLoad.js"
+import FileLoadManager from "./widgets/fileLoadManager.js"
+import FileLoadWidget from "./widgets/fileLoadWidget.js"
+import * as Utils from './widgets/utils.js'
 import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'

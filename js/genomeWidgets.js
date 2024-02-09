@@ -24,13 +24,11 @@
  * THE SOFTWARE.
  */
 
-import {
-    AlertSingleton,
-    createURLModal,
-    FileLoadManager,
-    FileLoadWidget,
-    Utils
-} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import AlertSingleton from "./widgets/alertSingleton.js"
+import {createURLModal} from "./widgets/urlModal.js"
+import FileLoadManager from "./widgets/fileLoadManager.js"
+import FileLoadWidget from "./widgets/fileLoadWidget.js"
+import * as Utils from './widgets/utils.js'
 import Globals from "./globals.js"
 
 const MAX_CUSTOM_GENOMES = 10

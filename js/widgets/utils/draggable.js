@@ -5,7 +5,7 @@
 
  */
 
-let _dragData  // Its assumed we are only dragging one element at a time.
+let dragData  // Its assumed we are only dragging one element at a time.
 
 function makeDraggable(target, handle, constraint) {
 
@@ -20,7 +20,7 @@ function makeDraggable(target, handle, constraint) {
         const dragEndFunction = dragEnd.bind(this)
         const computedStyle = getComputedStyle(this)
 
-        _dragData =
+        dragData =
             {
                 constraint,
                 dragFunction,
@@ -40,17 +40,17 @@ function makeDraggable(target, handle, constraint) {
 
 function drag(event) {
 
-    if (!_dragData) {
+    if (!dragData) {
         console.error("No drag data!")
         return
     }
     event.stopPropagation()
     event.preventDefault()
-    const dx = event.screenX - _dragData.screenX
-    const dy = event.screenY - _dragData.screenY
+    const dx = event.screenX - dragData.screenX
+    const dy = event.screenY - dragData.screenY
 
-    const left = _dragData.left + dx
-    const top = _dragData.constraint ? Math.max(_dragData.constraint.minY, _dragData.top + dy) : _dragData.top + dy
+    const left = dragData.left + dx
+    const top = dragData.constraint ? Math.max(dragData.constraint.minY, dragData.top + dy) : dragData.top + dy
 
     this.style.left = `${left}px`
     this.style.top = `${top}px`
@@ -58,20 +58,20 @@ function drag(event) {
 
 function dragEnd(event) {
 
-    if (!_dragData) {
+    if (!dragData) {
         console.error("No drag data!")
         return
     }
     event.stopPropagation()
     event.preventDefault()
 
-    const dragFunction = _dragData.dragFunction
-    const dragEndFunction = _dragData.dragEndFunction
+    const dragFunction = dragData.dragFunction
+    const dragEndFunction = dragData.dragEndFunction
     document.removeEventListener('mousemove', dragFunction)
     document.removeEventListener('mouseup', dragEndFunction)
     document.removeEventListener('mouseleave', dragEndFunction)
     document.removeEventListener('mouseexit', dragEndFunction)
-    _dragData = undefined
+    dragData = undefined
 }
 
-export {makeDraggable}
+export default makeDraggable

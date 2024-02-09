@@ -22,7 +22,8 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.min.js'
-import {AlertSingleton, QRCode} from '../node_modules/igv-widgets/dist/igv-widgets.js'
+import AlertSingleton from './widgets/alertSingleton.js'
+import {QRCode} from './widgets/qrcode.js'
 import {setURLShortener, shortSessionURL} from './shareHelper.js'
 
 function createShareWidgets({browser, container, modal, share_input, copy_link_button, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {

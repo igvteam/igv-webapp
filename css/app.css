@@ -129,7 +129,7 @@ select#igv-app-track-select-modal-select option {
   font-size: 1rem;
 }
 select#igv-app-track-select-modal-select option[disabled] {
-  color: #afafaf;
+  color: rgb(175, 175, 175);
 }
 
 .igv-widgets-alert-dialog-container {
@@ -510,6 +510,14 @@ ul.navbar-nav > li > div > a {
 }
 ul.navbar-nav > li > div > a:hover {
   color: #dfdfdf;
+}
+
+a#igv-app-save-svg-button {
+  color: #5f5f5f;
+}
+
+a#igv-app-save-png-button {
+  color: #5f5f5f;
 }
 
 .dropdown-item {

@@ -1,6 +1,17 @@
 
 // accession	assembly	scientific name	common name	taxonId	GenArk clade
-import {genarkParser} from "./utils/genarkParser.js"
+import {genarkParser} from "./genarkParser.js"
+
+const genarkColumns =
+    [
+        'accession',
+        'assembly',
+        'scientificName',
+        'commonName',
+        'taxonId',
+        'genArkClade',
+
+    ]
 
 function genarkDatasourceConfigurator() {
 
@@ -9,22 +20,14 @@ function genarkDatasourceConfigurator() {
     return {
         isJSON: false,
         url,
-        columns:
-            [
-                'accession',
-                'assembly',
-                'scientific name',
-                'common name',
-                'taxonId',
-                'GenArk clade',
-
-            ],
+        columns: genarkColumns,
         columnDefs:
             {
                 accession: {title: 'Accession'},
                 assembly: {title: 'Assembly'},
-                'scientific name': {title: 'Scientific Name'},
-                'common name': {title: 'Common Name'},
+                scientificName: {title: 'Scientific Name'},
+                commonName: {title: 'Common Name'},
+                genArkClade: {title: 'GenArk clade'},
             },
 
         parser: genarkParser
@@ -32,4 +35,4 @@ function genarkDatasourceConfigurator() {
     }
 }
 
-export {genarkDatasourceConfigurator}
+export {genarkDatasourceConfigurator, genarkColumns}

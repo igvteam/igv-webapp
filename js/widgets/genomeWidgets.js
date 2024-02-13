@@ -24,14 +24,14 @@
  * THE SOFTWARE.
  */
 
-import {ModalTable, GenericDataSource} from '../node_modules/data-modal/src/index.js'
-import Globals from "./globals.js"
-import AlertSingleton from "./widgets/alertSingleton.js"
-import {createURLModal} from "./widgets/urlModal.js"
-import FileLoadManager from "./widgets/fileLoadManager.js"
-import FileLoadWidget from "./widgets/fileLoadWidget.js"
-import * as Utils from './widgets/utils.js'
-import {genarkDatasourceConfigurator} from "./widgets/genarkDatasourceConfigurator.js"
+import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/index.js'
+import Globals from "../globals.js"
+import AlertSingleton from "./alertSingleton.js"
+import {createURLModal} from "./urlModal.js"
+import FileLoadManager from "./fileLoadManager.js"
+import FileLoadWidget from "./fileLoadWidget.js"
+import * as Utils from './utils.js'
+import {genarkDatasourceConfigurator} from "./genarkDatasourceConfigurator.js"
 
 const MAX_CUSTOM_GENOMES = 10
 

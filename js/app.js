@@ -34,7 +34,7 @@ import FileLoadManager from "./widgets/fileLoadManager.js"
 import FileLoadWidget from "./widgets/fileLoadWidget.js"
 import * as Utils from './widgets/utils.js'
 import Globals from "./globals.js"
-import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './genomeWidgets.js'
+import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './widgets/genomeWidgets.js'
 import {createShareWidgets, shareWidgetConfigurator} from './shareWidgets.js'
 import {sessionURL} from './shareHelper.js'
 import {createSaveImageWidget} from './saveImageWidget.js'

@@ -243,6 +243,7 @@ async function initializationHelper(browser, container, options) {
     createGenomeWidgets({
         $igvMain,
         urlModalId: 'igv-app-genome-from-url-modal',
+        genarkModalId: 'igv-app-genome-genark-modal',
         genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)
     })
 

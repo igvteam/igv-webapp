@@ -24,24 +24,40 @@
  * THE SOFTWARE.
  */
 
+import {ModalTable, GenericDataSource} from '../node_modules/data-modal/src/index.js'
+import Globals from "./globals.js"
 import AlertSingleton from "./widgets/alertSingleton.js"
 import {createURLModal} from "./widgets/urlModal.js"
 import FileLoadManager from "./widgets/fileLoadManager.js"
 import FileLoadWidget from "./widgets/fileLoadWidget.js"
 import * as Utils from './widgets/utils.js'
-import Globals from "./globals.js"
+import {genarkDatasourceConfigurator} from "./widgets/genarkDatasourceConfigurator.js"
 
 const MAX_CUSTOM_GENOMES = 10
 
 let predefinedGenomeIds
 let predefinedGenomes
+let genarkModalTable
 
-function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
+function createGenomeWidgets({$igvMain, urlModalId, genarkModalId, genomeFileLoad}) {
+
+    const genarkModalTableConfig =
+        {
+            id: genarkModalId,
+            title: 'Genark',
+            selectionStyle: 'multi',
+            pageLength: 100,
+            okHandler: genomeFileLoad
+        };
+
+    genarkModalTable = new ModalTable(genarkModalTableConfig)
+
+    const dataSource = new GenericDataSource(genarkDatasourceConfigurator())
+    genarkModalTable.setDatasource(dataSource)
 
     // URL modal
     const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
     $igvMain.append($urlModal)
-
 
     // File widget
     const fileLoadWidget = new FileLoadWidget({
@@ -71,9 +87,7 @@ function createGenomeWidgets({$igvMain, urlModalId, genomeFileLoad}) {
  * Initialize the genome selection widget with pre-defined and user-defined genomes.  Because of the way these
  * items are added in 'genomeDropdownLayout' they are added in reverse order.
  *
- * @param browser
  * @param genomes
- * @param $dropdown_menu
  * @returns {Promise<void>}
  */
 async function initializeGenomeWidgets(genomes) {

@@ -47,7 +47,10 @@ function createGenomeWidgets({$igvMain, urlModalId, genarkModalId, genomeFileLoa
             title: 'Genark',
             selectionStyle: 'multi',
             pageLength: 100,
-            okHandler: genomeFileLoad
+            okHandler: result => {
+                const { accession } = result[ 0 ]
+                loadGenome(accession)
+            }
         };
 
     genarkModalTable = new ModalTable(genarkModalTableConfig)

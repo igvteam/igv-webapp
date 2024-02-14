@@ -45,7 +45,7 @@ function createGenomeWidgets({$igvMain, urlModalId, genarkModalId, genomeFileLoa
         {
             id: genarkModalId,
             title: 'Genark',
-            selectionStyle: 'multi',
+            selectionStyle: 'single',
             pageLength: 100,
             okHandler: result => {
                 const { accession } = result[ 0 ]

@@ -21,7 +21,7 @@ function createGenomeWidgets({$igvMain, urlModalId, genarkModalId, genomeFileLoa
     const genarkModalTableConfig =
         {
             id: genarkModalId,
-            title: 'Genark',
+            title: 'UCSC GenArk',
             selectionStyle: 'single',
             pageLength: 100,
             okHandler: result => {

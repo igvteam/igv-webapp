@@ -1,4 +1,3 @@
-
 import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/index.js'
 import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 
@@ -10,7 +9,7 @@ import FileLoadWidget from "./fileLoadWidget.js"
 import * as Utils from './utils.js'
 import {genarkDatasourceConfigurator} from "./genarkDatasourceConfigurator.js"
 
-const MAX_CUSTOM_GENOMES = 10
+const MAX_CUSTOM_GENOMES = 5
 
 let predefinedGenomeIds
 let predefinedGenomes
@@ -104,8 +103,8 @@ async function getAppLaunchGenomes(genomes) {
     }
 }
 
-function getCustomGenomes() {
-    const customGenomeString = localStorage.getItem("customGenomes")
+function getRecentGenomes() {
+    const customGenomeString = localStorage.getItem("recentGenomes")
     return customGenomeString ? JSON.parse(customGenomeString).reverse() : []
 }
 
@@ -148,10 +147,10 @@ function updateGenomeList() {
         }
     }
 
-    const customGenomes = getCustomGenomes()
-    if (customGenomes && customGenomes.length > 0) {
+    const recentGenomes = getRecentGenomes()
+    if (recentGenomes && recentGenomes.length > 0) {
         $('<div class="dropdown-divider"></div>').insertAfter($divider)
-        for (let genomeJson of customGenomes) {
+        for (let genomeJson of recentGenomes) {
             addEntryFor(genomeJson)
         }
 
@@ -181,27 +180,26 @@ async function loadGenome(genomeConfiguration, custom = false) {
 
                 // Update the custom list
                 // hub.txt genomes are indirect, record name and id
-                if (!predefinedGenomeIds.has(g.id)) {
-                    if (StringUtils.isString(genomeConfiguration)) {
-                        genomeConfiguration = {id: genomeConfiguration}
-                    } else {
-                        if (!genomeConfiguration.id) genomeConfiguration.id = g.id
-                    }
-                    if (!genomeConfiguration.name) {
-                        genomeConfiguration.name = g.name
-                    }
-
-
-                    const customGenomesString = localStorage.getItem("customGenomes")
-                    let customGenomes = customGenomesString ? JSON.parse(customGenomesString) : []
-                    customGenomes = customGenomes.filter(r => r.id !== g.id)  // If already present, replace
-                    customGenomes.unshift(genomeConfiguration)
-                    if (customGenomes.length > MAX_CUSTOM_GENOMES) {
-                        customGenomes = customGenomes.slice(0, MAX_CUSTOM_GENOMES)
-                    }
-                    localStorage.setItem("customGenomes", JSON.stringify(customGenomes))
-                    updateGenomeList()
+                if (StringUtils.isString(genomeConfiguration)) {
+                    genomeConfiguration = {id: genomeConfiguration}
+                } else {
+                    if (!genomeConfiguration.id) genomeConfiguration.id = g.id
                 }
+                if (!genomeConfiguration.name) {
+                    genomeConfiguration.name = g.name
+                }
+
+
+                const recentGenomeList = localStorage.getItem("recentGenomes")
+                let recentGenomes = recentGenomeList ? JSON.parse(recentGenomeList) : []
+                recentGenomes = recentGenomes.filter(r => r.id !== g.id)  // If already present, replace
+                recentGenomes.unshift(genomeConfiguration)
+                if (recentGenomes.length > MAX_CUSTOM_GENOMES) {
+                    recentGenomes = recentGenomes.slice(0, MAX_CUSTOM_GENOMES)
+                }
+                localStorage.setItem("recentGenomes", JSON.stringify(recentGenomes))
+                updateGenomeList()
+
 
             } catch (e) {
                 console.error(e)

@@ -21,13 +21,17 @@ class GenomeFileLoad extends FileLoad {
 
             const jsonFiles = paths.filter(path => 'json' === FileUtils.getExtension(path))
             const hubFiles = paths.filter(path => StringUtils.isString(path) && path.endsWith("/hub.txt"))
+            const gbkFile = paths.filter(path => 'gbk' === FileUtils.getExtension(path))
 
             // If one of the paths is .json, unpack and send to loader
             // TODO -- what if multiple json files are selected?  This is surely an error
-            if (jsonFiles.length >= 1) {
+            if (jsonFiles.length > 0) {
                 configuration = await igvxhr.loadJson(jsonFiles[0])
-            } else if (hubFiles.length >= 1) {
+            } else if (hubFiles.length > 0) {
                 configuration = {url: hubFiles[0]}
+            } else if (gbkFile.length > 0) {
+
+                configuration = {gbkURL: gbkFile[0]}
             } else if (2 === paths.length) {
                 const [_0, _1] = await GenomeFileLoad.getExtension(paths)
                 if ('fai' === _0) {
@@ -38,7 +42,7 @@ class GenomeFileLoad extends FileLoad {
             }
 
             if (undefined === configuration) {
-                throw new Error('Genome requires either a single JSON file or a FASTA file & index file')
+                throw new Error('Genome requires either a single JSON file, UCSC hub.txt file, genbank ".gbk" file, or a FASTA & index file')
             } else {
                 this.loadHandler(configuration)
             }

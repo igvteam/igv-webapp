@@ -25,7 +25,7 @@ Zip files of the current and previous versions of the IGV-Web app are available 
 ### Option 2: Build from source code
 
 * Pre-requisites
-  * Node >= v8.11.4
+  * Node >= v16
   * NPM >= v5.6.0
 
 * Get the source code either (a) by downloading a zip file via the green `Code` button at https://github.com/igvteam/igv-webapp, or (b) by cloning the repository: 

@@ -7,7 +7,7 @@
       "name": "MANE Transcripts",
       "format": "bigbed",
       "url": "https://hgdownload.soe.ucsc.edu/gbdb/hg38/mane/mane.bb",
-      "visibilityWindow": -1,
+      "visibilityWindow": -1
     },
     {
       "name": "Gencode v44",

@@ -21,7 +21,7 @@
  *
  */
 import AlertSingleton from "./widgets/alertSingleton.js"
-import {bitlyShortener, googleShortener, tinyURLShortener} from "./urlShortener.js";
+import {bitlyShortener, tinyURLShortener} from "./urlShortener.js";
 import Globals from "./globals.js";
 
 let urlShortener;
@@ -33,13 +33,11 @@ export function setURLShortener(obj) {
         fn = obj;
 
     } else if (obj.provider) {
-        if ("tinyURL" === obj.provider) {
+        if ("tinyURL" === obj.provider && (obj.apiKey || obj.api_token)) {
             fn = tinyURLShortener(obj);
         } else if ("bitly" === obj.provider && obj.apiKey) {
             fn = bitlyShortener(obj.apiKey);
-        } else if ("google" === obj.provider && obj.apiKey) {
-            fn = googleShortener(obj.apiKey);
-        } else {
+        }  else {
             AlertSingleton.present(new Error(`Unknown URL shortener provider: ${obj.provider}`));
         }
     } else {

@@ -99,7 +99,7 @@ instructions on obtaining a clientId.  OAuth requests from igv.js will include t
     * https://www.googleapis.com/auth/devstorage.read_only  - _if accessing protected Google Cloud Storage files_
     * https://www.googleapis.com/auth/drive.readonly - _if accessing files stored on Google Drive_
   
-* **Enabling shortening of shared URLs.** The property `urlShortener` (_optional_) is an object or function defining a URL shortener to shorten links created by the **Share** button.  The value of this property can be replaced with a function, taking a single argument (the long URL) and returning the shortened URL, or an Object. 
+* **Enabling shortening of shared URLs.** The property `urlShortener` (_optional_) is an object or function defining a URL shortener to shorten links created by the **Share** button.  The [tinyURL](https://tinyurl.com/app/) service can be configured by entering an api token in the field of the default configuration.  Other providers can be supported by setting the ```urlShortener``` property to an async function taking a single argument (the long URL) and returning the shortened URL. 
 
 ### Where to find the configuration files
 
@@ -115,6 +115,7 @@ var igvwebConfig = {
 
     genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
+    sessionRegistryFile: "resources/sessions/sessionRegistry.json",
 
     // Supply a drobpox api key to enable the Dropbox file picker in the load menus.  This is optional
     //dropboxAPIKey: "...",
@@ -124,10 +125,16 @@ var igvwebConfig = {
     // apiKey: "...",
 
     // Provide a URL shorterner function or object.   This is optional.  If not supplied
-    // sharable URLs will not be shortened .
-    urlShortener: {
-        provider: "tinyURL"
-    },
+    // sharable URLs will not be shortened.  If using tinyURL uncomment and supply an api token
+    
+    // urlShortener: {
+    ///    provider: "tinyURL",
+    //     api_token: "..."
+    //},
+
+    enableCircularView: true,
+
+    restoreLastGenome: true,
 
     igvConfig:
         {
@@ -137,19 +144,11 @@ var igvwebConfig = {
             queryParametersSupported: true,
             showChromosomeWidget: true,
             showSVGButton: false,
-            tracks: [
-	    // TODO -- add default tracks here.  See github.com/igvteam/igv.js/wiki for details.
-	    	// For example:
-                // {
-                //     name: "CTCF - string url",
-                //     type: "wig",
-                //     format: "bigwig",
-                //     url: "https://www.encodeproject.org/files/ENCFF563PAW/@@download/ENCFF563PAW.bigWig"
-                // }
-	    ]
+            tracks: []
         }
 
 }
+
 ```
 
 ### Track Registry

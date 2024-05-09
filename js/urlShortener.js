@@ -37,17 +37,50 @@ function googleShortener(apiKey) {
     }
 }
 
-function tinyURLShortener({endpoint}) {
-    endpoint = endpoint || "https://2et6uxfezb.execute-api.us-east-1.amazonaws.com/dev/tinyurl/"
+// function tinyURLShortener({endpoint}) {
+//     endpoint = endpoint || "https://2et6uxfezb.execute-api.us-east-1.amazonaws.com/dev/tinyurl/"
+//     return async function (url) {
+//         const enc = encodeURIComponent(url)
+//         const response = await fetch(`${endpoint}${enc}`)
+//         if (response.ok) {
+//             const shortened = await response.text()
+//             if (shortened.startsWith("<")) {
+//                 return url
+//             } else {
+//                 return shortened
+//             }
+//         } else {
+//             throw new Error(response.statusText)
+//         }
+//     }
+// }
+
+function tinyURLShortener({endpoint, apiKey, api_token}) {
+    endpoint = endpoint || "https://api.tinyurl.com/create"
+    const token = apiKey || api_token
     return async function (url) {
-        const enc = encodeURIComponent(url)
-        const response = await fetch(`${endpoint}${enc}`)
+        const response = await fetch(`${endpoint}?api_token=${token}`, {
+            method: 'post',
+            mode: "cors", // no-cors, *cors, same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            headers: {
+                "accept": "application/json",
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({url: url}), // body data type must match "Content-Type" header
+        })
         if (response.ok) {
-            return response.text()
+            const json = await response.json()
+            if (json.errors.length > 0) {
+                throw Error(json.errors[0])
+            } else {
+                return json.data["tiny_url"]
+            }
         } else {
             throw new Error(response.statusText)
         }
     }
 }
 
-export {bitlyShortener, googleShortener, tinyURLShortener}
+export {bitlyShortener, tinyURLShortener}

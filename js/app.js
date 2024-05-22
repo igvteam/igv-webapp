@@ -119,6 +119,7 @@ async function main(container, config) {
             await browser.loadTrackList(configurations)
         } catch (e) {
             console.error(e)
+            alert(e)
             AlertSingleton.present(e)
         }
     }

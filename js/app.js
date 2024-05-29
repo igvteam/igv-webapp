@@ -249,28 +249,16 @@ async function initializationHelper(browser, container, options) {
 
     await initializeGenomeWidgets(options.genomes)
 
-    const trackLoader = async configurations => {
+    const sampleInfoFileLoader = async configuration => {
         try {
-            // Add "searchable" attribute to non-indexed annotation tracks
-            for (let c of configurations) {
-
-
-            }
-            await browser.loadTrackList(configurations)
+            await browser.loadSampleInfo(configuration)
         } catch (e) {
             console.error(e)
             AlertSingleton.present(e)
         }
     }
 
-    createSampleInfoMenu(document.getElementById('igv-main'),
-        document.getElementById('igv-app-sample-info-dropdown-local-track-file-input'),
-        initializeDropbox,
-        options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-sample-info-file-button') : undefined,
-        googleEnabled,
-        document.getElementById('igv-app-dropdown-google-drive-sample-info-file-button'),
-        'igv-app-sample-info-from-url-modal',
-        trackLoader)
+    createSampleInfoMenu(document.getElementById('igv-main'), document.getElementById('igv-app-sample-info-dropdown-local-track-file-input'), initializeDropbox, options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-sample-info-file-button') : undefined, googleEnabled, document.getElementById('igv-app-dropdown-google-drive-sample-info-file-button'), 'igv-app-sample-info-from-url-modal', sampleInfoFileLoader)
 
     const sessionSaver = () => {
         try {
@@ -380,7 +368,7 @@ function createSampleInfoMenu(igvMain,
                               googleEnabled,
                               googleDriveButton,
                               urlModalId,
-                              trackLoadHandler) {
+                              sampleInfoFileLoadHandler) {
 
     // local file
     localFileInput.addEventListener('change', async () => {
@@ -391,7 +379,7 @@ function createSampleInfoMenu(igvMain,
 
         localFileInput.value = ''
 
-        await trackLoadHandler([{type: 'sampleinfo', url: paths[0]}])
+        await sampleInfoFileLoadHandler({url: paths[0]})
     })
 
     //  Dropbox
@@ -405,11 +393,9 @@ function createSampleInfoMenu(igvMain,
                 {
                     success: dbFiles => {
 
-                        const configList = dbFiles.map(({link}) => {
-                            return {type: 'sampleinfo', url: link}
-                        })
+                        const configList = dbFiles.map(({link}) => { return {url: link} })
 
-                        trackLoadHandler(configList)
+                        sampleInfoFileLoadHandler(configList[0])
                     },
                     cancel: () => {
                     },
@@ -434,7 +420,7 @@ function createSampleInfoMenu(igvMain,
 
             const filePickerHandler = async responses => {
                 const paths = responses.map(({url}) => url)
-                await trackLoadHandler([{type: 'sampleinfo', url: paths[0]}])
+                await sampleInfoFileLoadHandler({url: paths[0]})
             }
 
             GooglePicker.createDropdownButtonPicker(false, filePickerHandler)
@@ -494,7 +480,7 @@ function createSampleInfoMenu(igvMain,
 
     Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
         const paths = fileLoadWidget.retrievePaths()
-        await trackLoadHandler([{type: 'sampleinfo', url: paths[0]}])
+        await sampleInfoFileLoadHandler({url:paths[0]})
         return true
     })
 

@@ -452,50 +452,64 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="container-fluid">
 
-                        <!-- copy url -->
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <div class="form-group">
-                                    <input id="igv-app-share-input" type="text" class="form-control" placeholder="">
+                    <!-- copy URL section -->
+                    <div class="modal-body-section">
+                        <div class="container-fluid">
+
+                            <!-- copy URL radio buttons -->
+                            <div id="igv-share-url-radio-pair-container" class="form-group">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="igv-share_modal_tiny-url-radio" name="share-url-radio-pair" class="custom-control-input">
+                                    <label class="custom-control-label" for="igv-share_modal_tiny-url-radio">Shortened URL</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="igv-share_modal_long-url-radio" name="share-url-radio-pair" class="custom-control-input" checked>
+                                    <label class="custom-control-label" for="igv-share_modal_long-url-radio">Long URL</label>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <button id="igv-app-copy-link-button" type="button" class="btn btn-sm btn-default">
-                                    COPY
-                                </button>
+
+                            <!-- Copy URL -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <input id="igv-app-share-input" type="text" class="form-control" placeholder="">
+                                        <div class="input-group-append">
+                                            <button id="igv-app-copy-link-button" class="btn btn-outline-secondary" type="button">Copy URL</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- social buttons -->
-                        <div class="igv-app-social-button-container">
-
-                            <div id="igv-app-embed-button">EMBED</div>
-
-                            <div id="igv-app-qrcode-button">QR CODE</div>
-
-                        </div>
-
-                        <!-- qr code image -->
-                        <div class="row justify-content-center">
-                            <div id="igv-app-qrcode-image" class="col-4"></div>
-                        </div>
-
-                        <!-- embed widget -->
-                        <div id="igv-app-embed-container" class="row">
-                            <div class="col-sm-9 form-group">
-                                <textarea class="form-control" rows="4"></textarea>
+                            <!-- Embeddable iframe section -->
+                            <div class="row pt-2">
+                                <div class="col">
+                                    <button id="igv-app-embed-button" type="button" class="btn btn-sm btn-outline-secondary">Embeddable iframe</button>
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-default">COPY</button>
+                            <!-- QR Code -->
+                            <div class="row pt-2">
+                                <div class="col">
+                                    <button id="igv-app-qrcode-button" type="button" class="btn btn-sm btn-outline-secondary">Create QR Code</button>
+                                </div>
                             </div>
+
+                            <div id="igv-app-embed-container" class="row">
+                                <div class="col form-group">
+                                    <textarea class="form-control" rows="4"></textarea>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">COPY</button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div id="igv-app-qrcode-image" class="col">
+                                </div>
+                            </div>
+
                         </div>
 
-                    </div>
                 </div>
-
-            </div>
 
         </div>
 

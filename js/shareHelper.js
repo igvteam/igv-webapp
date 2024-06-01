@@ -26,7 +26,7 @@ import Globals from "./globals.js";
 
 let urlShortener;
 
-export function setURLShortener(obj) {
+function setURLShortener(obj) {
 
     let fn;
     if (typeof obj === "function") {
@@ -55,7 +55,7 @@ export function setURLShortener(obj) {
 
 }
 
-export function sessionURL() {
+function sessionURL() {
 
     let surl,
         path,
@@ -69,18 +69,16 @@ export function sessionURL() {
     return surl;
 }
 
-export function shortSessionURL(base, session) {
+function shortSessionURL(base, session) {
 
-    const url = base + "?sessionURL=blob:" + session;
+    const url = `${base}?sessionURL=blob:${session}`
 
-    return shortenURL(url)
+    return urlShortener ? urlShortener.shortenURL(url) : url
 
 }
 
-function shortenURL(url) {
-    if (urlShortener) {
-        return urlShortener.shortenURL(url);
-    } else {
-        return Promise.resolve(url);
-    }
+function doShortenURL() {
+    return !(undefined === urlShortener)
 }
+
+export { setURLShortener, sessionURL, shortSessionURL, doShortenURL }

@@ -460,12 +460,12 @@
                             <!-- copy URL radio buttons -->
                             <div id="igv-share-url-radio-pair-container" class="form-group">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="igv-share_modal_tiny-url-radio" name="share-url-radio-pair" class="custom-control-input">
-                                    <label class="custom-control-label" for="igv-share_modal_tiny-url-radio">Shortened URL</label>
+                                    <input type="radio" id="igv-share-short-url-radio" name="share-url-radio-pair" class="custom-control-input">
+                                    <label class="custom-control-label" for="igv-share-short-url-radio">Shortened URL</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="igv-share_modal_long-url-radio" name="share-url-radio-pair" class="custom-control-input" checked>
-                                    <label class="custom-control-label" for="igv-share_modal_long-url-radio">Long URL</label>
+                                    <input type="radio" id="igv-share-long-url-radio" name="share-url-radio-pair" class="custom-control-input" checked>
+                                    <label class="custom-control-label" for="igv-share-long-url-radio">Long URL</label>
                                 </div>
                             </div>
 
@@ -483,13 +483,13 @@
                             <!-- Embeddable iframe section -->
                             <div class="row pt-2">
                                 <div class="col">
-                                    <button id="igv-app-embed-button" type="button" class="btn btn-sm btn-outline-secondary">Embeddable iframe</button>
+                                    <button id="igv-app-embed-button" type="button" class="btn btn-outline-secondary">Embeddable iframe</button>
                                 </div>
                             </div>
                             <!-- QR Code -->
-                            <div class="row pt-2">
+                            <div id="igv-app-qrcode-container"  class="row pt-2">
                                 <div class="col">
-                                    <button id="igv-app-qrcode-button" type="button" class="btn btn-sm btn-outline-secondary">Create QR Code</button>
+                                    <button id="igv-app-qrcode-button" type="button" class="btn btn-outline-secondary">Create QR Code</button>
                                 </div>
                             </div>
 
@@ -498,7 +498,7 @@
                                     <textarea class="form-control" rows="4"></textarea>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">COPY</button>
+                                    <button type="button" class="btn btn-outline-secondary">COPY</button>
                                 </div>
                             </div>
 
@@ -615,6 +615,7 @@
             </div>
         </div>
     </div>
+
 
 </main>
 

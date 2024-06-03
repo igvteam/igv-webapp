@@ -26,15 +26,29 @@ import AlertSingleton from './widgets/alertSingleton.js'
 import {QRCode} from './widgets/qrcode.js'
 import {doShortenURL, setURLShortener, shortSessionURL} from './shareHelper.js'
 
+let href
+let session
 function createShareWidgets({browser, container, modal, share_input, copy_link_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
+
+    $(modal).on('show.bs.modal', (e) => {
+
+        document.querySelector('#igv-app-qrcode-container').style.display = 'none'
+
+        if (true === doShortenURL()) {
+            document.querySelector('#igv-share-short-url-radio').checked = false;
+            document.querySelector('#igv-share-long-url-radio').checked = true;
+        } else {
+            document.querySelector('#igv-share-url-radio-pair-container').style.display = 'none'
+        }
+    })
 
     $(modal).on('shown.bs.modal', async () => {
 
-
-        let session = undefined
+        session = undefined
         try {
             session = browser.compressedSession();
         } catch (e) {
+            $(modal).modal('hide')
             AlertSingleton.present(e.message)
         }
 
@@ -47,33 +61,35 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
                 textArea.select();
             }
 
-            document.querySelector('#igv-share-url-radio-pair-container').style.display = 'block'/*doShortenURL() ? 'block' : 'none'*/
-
-            let href = window.location.href.slice();
+            href = window.location.href.slice();
             const idx = href.indexOf("?");
             if (idx > 0) {
                 href = href.substring(0, idx);
             }
 
-            const sessionURL = doShortenURL() ? shortSessionURL(href, session) : `${href}?sessionURL=blob:${session}`
-
-            share_input.value = sessionURL
-            share_input.select()
-
-            qrcode_image.innerHTML = '';
-            const qrcode = new QRCode(qrcode_image, { width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
-            qrcode.makeCode('https://tinyurl.com/m9ccbzkj');
+            share_input.value = `${href}?sessionURL=blob:${session}`
 
         } else {
-            $(modal).modal('hide');
+            $(modal).modal('hide')
         }
 
-    });
+    })
 
     $(modal).on('hidden.bs.modal', () => {
+        href = session = undefined
         embed_container.style.display = 'none';
         qrcode_image.style.display = 'none';
-    });
+    })
+
+    document.getElementById('igv-share-short-url-radio').addEventListener('click', async () => {
+        share_input.value = await shortSessionURL(href, session)
+        document.querySelector('#igv-app-qrcode-container').style.display = 'block'
+    })
+
+    document.getElementById('igv-share-long-url-radio').addEventListener('click', async () => {
+        document.querySelector('#igv-app-qrcode-container').style.display = 'none'
+        share_input.value = `${href}?sessionURL=blob:${session}`
+    })
 
     copy_link_button.addEventListener('click', () => {
         share_input.select();
@@ -83,8 +99,7 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
         } else {
             console.error('fail!');
         }
-    });
-
+    })
 
     if (embedTarget) {
         const button = embed_container.querySelector('button');
@@ -117,20 +132,24 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
         embed_button.style.display = 'none';
     }
 
-    qrcode_button.addEventListener('click', () => {
+    qrcode_button.addEventListener('click', async () => {
 
         embed_container.style.display = 'none';
 
         if ('block' === qrcode_image.style.display) {
+            qrcode_image.innerHTML = ''
             qrcode_image.style.display = 'none';
         } else {
+            qrcode_image.innerHTML = ''
+            const qrcode = new QRCode(qrcode_image, { width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
+            const shortURL = await shortSessionURL(href, session)
+            qrcode.makeCode(shortURL)
             qrcode_image.style.display = 'block';
         }
 
-    });
+    })
 
 }
-
 
 function getEmbeddableSnippet(container, embedTarget, session) {
     const embedUrl = `${ embedTarget }?sessionURL=blob:${ session }`
@@ -144,7 +163,7 @@ function shareWidgetConfigurator(browser, container, options) {
     let urlShortenerFn;
 
     if (options.urlShortener) {
-        urlShortenerFn = setURLShortener(urlShortener) !== undefined;
+        urlShortenerFn = setURLShortener(options.urlShortener) !== undefined;
     }
 
     return {

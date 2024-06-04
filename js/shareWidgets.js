@@ -32,6 +32,8 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
 
     $(modal).on('show.bs.modal', (e) => {
 
+
+        document.querySelector('#igv-app-qrcode-image').style.display = 'none'
         document.querySelector('#igv-app-qrcode-container').style.display = 'none'
 
         if (true === doShortenURL()) {
@@ -87,6 +89,7 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
     })
 
     document.getElementById('igv-share-long-url-radio').addEventListener('click', async () => {
+        document.querySelector('#igv-app-qrcode-image').style.display = 'none'
         document.querySelector('#igv-app-qrcode-container').style.display = 'none'
         share_input.value = `${href}?sessionURL=blob:${session}`
     })

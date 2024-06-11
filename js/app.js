@@ -303,7 +303,7 @@ async function initializationHelper(browser, container, options) {
         sessionSaver)
 
     if (options.sessionRegistryFile) {
-        await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+        await createSessionMenu('save-session-button', options.sessionRegistryFile, sessionLoader)
     } else {
         document.querySelector('#igv-session-list-divider').style.display = 'none'
     }
@@ -402,7 +402,9 @@ function createSampleInfoMenu(igvMain,
                 {
                     success: dbFiles => {
 
-                        const configList = dbFiles.map(({link}) => { return {url: link} })
+                        const configList = dbFiles.map(({link}) => {
+                            return {url: link}
+                        })
 
                         sampleInfoFileLoadHandler(configList[0])
                     },
@@ -489,7 +491,7 @@ function createSampleInfoMenu(igvMain,
 
     Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
         const paths = fileLoadWidget.retrievePaths()
-        await sampleInfoFileLoadHandler({url:paths[0]})
+        await sampleInfoFileLoadHandler({url: paths[0]})
         return true
     })
 
@@ -564,8 +566,7 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
     if (sessionJSON) {
 
         const sessions = sessionJSON['sessions']
-
-        let firstSection = true
+        
         for (let {name, url} of sessions.reverse()) {
 
             const referenceNode = document.getElementById(sessionListDivider)
@@ -591,10 +592,7 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
                 const html = `<h6 class="dropdown-header">${name}</h6>`
                 const el = fromHTML(html)
                 referenceNode.after(el)
-                if (!firstSection) {
-                    referenceNode.after(fromHTML('<div class="dropdown-divider"/>'))
-                    firstSection = false
-                }
+                referenceNode.after(fromHTML('<div class="dropdown-divider"/>'))
             }
         }
 

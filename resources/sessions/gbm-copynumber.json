@@ -9,7 +9,7 @@
   "tracks": [
     {
       "url": "https://igv-genepattern-org.s3.amazonaws.com/demo/GBMCopyNumber.seg.gz",
-      "name": "GBMCopyNumber.seg.gz",
+      "name": "GBM Copy Number",
       "order": 1,
       "format": "seg",
       "type": "seg",

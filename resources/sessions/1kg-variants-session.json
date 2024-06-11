@@ -9,7 +9,7 @@
   "tracks": [
     {
       "url": "https://igv-genepattern-org.s3.amazonaws.com/demo/ALL.apol1.sample.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz",
-      "name": "ALL.apol1.sample.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf",
+      "name": "1KG Variants",
       "format": "vcf",
       "type": "variant",
       "height": 700,

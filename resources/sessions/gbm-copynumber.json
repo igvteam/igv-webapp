@@ -1,0 +1,25 @@
+{
+  "genome": "hg38",
+  "locus": "chr7:52,338,217-57,756,711",
+  "sampleinfo": [
+    {
+      "url": "https://igv-genepattern-org.s3.amazonaws.com/demo/GBM-sampletable-samplemapping-colors.txt"
+    }
+  ],
+  "tracks": [
+    {
+      "url": "https://igv-genepattern-org.s3.amazonaws.com/demo/GBMCopyNumber.seg.gz",
+      "name": "GBMCopyNumber.seg.gz",
+      "order": 1,
+      "format": "seg",
+      "type": "seg",
+      "height": 400,
+      "displayMode": "SQUISHED",
+      "sort": {
+        "option": "ATTRIBUTE",
+        "attribute": "Subtype",
+        "direction": "ASC"
+      }
+    }
+  ]
+}

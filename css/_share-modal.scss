@@ -11,65 +11,39 @@ $default-dark-color: #5f5f5f;
     font-family: $default-font-family;
     font-size: $default-font-size;
     font-weight: 400;
+    padding: unset;
+    .modal-body-section {
+      padding: 16px;
+    }
+  }
+
+
+}
+
+button#igv-share-url-button {
+  padding: unset;
+  svg {
+    width: 20px;
+    height: 20px;
   }
 }
 
 #igv-app-qrcode-image {
+  padding: 16px;
   display:none;
 }
 
 #igv-app-embed-container {
+  padding: 16px;
   display:none;
-}
-
-a#igv-app-email-button {
-  color: $default-dark-color;
-  text-decoration: none;
-}
-
-a#igv-app-email-button:hover,
-a#igv-app-email-button:focus,
-a#igv-app-email-button:active  {
-  cursor: pointer;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-#igv-app-embed-button:hover,
-#igv-app-embed-button:focus,
-#igv-app-embed-button:active  {
-  cursor: pointer;
-  font-weight: 700;
-}
-
-#igv-app-qrcode-button:hover,
-#igv-app-qrcode-button:focus,
-#igv-app-qrcode-button:active  {
-  cursor: pointer;
-  font-weight: 700;
 }
 
 .igv-app-social-button-container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
-
-  height: 40px;
-
-  div {
-    margin-left: 8px;
-    margin-right: 8px;
-    //background-color: red;
-  }
-
-  div:first-child {
-    width:65px;
-    margin-top:4px;
-  }
-
-  margin-bottom: 10px;
 }
 
 .igv-app-social-button {

@@ -37,25 +37,25 @@ function googleShortener(apiKey) {
     }
 }
 
-// function tinyURLShortener({endpoint}) {
-//     endpoint = endpoint || "https://2et6uxfezb.execute-api.us-east-1.amazonaws.com/dev/tinyurl/"
-//     return async function (url) {
-//         const enc = encodeURIComponent(url)
-//         const response = await fetch(`${endpoint}${enc}`)
-//         if (response.ok) {
-//             const shortened = await response.text()
-//             if (shortened.startsWith("<")) {
-//                 return url
-//             } else {
-//                 return shortened
-//             }
-//         } else {
-//             throw new Error(response.statusText)
-//         }
-//     }
-// }
+function tinyURLShortener({endpoint}) {
+    endpoint = endpoint || "https://2et6uxfezb.execute-api.us-east-1.amazonaws.com/dev/tinyurl/"
+    return async function (url) {
+        const enc = encodeURIComponent(url)
+        const response = await fetch(`${endpoint}${enc}`)
+        if (response.ok) {
+            const shortened = await response.text()
+            if (shortened.startsWith("<")) {
+                return url
+            } else {
+                return shortened
+            }
+        } else {
+            throw new Error(response.statusText)
+        }
+    }
+}
 
-function tinyURLShortener({endpoint, apiKey, api_token}) {
+function __tinyURLShortener({endpoint, apiKey, api_token}) {
     endpoint = endpoint || "https://api.tinyurl.com/create"
     const token = apiKey || api_token
     return async function (url) {

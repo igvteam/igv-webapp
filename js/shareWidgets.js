@@ -24,26 +24,33 @@
 import igv from '../node_modules/igv/dist/igv.esm.min.js'
 import AlertSingleton from './widgets/alertSingleton.js'
 import {QRCode} from './widgets/qrcode.js'
-import {setURLShortener, shortSessionURL} from './shareHelper.js'
+import {doShortenURL, setURLShortener, shortSessionURL} from './shareHelper.js'
 
-function createShareWidgets({browser, container, modal, share_input, copy_link_button, email_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
+let href
+let session
+function createShareWidgets({browser, container, modal, share_input, copy_link_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
 
-    if (undefined === embedTarget) {
-        embedTarget = `https://igv.org/web/release/${igv.version()}/embed.html`;
-    }
+    $(modal).on('show.bs.modal', (e) => {
+
+
+        document.querySelector('#igv-app-qrcode-image').style.display = 'none'
+        document.querySelector('#igv-app-qrcode-container').style.display = 'none'
+
+        if (true === doShortenURL()) {
+            document.querySelector('#igv-share-short-url-radio').checked = false;
+            document.querySelector('#igv-share-long-url-radio').checked = true;
+        } else {
+            document.querySelector('#igv-share-url-radio-pair-container').style.display = 'none'
+        }
+    })
 
     $(modal).on('shown.bs.modal', async () => {
 
-        let href = window.location.href.slice();
-        const idx = href.indexOf("?");
-        if (idx > 0) {
-            href = href.substring(0, idx);
-        }
-
-        let session = undefined
+        session = undefined
         try {
             session = browser.compressedSession();
         } catch (e) {
+            $(modal).modal('hide')
             AlertSingleton.present(e.message)
         }
 
@@ -56,26 +63,36 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
                 textArea.select();
             }
 
-            const shortURL = await shortSessionURL(href, session);
+            href = window.location.href.slice();
+            const idx = href.indexOf("?");
+            if (idx > 0) {
+                href = href.substring(0, idx);
+            }
 
-            share_input.value = shortURL;
-            share_input.select();
-            email_button.setAttribute('href', `mailto:?body=${ shortURL }`);
-
-            qrcode_image.innerHTML = '';
-            const qrcode = new QRCode(qrcode_image, { width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
-            qrcode.makeCode(shortURL);
+            share_input.value = `${href}?sessionURL=blob:${session}`
 
         } else {
-            $(modal).modal('hide');
+            $(modal).modal('hide')
         }
 
-    });
+    })
 
     $(modal).on('hidden.bs.modal', () => {
+        href = session = undefined
         embed_container.style.display = 'none';
         qrcode_image.style.display = 'none';
-    });
+    })
+
+    document.getElementById('igv-share-short-url-radio').addEventListener('click', async () => {
+        share_input.value = await shortSessionURL(href, session)
+        document.querySelector('#igv-app-qrcode-container').style.display = 'block'
+    })
+
+    document.getElementById('igv-share-long-url-radio').addEventListener('click', async () => {
+        document.querySelector('#igv-app-qrcode-image').style.display = 'none'
+        document.querySelector('#igv-app-qrcode-container').style.display = 'none'
+        share_input.value = `${href}?sessionURL=blob:${session}`
+    })
 
     copy_link_button.addEventListener('click', () => {
         share_input.select();
@@ -85,12 +102,9 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
         } else {
             console.error('fail!');
         }
-    });
+    })
 
-
-    if (undefined === embedTarget) {
-        embed_button.style.display = 'none';
-    } else {
+    if (embedTarget) {
         const button = embed_container.querySelector('button');
         button.addEventListener('click', () => {
 
@@ -117,19 +131,26 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
             }
 
         });
+    } else {
+        embed_button.style.display = 'none';
     }
 
-    qrcode_button.addEventListener('click', () => {
+    qrcode_button.addEventListener('click', async () => {
 
         embed_container.style.display = 'none';
 
         if ('block' === qrcode_image.style.display) {
+            qrcode_image.innerHTML = ''
             qrcode_image.style.display = 'none';
         } else {
+            qrcode_image.innerHTML = ''
+            const qrcode = new QRCode(qrcode_image, { width: 128, height: 128, correctLevel: QRCode.CorrectLevel.H });
+            const shortURL = await shortSessionURL(href, session)
+            qrcode.makeCode(shortURL)
             qrcode_image.style.display = 'block';
         }
 
-    });
+    })
 
 }
 
@@ -139,12 +160,13 @@ function getEmbeddableSnippet(container, embedTarget, session) {
     return '<iframe src="' + embedUrl + '" style="width:100%; height:' + height + 'px"  allowfullscreen></iframe>';
 }
 
-function shareWidgetConfigurator(browser, container, {urlShortener, embedTarget}) {
+// {urlShortener, embedTarget}
+function shareWidgetConfigurator(browser, container, options) {
 
     let urlShortenerFn;
 
-    if (urlShortener) {
-        urlShortenerFn = setURLShortener(urlShortener) !== undefined;
+    if (options.urlShortener) {
+        urlShortenerFn = setURLShortener(options.urlShortener) !== undefined;
     }
 
     return {
@@ -153,12 +175,11 @@ function shareWidgetConfigurator(browser, container, {urlShortener, embedTarget}
         modal: document.getElementById('igv-app-share-modal'),
         share_input: document.getElementById('igv-app-share-input'),
         copy_link_button: document.getElementById('igv-app-copy-link-button'),
-        email_button: document.getElementById('igv-app-email-button'),
         qrcode_button: document.getElementById('igv-app-qrcode-button'),
         qrcode_image: document.getElementById('igv-app-qrcode-image'),
         embed_container: document.getElementById('igv-app-embed-container'),
         embed_button: document.getElementById('igv-app-embed-button'),
-        embedTarget
+        embedTarget: options.embedTarget || `https://igv.org/web/release/${igv.version()}/embed.html`
     };
 
 }

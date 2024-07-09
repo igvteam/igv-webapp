@@ -14,6 +14,14 @@
     "url": "resources/sessions/1kg-variants-session.json"
   },
   {
+    "name": "Examples - Base Modifications"
+  },
+  {
+    "name": "5mC and 6mA Modifications",
+    "description": "5mC and 6mA Modifications",
+    "url": "resources/sessions/6mA_pacbio.json"
+  },
+  {
     "name": "Examples - Circular View"
   },
   {

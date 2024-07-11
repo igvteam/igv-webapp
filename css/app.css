@@ -90,6 +90,10 @@ button#igv-share-url-button svg {
   float: left;
 }
 
+.custom-btn-group .btn.single-button {
+  border-radius: 0.25rem !important;
+}
+
 #igv-encode-spinner-container {
   width: 100%;
   display: flex;

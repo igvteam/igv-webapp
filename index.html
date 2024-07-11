@@ -475,16 +475,19 @@
                                     <div class="input-group">
                                         <input id="igv-app-share-input" type="text" class="form-control" placeholder="">
                                         <div class="input-group-append">
-                                            <button id="igv-app-copy-link-button" class="btn btn-outline-secondary" type="button">Copy URL</button>
+                                            <button id="igv-app-copy-link-button" class="btn btn-outline-secondary" type="button">Copy Session URL</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Embed Button -->
+                            <!-- Embed iframe Button | Copy iframe Button -->
                             <div class="row pt-4">
                                 <div class="col">
-                                    <button id="igv-app-embed-button" type="button" class="btn btn-outline-secondary">Embeddable iframe</button>
+                                    <div class="btn-group custom-btn-group" role="group">
+                                        <button id="igv-app-embed-button"       type="button" class="btn btn-outline-secondary">Embeddable iframe</button>
+                                        <button id="igv-app-copy-iframe-button" type="button" class="btn btn-outline-secondary">Copy iframe</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -492,9 +495,6 @@
                             <div id="igv-app-embed-container" class="row">
                                 <div class="col form-group">
                                     <textarea class="form-control" rows="4"></textarea>
-                                </div>
-                                <div class="col">
-                                    <button type="button" class="btn btn-outline-secondary">Copy</button>
                                 </div>
                             </div>
 

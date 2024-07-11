@@ -28,10 +28,12 @@ import {doShortenURL, setURLShortener, shortSessionURL} from './shareHelper.js'
 
 let href
 let session
-function createShareWidgets({browser, container, modal, share_input, copy_link_button, qrcode_button, qrcode_image, embed_container, embed_button, embedTarget}) {
+function createShareWidgets({browser, container, modal, share_input, copy_link_button, qrcode_button, qrcode_image, embed_container, embed_button, iframeButton, embedTarget}) {
 
     $(modal).on('show.bs.modal', (e) => {
 
+        iframeButton.style.display = 'none'
+        embed_button.classList.add('single-button')
 
         document.querySelector('#igv-app-qrcode-image').style.display = 'none'
         document.querySelector('#igv-app-qrcode-container').style.display = 'none'
@@ -91,7 +93,8 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
     document.getElementById('igv-share-long-url-radio').addEventListener('click', async () => {
         document.querySelector('#igv-app-qrcode-image').style.display = 'none'
         document.querySelector('#igv-app-qrcode-container').style.display = 'none'
-        share_input.value = `${href}?sessionURL=blob:${session}`
+        const str = `${href}?sessionURL=blob:${session}`
+        share_input.value = str
     })
 
     copy_link_button.addEventListener('click', () => {
@@ -105,8 +108,7 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
     })
 
     if (embedTarget) {
-        const button = embed_container.querySelector('button');
-        button.addEventListener('click', () => {
+        iframeButton.addEventListener('click', () => {
 
             const textArea = embed_container.querySelector('textarea');
             textArea.select();
@@ -118,21 +120,24 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
             } else {
                 console.error('fail!');
             }
-        });
+        })
 
         embed_button.addEventListener('click', () => {
 
             qrcode_image.style.display = 'none';
 
             if ('block' === embed_container.style.display) {
-                embed_container.style.display = 'none';
+                embed_container.style.display = iframeButton.style.display = 'none'
+                embed_button.classList.add('single-button')
             } else {
-                embed_container.style.display = 'block';
+                embed_container.style.display = iframeButton.style.display = 'block'
+                embed_button.classList.remove('single-button')
             }
 
-        });
+        })
+
     } else {
-        embed_button.style.display = 'none';
+        modal.querySelector('.btn-group').style.display = 'none'
     }
 
     qrcode_button.addEventListener('click', async () => {
@@ -179,6 +184,7 @@ function shareWidgetConfigurator(browser, container, options) {
         qrcode_image: document.getElementById('igv-app-qrcode-image'),
         embed_container: document.getElementById('igv-app-embed-container'),
         embed_button: document.getElementById('igv-app-embed-button'),
+        iframeButton: document.querySelector('#igv-app-copy-iframe-button'),
         embedTarget: options.embedTarget || `https://igv.org/web/release/${igv.version()}/embed.html`
     };
 

@@ -33,7 +33,7 @@ function setURLShortener(config) {
         fn = config;
 
     } else if (config.provider) {
-        if ("tinyURL" === config.provider /*&& (config.apiKey || config.api_token)*/) {
+        if ("tinyURL" === config.provider && (config.apiKey || config.api_token)) {
             fn = tinyURLShortener(config);
         } else if ("bitly" === config.provider && config.apiKey) {
             fn = bitlyShortener(config.apiKey);

@@ -15,6 +15,8 @@ var igvwebConfig = {
     // sharable URLs will not be shortened .
     urlShortener:
         {
+            // provider: "",
+            // api_token: 	""
         },
 
     enableCircularView: true,

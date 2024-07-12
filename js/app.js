@@ -27,8 +27,17 @@ import * as GooglePicker from '../node_modules/google-utils/src/googleFilePicker
 import makeDraggable from "./widgets/utils/draggable.js"
 import AlertSingleton from "./widgets/alertSingleton.js"
 import {createSessionWidgets} from "./widgets/sessionWidgets.js"
-import {updateTrackMenusWithTrackConfigurations, createTrackWidgetsWithTrackRegistry, getPathsWithTrackRegistryFile} from "./widgets/trackWidgets.js"
-import {dropboxDropdownItem, dropboxButtonImageBase64, googleDriveButtonImageBase64, googleDriveDropdownItem} from "./widgets/markupFactory.js"
+import {
+    updateTrackMenusWithTrackConfigurations,
+    createTrackWidgetsWithTrackRegistry,
+    getPathsWithTrackRegistryFile
+} from "./widgets/trackWidgets.js"
+import {
+    dropboxDropdownItem,
+    dropboxButtonImageBase64,
+    googleDriveButtonImageBase64,
+    googleDriveDropdownItem
+} from "./widgets/markupFactory.js"
 import GenomeFileLoad from "./widgets/genomeFileLoad.js"
 import FileLoadManager from "./widgets/fileLoadManager.js"
 import FileLoadWidget from "./widgets/fileLoadWidget.js"
@@ -294,7 +303,7 @@ async function initializationHelper(browser, container, options) {
         sessionSaver)
 
     if (options.sessionRegistryFile) {
-        await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+        await createSessionMenu('save-session-button', options.sessionRegistryFile, sessionLoader)
     } else {
         document.querySelector('#igv-session-list-divider').style.display = 'none'
     }
@@ -393,7 +402,9 @@ function createSampleInfoMenu(igvMain,
                 {
                     success: dbFiles => {
 
-                        const configList = dbFiles.map(({link}) => { return {url: link} })
+                        const configList = dbFiles.map(({link}) => {
+                            return {url: link}
+                        })
 
                         sampleInfoFileLoadHandler(configList[0])
                     },
@@ -480,7 +491,7 @@ function createSampleInfoMenu(igvMain,
 
     Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
         const paths = fileLoadWidget.retrievePaths()
-        await sampleInfoFileLoadHandler({url:paths[0]})
+        await sampleInfoFileLoadHandler({url: paths[0]})
         return true
     })
 
@@ -555,31 +566,59 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
     if (sessionJSON) {
 
         const sessions = sessionJSON['sessions']
-
+        
         for (let {name, url} of sessions.reverse()) {
 
             const referenceNode = document.getElementById(sessionListDivider)
 
-            const button_id = `${id_prefix}_${guid()}`
-            const html = `<button id="${button_id}" class="dropdown-item" type="button">${name}</button>`
-            const fragment = document.createRange().createContextualFragment(html)
+            if (url) {
+                const button_id = `${id_prefix}_${guid()}`
+                const html = `<button id="${button_id}" class="dropdown-item" type="button">${name}</button>`
+                const fragment = document.createRange().createContextualFragment(html)
 
-            referenceNode.after(fragment.firstChild)
+                referenceNode.after(fragment.firstChild)
 
-            const button = document.getElementById(button_id)
-            button.addEventListener('click', () => {
+                const button = document.getElementById(button_id)
+                button.addEventListener('click', () => {
 
-                const config = {}
-                const key = true === isFile(url) ? 'file' : 'url'
-                config[key] = url
+                    const config = {}
+                    const key = true === isFile(url) ? 'file' : 'url'
+                    config[key] = url
 
-                sessionLoader(config)
+                    sessionLoader(config)
 
-            })
+                })
+            } else {
+                const html = `<h6 class="dropdown-header">${name}</h6>`
+                const el = fromHTML(html)
+                referenceNode.after(el)
+                referenceNode.after(fromHTML('<div class="dropdown-divider"/>'))
+            }
         }
 
     }
 
+}
+
+/**
+ * @param {String} HTML representing a single element.
+ * @param {Boolean} flag representing whether or not to trim input whitespace, defaults to true.
+ * @return {Element | HTMLCollection | null}
+ */
+function fromHTML(html, trim = true) {
+    // Process the HTML string.
+    html = trim ? html.trim() : html
+    if (!html) return null
+
+    // Then set up a new template element.
+    const template = document.createElement('template')
+    template.innerHTML = html
+    const result = template.content.children
+
+    // Then return either an HTMLElement or HTMLCollection,
+    // based on whether the input HTML had one or more roots.
+    if (result.length === 1) return result[0]
+    return result
 }
 
 function createAppBookmarkHandler($bookmark_button) {

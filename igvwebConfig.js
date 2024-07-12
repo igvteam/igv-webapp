@@ -13,10 +13,12 @@ var igvwebConfig = {
 
     // Provide a URL shorterner function or object.   This is optional.  If not supplied
     // sharable URLs will not be shortened.  If using tinyURL supply an api token
-    //urlShortener: {
-    //    provider: "tinyURL",
-    //    api_token: "..."
-    //},
+    // urlShortener: {
+    //     provider: "tinyURL",
+    //     api_token: "<your tinyurl token>"
+    // },
+    // urlShortener: function(longURL) {...   return shortendURL}
+
 
     enableCircularView: true,
 

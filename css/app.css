@@ -68,6 +68,10 @@ button#igv-share-url-button svg {
   height: 20px;
 }
 
+input#igv-app-share-input {
+  pointer-events: none;
+}
+
 #igv-app-qrcode-image {
   padding: 16px;
   display: none;

@@ -46,7 +46,7 @@
     <!-- Google GSI -->
     <script src="https://accounts.google.com/gsi/client"></script>
 
-    <script type="text/javascript" src="./igvwebConfig.js"></script>
+    <script type="text/javascript" src="./igvwebConfig-private.js"></script>
 
     <script type="module" src="js/app.js"></script>
 
@@ -453,7 +453,7 @@
 
                     <!-- copy URL section -->
                     <div class="modal-body-section">
-                        <div class="container-fluid">
+                        <div class="container">
 
                             <!-- Copy URL radio buttons -->
                             <div id="igv-share-url-radio-pair-container" class="form-group">
@@ -481,11 +481,12 @@
 
                             <!-- Embed iframe Button | Copy iframe Button -->
                             <div class="row pt-4">
-                                <div class="col">
-                                    <div class="btn-group custom-btn-group" role="group">
-                                        <button id="igv-app-embed-button"       type="button" class="btn btn-sm btn-outline-secondary">Embeddable iframe</button>
+                                <div class="col text-center">
+                                    <div class="d-flex">
+                                        <button id="igv-app-embed-button" type="button" class="btn btn-sm btn-outline-secondary mr-1">Embeddable iframe</button>
                                         <button id="igv-app-copy-iframe-button" type="button" class="btn btn-sm btn-outline-secondary">Copy iframe</button>
                                     </div>
+
                                 </div>
                             </div>
 
@@ -497,7 +498,7 @@
                             </div>
 
                             <!-- QR Code Button -->
-                            <div id="igv-app-qrcode-container"  class="row pt-4">
+                            <div id="igv-app-qrcode-container" class="row pt-4">
                                 <div class="col">
                                     <button id="igv-app-qrcode-button" type="button" class="btn btn-sm btn-outline-secondary">Create QR Code</button>
                                 </div>

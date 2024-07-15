@@ -33,7 +33,6 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
     $(modal).on('show.bs.modal', (e) => {
 
         iframeButton.style.display = 'none'
-        embed_button.classList.add('single-button')
 
         document.querySelector('#igv-app-qrcode-image').style.display = 'none'
         document.querySelector('#igv-app-qrcode-container').style.display = 'none'
@@ -128,10 +127,8 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
 
             if ('block' === embed_container.style.display) {
                 embed_container.style.display = iframeButton.style.display = 'none'
-                embed_button.classList.add('single-button')
             } else {
                 embed_container.style.display = iframeButton.style.display = 'block'
-                embed_button.classList.remove('single-button')
             }
 
         })

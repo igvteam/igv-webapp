@@ -26,6 +26,8 @@ import AlertSingleton from './widgets/alertSingleton.js'
 import {QRCode} from './widgets/qrcode.js'
 import {doShortenURL, setURLShortener, shortSessionURL} from './shareHelper.js'
 
+const hackedURL =
+    'https://www.igv.org/app/?sessionURL=blob:rZNba9wwEIX_ShB5aMErW3upa0MptA_pQ2nLhkJLCGHWGl.oLW0keZ1k2f_eGe1uaOhr_HDA0pxP0uhoL3bofGeNKMVcqpVUC5EI39rpGoZtj99gQC_KGnqPiXBYo0NToSj3otPkaRtVkMFQGf19GQcwF2.u1p_bRZ7y3FuarMEH.Ln.yuUhbH2Zpl2zmzVocAshoDMz6xrpFxIGeLIGJi8rO6RUYGn11ON9ZEWRkUbUzmh8eF0qaUfk6jHYDRj9GnBmfSKWDA.B0NB34F9y_2PQQpLhZ9bzJu.iWwbY8CZbZwfrqeK70.gISCMqIZmzLFiWLCuWdyw5y3uWgkVlUaNHRZOKLhVtKvpUNKroVNGqoncevfPjetH7i.W3OCSit9VIkaGz9rRPZztR3twmIjio_tD4zV6Exy2nhZo0xjAlwh7PMCuyLFdFMV8t82VWFOqQ7M_ZWmNNhosrugLPobJugEDjlEm.Fk7EOZB3zalodP0_nW4bbSfTW9DSW5Rj5SuJekwb22s0PyC0x15roBaDx9RUm46WvcZ7vj7ZPJ1jh_r5SZx2rrL48XxtX17wNE2SSdL0gzRdKxu746Bg.pGCNHy4vCTsqSVgjA0Q.D0mosWuaemIeXa4PfwF'
 let href
 let session
 function createShareWidgets({browser, container, modal, share_input, copy_link_button, qrcode_button, qrcode_image, embed_container, embed_button, iframeButton, embedTarget}) {
@@ -70,7 +72,8 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
                 href = href.substring(0, idx);
             }
 
-            share_input.value = `${href}?sessionURL=blob:${session}`
+            // share_input.value = `${href}?sessionURL=blob:${session}`
+            share_input.value = hackedURL
 
         } else {
             $(modal).modal('hide')
@@ -86,6 +89,7 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
 
     document.getElementById('igv-share-short-url-radio').addEventListener('click', async () => {
         share_input.value = await shortSessionURL(href, session)
+        embed_container.style.display = iframeButton.style.display = 'none'
         document.querySelector('#igv-app-qrcode-container').style.display = 'block'
     })
 
@@ -139,7 +143,7 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
 
     qrcode_button.addEventListener('click', async () => {
 
-        embed_container.style.display = 'none';
+        embed_container.style.display = iframeButton.style.display = 'none'
 
         if ('block' === qrcode_image.style.display) {
             qrcode_image.innerHTML = ''

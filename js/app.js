@@ -302,12 +302,6 @@ async function initializationHelper(browser, container, options) {
         sessionLoader,
         sessionSaver)
 
-    if (options.sessionRegistryFile) {
-        await createSessionMenu('save-session-button', options.sessionRegistryFile, sessionLoader)
-    } else {
-        document.querySelector('#igv-session-list-divider').style.display = 'none'
-    }
-
     createSaveImageWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal'), imageType: 'svg'})
 
     createSaveImageWidget({browser, saveModal: document.getElementById('igv-app-png-save-modal'), imageType: 'png'})
@@ -566,7 +560,7 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
     if (sessionJSON) {
 
         const sessions = sessionJSON['sessions']
-        
+
         for (let {name, url} of sessions.reverse()) {
 
             const referenceNode = document.getElementById(sessionListDivider)

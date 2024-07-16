@@ -477,7 +477,7 @@ function createSampleInfoMenu(igvMain,
             indexTitle: 'Index',
             mode: 'url',
             fileLoadManager: new FileLoadManager(),
-            dataOnly: false,
+            dataOnly: true,
             doURL: true
         }
 

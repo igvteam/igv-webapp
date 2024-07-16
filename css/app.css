@@ -54,63 +54,48 @@
   font-family: "Open Sans", sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
+  padding: unset;
+}
+#igv-app-share-modal .modal-body .modal-body-section {
+  padding: 16px;
+}
+
+button#igv-share-url-button {
+  padding: unset;
+}
+button#igv-share-url-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+input#igv-app-share-input {
+  pointer-events: none;
 }
 
 #igv-app-qrcode-image {
+  padding: 16px;
   display: none;
 }
 
 #igv-app-embed-container {
+  padding: 16px;
   display: none;
-}
-
-a#igv-app-email-button {
-  color: #5f5f5f;
-  text-decoration: none;
-}
-
-a#igv-app-email-button:hover,
-a#igv-app-email-button:focus,
-a#igv-app-email-button:active {
-  cursor: pointer;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-#igv-app-embed-button:hover,
-#igv-app-embed-button:focus,
-#igv-app-embed-button:active {
-  cursor: pointer;
-  font-weight: 700;
-}
-
-#igv-app-qrcode-button:hover,
-#igv-app-qrcode-button:focus,
-#igv-app-qrcode-button:active {
-  cursor: pointer;
-  font-weight: 700;
 }
 
 .igv-app-social-button-container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
-  height: 40px;
-  margin-bottom: 10px;
-}
-.igv-app-social-button-container div {
-  margin-left: 8px;
-  margin-right: 8px;
-}
-.igv-app-social-button-container div:first-child {
-  width: 65px;
-  margin-top: 4px;
 }
 
 .igv-app-social-button {
   float: left;
+}
+
+.custom-btn-group .btn.single-button {
+  border-radius: 0.25rem !important;
 }
 
 #igv-encode-spinner-container {

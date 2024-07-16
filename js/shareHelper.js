@@ -26,19 +26,19 @@ import Globals from "./globals.js";
 
 let urlShortener;
 
-export function setURLShortener(obj) {
+function setURLShortener(config) {
 
     let fn;
-    if (typeof obj === "function") {
-        fn = obj;
+    if (typeof config === "function") {
+        fn = config;
 
-    } else if (obj.provider) {
-        if ("tinyURL" === obj.provider && (obj.apiKey || obj.api_token)) {
-            fn = tinyURLShortener(obj);
-        } else if ("bitly" === obj.provider && obj.apiKey) {
-            fn = bitlyShortener(obj.apiKey);
+    } else if (config.provider) {
+        if ("tinyURL" === config.provider && (config.apiKey || config.api_token)) {
+            fn = tinyURLShortener(config);
+        } else if ("bitly" === config.provider && config.apiKey) {
+            fn = bitlyShortener(config.apiKey);
         }  else {
-            AlertSingleton.present(new Error(`Unknown URL shortener provider: ${obj.provider}`));
+            AlertSingleton.present(new Error(`Unknown URL shortener provider: ${config.provider}`));
         }
     } else {
         AlertSingleton.present(new Error('URL shortener object must either be an object specifying a provider and apiKey, or a function'))
@@ -55,7 +55,7 @@ export function setURLShortener(obj) {
 
 }
 
-export function sessionURL() {
+function sessionURL() {
 
     let surl,
         path,
@@ -69,18 +69,16 @@ export function sessionURL() {
     return surl;
 }
 
-export function shortSessionURL(base, session) {
+async function shortSessionURL(base, session) {
 
-    const url = base + "?sessionURL=blob:" + session;
+    const url = `${base}?sessionURL=blob:${session}`
 
-    return shortenURL(url)
+    return urlShortener ? await urlShortener.shortenURL(url) : url
 
 }
 
-function shortenURL(url) {
-    if (urlShortener) {
-        return urlShortener.shortenURL(url);
-    } else {
-        return Promise.resolve(url);
-    }
+function doShortenURL() {
+    return !(undefined === urlShortener)
 }
+
+export { setURLShortener, sessionURL, shortSessionURL, doShortenURL }

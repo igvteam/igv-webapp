@@ -1,7 +1,501 @@
 {
- "label": "GTEx Tissue EQTLS",
- "description": "<a href=https://gtexportal.org/home/ target=_blank>Genotype-Tissue Expression</a>",
- "type": "GTEX",
- "genome": "hg38",
- "datasetId": "gtex_v8"
+  "label": "GTEx Single Tissue EQTLS",
+  "description": "Single Tissue EQTL data from the <a href=https://gtexportal.org/home/ target=_blank>GTEx Project</a>",
+  "tracks": [
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Adipose_Subcutaneous",
+      "name": "Adipose Subcutaneous",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Adipose_Visceral_Omentum",
+      "name": "Adipose Visceral_Omentum",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Adrenal_Gland",
+      "name": "Adrenal Gland",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Artery_Aorta",
+      "name": "Artery Aorta",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Artery_Coronary",
+      "name": "Artery Coronary",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Artery_Tibial",
+      "name": "Artery Tibial",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Bladder",
+      "name": "Bladder",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Amygdala",
+      "name": "Brain Amygdala",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Anterior_cingulate_cortex_BA24",
+      "name": "Brain Anterior_cingulate_cortex_BA24",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Caudate_basal_ganglia",
+      "name": "Brain Caudate_basal_ganglia",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Cerebellar_Hemisphere",
+      "name": "Brain Cerebellar_Hemisphere",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Cerebellum",
+      "name": "Brain Cerebellum",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Cortex",
+      "name": "Brain Cortex",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Frontal_Cortex_BA9",
+      "name": "Brain Frontal_Cortex_BA9",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Hippocampus",
+      "name": "Brain Hippocampus",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Hypothalamus",
+      "name": "Brain Hypothalamus",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Nucleus_accumbens_basal_ganglia",
+      "name": "Brain Nucleus_accumbens_basal_ganglia",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Putamen_basal_ganglia",
+      "name": "Brain Putamen_basal_ganglia",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Spinal_cord_cervical_c-1",
+      "name": "Brain Spinal_cord_cervical_c-1",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Brain_Substantia_nigra",
+      "name": "Brain Substantia_nigra",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Breast_Mammary_Tissue",
+      "name": "Breast Mammary_Tissue",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Cells_Cultured_fibroblasts",
+      "name": "Cells Cultured_fibroblasts",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Cells_EBV-transformed_lymphocytes",
+      "name": "Cells EBV-transformed_lymphocytes",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Cells_Transformed_fibroblasts",
+      "name": "Cells Transformed_fibroblasts",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Cervix_Ectocervix",
+      "name": "Cervix Ectocervix",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Cervix_Endocervix",
+      "name": "Cervix Endocervix",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Colon_Sigmoid",
+      "name": "Colon Sigmoid",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Colon_Transverse",
+      "name": "Colon Transverse",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Esophagus_Gastroesophageal_Junction",
+      "name": "Esophagus Gastroesophageal_Junction",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Esophagus_Mucosa",
+      "name": "Esophagus Mucosa",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Esophagus_Muscularis",
+      "name": "Esophagus Muscularis",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Fallopian_Tube",
+      "name": "Fallopian Tube",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Heart_Atrial_Appendage",
+      "name": "Heart Atrial_Appendage",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Heart_Left_Ventricle",
+      "name": "Heart Left_Ventricle",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Kidney_Cortex",
+      "name": "Kidney Cortex",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Kidney_Medulla",
+      "name": "Kidney Medulla",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Liver",
+      "name": "Liver",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Lung",
+      "name": "Lung",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Minor_Salivary_Gland",
+      "name": "Minor Salivary_Gland",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Muscle_Skeletal",
+      "name": "Muscle Skeletal",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Nerve_Tibial",
+      "name": "Nerve Tibial",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Ovary",
+      "name": "Ovary",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Pancreas",
+      "name": "Pancreas",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Pituitary",
+      "name": "Pituitary",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Prostate",
+      "name": "Prostate",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Skin_Not_Sun_Exposed_Suprapubic",
+      "name": "Skin Not_Sun_Exposed_Suprapubic",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Skin_Sun_Exposed_Lower_leg",
+      "name": "Skin Sun_Exposed_Lower_leg",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Small_Intestine_Terminal_Ileum",
+      "name": "Small Intestine_Terminal_Ileum",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Spleen",
+      "name": "Spleen",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Stomach",
+      "name": "Stomach",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Testis",
+      "name": "Testis",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Thyroid",
+      "name": "Thyroid",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Uterus",
+      "name": "Uterus",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Vagina",
+      "name": "Vagina",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    },
+    {
+      "type": "eqtl",
+      "sourceType": "gtex-ws",
+      "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
+      "tissueSiteDetailId": "Whole_Blood",
+      "name": "Whole Blood",
+      "visibilityWindow": 2000000,
+      "minQuerySize": 100000
+    }
+  ]
 }

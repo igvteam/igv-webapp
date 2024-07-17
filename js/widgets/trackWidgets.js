@@ -2,7 +2,7 @@ import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/i
 import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDatasourceConfigurator.js'
 import AlertSingleton from './alertSingleton.js'
 import {createGenericSelectModal} from './genericSelectModal.js'
-import {createTrackURLModal} from './trackURLModal.js'
+import {createTrackURLModalElement} from './trackURLModal.js'
 import FileLoadManager from "./fileLoadManager.js"
 import FileLoadWidget from "./fileLoadWidget.js"
 import MultipleTrackFileLoad from "./multipleTrackFileLoad.js"
@@ -37,12 +37,12 @@ function createTrackWidgetsWithTrackRegistry($igvMain,
                                              trackLoadHandler,
                                              trackMenuHandler) {
 
-    const urlModal = createTrackURLModal(urlModalId)
-    $igvMain.get(0).appendChild(urlModal)
+    const urlModalElement = createTrackURLModalElement(urlModalId)
+    $igvMain.get(0).appendChild(urlModalElement)
 
     let fileLoadWidgetConfig =
         {
-            widgetParent: urlModal.querySelector('.modal-body'),
+            widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Track',
             indexTitle: 'Index',
             mode: 'url',
@@ -53,7 +53,8 @@ function createTrackWidgetsWithTrackRegistry($igvMain,
 
     fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
 
-    Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
+    const modal = new bootstrap.Modal(urlModalElement)
+    Utils.configureModal(fileLoadWidget, modal, async fileLoadWidget => {
         const paths = fileLoadWidget.retrievePaths()
         await multipleTrackFileLoad.loadPaths(paths)
         return true
@@ -206,7 +207,7 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
 
                     customModalTable.setDatasource(new GenericDataSource(buttonConfiguration))
                     customModalTable.setTitle(buttonConfiguration.label)
-                    customModalTable.$modal.modal('show')
+                    customModalTable.modal.show()
                 })
 
         } else if (buttonConfiguration.type && 'ENCODE' === buttonConfiguration.type) {
@@ -220,13 +221,13 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
                 }
 
                 createDropdownButton($divider, 'ENCODE Other', id_prefix)
-                    .on('click', () => encodeModalTables[2].$modal.modal('show'))
+                    .on('click', () => encodeModalTables[2].modal.show())
 
                 createDropdownButton($divider, 'ENCODE Signals - Other', id_prefix)
-                    .on('click', () => encodeModalTables[1].$modal.modal('show'))
+                    .on('click', () => encodeModalTables[1].modal.show())
 
                 createDropdownButton($divider, 'ENCODE Signals - ChIP', id_prefix)
-                    .on('click', () => encodeModalTables[0].$modal.modal('show'))
+                    .on('click', () => encodeModalTables[0].modal.show())
 
             }
 

@@ -11,9 +11,6 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="css/fontawesome/all.css">
 
-  <!-- Bootstrap 5.3 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-1.10.20/sl-1.3.1/datatables.min.css">
 
@@ -21,11 +18,10 @@
   <link rel="stylesheet" href="css/app.css">
 
   <!-- Bootstrap 5.3 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
   <!-- Bootstrap 5.3 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -44,7 +40,7 @@
   <!-- Google GSI -->
   <script src="https://accounts.google.com/gsi/client"></script>
 
-  <script type="text/javascript" src="./igvwebConfig.js"></script>
+  <script type="text/javascript" src="./igvwebConfig-private.js"></script>
 
   <script type="module" src="js/app.js"></script>
 
@@ -278,8 +274,8 @@
             Help
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="https://igv.org/doc/webapp/#ExampleSessions" target="_blank">Example Sessions</a>
             <a class="dropdown-item" href="https://igv.org/doc/webapp/" target="_blank">Documentation</a>
+            <a class="dropdown-item" href="https://igv.org/doc/webapp/#ExampleSessions" target="_blank">Example Sessions</a>
             <a class="dropdown-item" href="https://github.com/igvteam/igv-webapp" target="_blank">GitHub Repository</a>
             <a class="dropdown-item" href="https://groups.google.com/group/igv-help" target="_blank">User Forum</a>
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#igv-app-help-about-modal">About IGV-Web</a>
@@ -319,7 +315,7 @@
   </div>
 
   <!-- Share URL Modal -->
-  <div id="igv-app-share-modal" class="modal fade">
+  <div id="igv-app-share-modal" class="modal fade" tabindex="-1">
 
     <div class="modal-dialog">
 
@@ -328,9 +324,7 @@
         <div class="modal-header">
           <div id="igv-app-share-input-modal-close-button" class="modal-title">Share</div>
 
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
         </div>
 
@@ -342,19 +336,19 @@
 
               <!-- Copy URL radio buttons -->
               <div id="igv-share-url-radio-pair-container" class="form-group">
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="igv-share-short-url-radio" name="share-url-radio-pair" class="custom-control-input">
-                  <label class="custom-control-label" for="igv-share-short-url-radio">Shortened URL</label>
+                <div class="form-check form-check-inline">
+                  <input type="radio" id="igv-share-short-url-radio" name="share-url-radio-pair" class="form-check-input">
+                  <label class="form-check-label" for="igv-share-short-url-radio">Shortened URL</label>
                 </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="igv-share-long-url-radio" name="share-url-radio-pair" class="custom-control-input" checked>
-                  <label class="custom-control-label" for="igv-share-long-url-radio">Long URL</label>
+                <div class="form-check form-check-inline">
+                  <input type="radio" id="igv-share-long-url-radio" name="share-url-radio-pair" class="form-check-input" checked>
+                  <label class="form-check-label" for="igv-share-long-url-radio">Long URL</label>
                 </div>
               </div>
 
               <!-- Copy URL -->
-              <div class="row no-gutters">
-                <div class="col mr-2">
+              <div class="row g-0">
+                <div class="col me-2">
                   <div class="input-group input-group-sm">
                     <input id="igv-app-share-input" type="text" class="form-control" placeholder="">
                   </div>
@@ -367,11 +361,10 @@
               <!-- Embed iframe Button | Copy iframe Button -->
               <div class="row pt-4">
                 <div class="col text-center">
-                  <div class="d-flex">
-                    <button id="igv-app-embed-button" type="button" class="btn btn-sm btn-outline-secondary mr-2">Embeddable iframe</button>
+                  <div class="d-flex justify-content-center">
+                    <button id="igv-app-embed-button" type="button" class="btn btn-sm btn-outline-secondary me-2">Embeddable iframe</button>
                     <button id="igv-app-copy-iframe-button" type="button" class="btn btn-sm btn-outline-secondary">Copy iframe</button>
                   </div>
-
                 </div>
               </div>
 
@@ -406,7 +399,7 @@
   </div>
 
   <!-- SVG save -->
-  <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal">
+  <div id="igv-app-svg-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1">
 
     <div class="modal-dialog modal-lg">
 
@@ -420,9 +413,7 @@
             </div>
           </div>
 
-          <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <div class="modal-body">
@@ -435,8 +426,8 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-sm btn-secondary">OK</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
         </div>
 
       </div>
@@ -446,7 +437,7 @@
   </div>
 
   <!-- PNG save -->
-  <div id="igv-app-png-save-modal" class="modal fade igv-app-file-save-modal">
+  <div id="igv-app-png-save-modal" class="modal fade igv-app-file-save-modal" tabindex="-1">
 
     <div class="modal-dialog modal-lg">
 
@@ -460,9 +451,7 @@
             </div>
           </div>
 
-          <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <div class="modal-body">
@@ -475,8 +464,8 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-sm btn-secondary">OK</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
         </div>
 
       </div>

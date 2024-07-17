@@ -250,7 +250,7 @@ async function initializationHelper(browser, container, options) {
 
     // Create widgets for URL and File loads.
     createGenomeWidgets({
-        $igvMain,
+        igvMain: document.getElementById('igv-main'),
         urlModalId: 'igv-app-genome-from-url-modal',
         genarkModalId: 'igv-app-genome-genark-modal',
         genomeFileLoad: new GenomeFileLoad(genomeFileLoadConfig)
@@ -435,44 +435,41 @@ function createSampleInfoMenu(igvMain,
 
     // URL
     const html =
-        `<div id="${urlModalId}" class="modal">
+        `<div id="${urlModalId}" class="modal fade" tabindex="-1">
 
-            <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg">
     
-                <div class="modal-content">
+            <div class="modal-content">
     
-                    <div class="modal-header">
-                        <div class="modal-title">Sample Info URL</div>
+                <div class="modal-header">
+                    <div class="modal-title">Sample Info URL</div>
     
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
-    
-                    </div>
-    
-                    <div class="modal-body">
-                    </div>
-    
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
-                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     
                 </div>
     
+                <div class="modal-body">
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+    
             </div>
+    
+        </div>
 
-        </div>`
+    </div>`
 
     const fragment = document.createRange().createContextualFragment(html)
+    const urlModalElement = fragment.firstChild
 
-    const urlModal = fragment.firstChild
-
-    igvMain.appendChild(urlModal)
+    igvMain.appendChild(urlModalElement)
 
     const fileLoadWidgetConfig =
         {
-            widgetParent: urlModal.querySelector('.modal-body'),
+            widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Sample Info',
             indexTitle: 'Index',
             mode: 'url',
@@ -483,7 +480,7 @@ function createSampleInfoMenu(igvMain,
 
     const fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
 
-    Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
+    Utils.configureModal(fileLoadWidget, new bootstrap.Modal(urlModalElement), async fileLoadWidget => {
         const paths = fileLoadWidget.retrievePaths()
         await sampleInfoFileLoadHandler({url: paths[0]})
         return true

@@ -28,35 +28,36 @@ import {doShortenURL, setURLShortener, shortSessionURL} from './shareHelper.js'
 
 let href
 let session
-function createShareWidgets({browser, container, modal, share_input, copy_link_button, qrcode_button, qrcode_image, embed_container, embed_button, iframeButton, embedTarget}) {
+let modal
+function createShareWidgets({browser, container, modalElement, share_input, copy_link_button, qrcode_button, qrcode_image, embed_container, embed_button, iframeButton, embedTarget}) {
 
-    $(modal).on('show.bs.modal', (e) => {
+    modal = new bootstrap.Modal(modalElement)
 
-        iframeButton.style.display = 'none'
+// Function to show the modal
+    modalElement.addEventListener('show.bs.modal', (e) => {
+        iframeButton.style.display = 'none';
 
-        document.querySelector('#igv-app-qrcode-image').style.display = 'none'
-        document.querySelector('#igv-app-qrcode-container').style.display = 'none'
+        document.querySelector('#igv-app-qrcode-image').style.display = 'none';
+        document.querySelector('#igv-app-qrcode-container').style.display = 'none';
 
         if (true === doShortenURL()) {
             document.querySelector('#igv-share-short-url-radio').checked = false;
             document.querySelector('#igv-share-long-url-radio').checked = true;
         } else {
-            document.querySelector('#igv-share-url-radio-pair-container').style.display = 'none'
+            document.querySelector('#igv-share-url-radio-pair-container').style.display = 'none';
         }
-    })
+    });
 
-    $(modal).on('shown.bs.modal', async () => {
-
-        session = undefined
+    modalElement.addEventListener('shown.bs.modal', async () => {
+        session = undefined;
         try {
             session = browser.compressedSession();
         } catch (e) {
-            $(modal).modal('hide')
-            AlertSingleton.present(e.message)
+            modal.hide()
+            AlertSingleton.present(e.message);
         }
 
         if (session) {
-
             if (embedTarget) {
                 const snippet = getEmbeddableSnippet(container, embedTarget, session);
                 const textArea = embed_container.querySelector('textarea');
@@ -70,19 +71,17 @@ function createShareWidgets({browser, container, modal, share_input, copy_link_b
                 href = href.substring(0, idx);
             }
 
-            share_input.value = `${href}?sessionURL=blob:${session}`
-
+            share_input.value = `${href}?sessionURL=blob:${session}`;
         } else {
-            $(modal).modal('hide')
+            modal.hide()
         }
+    });
 
-    })
-
-    $(modal).on('hidden.bs.modal', () => {
-        href = session = undefined
+    modalElement.addEventListener('hidden.bs.modal', () => {
+        href = session = undefined;
         embed_container.style.display = 'none';
         qrcode_image.style.display = 'none';
-    })
+    });
 
     document.getElementById('igv-share-short-url-radio').addEventListener('click', async () => {
         share_input.value = await shortSessionURL(href, session)
@@ -175,7 +174,7 @@ function shareWidgetConfigurator(browser, container, options) {
     return {
         browser,
         container,
-        modal: document.getElementById('igv-app-share-modal'),
+        modalElement: document.getElementById('igv-app-share-modal'),
         share_input: document.getElementById('igv-app-share-input'),
         copy_link_button: document.getElementById('igv-app-copy-link-button'),
         qrcode_button: document.getElementById('igv-app-qrcode-button'),

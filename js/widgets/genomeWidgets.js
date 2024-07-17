@@ -3,7 +3,7 @@ import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 
 import Globals from "../globals.js"
 import AlertSingleton from "./alertSingleton.js"
-import {createURLModal} from "./urlModal.js"
+import {createURLModalElement} from "./urlModal.js"
 import FileLoadManager from "./fileLoadManager.js"
 import FileLoadWidget from "./fileLoadWidget.js"
 import * as Utils from './utils.js'
@@ -15,7 +15,7 @@ let predefinedGenomeIds
 let predefinedGenomes
 let genarkModalTable
 
-function createGenomeWidgets({$igvMain, urlModalId, genarkModalId, genomeFileLoad}) {
+function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad}) {
 
     const genarkModalTableConfig =
         {
@@ -35,12 +35,12 @@ function createGenomeWidgets({$igvMain, urlModalId, genarkModalId, genomeFileLoa
     genarkModalTable.setDatasource(dataSource)
 
     // URL modal
-    const $urlModal = $(createURLModal(urlModalId, 'Genome URL'))
-    $igvMain.append($urlModal)
+    const urlModalElement = createURLModalElement(urlModalId, 'Genome URL')
+    igvMain.appendChild(urlModalElement)
 
     // File widget
     const fileLoadWidget = new FileLoadWidget({
-        widgetParent: $urlModal.find('.modal-body').get(0),
+        widgetParent: urlModalElement.querySelector('.modal-body'),
         dataTitle: 'Genome',
         indexTitle: 'Index',
         mode: 'url',
@@ -50,7 +50,8 @@ function createGenomeWidgets({$igvMain, urlModalId, genarkModalId, genomeFileLoa
     })
 
     // Configures both file widget and url modal, a bit confusing
-    Utils.configureModal(fileLoadWidget, $urlModal.get(0), async fileLoadWidget => {
+    const modal = new bootstrap.Modal(urlModalElement)
+    Utils.configureModal(fileLoadWidget, modal, async fileLoadWidget => {
 
         try {
             await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths())

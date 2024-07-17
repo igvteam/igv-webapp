@@ -2,7 +2,7 @@ import {FileUtils} from '../../node_modules/igv-utils/src/index.js'
 import FileLoadManager from './fileLoadManager.js'
 import FileLoadWidget from './fileLoadWidget.js'
 import SessionFileLoad from "./sessionFileLoad.js"
-import {createURLModal} from './urlModal.js'
+import {createURLModalElement} from './urlModal.js'
 import * as Utils from './utils.js'
 
 let fileLoadWidget
@@ -19,8 +19,8 @@ function createSessionWidgets($rootContainer,
                               loadHandler,
                               JSONProvider) {
 
-    const urlModal = createURLModal(urlModalId, 'Session URL')
-    $rootContainer.get(0).appendChild(urlModal)
+    const urlModalElement = createURLModalElement(urlModalId, 'Session URL')
+    $rootContainer.get(0).appendChild(urlModalElement)
 
     if (!googleEnabled) {
         $(`#${googleDriveButtonId}`).parent().hide()
@@ -28,7 +28,7 @@ function createSessionWidgets($rootContainer,
 
     const fileLoadWidgetConfig =
         {
-            widgetParent: urlModal.querySelector('.modal-body'),
+            widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Session',
             indexTitle: undefined,
             mode: 'url',
@@ -51,7 +51,7 @@ function createSessionWidgets($rootContainer,
 
     const sessionFileLoad = new SessionFileLoad(sessionFileLoadConfig)
 
-    Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
+    Utils.configureModal(fileLoadWidget, new bootstrap.Modal(urlModalElement), async fileLoadWidget => {
         await sessionFileLoad.loadPaths(fileLoadWidget.retrievePaths())
         return true
     })

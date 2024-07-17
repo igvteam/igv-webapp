@@ -50,7 +50,8 @@
 
 
 </head>
-<body>
+
+<body class="d-flex-column">
 
 <nav class="navbar fixed-top py-0 navbar-expand-sm navbar-dark bg-dark">
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#igv-app-navbar-navigation">
@@ -508,17 +509,17 @@
 
 </main>
 
-<footer class="igv-app-footer bg-light py-3">
-  <div class="container">
+<footer class="bg-light py-2 w-100">
+  <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center">
-      <div>
+      <!-- Left-aligned logo -->
+      <div class="d-flex align-items-center">
         <a href="https://igv.org" target="_blank" class="d-flex align-items-center">
           <img src="img/igv-logo-cooked-40x40.png" width="32" height="32" alt="IGV Logo">
           <span class="ms-2">igv.org</span>
         </a>
       </div>
-      <div id="igv-version-label">
-      </div>
+      <!-- Right-aligned logos -->
       <div class="d-flex">
         <div id="igv-app-ucsd-logo" class="me-3">
           <a href="https://ucsd.edu/" target="_blank" title="University of California at San Diego">
@@ -535,6 +536,6 @@
   </div>
 </footer>
 
-
 </body>
+
 </html>

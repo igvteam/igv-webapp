@@ -14,6 +14,7 @@ const MAX_CUSTOM_GENOMES = 5
 let predefinedGenomeIds
 let predefinedGenomes
 let genarkModalTable
+let genomeWidgetModal
 
 function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad}) {
 
@@ -50,8 +51,8 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
     })
 
     // Configures both file widget and url modal, a bit confusing
-    const modal = new bootstrap.Modal(urlModalElement)
-    Utils.configureModal(fileLoadWidget, modal, async fileLoadWidget => {
+    genomeWidgetModal = new bootstrap.Modal(urlModalElement)
+    Utils.configureModal(fileLoadWidget, genomeWidgetModal, async fileLoadWidget => {
 
         try {
             await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths())

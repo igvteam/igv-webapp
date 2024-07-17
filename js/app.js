@@ -58,6 +58,9 @@ let googleEnabled = false
 let currentGenomeId
 const googleWarningFlag = "googleWarningShown"
 
+let svgSaveImageModal
+let pngSaveImageModal
+
 async function main(container, config) {
 
     AlertSingleton.init(container)
@@ -302,9 +305,11 @@ async function initializationHelper(browser, container, options) {
         sessionLoader,
         sessionSaver)
 
-    createSaveImageWidget({browser, saveModal: document.getElementById('igv-app-svg-save-modal'), imageType: 'svg'})
+    svgSaveImageModal = new bootstrap.Modal(document.getElementById('igv-app-svg-save-modal'))
+    createSaveImageWidget({ browser, saveModal: svgSaveImageModal, imageType: 'svg' })
 
-    createSaveImageWidget({browser, saveModal: document.getElementById('igv-app-png-save-modal'), imageType: 'png'})
+    pngSaveImageModal = new bootstrap.Modal(document.getElementById('igv-app-png-save-modal'))
+    createSaveImageWidget({ browser, saveModal: pngSaveImageModal, imageType: 'png' })
 
     createShareWidgets(shareWidgetConfigurator(browser, container, options))
 
@@ -362,6 +367,63 @@ async function initializationHelper(browser, container, options) {
 
     }
 
+}
+
+let sampleInfoURLModal
+function createSampleInfoURLWidget(urlModalId, igvMain, sampleInfoFileLoadHandler) {
+
+    const html =
+        `<div id="${urlModalId}" class="modal fade" tabindex="-1">
+
+        <div class="modal-dialog modal-lg">
+    
+            <div class="modal-content">
+    
+                <div class="modal-header">
+                    <div class="modal-title">Sample Info URL</div>
+    
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    
+                </div>
+    
+                <div class="modal-body">
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+    
+            </div>
+    
+        </div>
+
+    </div>`
+
+    const fragment = document.createRange().createContextualFragment(html)
+    const urlModalElement = fragment.firstChild
+
+    igvMain.appendChild(urlModalElement)
+
+    const fileLoadWidgetConfig =
+        {
+            widgetParent: urlModalElement.querySelector('.modal-body'),
+            dataTitle: 'Sample Info',
+            indexTitle: 'Index',
+            mode: 'url',
+            fileLoadManager: new FileLoadManager(),
+            dataOnly: true,
+            doURL: true
+        }
+
+    const fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
+
+    sampleInfoURLModal = new bootstrap.Modal(urlModalElement)
+    Utils.configureModal(fileLoadWidget, sampleInfoURLModal, async fileLoadWidget => {
+        const paths = fileLoadWidget.retrievePaths()
+        await sampleInfoFileLoadHandler({url: paths[0]})
+        return true
+    })
 }
 
 function createSampleInfoMenu(igvMain,
@@ -434,57 +496,7 @@ function createSampleInfoMenu(igvMain,
     }
 
     // URL
-    const html =
-        `<div id="${urlModalId}" class="modal fade" tabindex="-1">
-
-        <div class="modal-dialog modal-lg">
-    
-            <div class="modal-content">
-    
-                <div class="modal-header">
-                    <div class="modal-title">Sample Info URL</div>
-    
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    
-                </div>
-    
-                <div class="modal-body">
-                </div>
-    
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
-                </div>
-    
-            </div>
-    
-        </div>
-
-    </div>`
-
-    const fragment = document.createRange().createContextualFragment(html)
-    const urlModalElement = fragment.firstChild
-
-    igvMain.appendChild(urlModalElement)
-
-    const fileLoadWidgetConfig =
-        {
-            widgetParent: urlModalElement.querySelector('.modal-body'),
-            dataTitle: 'Sample Info',
-            indexTitle: 'Index',
-            mode: 'url',
-            fileLoadManager: new FileLoadManager(),
-            dataOnly: true,
-            doURL: true
-        }
-
-    const fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
-
-    Utils.configureModal(fileLoadWidget, new bootstrap.Modal(urlModalElement), async fileLoadWidget => {
-        const paths = fileLoadWidget.retrievePaths()
-        await sampleInfoFileLoadHandler({url: paths[0]})
-        return true
-    })
+    createSampleInfoURLWidget(urlModalId, igvMain, sampleInfoFileLoadHandler)
 
 }
 
@@ -524,92 +536,6 @@ function configureGoogleSignInButton() {
 
     }
 
-}
-
-async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessionLoader) {
-
-    let response = undefined
-    try {
-        response = await fetch(sessionRegistryFile)
-    } catch (e) {
-        console.error(e)
-    }
-
-    let sessionJSON = undefined
-    if (response) {
-        sessionJSON = await response.json()
-    } else {
-        const e = new Error("Error retrieving session registry")
-        AlertSingleton.present(e.message)
-        throw e
-    }
-
-    const id_prefix = 'session_file'
-
-    const searchString = `[id^=${id_prefix}]`
-    const elements = document.querySelectorAll(searchString)
-    if (elements.length > 0) {
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].remove()
-        }
-    }
-
-    if (sessionJSON) {
-
-        const sessions = sessionJSON['sessions']
-
-        for (let {name, url} of sessions.reverse()) {
-
-            const referenceNode = document.getElementById(sessionListDivider)
-
-            if (url) {
-                const button_id = `${id_prefix}_${guid()}`
-                const html = `<button id="${button_id}" class="dropdown-item" type="button">${name}</button>`
-                const fragment = document.createRange().createContextualFragment(html)
-
-                referenceNode.after(fragment.firstChild)
-
-                const button = document.getElementById(button_id)
-                button.addEventListener('click', () => {
-
-                    const config = {}
-                    const key = true === isFile(url) ? 'file' : 'url'
-                    config[key] = url
-
-                    sessionLoader(config)
-
-                })
-            } else {
-                const html = `<h6 class="dropdown-header">${name}</h6>`
-                const el = fromHTML(html)
-                referenceNode.after(el)
-                referenceNode.after(fromHTML('<div class="dropdown-divider"/>'))
-            }
-        }
-
-    }
-
-}
-
-/**
- * @param {String} HTML representing a single element.
- * @param {Boolean} flag representing whether or not to trim input whitespace, defaults to true.
- * @return {Element | HTMLCollection | null}
- */
-function fromHTML(html, trim = true) {
-    // Process the HTML string.
-    html = trim ? html.trim() : html
-    if (!html) return null
-
-    // Then set up a new template element.
-    const template = document.createElement('template')
-    template.innerHTML = html
-    const result = template.content.children
-
-    // Then return either an HTMLElement or HTMLCollection,
-    // based on whether the input HTML had one or more roots.
-    if (result.length === 1) return result[0]
-    return result
 }
 
 function createAppBookmarkHandler($bookmark_button) {
@@ -683,19 +609,5 @@ async function initializeDropbox() {
         })
     }
 }
-
-function guid() {
-    return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4)
-}
-
-function isFile(object) {
-    if (!object) {
-        return false
-    }
-    return typeof object !== 'function' &&
-        (object instanceof File ||
-            (object.hasOwnProperty("name") && typeof object.slice === 'function' && typeof object.arrayBuffer === 'function'))
-}
-
 
 export {main}

@@ -1,6 +1,5 @@
 function createGenericSelectModal(id, select_id) {
-
-    return `<div id="${id}" class="modal">
+    return `<div id="${id}" class="modal fade" tabindex="-1">
 
                 <div class="modal-dialog modal-lg">
     
@@ -8,9 +7,7 @@ function createGenericSelectModal(id, select_id) {
     
                         <div class="modal-header">
                             <div class="modal-title"></div>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
             
                         <div class="modal-body">
@@ -21,8 +18,8 @@ function createGenericSelectModal(id, select_id) {
                         </div>
                         
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">OK</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
                         </div>
     
                     </div>
@@ -30,6 +27,6 @@ function createGenericSelectModal(id, select_id) {
                 </div>
 
             </div>`
-
 }
+
 export {createGenericSelectModal}

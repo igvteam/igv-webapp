@@ -92,15 +92,14 @@ function createShareWidgets({browser, container, modalElement, share_input, copy
     document.getElementById('igv-share-long-url-radio').addEventListener('click', async () => {
         document.querySelector('#igv-app-qrcode-image').style.display = 'none'
         document.querySelector('#igv-app-qrcode-container').style.display = 'none'
-        const str = `${href}?sessionURL=blob:${session}`
-        share_input.value = str
+        share_input.value = `${href}?sessionURL=blob:${session}`
     })
 
     copy_link_button.addEventListener('click', () => {
         share_input.select();
         const success = document.execCommand('copy');
         if (success) {
-            $(modal).modal('hide');
+            modal.hide()
         } else {
             console.error('fail!');
         }
@@ -115,7 +114,7 @@ function createShareWidgets({browser, container, modalElement, share_input, copy
             const success = document.execCommand('copy');
 
             if (success) {
-                $(modal).modal('hide');
+                modal.hide()
             } else {
                 console.error('fail!');
             }
@@ -134,7 +133,7 @@ function createShareWidgets({browser, container, modalElement, share_input, copy
         })
 
     } else {
-        modal.querySelector('.btn-group').style.display = 'none'
+        modalElement.querySelector('.btn-group').style.display = 'none'
     }
 
     qrcode_button.addEventListener('click', async () => {

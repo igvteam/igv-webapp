@@ -13,7 +13,7 @@ let multipleTrackFileLoad
 let encodeModalTables = []
 let customModalTable
 let $genericSelectModal = undefined
-
+let trackWidgetModal
 const defaultCustomModalTableConfig =
     {
         // id: modalID,
@@ -53,8 +53,8 @@ function createTrackWidgetsWithTrackRegistry($igvMain,
 
     fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
 
-    const modal = new bootstrap.Modal(urlModalElement)
-    Utils.configureModal(fileLoadWidget, modal, async fileLoadWidget => {
+    trackWidgetModal = new bootstrap.Modal(urlModalElement)
+    Utils.configureModal(fileLoadWidget, trackWidgetModal, async fileLoadWidget => {
         const paths = fileLoadWidget.retrievePaths()
         await multipleTrackFileLoad.loadPaths(paths)
         return true

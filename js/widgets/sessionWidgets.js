@@ -2,11 +2,12 @@ import {FileUtils} from '../../node_modules/igv-utils/src/index.js'
 import FileLoadManager from './fileLoadManager.js'
 import FileLoadWidget from './fileLoadWidget.js'
 import SessionFileLoad from "./sessionFileLoad.js"
-import {createURLModal} from './urlModal.js'
+import {createURLModalElement} from './urlModal.js'
 import * as Utils from './utils.js'
 
 let fileLoadWidget
-
+let sessionWidgetModal
+let saveSessionModal
 function createSessionWidgets($rootContainer,
                               prefix,
                               localFileInputId,
@@ -19,8 +20,8 @@ function createSessionWidgets($rootContainer,
                               loadHandler,
                               JSONProvider) {
 
-    const urlModal = createURLModal(urlModalId, 'Session URL')
-    $rootContainer.get(0).appendChild(urlModal)
+    const urlModalElement = createURLModalElement(urlModalId, 'Session URL')
+    $rootContainer.get(0).appendChild(urlModalElement)
 
     if (!googleEnabled) {
         $(`#${googleDriveButtonId}`).parent().hide()
@@ -28,7 +29,7 @@ function createSessionWidgets($rootContainer,
 
     const fileLoadWidgetConfig =
         {
-            widgetParent: urlModal.querySelector('.modal-body'),
+            widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Session',
             indexTitle: undefined,
             mode: 'url',
@@ -51,63 +52,70 @@ function createSessionWidgets($rootContainer,
 
     const sessionFileLoad = new SessionFileLoad(sessionFileLoadConfig)
 
-    Utils.configureModal(fileLoadWidget, urlModal, async fileLoadWidget => {
+    sessionWidgetModal = new bootstrap.Modal(urlModalElement)
+    Utils.configureModal(fileLoadWidget, sessionWidgetModal, async fileLoadWidget => {
         await sessionFileLoad.loadPaths(fileLoadWidget.retrievePaths())
         return true
     })
 
-    configureSaveSessionModal($rootContainer, prefix, JSONProvider, sessionSaveModalId)
+    saveSessionModal = configureSaveSessionModal($rootContainer, prefix, JSONProvider, sessionSaveModalId)
 
 }
 
 function configureSaveSessionModal($rootContainer, prefix, JSONProvider, sessionSaveModalId) {
 
-    const modal =
-        `<div id="${sessionSaveModalId}" class="modal fade igv-app-file-save-modal">
+    const html =
+    `<div id="${sessionSaveModalId}" class="modal fade igv-app-file-save-modal" tabindex="-1">
 
-            <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg">
     
-                <div class="modal-content">
+            <div class="modal-content">
     
-                    <div class="modal-header">
+                <div class="modal-header">
     
-                        <div class="modal-title">
-                            <div>
-                                Save Session File
-                            </div>
-                        </div>
-    
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-    
-                    <div class="modal-body">
-                        <input class="form-control" type="text" placeholder="igv-app-session.json">
-    
+                    <div class="modal-title">
                         <div>
-                            Enter session filename with .json suffix
+                            Save Session File
                         </div>
-    
                     </div>
     
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-sm btn-secondary">OK</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                    <input class="form-control" type="text" placeholder="igv-app-session.json">
+    
+                    <div>
+                        Enter session filename with .json suffix
                     </div>
     
                 </div>
     
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-secondary">OK</button>
+                </div>
+    
             </div>
     
-        </div>`
+        </div>
+    
+    </div>`;
 
-    const $modal = $(modal)
-    $rootContainer.append($modal)
 
-    let $input = $modal.find('input')
+    const fragment = document.createRange().createContextualFragment(html)
+    const modalElement = fragment.firstChild
 
-    let okHandler = () => {
+    $rootContainer.get(0).appendChild(modalElement)
+
+    const modal = new bootstrap.Modal(modalElement)
+
+    const inputElement = modalElement.querySelector('input')
+    const $input = $(inputElement)
+
+    modalElement.addEventListener('show.bs.modal', () => $input.val(`${prefix}-session.json`))
+
+    const okHandler = () => {
 
         const extensions = new Set(['json', 'xml'])
 
@@ -127,24 +135,20 @@ function configureSaveSessionModal($rootContainer, prefix, JSONProvider, session
             FileUtils.download(filename, data)
         }
 
-        $modal.modal('hide')
+        modal.hide()
     }
 
-    const $ok = $modal.find('.modal-footer button:nth-child(2)')
-    $ok.on('click', okHandler)
+    const okElement = modalElement.querySelector('.modal-footer button:nth-child(2)')
+    okElement.addEventListener('click', () => okHandler())
 
-    $modal.on('show.bs.modal', (e) => {
-        $input.val(`${prefix}-session.json`)
-    })
-
-    $input.on('keyup', e => {
-
+    inputElement.addEventListener('keyup', e => {
         // enter key
         if (13 === e.keyCode) {
             okHandler()
         }
     })
 
+    return modal
 }
 
 export {createSessionWidgets}

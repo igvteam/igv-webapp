@@ -2,7 +2,7 @@ function configureModal(fileLoadWidget, modal, okHandler) {
 
     const doDismiss = () => {
         fileLoadWidget.dismiss()
-        $(modal).modal('hide')
+        modal.hide()
     }
 
     const doOK = async () => {
@@ -11,26 +11,29 @@ function configureModal(fileLoadWidget, modal, okHandler) {
 
         if (true === result) {
             fileLoadWidget.dismiss()
-            $(modal).modal('hide')
+            modal.hide()
         }
     }
+
+
+    const modalElement = modal._element
 
     let dismiss
 
     // upper dismiss - x - button
-    dismiss = modal.querySelector('.modal-header button')
+    dismiss = modalElement.querySelector('.modal-header button')
     dismiss.addEventListener('click', doDismiss)
 
     // lower dismiss - close - button
-    dismiss = modal.querySelector('.modal-footer button:nth-child(1)')
+    dismiss = modalElement.querySelector('.modal-footer button:nth-child(1)')
     dismiss.addEventListener('click', doDismiss)
 
     // ok - button
-    const ok = modal.querySelector('.modal-footer button:nth-child(2)')
+    const ok = modalElement.querySelector('.modal-footer button:nth-child(2)')
 
     ok.addEventListener('click', doOK)
 
-    modal.addEventListener('keypress', event => {
+    modalElement.addEventListener('keypress', event => {
         if ('Enter' === event.key) {
             doOK()
         }

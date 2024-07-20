@@ -4,7 +4,6 @@
 @import "encode";
 @import "track-select";
 
-//
 $igv-default-font-face: 'Open Sans', sans-serif;
 $igv-trackgear-grey-color: #7F7F7F;
 $igv-trackgear-popover-border-radius: 4px;
@@ -23,9 +22,31 @@ $igv-header-height: 48px;
 @import "igv-widgets-alert-dialog";
 @import "file-load-widget";
 
+html, body {
+  height: 100%;
+}
 
 body {
   padding-top: $igv-header-height;
+}
+
+#igv-main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+  a {
+    color: $igv-app-dark-color;
+    text-decoration: none;
+  }
+
+}
+
+.d-flex-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 #igv-google-drive-dropdown {
@@ -69,10 +90,6 @@ body {
   position: relative;
   top: 0;
   left: 0;
-}
-
-#igv-main.container-fluid {
-  width: unset;
 }
 
 hr {
@@ -136,7 +153,6 @@ label.dropdown-item {
   justify-content: flex-start;
   align-items: center;
 
-  font-size: .875rem;
   height: 18px;
 
   margin-top: 4px;
@@ -254,52 +270,6 @@ label.dropdown-item {
 
 .igv-app-body-footerized {
   margin-bottom: $igv-app-footer-height;
-}
-
-.igv-app-footer {
-  position: absolute;
-  bottom: 0;
-
-  width: 100%;
-  height: $igv-app-footer-height;
-  line-height: $igv-app-footer-height;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-
-  > div:first-child {
-    height: $igv-app-footer-height;
-    line-height: $igv-app-footer-height;
-    font-size: 1.0rem;
-    margin-left: 16px;
-    a {
-      color: $igv-app-dark-color;
-      text-decoration: none;
-    }
-  }
-
-  > div {
-    height: $igv-app-footer-height;
-    line-height: $igv-app-footer-height;
-    font-size: .75rem;
-  }
-
-  > div:last-child {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-
-    div {
-      margin-right: 16px;
-    }
-
-  }
 }
 
 .igv-app-modal-position {

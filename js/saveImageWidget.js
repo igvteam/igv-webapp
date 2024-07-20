@@ -20,15 +20,18 @@
  * THE SOFTWARE.
  *
  */
-function createSaveImageWidget ({ browser, saveModal, imageType }) {
+
+function createSaveImageWidget({ browser, saveModal, imageType }) {
+
+    const modalElement = saveModal._element
 
     const input_default_value = `igv-app.${imageType}`;
 
-    const input = saveModal.querySelector('input');
+    const input = modalElement.querySelector('input');
 
-    $(saveModal).on('show.bs.modal', () => input.value = input_default_value);
+    modalElement.addEventListener('show.bs.modal', () => input.value = input_default_value);
 
-    $(saveModal).on('hidden.bs.modal', () => input.value = input_default_value);
+    modalElement.addEventListener('hidden.bs.modal', () => input.value = input_default_value);
 
     const okHandler = () => {
 
@@ -37,17 +40,16 @@ function createSaveImageWidget ({ browser, saveModal, imageType }) {
         if (undefined === filename || '' === filename) {
             filename = input.getAttribute('placeholder');
         } else if (!filename.endsWith(`.${imageType}`)) {
-            filename = `${filename}.${imageType}`
+            filename = `${filename}.${imageType}`;
         }
 
-        // dismiss modal
-        $(saveModal).modal('hide');
+        saveModal.hide()
 
-        imageType === 'svg' ? browser.saveSVGtoFile({ filename }) : browser.savePNGtoFile(filename)
+        imageType === 'svg' ? browser.saveSVGtoFile({ filename }) : browser.savePNGtoFile(filename);
     };
 
     // ok - button
-    const ok = saveModal.querySelector('.modal-footer button:nth-child(2)');
+    const ok = modalElement.querySelector('.modal-footer button:nth-child(2)');
 
     ok.addEventListener('click', okHandler);
 
@@ -58,12 +60,12 @@ function createSaveImageWidget ({ browser, saveModal, imageType }) {
     });
 
     // upper dismiss - x - button
-    let dismiss = saveModal.querySelector('.modal-header button');
-    dismiss.addEventListener('click', () => $(saveModal).modal('hide'));
+    let dismiss = modalElement.querySelector('.modal-header button');
+    dismiss.addEventListener('click', () => saveModal.hide());
 
     // lower dismiss - close - button
-    dismiss = saveModal.querySelector('.modal-footer button:nth-child(1)');
-    dismiss.addEventListener('click', () => $(saveModal).modal('hide'));
+    dismiss = modalElement.querySelector('.modal-footer button:nth-child(1)');
+    dismiss.addEventListener('click', () => saveModal.hide());
 
 }
 

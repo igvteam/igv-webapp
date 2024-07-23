@@ -135,12 +135,13 @@ async function main(container, config) {
         }
     }
 
-    const trackMenuHandler = urlList => {
+    const trackMenuHandler = menuTrackConfigurations => {
 
-        const urlSet = browser.getTrackURLs()
+        const loadedTrackConfigurations = browser.getTrackConfigs()
 
-        for (const {element, url} of urlList) {
-            if (urlSet.has(url)) {
+        for (const {element, trackConfiguration} of menuTrackConfigurations) {
+            const str = JSON.stringify(trackConfiguration)
+            if (loadedTrackConfigurations.has(str)) {
                 element.setAttribute('disabled', true)
             } else {
                 element.removeAttribute('disabled')

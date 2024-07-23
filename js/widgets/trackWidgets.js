@@ -143,14 +143,14 @@ function createGenericSelectModalWidget($igvMain, selectModalIdOrUndefined, trac
 
     $genericSelectModal.on('show.bs.modal', () => {
 
-        const urlList = []
+        const trackConfigList = []
         $genericSelectModal.find('select').find('option').each(function () {
 
-            const {url} = $(this).data('track')
-            urlList.push({element: $(this).get(0), url})
+            const trackConfiguration = $(this).data('track')
+            trackConfigList.push({element: $(this).get(0), trackConfiguration })
         })
 
-        trackMenuHandler(urlList)
+        trackMenuHandler(trackConfigList)
 
     })
 

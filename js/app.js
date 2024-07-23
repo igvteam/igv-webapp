@@ -137,7 +137,7 @@ async function main(container, config) {
 
     const trackMenuHandler = configList => {
 
-        const idSet = new Set(browser.tracks.map(t => t.id))
+        const idSet = new Set(browser.tracks.filter(t => undefined !== t.id).map(t => t.id))
 
         for (const {element, trackConfiguration} of configList) {
             const id = trackConfiguration.id === undefined ? trackConfiguration.name : trackConfiguration.id

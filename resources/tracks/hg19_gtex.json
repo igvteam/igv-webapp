@@ -1,7 +1,0 @@
-{
- "label": "GTEx Tissue EQTLS",
- "description": "<a href=https://gtexportal.org/home/ target=_blank>Genotype-Tissue Expression</a>",
- "type": "GTEX",
- "genome": "hg19",
- "datasetId": "gtex_v7"
-}

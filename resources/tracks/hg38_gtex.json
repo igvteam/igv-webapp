@@ -5,6 +5,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Adipose_Subcutaneous",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Adipose_Subcutaneous",
       "name": "Adipose Subcutaneous",
@@ -14,6 +15,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Adipose_Visceral_Omentum",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Adipose_Visceral_Omentum",
       "name": "Adipose Visceral_Omentum",
@@ -23,6 +25,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Adrenal_Gland",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Adrenal_Gland",
       "name": "Adrenal Gland",
@@ -32,6 +35,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Artery_Aorta",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Artery_Aorta",
       "name": "Artery Aorta",
@@ -41,6 +45,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Artery_Coronary",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Artery_Coronary",
       "name": "Artery Coronary",
@@ -50,6 +55,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Artery_Tibial",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Artery_Tibial",
       "name": "Artery Tibial",
@@ -59,6 +65,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Bladder",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Bladder",
       "name": "Bladder",
@@ -68,6 +75,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Amygdala",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Amygdala",
       "name": "Brain Amygdala",
@@ -77,6 +85,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Anterior_cingulate_cortex_BA24",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Anterior_cingulate_cortex_BA24",
       "name": "Brain Anterior_cingulate_cortex_BA24",
@@ -86,6 +95,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Caudate_basal_ganglia",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Caudate_basal_ganglia",
       "name": "Brain Caudate_basal_ganglia",
@@ -95,6 +105,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Cerebellar_Hemisphere",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Cerebellar_Hemisphere",
       "name": "Brain Cerebellar_Hemisphere",
@@ -104,6 +115,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Cerebellum",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Cerebellum",
       "name": "Brain Cerebellum",
@@ -113,6 +125,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Cortex",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Cortex",
       "name": "Brain Cortex",
@@ -122,6 +135,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Frontal_Cortex_BA9",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Frontal_Cortex_BA9",
       "name": "Brain Frontal_Cortex_BA9",
@@ -131,6 +145,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Hippocampus",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Hippocampus",
       "name": "Brain Hippocampus",
@@ -140,6 +155,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Hypothalamus",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Hypothalamus",
       "name": "Brain Hypothalamus",
@@ -149,6 +165,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Nucleus_accumbens_basal_ganglia",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Nucleus_accumbens_basal_ganglia",
       "name": "Brain Nucleus_accumbens_basal_ganglia",
@@ -158,6 +175,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Putamen_basal_ganglia",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Putamen_basal_ganglia",
       "name": "Brain Putamen_basal_ganglia",
@@ -167,6 +185,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Spinal_cord_cervical_c-1",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Spinal_cord_cervical_c-1",
       "name": "Brain Spinal_cord_cervical_c-1",
@@ -176,6 +195,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Brain_Substantia_nigra",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Brain_Substantia_nigra",
       "name": "Brain Substantia_nigra",
@@ -185,6 +205,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Breast_Mammary_Tissue",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Breast_Mammary_Tissue",
       "name": "Breast Mammary_Tissue",
@@ -194,6 +215,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Cells_Cultured_fibroblasts",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Cells_Cultured_fibroblasts",
       "name": "Cells Cultured_fibroblasts",
@@ -203,6 +225,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Cells_EBV-transformed_lymphocytes",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Cells_EBV-transformed_lymphocytes",
       "name": "Cells EBV-transformed_lymphocytes",
@@ -212,6 +235,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Cells_Transformed_fibroblasts",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Cells_Transformed_fibroblasts",
       "name": "Cells Transformed_fibroblasts",
@@ -221,6 +245,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Cervix_Ectocervix",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Cervix_Ectocervix",
       "name": "Cervix Ectocervix",
@@ -230,6 +255,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Cervix_Endocervix",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Cervix_Endocervix",
       "name": "Cervix Endocervix",
@@ -239,6 +265,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Colon_Sigmoid",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Colon_Sigmoid",
       "name": "Colon Sigmoid",
@@ -248,6 +275,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Colon_Transverse",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Colon_Transverse",
       "name": "Colon Transverse",
@@ -257,6 +285,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Esophagus_Gastroesophageal_Junction",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Esophagus_Gastroesophageal_Junction",
       "name": "Esophagus Gastroesophageal_Junction",
@@ -266,6 +295,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Esophagus_Mucosa",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Esophagus_Mucosa",
       "name": "Esophagus Mucosa",
@@ -275,6 +305,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Esophagus_Muscularis",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Esophagus_Muscularis",
       "name": "Esophagus Muscularis",
@@ -284,6 +315,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Fallopian_Tube",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Fallopian_Tube",
       "name": "Fallopian Tube",
@@ -293,6 +325,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Heart_Atrial_Appendage",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Heart_Atrial_Appendage",
       "name": "Heart Atrial_Appendage",
@@ -302,6 +335,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Heart_Left_Ventricle",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Heart_Left_Ventricle",
       "name": "Heart Left_Ventricle",
@@ -311,6 +345,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Kidney_Cortex",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Kidney_Cortex",
       "name": "Kidney Cortex",
@@ -320,6 +355,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Kidney_Medulla",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Kidney_Medulla",
       "name": "Kidney Medulla",
@@ -329,6 +365,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Liver",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Liver",
       "name": "Liver",
@@ -338,6 +375,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Lung",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Lung",
       "name": "Lung",
@@ -347,6 +385,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Minor_Salivary_Gland",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Minor_Salivary_Gland",
       "name": "Minor Salivary_Gland",
@@ -356,6 +395,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Muscle_Skeletal",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Muscle_Skeletal",
       "name": "Muscle Skeletal",
@@ -365,6 +405,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Nerve_Tibial",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Nerve_Tibial",
       "name": "Nerve Tibial",
@@ -374,6 +415,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Ovary",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Ovary",
       "name": "Ovary",
@@ -383,6 +425,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Pancreas",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Pancreas",
       "name": "Pancreas",
@@ -392,6 +435,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Pituitary",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Pituitary",
       "name": "Pituitary",
@@ -401,6 +445,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Prostate",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Prostate",
       "name": "Prostate",
@@ -410,6 +455,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Skin_Not_Sun_Exposed_Suprapubic",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Skin_Not_Sun_Exposed_Suprapubic",
       "name": "Skin Not_Sun_Exposed_Suprapubic",
@@ -419,6 +465,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Skin_Sun_Exposed_Lower_leg",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Skin_Sun_Exposed_Lower_leg",
       "name": "Skin Sun_Exposed_Lower_leg",
@@ -428,6 +475,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Small_Intestine_Terminal_Ileum",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Small_Intestine_Terminal_Ileum",
       "name": "Small Intestine_Terminal_Ileum",
@@ -437,6 +485,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Spleen",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Spleen",
       "name": "Spleen",
@@ -446,6 +495,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Stomach",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Stomach",
       "name": "Stomach",
@@ -455,6 +505,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Testis",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Testis",
       "name": "Testis",
@@ -464,6 +515,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Thyroid",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Thyroid",
       "name": "Thyroid",
@@ -473,6 +525,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Uterus",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Uterus",
       "name": "Uterus",
@@ -482,6 +535,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Vagina",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Vagina",
       "name": "Vagina",
@@ -491,6 +545,7 @@
     {
       "type": "eqtl",
       "sourceType": "gtex-ws",
+      "id": "GTEX_Whole_Blood",
       "url": "https://gtexportal.org/api/v2/association/singleTissueEqtlByLocation",
       "tissueSiteDetailId": "Whole_Blood",
       "name": "Whole Blood",
@@ -499,3 +554,4 @@
     }
   ]
 }
+

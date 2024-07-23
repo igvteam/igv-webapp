@@ -175,19 +175,6 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
             encodeModalTables[0].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-chip')))
             encodeModalTables[1].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-other')))
             encodeModalTables[2].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'other')))
-        } else if (GtexUtilsOrUndefined && 'GTEX' === trackConfiguration.type) {
-
-            let info = undefined
-            try {
-                info = await GtexUtilsOrUndefined.getTissueInfo(trackConfiguration.datasetId)
-            } catch (e) {
-                AlertSingleton.present(e.message)
-            }
-
-            if (info) {
-                trackConfiguration.tracks = info.tissueInfo.map(tissue => GtexUtilsOrUndefined.trackConfiguration(tissue))
-            }
-
         }
 
         buttonConfigurations.push(trackConfiguration)
@@ -283,19 +270,6 @@ async function updateTrackMenus(genomeID, GtexUtilsOrUndefined, trackRegistryFil
             encodeModalTables[0].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-chip')))
             encodeModalTables[1].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-other')))
             encodeModalTables[2].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'other')))
-        } else if (GtexUtilsOrUndefined && 'GTEX' === json.type) {
-
-            let info = undefined
-            try {
-                info = await GtexUtilsOrUndefined.getTissueInfo(json.datasetId)
-            } catch (e) {
-                AlertSingleton.present(e.message)
-            }
-
-            if (info) {
-                json.tracks = info.tissueInfo.map(tissue => GtexUtilsOrUndefined.trackConfiguration(tissue))
-            }
-
         }
 
         buttonConfigurations.push(json)

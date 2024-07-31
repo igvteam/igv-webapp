@@ -120,11 +120,12 @@ function createGenericSelectModalWidget(igvMain, selectModalIdOrUndefined, track
 
     const okHandler = () => {
         const configurations = [];
-        const selectedOptions = select.querySelectorAll('option:checked');
-        selectedOptions.forEach(option => {
-            configurations.push(option.dataset.track);
-            option.selected = false;
-        });
+        const selectedOptions = select.querySelectorAll('option:checked')
+        for (const option of selectedOptions) {
+            const config = JSON.parse(option.dataset.track)
+            configurations.push(config)
+            option.selected = false
+        }
 
         if (configurations.length > 0) {
             trackLoadHandler(configurations);
@@ -142,15 +143,16 @@ function createGenericSelectModalWidget(igvMain, selectModalIdOrUndefined, track
     })
 
     genericSelectModalElement.addEventListener('show.bs.modal', () => {
-        const trackConfigList = [];
-        const options = genericSelectModalElement.querySelectorAll('select option');
 
-        options.forEach(option => {
-            const trackConfiguration = option.dataset.track;
-            trackConfigList.push({ element: option, trackConfiguration });
-        });
+        const options = genericSelectModalElement.querySelectorAll('select option')
 
-        trackMenuHandler(trackConfigList);
+        const trackConfigList = []
+        for (const option of options) {
+            const trackConfiguration = JSON.parse(option.dataset.track)
+            trackConfigList.push({ element: option, trackConfiguration })
+        }
+
+        trackMenuHandler(trackConfigList)
     })
 
 }

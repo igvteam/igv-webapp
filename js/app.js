@@ -36,7 +36,7 @@ import {
     dropboxDropdownItem,
     dropboxButtonImageBase64,
     googleDriveButtonImageBase64,
-    googleDriveDropdownItem
+    googleDriveDropdownElement
 } from "./widgets/markupFactory.js"
 import GenomeFileLoad from "./widgets/genomeFileLoad.js"
 import FileLoadManager from "./widgets/fileLoadManager.js"
@@ -65,8 +65,8 @@ async function main(container, config) {
 
     AlertSingleton.init(container)
 
-    $('#igv-app-version').text(`IGV-Web app version ${version()}`)
-    $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
+    document.getElementById('igv-app-version').textContent = `IGV-Web app version ${version()}`;
+    document.getElementById('igv-igvjs-version').textContent = `igv.js version ${igv.version()}`;
 
     const doEnableGoogle = undefined !== config.clientId
 
@@ -150,14 +150,13 @@ async function main(container, config) {
 
     }
 
-    const $igvMain = $('#igv-main')
-    createTrackWidgetsWithTrackRegistry($igvMain,
-        $('#igv-app-track-dropdown-menu'),
-        $('#igv-app-dropdown-local-track-file-input'),
+    createTrackWidgetsWithTrackRegistry(document.getElementById('igv-main'),
+        document.getElementById('igv-app-track-dropdown-menu'),
+        document.getElementById('igv-app-dropdown-local-track-file-input'),
         initializeDropbox,
-        config.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
+        config.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-track-file-button') : undefined,
         googleEnabled,
-        $('#igv-app-dropdown-google-drive-track-file-button'),
+        document.getElementById('igv-app-dropdown-google-drive-track-file-button'),
         ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
         'igv-app-track-select-modal',
@@ -181,7 +180,7 @@ async function main(container, config) {
                 }
 
                 if (configs) {
-                    await updateTrackMenusWithTrackConfigurations(genome.id, undefined, configs, $('#igv-app-track-dropdown-menu'))
+                    await updateTrackMenusWithTrackConfigurations(genome.id, undefined, configs, document.getElementById('igv-app-track-dropdown-menu'))
                 }
 
             }
@@ -228,12 +227,14 @@ async function initializationHelper(browser, container, options) {
     configureGoogleSignInButton()
 
     if (options.dropboxAPIKey) {
-        $('div#igv-session-dropdown-menu > :nth-child(1)').after(dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'))
+        const dropdownMenu = document.querySelector('div#igv-session-dropdown-menu > :nth-child(1)');
+        dropdownMenu.insertAdjacentElement('afterend', dropboxDropdownItem('igv-app-dropdown-dropbox-session-file-button'));
+
     }
 
-    $('div#igv-session-dropdown-menu > :nth-child(2)').after(googleDriveDropdownItem('igv-app-dropdown-google-drive-session-file-button'))
-
-    const $igvMain = $('#igv-main')
+    const dropdownMenuSecondItem = document.querySelector('div#igv-session-dropdown-menu > :nth-child(2)');
+    const el = googleDriveDropdownElement('igv-app-dropdown-google-drive-session-file-button')
+    dropdownMenuSecondItem.insertAdjacentElement('afterend', el);
 
     const genomeFileLoadConfig =
         {
@@ -294,7 +295,7 @@ async function initializationHelper(browser, container, options) {
 
     }
 
-    createSessionWidgets($igvMain,
+    createSessionWidgets(document.getElementById('igv-main'),
         'igv-webapp',
         'igv-app-dropdown-local-session-file-input',
         initializeDropbox,
@@ -314,7 +315,7 @@ async function initializationHelper(browser, container, options) {
 
     createShareWidgets(shareWidgetConfigurator(browser, container, options))
 
-    createAppBookmarkHandler($('#igv-app-bookmark-button'))
+    createAppBookmarkHandler(document.getElementById('igv-app-bookmark-button'))
 
     if (true === options.enableCircularView) {
 
@@ -364,7 +365,10 @@ async function initializationHelper(browser, container, options) {
             }
         })
 
-        $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
+        document.getElementById('igv-app-circular-view-resize-modal').addEventListener('shown.bs.modal', () => {
+            document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString();
+        });
+
 
     }
 
@@ -512,18 +516,16 @@ function configureGoogleSignInButton() {
 
         let currentUserProfile = undefined
 
-        $('#igv-google-drive-dropdown').on('show.bs.dropdown', async () => {
-
-            currentUserProfile = await GoogleAuth.getCurrentUserProfile()
+        document.getElementById('igv-google-drive-dropdown').addEventListener('show.bs.dropdown', async () => {
+            currentUserProfile = await GoogleAuth.getCurrentUserProfile();
 
             if (currentUserProfile) {
-                const name = currentUserProfile.email || currentUserProfile.name || ''
-                signInOutButton.innerText = `Sign Out ${name}`
+                const name = currentUserProfile.email || currentUserProfile.name || '';
+                signInOutButton.innerText = `Sign Out ${name}`;
             } else {
-                signInOutButton.innerText = 'Sign In'
+                signInOutButton.innerText = 'Sign In';
             }
-
-        })
+        });
 
         signInOutButton.addEventListener('click', async () => {
 
@@ -539,9 +541,9 @@ function configureGoogleSignInButton() {
 
 }
 
-function createAppBookmarkHandler($bookmark_button) {
+function createAppBookmarkHandler(bookmarkButton) {
 
-    $bookmark_button.on('click', (e) => {
+    bookmarkButton.addEventListener('click', (e) => {
 
         let url = undefined
         try {
@@ -557,7 +559,7 @@ function createAppBookmarkHandler($bookmark_button) {
             const blurb = 'A bookmark URL has been created. Press ' + str + '+D to save.'
             alert(blurb)
         }
-    })
+    });
 }
 
 async function getGenomesArray(genomes) {

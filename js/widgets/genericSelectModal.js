@@ -1,5 +1,7 @@
-function createGenericSelectModal(id, select_id) {
-    return `<div id="${id}" class="modal fade" tabindex="-1">
+function createGenericSelectModalElement(id, select_id) {
+
+    const html =
+        `<div id="${id}" class="modal fade" tabindex="-1">
 
                 <div class="modal-dialog modal-lg">
     
@@ -27,6 +29,12 @@ function createGenericSelectModal(id, select_id) {
                 </div>
 
             </div>`
+
+    const fragment = document.createRange().createContextualFragment(html)
+    const modalElement = fragment.firstChild
+
+    return modalElement
+
 }
 
-export {createGenericSelectModal}
+export {createGenericSelectModalElement}

@@ -4,19 +4,15 @@ import {FileUtils, URIUtils, GoogleUtils, GoogleDrive, GooglePicker} from "../..
 class MultipleTrackFileLoad {
 
     constructor({
-                    $localFileInput,
+                    localFileInput,
                     initializeDropbox,
-                    $dropboxButton,
-                    $googleDriveButton,
+                    dropboxButton,
+                    googleDriveButton,
                     fileLoadHandler,
                     multipleFileSelection
                 }) {
 
         this.fileLoadHandler = fileLoadHandler
-
-        const localFileInput = $localFileInput.get(0)
-        const dropboxButton = $dropboxButton ? $dropboxButton.get(0) : undefined
-        const googleDriveButton = $googleDriveButton ? $googleDriveButton.get(0) : undefined
 
         localFileInput.addEventListener('change', async () => {
 
@@ -29,29 +25,32 @@ class MultipleTrackFileLoad {
 
         })
 
-        if (dropboxButton) dropboxButton.addEventListener('click', async () => {
+        if (dropboxButton) {
 
-            const result = await initializeDropbox()
+            dropboxButton.addEventListener('click', async () => {
 
-            if (true === result) {
+                const result = await initializeDropbox()
 
-                const obj =
-                    {
-                        success: dbFiles => this.loadPaths(dbFiles.map(({link}) => link)),
-                        cancel: () => {
-                        },
-                        linkType: "preview",
-                        multiselect: multipleFileSelection,
-                        folderselect: false,
-                    }
+                if (true === result) {
 
-                Dropbox.choose(obj)
+                    const obj =
+                        {
+                            success: dbFiles => this.loadPaths(dbFiles.map(({link}) => link)),
+                            cancel: () => {
+                            },
+                            linkType: "preview",
+                            multiselect: multipleFileSelection,
+                            folderselect: false,
+                        }
 
-            } else {
-                AlertSingleton.present('Cannot connect to Dropbox')
-            }
-        })
+                    Dropbox.choose(obj)
 
+                } else {
+                    AlertSingleton.present('Cannot connect to Dropbox')
+                }
+            })
+
+        }
 
         if (googleDriveButton) {
 

@@ -29,9 +29,10 @@ const dropboxDropdownItem = id => {
             </div>`
 }
 
-const googleDriveDropdownItem = id => {
+const googleDriveDropdownElement = id => {
 
-    return `<div class="dropdown-item">
+    const html =
+        `<div class="dropdown-item">
                 <div id="${id}" class="igv-app-dropdown-item-cloud-storage">
                     <div>Google Drive File</div>
                     <div>
@@ -39,6 +40,12 @@ const googleDriveDropdownItem = id => {
                     </div>
                 </div>
             </div>`
+
+    const fragment = document.createRange().createContextualFragment(html)
+    const element = fragment.firstChild
+
+    return element
+
 }
 
-export {dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownItem}
+export {dropboxButtonImageBase64, googleDriveButtonImageBase64, dropboxDropdownItem, googleDriveDropdownElement}

@@ -110,62 +110,68 @@ function getRecentGenomes() {
     return customGenomeString ? JSON.parse(customGenomeString).reverse() : []
 }
 
-
 function updateGenomeList() {
+    const dropdownMenu = document.getElementById('igv-app-genome-dropdown-menu');
 
-    const $dropdown_menu = $('#igv-app-genome-dropdown-menu')
-
-    // NOTE:  MUST USE ID HERE, THERE CAN BE MULTIPLE DIVIDERS.  JQUERY DOES WEIRD THINGS IN THE CODE THAT FOLLOWS IF $divider IS A COLLECTION
-    const $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider')
+    // NOTE:  MUST USE ID HERE, THERE CAN BE MULTIPLE DIVIDERS.  JQUERY DOES WEIRD THINGS IN THE CODE THAT FOLLOWS IF divider IS A COLLECTION
+    const divider = dropdownMenu.querySelector('#igv-app-genome-dropdown-divider');
 
     // discard all buttons following the divider div
-    $divider.nextAll().off()
-    $divider.nextAll().remove()
-
-    const addEntryFor = (genomeJson) => {
-        const key = genomeJson.id
-        const value = genomeJson
-
-        const $button = createButton(value.name)
-        $button.insertAfter($divider)
-
-        $button.data('id', key)
-
-        const str = `click.genome-dropdown.${key}`
-
-        $button.on(str, async () => {
-            const id = $button.data('id')
-            if (id !== Globals.browser.genome.id) {
-                await loadGenome(value)
-            }
-        })
+    let nextElement = divider.nextElementSibling;
+    while (nextElement) {
+        const elementToRemove = nextElement;
+        nextElement = nextElement.nextElementSibling;
+        elementToRemove.removeEventListener('click', elementToRemove._clickHandler);
+        elementToRemove.remove();
     }
 
-    // TODO -- why do we need to add everthing in reverse?
+    const addEntryFor = (genomeJson) => {
+        const key = genomeJson.id;
+        const value = genomeJson;
+
+        const button = createButton(value.name);
+        divider.insertAdjacentElement('afterend', button);
+
+        button.dataset.id = key;
+
+        const str = `click.genome-dropdown.${key}`;
+
+        button._clickHandler = async () => {
+            const id = button.dataset.id;
+            if (id !== Globals.browser.genome.id) {
+                await loadGenome(value);
+            }
+        };
+
+        button.addEventListener('click', button._clickHandler);
+    };
+
+    // TODO -- why do we need to add everything in reverse?
 
     if (predefinedGenomes && predefinedGenomes.length > 0) {
         for (let genomeJson of predefinedGenomes) {
-            addEntryFor(genomeJson)
+            addEntryFor(genomeJson);
         }
     }
 
-    const recentGenomes = getRecentGenomes()
+    const recentGenomes = getRecentGenomes();
     if (recentGenomes && recentGenomes.length > 0) {
-        $('<div class="dropdown-divider"></div>').insertAfter($divider)
+        const newDivider = document.createElement('div');
+        newDivider.className = 'dropdown-divider';
+        divider.insertAdjacentElement('afterend', newDivider);
+
         for (let genomeJson of recentGenomes) {
-            addEntryFor(genomeJson)
+            addEntryFor(genomeJson);
         }
-
     }
-
 }
 
-function createButton(title) {
-
-    let $button = $('<button>', {class: 'dropdown-item', type: 'button'})
-    $button.text(title)
-
-    return $button
+function createButton(text) {
+    const button = document.createElement('button');
+    button.className = 'dropdown-item';
+    button.type = 'button';
+    button.textContent = text;
+    return button;
 }
 
 async function loadGenome(genomeConfiguration, custom = false) {

@@ -475,21 +475,19 @@
   </div>
 
   <!-- Help - About - Modal -->
-  <div id="igv-app-help-about-modal" class="modal fade" tabindex="-1">
+  <div id="igv-app-help-about-modal" class="modal fade" tabindex="-1" aria-labelledby="igv-app-help-about-modal-label" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">About IGV-Web</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <h5 class="modal-title" id="igv-app-help-about-modal-label">About IGV-Web</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div id="igv-app-version"></div>
           <div id="igv-igvjs-version"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

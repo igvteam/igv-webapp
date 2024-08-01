@@ -141,6 +141,11 @@ label.dropdown-item {
   font-size: .875rem;
 }
 
+#igv-app-save-image-dropdown-menu {
+  a {
+    text-decoration-color: transparent;
+  }
+}
 #igv-app-genome-dropdown-menu.dropdown-menu {
   min-width: 19rem;
 }

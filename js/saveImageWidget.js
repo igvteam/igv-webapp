@@ -45,7 +45,7 @@ function createSaveImageWidget({ browser, saveModal, imageType }) {
 
         saveModal.hide()
 
-        imageType === 'svg' ? browser.saveSVGtoFile({ filename }) : browser.savePNGtoFile(filename);
+        imageType === 'svg' ? browser.saveSVGtoFile( filename ) : browser.savePNGtoFile(filename);
     };
 
     // ok - button

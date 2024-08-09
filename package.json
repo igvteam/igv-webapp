@@ -19,7 +19,7 @@
   "devDependencies": {
     "fs-extra": "^8.1.0",
     "igv": "^3.0.2",
-    "data-modal": "github:igvteam/data-modal#v1.6.0",
+    "data-modal": "github:igvteam/data-modal#v1.6.1",
     "igv-utils": "github:igvteam/igv-utils#v1.5.8",
     "google-utils": "github:igvteam/google-utils#v1.0.2",
     "rollup": "^2.28.1",

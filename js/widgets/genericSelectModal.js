@@ -11,10 +11,10 @@ function createGenericSelectModal(id, select_id) {
                         </div>
             
                         <div class="modal-body">
+                            <div id="igv-widgets-generic-select-modal-footnotes"></div>
                             <div class="form-group">
                                 <select id="${select_id}" class="form-control" multiple></select>
-                            </div>
-                            <div id="igv-widgets-generic-select-modal-footnotes"></div>
+                            </div>                         
                         </div>
                         
                         <div class="modal-footer">

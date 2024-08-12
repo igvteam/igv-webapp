@@ -114,7 +114,7 @@ select#igv-app-track-select-modal-select option {
   font-size: 1rem;
 }
 select#igv-app-track-select-modal-select option[disabled] {
-  color: rgb(175, 175, 175);
+  color: #afafaf;
 }
 
 .igv-widgets-alert-dialog-container {

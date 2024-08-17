@@ -26,7 +26,7 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
             pageLength: 100,
             okHandler: result => {
                 const {accession} = result[0]
-                loadGenome(accession)
+                loadGenome({genarkAccession: accession})
             }
         }
 

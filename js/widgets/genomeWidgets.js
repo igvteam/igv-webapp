@@ -168,7 +168,7 @@ function createButton(title) {
     return $button
 }
 
-async function loadGenome(genomeConfiguration, custom = false) {
+async function loadGenome(genomeConfiguration) {
 
     let g = undefined
     try {

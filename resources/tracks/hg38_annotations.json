@@ -10,6 +10,11 @@
       "visibilityWindow": -1
     },
     {
+      "name": "Refseq All",
+      "format": "refgene",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeq.txt.gz"
+    },
+    {
       "name": "Gencode v44",
       "type": "annotation",
       "format": "gff3",

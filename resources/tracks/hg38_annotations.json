@@ -10,6 +10,15 @@
       "visibilityWindow": -1
     },
     {
+      "name": "Refseq Select",
+      "format": "refgene",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeqSelect.txt.gz"
+    },    {
+      "name": "Refseq Curated",
+      "format": "refgene",
+      "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeqCurated.txt.gz"
+    },
+    {
       "name": "Refseq All",
       "format": "refgene",
       "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeq.txt.gz"

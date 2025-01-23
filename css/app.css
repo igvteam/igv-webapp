@@ -114,15 +114,16 @@ select#igv-app-track-select-modal-select option {
   font-size: 1rem;
 }
 select#igv-app-track-select-modal-select option[disabled] {
-  color: #afafaf;
+  color: rgb(175, 175, 175);
 }
 
-.igv-widgets-alert-dialog-container {
-  box-sizing: content-box;
-  position: absolute;
-  z-index: 2048;
-  top: 50%;
+.igv-ui-alert-dialog-container {
+  position: fixed;
+  top: 20%;
   left: 50%;
+  transform: translateX(-50%);
+  z-index: 2048;
+  box-sizing: content-box;
   width: 400px;
   height: 200px;
   border-color: #7F7F7F;
@@ -140,7 +141,7 @@ select#igv-app-track-select-modal-select option[disabled] {
   justify-content: space-between;
   align-items: center;
 }
-.igv-widgets-alert-dialog-container > div:first-child {
+.igv-ui-alert-dialog-container > div:first-child {
   display: flex;
   flex-flow: row;
   flex-wrap: nowrap;
@@ -156,17 +157,20 @@ select#igv-app-track-select-modal-select option[disabled] {
   border-bottom-width: thin;
   background-color: #eee;
 }
-.igv-widgets-alert-dialog-container > div:first-child div:first-child {
+.igv-ui-alert-dialog-container > div:first-child div:first-child {
   padding-left: 8px;
 }
-.igv-widgets-alert-dialog-container #igv-widgets-alert-dialog-body {
+.igv-ui-alert-dialog-container .igv-ui-alert-dialog-body {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
   color: #373737;
   width: 100%;
   height: calc(100% - 24px - 64px);
   overflow-y: scroll;
 }
-.igv-widgets-alert-dialog-container #igv-widgets-alert-dialog-body #igv-widgets-alert-dialog-body-copy {
-  cursor: pointer;
+.igv-ui-alert-dialog-container .igv-ui-alert-dialog-body .igv-ui-alert-dialog-body-copy {
   margin: 16px;
   width: auto;
   height: auto;
@@ -175,7 +179,7 @@ select#igv-app-track-select-modal-select option[disabled] {
   background-color: white;
   border: unset;
 }
-.igv-widgets-alert-dialog-container > div:last-child {
+.igv-ui-alert-dialog-container > div:last-child {
   width: 100%;
   margin-bottom: 10px;
   background-color: white;
@@ -185,7 +189,7 @@ select#igv-app-track-select-modal-select option[disabled] {
   justify-content: center;
   align-items: center;
 }
-.igv-widgets-alert-dialog-container > div:last-child div {
+.igv-ui-alert-dialog-container > div:last-child div {
   margin: unset;
   width: 40px;
   height: 30px;
@@ -201,7 +205,7 @@ select#igv-app-track-select-modal-select option[disabled] {
   border-radius: 4px;
   background-color: #2B81AF;
 }
-.igv-widgets-alert-dialog-container > div:last-child div:hover {
+.igv-ui-alert-dialog-container > div:last-child div:hover {
   cursor: pointer;
   border-color: #25597f;
   background-color: #25597f;

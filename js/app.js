@@ -63,7 +63,10 @@ let pngSaveImageModal
 
 async function main(container, config) {
 
-    AlertSingleton.init(container)
+    const parent = document.getElementById('igv-main')
+    AlertSingleton.init(parent)
+
+    AlertSingleton.present(`igv webapp is good to go`)
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
@@ -205,6 +208,7 @@ async function main(container, config) {
     if (browser) {
         Globals.browser = browser
         await initializationHelper(browser, container, config)
+        browser.alert.present(`browser ${ browser.guid } is good to go`)
     }
 }
 

@@ -1,4 +1,4 @@
-import AlertDialog from './alertDialog.js'
+import igv from '../../node_modules/igv/dist/igv.esm.js'
 
 class AlertSingleton {
     constructor(root) {
@@ -9,7 +9,7 @@ class AlertSingleton {
     }
 
     init(root) {
-        this.alertDialog = new AlertDialog(root)
+        this.alertDialog = new igv.AlertDialog(root)
     }
 
     present(alert, callback) {

@@ -172,7 +172,6 @@ async function loadGenome(genomeConfiguration) {
 
     let g = undefined
     try {
-        Globals.browser.startSpinner()
         g = await Globals.browser.loadGenome(genomeConfiguration)
         if (g.id) {
             try {
@@ -211,13 +210,8 @@ async function loadGenome(genomeConfiguration) {
     } catch (e) {
         console.error(e)
         AlertSingleton.present(e)
-    } finally {
-        Globals.browser.stopSpinner()
     }
 
-    // if (g) {
-    //     EventBus.globalBus.post({type: "DidChangeGenome", data: g.id});
-    // }
 }
 
 export {createGenomeWidgets, loadGenome, initializeGenomeWidgets}

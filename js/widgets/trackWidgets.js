@@ -8,6 +8,8 @@ import FileLoadWidget from "./fileLoadWidget.js"
 import MultipleTrackFileLoad from "./multipleTrackFileLoad.js"
 import * as Utils from './utils.js'
 
+const id_prefix = 'genome_specific_'
+
 let fileLoadWidget
 let multipleTrackFileLoad
 let encodeModalTables = []
@@ -21,6 +23,7 @@ const defaultCustomModalTableConfig =
         selectionStyle: 'multi',
         pageLength: 100
     }
+
 
 function createTrackWidgetsWithTrackRegistry($igvMain,
                                              $dropdownMenu,
@@ -159,13 +162,9 @@ function createGenericSelectModalWidget($igvMain, selectModalIdOrUndefined, trac
 
 async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUndefined, trackConfigurations, $dropdownMenu) {
 
-    const id_prefix = 'genome_specific_'
+    discardTrackMenuItems($dropdownMenu)
 
     const $divider = $dropdownMenu.find('.dropdown-divider')
-
-    const searchString = '[id^=' + id_prefix + ']'
-    const $found = $dropdownMenu.find(searchString)
-    $found.remove()
 
     let buttonConfigurations = []
 
@@ -401,7 +400,17 @@ async function getPathsWithTrackRegistryFile(genomeID, trackRegistryFile) {
     return trackConfigurations
 }
 
+function discardTrackMenuItems($dropdownMenu) {
+
+    $dropdownMenu.find('.dropdown-divider')
+    const searchString = '[id^=' + id_prefix + ']'
+    const $found = $dropdownMenu.find(searchString)
+    $found.remove()
+
+}
+
 export {
+    discardTrackMenuItems,
     updateTrackMenus,
     updateTrackMenusWithTrackConfigurations,
     createTrackWidgetsWithTrackRegistry,

@@ -30,7 +30,7 @@ import {createSessionWidgets} from "./widgets/sessionWidgets.js"
 import {
     updateTrackMenusWithTrackConfigurations,
     createTrackWidgetsWithTrackRegistry,
-    getPathsWithTrackRegistryFile
+    getPathsWithTrackRegistryFile, discardTrackMenuItems
 } from "./widgets/trackWidgets.js"
 import {
     dropboxDropdownItem,
@@ -182,6 +182,8 @@ async function main(container, config) {
 
                 if (configs) {
                     await updateTrackMenusWithTrackConfigurations(genome.id, undefined, configs, $('#igv-app-track-dropdown-menu'))
+                } else {
+                    discardTrackMenuItems($('#igv-app-track-dropdown-menu'))
                 }
 
             }

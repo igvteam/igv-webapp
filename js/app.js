@@ -63,7 +63,7 @@ let pngSaveImageModal
 
 async function main(container, config) {
 
-    AlertSingleton.init(container)
+    AlertSingleton.init(document.getElementById('igv-main'))
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)

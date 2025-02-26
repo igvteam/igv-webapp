@@ -50,6 +50,8 @@ import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
+import { FileUtils } from '../node_modules/igv-utils/src/index.js'
+import * as DOMUtils from "./widgets/utils/dom-utils.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -113,7 +115,7 @@ async function main(container, config) {
     if (config.restoreLastGenome) {
         try {
             const lastGenomeId = localStorage.getItem("genomeID")
-            if (lastGenomeId && lastGenomeId !== igvConfig.genome) {
+            if (lastGenomeId && lastGenomeId !== igvConfigGenome) {
                 if (config.genomes && config.genomes.find(elem => elem.id === lastGenomeId) ||
                     (recentGenomes && recentGenomes.find(elem => elem.id === lastGenomeId)) ||
                     ((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13)) {
@@ -308,6 +310,12 @@ async function initializationHelper(browser, container, options) {
         sessionLoader,
         sessionSaver)
 
+    if (options.sessionRegistryFile) {
+        await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+    } else {
+        document.getElementById('igv-session-list-divider').style.display = 'none'
+    }
+
     svgSaveImageModal = new bootstrap.Modal(document.getElementById('igv-app-svg-save-modal'))
     createSaveImageWidget({ browser, saveModal: svgSaveImageModal, imageType: 'svg' })
 
@@ -367,6 +375,64 @@ async function initializationHelper(browser, container, options) {
         })
 
         $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
+
+    }
+
+}
+
+async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessionLoader) {
+
+    let response = undefined
+    try {
+        response = await fetch(sessionRegistryFile)
+    } catch (e) {
+        console.error(e)
+    }
+
+    let sessionJSON = undefined
+    if (response) {
+        sessionJSON = await response.json()
+    } else {
+        const e = new Error("Error retrieving session registry")
+        AlertSingleton.present(e.message)
+        throw e
+    }
+
+    const id_prefix = 'session_file'
+
+    const searchString = `[id^=${id_prefix}]`
+    const elements = document.querySelectorAll(searchString)
+    if (elements.length > 0) {
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].remove()
+        }
+    }
+
+    if (sessionJSON) {
+
+        const sessions = sessionJSON['sessions']
+
+        for (let {name, url} of sessions.reverse()) {
+
+            const referenceNode = document.getElementById(sessionListDivider)
+
+            const button_id = `${id_prefix}_${DOMUtils.guid()}`
+            const html = `<button id="${button_id}" class="dropdown-item" type="button">${name}</button>`
+            const fragment = document.createRange().createContextualFragment(html)
+
+            referenceNode.after(fragment.firstChild)
+
+            const button = document.getElementById(button_id)
+            button.addEventListener('click', () => {
+
+                const config = {}
+                const key = true === FileUtils.isFilePath(url) ? 'file' : 'url'
+                config[key] = url
+
+                sessionLoader(config)
+
+            })
+        }
 
     }
 

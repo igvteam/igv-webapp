@@ -311,7 +311,15 @@ async function initializationHelper(browser, container, options) {
         sessionSaver)
 
     if (options.sessionRegistryFile) {
-        await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+
+        const result = await checkFileExists(options.sessionRegistryFile)
+
+        if (result) {
+            await createSessionMenu('igv-session-list-divider', options.sessionRegistryFile, sessionLoader)
+        } else {
+            document.getElementById('igv-session-list-divider').style.display = 'none'
+        }
+
     } else {
         document.getElementById('igv-session-list-divider').style.display = 'none'
     }
@@ -378,6 +386,16 @@ async function initializationHelper(browser, container, options) {
 
     }
 
+}
+
+async function checkFileExists(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch (error) {
+        console.error('Error checking file existence:', error);
+        return false;
+    }
 }
 
 async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessionLoader) {

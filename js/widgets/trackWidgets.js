@@ -1,4 +1,5 @@
 import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/index.js'
+import {igvxhr} from '../../node_modules/igv-utils/src/index.js'
 import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDatasourceConfigurator.js'
 import AlertSingleton from './alertSingleton.js'
 import {createGenericSelectModal} from './genericSelectModal.js'
@@ -175,7 +176,7 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
             encodeModalTables[1].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-other')))
             encodeModalTables[2].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'other')))
         }
-
+        trackConfiguration.igvxhr = igvxhr;
         buttonConfigurations.push(trackConfiguration)
 
     } // for(jsons)

@@ -59,7 +59,6 @@ let isDropboxEnabled = false
 let googleEnabled = false
 let currentGenomeId
 const googleWarningFlag = "googleWarningShown"
-const googleDeprecationWarningFlag = "googleDeprecationWarningShown"
 
 let svgSaveImageModal
 let pngSaveImageModal
@@ -73,17 +72,19 @@ async function main(container, config) {
 
     const doEnableGoogle = undefined !== config.clientId
 
+    // localStorage.removeItem(config.notifications.googleDrive.flag)
+
     if (doEnableGoogle) {
 
             // Show deprecation warning if not shown before
-            const deprecationWarning = "true" === localStorage.getItem(googleDeprecationWarningFlag)
+            const deprecationWarning = "true" === localStorage.getItem(config.notifications.googleDrive.flag)
             if (!deprecationWarning) {
                 alertSingleton.present({
-                    message: "NOTICE",
-                    text: "Google Drive integration will be deprecated in a future version of IGV-Web. Please consider using alternative file loading methods like local files, URLs, or Dropbox."
+                    warning: "NOTICE",
+                    text: config.notifications.googleDrive.text
                 }, () => {
                     // Callback when OK is pressed
-                    localStorage.setItem(googleDeprecationWarningFlag, "true")
+                    localStorage.setItem(config.notifications.googleDrive.flag, "true")
                 })
             }
 

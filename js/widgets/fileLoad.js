@@ -1,4 +1,4 @@
-import AlertSingleton from './alertSingleton.js'
+import alertSingleton from './alertSingleton.js'
 import * as DOMUtils from "./utils/dom-utils.js"
 import {GooglePicker} from "../../node_modules/igv-utils/src/index.js"
 
@@ -14,7 +14,7 @@ class FileLoad {
                     await this.loadPaths(Array.from(localFileInput.files))
                 } catch (e) {
                     console.error(e)
-                    AlertSingleton.present(e)
+                    alertSingleton.present(e)
                 }
                 localFileInput.value = ''
             }
@@ -34,7 +34,7 @@ class FileLoad {
                                 await this.loadPaths(dbFiles.map(dbFile => dbFile.link))
                             } catch (e) {
                                 console.error(e)
-                                AlertSingleton.present(e)
+                                alertSingleton.present(e)
                             }
                         },
                         cancel: () => {
@@ -47,7 +47,7 @@ class FileLoad {
                 Dropbox.choose(config)
 
             } else {
-                AlertSingleton.present('Cannot connect to Dropbox')
+                alertSingleton.present('Cannot connect to Dropbox')
             }
 
         })
@@ -66,7 +66,7 @@ class FileLoad {
                         await this.loadPaths(responses.map(({url}) => url))
                     } catch (e) {
                         console.error(e)
-                        AlertSingleton.present(e)
+                        alertSingleton.present(e)
                     }
                 })
             })

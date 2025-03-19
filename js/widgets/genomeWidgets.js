@@ -2,7 +2,7 @@ import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/i
 import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 
 import Globals from "../globals.js"
-import AlertSingleton from "./alertSingleton.js"
+import alertSingleton from "./alertSingleton.js"
 import {createURLModalElement} from "./urlModal.js"
 import FileLoadManager from "./fileLoadManager.js"
 import FileLoadWidget from "./fileLoadWidget.js"
@@ -58,7 +58,7 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
             await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths())
         } catch (e) {
             console.error(e)
-            AlertSingleton.present(e)
+            alertSingleton.present(e)
         }
 
     })
@@ -78,7 +78,7 @@ async function initializeGenomeWidgets(genomes) {
         updateGenomeList()
 
     } catch (e) {
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
     }
 }
 
@@ -95,7 +95,7 @@ async function getAppLaunchGenomes(genomes) {
         try {
             response = await fetch(genomes)
         } catch (e) {
-            AlertSingleton.present(e.message)
+            alertSingleton.present(e.message)
         }
 
         if (response) {
@@ -209,7 +209,7 @@ async function loadGenome(genomeConfiguration) {
 
     } catch (e) {
         console.error(e)
-        AlertSingleton.present(e)
+        alertSingleton.present(e)
     }
 
 }

@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  *
  */
-import AlertSingleton from "./widgets/alertSingleton.js"
+import alertSingleton from "./widgets/alertSingleton.js"
 import {bitlyShortener, tinyURLShortener} from "./urlShortener.js";
 import Globals from "./globals.js";
 
@@ -38,10 +38,10 @@ function setURLShortener(config) {
         } else if ("bitly" === config.provider && config.apiKey) {
             fn = bitlyShortener(config.apiKey);
         }  else {
-            AlertSingleton.present(new Error(`Unknown URL shortener provider: ${config.provider}`));
+            alertSingleton.present(new Error(`Unknown URL shortener provider: ${config.provider}`));
         }
     } else {
-        AlertSingleton.present(new Error('URL shortener object must either be an object specifying a provider and apiKey, or a function'))
+        alertSingleton.present(new Error('URL shortener object must either be an object specifying a provider and apiKey, or a function'))
     }
 
     if (fn) {

@@ -25,7 +25,7 @@ import igv from '../node_modules/igv/dist/igv.esm.min.js'
 import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
 import * as GooglePicker from '../node_modules/google-utils/src/googleFilePicker.js'
 import makeDraggable from "./widgets/utils/draggable.js"
-import AlertSingleton from "./widgets/alertSingleton.js"
+import alertSingleton from "./widgets/alertSingleton.js"
 import {createSessionWidgets} from "./widgets/sessionWidgets.js"
 import {
     updateTrackMenusWithTrackConfigurations,
@@ -59,13 +59,14 @@ let isDropboxEnabled = false
 let googleEnabled = false
 let currentGenomeId
 const googleWarningFlag = "googleWarningShown"
+const googleDeprecationWarningFlag = "googleDeprecationWarningShown"
 
 let svgSaveImageModal
 let pngSaveImageModal
 
 async function main(container, config) {
 
-    AlertSingleton.init(document.getElementById('igv-main'))
+    alertSingleton.init(document.getElementById('igv-main'))
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
@@ -73,6 +74,18 @@ async function main(container, config) {
     const doEnableGoogle = undefined !== config.clientId
 
     if (doEnableGoogle) {
+
+            // Show deprecation warning if not shown before
+            const deprecationWarning = "true" === localStorage.getItem(googleDeprecationWarningFlag)
+            if (!deprecationWarning) {
+                alertSingleton.present({
+                    message: "NOTICE",
+                    text: "Google Drive integration will be deprecated in a future version of IGV-Web. Please consider using alternative file loading methods like local files, URLs, or Dropbox."
+                }, () => {
+                    // Callback when OK is pressed
+                    localStorage.setItem(googleDeprecationWarningFlag, "true")
+                })
+            }
 
         try {
             await GoogleAuth.init({
@@ -89,10 +102,9 @@ async function main(container, config) {
             const str = `Error initializing Google Drive: ${e.message || e.details}`
             console.error(str)
             const googleWarning = "true" === localStorage.getItem(googleWarningFlag)
-            //AlertSingleton.present(str)
             if (!googleWarning) {
                 localStorage.setItem(googleWarningFlag, "true")
-                alert(str)
+                alertSingleton.present(str)
             }
         }
     }
@@ -133,7 +145,7 @@ async function main(container, config) {
             await browser.loadTrackList(configurations)
         } catch (e) {
             console.error(e)
-            AlertSingleton.present(e)
+            alertSingleton.present(e)
         }
     }
 
@@ -271,7 +283,7 @@ async function initializationHelper(browser, container, options) {
             await browser.loadSampleInfo(configuration)
         } catch (e) {
             console.error(e)
-            AlertSingleton.present(e)
+            alertSingleton.present(e)
         }
     }
 
@@ -282,7 +294,7 @@ async function initializationHelper(browser, container, options) {
             return browser.toJSON()
         } catch (e) {
             console.error(e)
-            AlertSingleton.present(e)
+            alertSingleton.present(e)
             return undefined
         }
     }
@@ -293,7 +305,7 @@ async function initializationHelper(browser, container, options) {
             await browser.loadSession(config)
         } catch (e) {
             console.error(e)
-            AlertSingleton.present(e)
+            alertSingleton.present(e)
         }
 
     }
@@ -412,7 +424,7 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
         sessionJSON = await response.json()
     } else {
         const e = new Error("Error retrieving session registry")
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
         throw e
     }
 
@@ -561,7 +573,7 @@ function createSampleInfoMenu(igvMain,
             Dropbox.choose(obj)
 
         } else {
-            AlertSingleton.present('Cannot connect to Dropbox')
+            alertSingleton.present('Cannot connect to Dropbox')
         }
     })
 
@@ -633,7 +645,7 @@ function createAppBookmarkHandler($bookmark_button) {
         try {
             url = sessionURL()
         } catch (e) {
-            AlertSingleton.present(e.message)
+            alertSingleton.present(e.message)
         }
 
         if (url) {
@@ -660,7 +672,7 @@ async function getGenomesArray(genomes) {
             response = await fetch(genomes)
             return response.json()
         } catch (e) {
-            AlertSingleton.present(e.message)
+            alertSingleton.present(e.message)
         }
     }
 }

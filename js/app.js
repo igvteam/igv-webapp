@@ -74,19 +74,19 @@ async function main(container, config) {
 
     // localStorage.removeItem(config.notifications.googleDrive.flag)
 
-    if (doEnableGoogle) {
+    // Show deprecation warning if not shown before
+    const deprecationWarning = "true" === localStorage.getItem(config.notifications.googleDrive.flag)
+    if (!deprecationWarning) {
+        alertSingleton.present({
+            warning: "NOTICE",
+            text: config.notifications.googleDrive.text
+        }, () => {
+            // Callback when OK is pressed
+            localStorage.setItem(config.notifications.googleDrive.flag, "true")
+        })
+    }
 
-            // Show deprecation warning if not shown before
-            const deprecationWarning = "true" === localStorage.getItem(config.notifications.googleDrive.flag)
-            if (!deprecationWarning) {
-                alertSingleton.present({
-                    warning: "NOTICE",
-                    text: config.notifications.googleDrive.text
-                }, () => {
-                    // Callback when OK is pressed
-                    localStorage.setItem(config.notifications.googleDrive.flag, "true")
-                })
-            }
+    if (doEnableGoogle) {
 
         try {
             await GoogleAuth.init({

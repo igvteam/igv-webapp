@@ -27,11 +27,11 @@ var igvwebConfig = {
     notifications: {
         googleDrive: {
             text: "Google Drive integration will be deprecated in a future version of IGV-Web. Please consider using alternative file loading methods like local files, URLs, or Dropbox.",
-            flag: googleDeprecationWarningShown
+            flag: "googleDriveDeprecationWarningShown"
         },
         dropbox: {
             text: "Cannot connect to Dropbox",
-            flag: dropboxWarningShown
+            flag: "dropboxWarningShown"
         }
     },
 

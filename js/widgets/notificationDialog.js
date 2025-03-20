@@ -1,5 +1,5 @@
-class CustomDialog {
-    constructor(parent) {
+class NotificationDialog {
+    constructor(parent, notificationConfig) {
         // Create card
         this.card = document.createElement('div');
         this.card.className = "card custom-dialog-card";
@@ -42,12 +42,15 @@ class CustomDialog {
             }
         });
 
+        this.notificationConfig = notificationConfig;
+
         // Hide initially
         this.card.style.display = 'none';
     }
 
     handleGotIt() {
         if (typeof this.callback === 'function') {
+            localStorage.setItem(this.notificationConfig.flag, "true")
             this.callback("GOT_IT");
             this.callback = undefined;
         }
@@ -63,10 +66,10 @@ class CustomDialog {
     }
 
     present(message, callback) {
-        this.messageArea.textContent = message;
+        this.messageArea.textContent = this.notificationConfig.text
         this.callback = callback;
         this.card.style.display = "";
     }
 }
 
-export default CustomDialog;
+export default NotificationDialog;

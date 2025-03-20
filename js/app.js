@@ -52,7 +52,7 @@ import version from "./version.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 import { FileUtils } from '../node_modules/igv-utils/src/index.js'
 import * as DOMUtils from "./widgets/utils/dom-utils.js"
-import customDialogSingleton from "./widgets/customDialogSingleton.js"
+import NotificationDialog from "./widgets/notificationDialog.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -64,6 +64,7 @@ const googleWarningFlag = "googleWarningShown"
 let svgSaveImageModal
 let pngSaveImageModal
 
+let googleDriveNotification
 async function main(container, config) {
 
     alertSingleton.init(document.getElementById('igv-main'))
@@ -73,38 +74,14 @@ async function main(container, config) {
 
     const doEnableGoogle = undefined !== config.clientId
 
-    customDialogSingleton.init(document.body);
+    googleDriveNotification = new NotificationDialog(document.body, config.notifications.googleDrive)
 
-    localStorage.removeItem(config.notifications.googleDrive.flag)
+    // TODO: Comment out after testing is complete
+    localStorage.removeItem(googleDriveNotification.notificationConfig.flag)
 
-    // Show deprecation warning if not shown before
-    const deprecationWarning = "true" === localStorage.getItem(config.notifications.googleDrive.flag)
-    if (!deprecationWarning) {
-
-        const alert =
-            {
-                text: config.notifications.googleDrive.text
-            };
-
-        const callback = (result) => {
-                if (result === 'OK') {
-                    // Handle OK button click
-                    console.log('OK')
-                } else if (result === 'CANCEL') {
-                    // Handle Cancel button click
-                    console.log('CANCEL')
-                }
-            };
-
-        customDialogSingleton.present(config.notifications.googleDrive.text, callback);
-
-        // alertSingleton.present({
-        //     warning: "NOTICE",
-        //     text: config.notifications.googleDrive.text
-        // }, () => {
-        //     // Callback when OK is pressed
-        //     localStorage.setItem(config.notifications.googleDrive.flag, "true")
-        // })
+    const googleDriveDepricationStatus = "true" === localStorage.getItem(googleDriveNotification.notificationConfig.flag)
+    if (!googleDriveDepricationStatus) {
+        googleDriveNotification.present()
     }
 
     if (doEnableGoogle) {

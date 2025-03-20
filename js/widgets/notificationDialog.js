@@ -49,11 +49,14 @@ class NotificationDialog {
     }
 
     handleGotIt() {
+
         if (typeof this.callback === 'function') {
-            localStorage.setItem(this.notificationConfig.flag, "true")
             this.callback("GOT_IT");
             this.callback = undefined;
         }
+
+        localStorage.setItem(this.notificationConfig.flag, "true")
+
         this.card.style.display = 'none';
     }
 
@@ -62,6 +65,7 @@ class NotificationDialog {
             this.callback("REMIND_LATER");
             this.callback = undefined;
         }
+
         this.card.style.display = 'none';
     }
 

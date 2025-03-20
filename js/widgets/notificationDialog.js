@@ -22,7 +22,7 @@ class NotificationDialog {
 
         // Create buttons
         this.gotItButton = document.createElement('button');
-        this.gotItButton.className = "btn btn-primary btn-sm";
+        this.gotItButton.className = "btn btn-secondary btn-sm";
         this.gotItButton.textContent = "Got it";
         this.buttonContainer.appendChild(this.gotItButton);
 

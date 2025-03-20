@@ -77,7 +77,7 @@ async function main(container, config) {
     googleDriveNotification = new NotificationDialog(document.body, config.notifications.googleDrive)
 
     // TODO: Comment out after testing is complete
-    localStorage.removeItem(googleDriveNotification.notificationConfig.flag)
+    // localStorage.removeItem(googleDriveNotification.notificationConfig.flag)
 
     const googleDriveDepricationStatus = "true" === localStorage.getItem(googleDriveNotification.notificationConfig.flag)
     if (!googleDriveDepricationStatus) {

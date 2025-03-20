@@ -75,15 +75,8 @@ class AlertDialog {
 
     present(alert, callback) {
 
-        if (alert.warning) {
-            this.errorHeadline.textContent = 'WARNING'
-        } else if (alert.error) {
-            this.errorHeadline.textContent = 'ERROR'
-        } else {
-            this.errorHeadline.textContent = ''
-        }
-
-        let string = alert.text || alert
+        this.errorHeadline.textContent = alert.message ? 'ERROR' : ''
+        let string = alert.message || alert
 
         if (httpMessages.hasOwnProperty(string)) {
             string = httpMessages[string]

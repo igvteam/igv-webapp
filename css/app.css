@@ -114,7 +114,7 @@ select#igv-app-track-select-modal-select option {
   font-size: 1rem;
 }
 select#igv-app-track-select-modal-select option[disabled] {
-  color: #afafaf;
+  color: rgb(175, 175, 175);
 }
 
 .igv-widgets-alert-dialog-container {
@@ -205,6 +205,17 @@ select#igv-app-track-select-modal-select option[disabled] {
   cursor: pointer;
   border-color: #25597f;
   background-color: #25597f;
+}
+
+.card.custom-dialog-card {
+  background-color: rgb(202, 227, 241);
+  position: fixed;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 300px;
+  max-width: 500px;
+  margin: 1rem;
 }
 
 .igv-file-load-widget-container {

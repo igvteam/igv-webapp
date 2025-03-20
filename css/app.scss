@@ -20,6 +20,7 @@ $igv-app-logo-container-width: 20%;
 $igv-header-height: 48px;
 
 @import "igv-widgets-alert-dialog";
+@import "igv-widgets-custom-dialog";
 @import "file-load-widget";
 
 html, body {

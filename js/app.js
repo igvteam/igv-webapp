@@ -72,7 +72,9 @@ async function main(container, config) {
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
 
-    setupNotifications(config.notifications)
+    if (config.notifications) {
+        setupNotifications(config.notifications)
+    }
 
     const doEnableGoogle = undefined !== config.clientId
 

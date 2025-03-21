@@ -27,7 +27,11 @@ const igvwebConfig = {
     notifications:
         [
             {
-                googleDrive: "As of March 31, IGV-Web hosted at https://igv.org/app can no longer support loading files from Google Drive. Files from Google Cloud Storage will still be supported. If you host your own instance of IGV-Web, it can be configured to support Google Drive as described at https://igv.org/doc/webapp/#Hosting/#configuration."
+                googleDrive: "<span style='font-size: large'>As of March 31, IGV-Web hosted at https://igv.org/app will no longer support " +
+                    "loading files from Google Drive. Files from Google Cloud Storage will still be supported. " +
+                    "If you host your own instance of IGV-Web, it can be configured to support Google Drive by using " +
+                    "your Google project clientId as described at " +
+                    "<a href='https://igv.org/doc/webapp/#Hosting/#configuration'>https://igv.org/doc/webapp/#Hosting/#configuration</a></span>."
             }
         ],
 

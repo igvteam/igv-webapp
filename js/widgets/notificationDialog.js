@@ -50,7 +50,7 @@ class NotificationDialog {
     }
 
     present(str) {
-        this.messageArea.textContent = str
+        this.messageArea.innerHTML = str
         this.card.style.display = "";
     }
 }

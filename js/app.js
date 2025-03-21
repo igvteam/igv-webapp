@@ -471,9 +471,6 @@ function setupNotifications(notificatons) {
             const [ key, value ] = Object.entries(notification).flat()
             notificationDialog = new NotificationDialog(document.body, key)
 
-            // TODO: Comment out after testing is complete
-            localStorage.removeItem(key)
-
             const status = "true" === localStorage.getItem(key)
             if (!status) {
                 notificationDialog.present(value)

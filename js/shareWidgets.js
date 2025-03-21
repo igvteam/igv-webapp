@@ -22,7 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.min.js'
-import AlertSingleton from './widgets/alertSingleton.js'
+import alertSingleton from './widgets/alertSingleton.js'
 import {QRCode} from './widgets/qrcode.js'
 import {doShortenURL, setURLShortener, shortSessionURL} from './shareHelper.js'
 
@@ -54,7 +54,7 @@ function createShareWidgets({browser, container, modalElement, share_input, copy
             session = browser.compressedSession();
         } catch (e) {
             modal.hide()
-            AlertSingleton.present(e.message);
+            alertSingleton.present(e.message);
         }
 
         if (session) {

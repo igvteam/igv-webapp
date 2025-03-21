@@ -1,0 +1,16 @@
+.card.custom-dialog-card {
+
+    font-size: .85rem;
+    background-color: rgb(202, 227, 241);
+
+    position: fixed;
+    top: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+
+    //min-width: 300px;
+    //max-width: 500px;
+    width: 80vw;
+
+    margin: .5rem;
+}

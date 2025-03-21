@@ -1,7 +1,7 @@
 import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/index.js'
 import {igvxhr} from '../../node_modules/igv-utils/src/index.js'
 import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDatasourceConfigurator.js'
-import AlertSingleton from './alertSingleton.js'
+import alertSingleton from './alertSingleton.js'
 import {createGenericSelectModal} from './genericSelectModal.js'
 import {createTrackURLModalElement} from './trackURLModal.js'
 import FileLoadManager from "./fileLoadManager.js"
@@ -252,14 +252,14 @@ async function updateTrackMenus(genomeID, GtexUtilsOrUndefined, trackRegistryFil
     try {
         responses = await Promise.all(paths.map(path => fetch(path)))
     } catch (e) {
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
     }
 
     let jsons = []
     try {
         jsons = await Promise.all(responses.map(response => response.json()))
     } catch (e) {
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
     }
 
     let buttonConfigurations = []
@@ -373,7 +373,7 @@ async function getPathsWithTrackRegistryFile(genomeID, trackRegistryFile) {
         trackRegistry = await response.json()
     } else {
         const e = new Error("Error retrieving registry via getPathsWithTrackRegistryFile()")
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
         throw e
     }
 
@@ -388,14 +388,14 @@ async function getPathsWithTrackRegistryFile(genomeID, trackRegistryFile) {
     try {
         responses = await Promise.all(JSONFilePaths.map(path => fetch(path)))
     } catch (e) {
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
     }
 
     let trackConfigurations = []
     try {
         trackConfigurations = await Promise.all(responses.map(response => response.json()))
     } catch (e) {
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
     }
 
     return trackConfigurations

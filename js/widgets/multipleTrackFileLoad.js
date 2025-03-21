@@ -1,4 +1,4 @@
-import AlertSingleton from './alertSingleton.js'
+import alertSingleton from './alertSingleton.js'
 import {FileUtils, URIUtils, GoogleUtils, GoogleDrive, GooglePicker} from "../../node_modules/igv-utils/src/index.js"
 
 class MultipleTrackFileLoad {
@@ -48,7 +48,7 @@ class MultipleTrackFileLoad {
                 Dropbox.choose(obj)
 
             } else {
-                AlertSingleton.present('Cannot connect to Dropbox')
+                alertSingleton.present('Cannot connect to Dropbox')
             }
         })
 
@@ -152,7 +152,7 @@ async function ingestPaths({paths, fileLoadHandler}) {
 
     } catch (e) {
         console.error(e)
-        AlertSingleton.present(e.message)
+        alertSingleton.present(e.message)
     }
 }
 

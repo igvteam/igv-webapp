@@ -1,4 +1,4 @@
-var igvwebConfig = {
+const igvwebConfig = {
 
     genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
@@ -22,6 +22,14 @@ var igvwebConfig = {
     enableCircularView: true,
 
     restoreLastGenome: true,
+
+    // Configuration for user notifications that can be dismissed
+    notifications:
+        [
+            {
+                googleDrive: "As of March 31, IGV-Web hosted at https://igv.org/app can no longer support loading files from Google Drive. Files from Google Cloud Storage will still be supported. If you host your own instance of IGV-Web, it can be configured to support Google Drive as described at https://igv.org/doc/webapp/#Hosting/#configuration."
+            }
+        ],
 
     igvConfig:
         {

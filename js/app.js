@@ -470,7 +470,7 @@ function setupNotifications(notificatons) {
             notificationDialog = new NotificationDialog(document.body, key)
 
             // TODO: Comment out after testing is complete
-            localStorage.removeItem(key)
+            // localStorage.removeItem(key)
 
             const status = "true" === localStorage.getItem(key)
             if (!status) {

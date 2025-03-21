@@ -27,7 +27,7 @@ const igvwebConfig = {
     notifications:
         [
             {
-                googleDrive: "Google Drive integration will be deprecated in a future version of IGV-Web. Please consider using alternative file loading methods like local files, URLs, or Dropbox."
+                googleDrive: "As of March 31, IGV-Web hosted at https://igv.org/app can no longer support loading files from Google Drive. Files from Google Cloud Storage will still be supported. If you host your own instance of IGV-Web, it can be configured to support Google Drive as described at https://igv.org/doc/webapp/#Hosting/#configuration."
             }
         ],
 

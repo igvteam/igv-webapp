@@ -208,14 +208,14 @@ select#igv-app-track-select-modal-select option[disabled] {
 }
 
 .card.custom-dialog-card {
+  font-size: 0.85rem;
   background-color: rgb(202, 227, 241);
   position: fixed;
   top: 10vh;
   left: 50%;
   transform: translateX(-50%);
-  min-width: 300px;
-  max-width: 500px;
-  margin: 1rem;
+  width: 80vw;
+  margin: 0.5rem;
 }
 
 .igv-file-load-widget-container {

@@ -64,7 +64,7 @@ const googleWarningFlag = "googleWarningShown"
 let svgSaveImageModal
 let pngSaveImageModal
 
-let googleDriveNotification
+let notificationDialog
 async function main(container, config) {
 
     alertSingleton.init(document.getElementById('igv-main'))
@@ -72,17 +72,9 @@ async function main(container, config) {
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
     $('#igv-igvjs-version').text(`igv.js version ${igv.version()}`)
 
+    setupNotifications(config.notifications)
+
     const doEnableGoogle = undefined !== config.clientId
-
-    googleDriveNotification = new NotificationDialog(document.body, config.notifications.googleDrive)
-
-    // TODO: Comment out after testing is complete
-    // localStorage.removeItem(googleDriveNotification.notificationConfig.flag)
-
-    const googleDriveDepricationStatus = "true" === localStorage.getItem(googleDriveNotification.notificationConfig.flag)
-    if (!googleDriveDepricationStatus) {
-        googleDriveNotification.present()
-    }
 
     if (doEnableGoogle) {
 
@@ -463,6 +455,29 @@ async function createSessionMenu(sessionListDivider, sessionRegistryFile, sessio
             })
         }
 
+    }
+
+}
+
+let notificationDialogs
+function setupNotifications(notificatons) {
+
+    if (notificatons && notificatons.length > 0) {
+
+        notificationDialogs = notificatons.map(notification => {
+
+            const [ key, value ] = Object.entries(notification).flat()
+            notificationDialog = new NotificationDialog(document.body, key)
+
+            // TODO: Comment out after testing is complete
+            localStorage.removeItem(key)
+
+            const status = "true" === localStorage.getItem(key)
+            if (!status) {
+                notificationDialog.present(value)
+            }
+
+        })
     }
 
 }

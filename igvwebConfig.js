@@ -1,4 +1,4 @@
-var igvwebConfig = {
+const igvwebConfig = {
 
     genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
@@ -24,16 +24,12 @@ var igvwebConfig = {
     restoreLastGenome: true,
 
     // Configuration for user notifications that can be dismissed
-    notifications: {
-        googleDrive: {
-            text: "Google Drive integration will be deprecated in a future version of IGV-Web. Please consider using alternative file loading methods like local files, URLs, or Dropbox.",
-            flag: "googleDriveDeprecationWarningShown"
-        },
-        dropbox: {
-            text: "Cannot connect to Dropbox",
-            flag: "dropboxWarningShown"
-        }
-    },
+    notifications:
+        [
+            {
+                googleDrive: "Google Drive integration will be deprecated in a future version of IGV-Web. Please consider using alternative file loading methods like local files, URLs, or Dropbox."
+            }
+        ],
 
     igvConfig:
         {

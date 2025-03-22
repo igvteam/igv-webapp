@@ -79,7 +79,7 @@ async function main(container, config) {
     const doEnableGoogle = undefined !== config.clientId
 
     if (doEnableGoogle) {
-
+        checkGoogleConfig(config)
         try {
             await GoogleAuth.init({
                 client_id: config.clientId,
@@ -214,6 +214,15 @@ async function main(container, config) {
     if (browser) {
         Globals.browser = browser
         await initializationHelper(browser, container, config)
+    }
+
+    function checkGoogleConfig(config) {
+        if(config.apiKey && config.apiKey.startsWith("leawkk")) {
+            config.apiKey = atob(config.apiKey.substring(6))
+        }
+        if(config.clientId && config.clientId.startsWith("Z_%%12")) {
+            config.clientId = atob(config.clientId.substring(6))
+        }
     }
 }
 
@@ -706,9 +715,10 @@ async function initializeDropbox() {
             const dropbox = document.createElement('script')
 
             // dropbox.setAttribute('src', 'http://localhost:9999');
+            const key = igvwebConfig.dropboxAPIKey.startsWith("e43594") ? atob(igvwebConfig.dropboxAPIKey.substring(6)) : igvwebConfig.dropboxAPIKey
             dropbox.setAttribute('src', 'https://www.dropbox.com/static/api/2/dropins.js')
             dropbox.setAttribute('id', 'dropboxjs')
-            dropbox.dataset.appKey = igvwebConfig.dropboxAPIKey
+            dropbox.dataset.appKey = key
             dropbox.setAttribute('type', "text/javascript")
 
             document.head.appendChild(dropbox)

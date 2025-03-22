@@ -18,46 +18,15 @@ function bitlyShortener(accessToken) {
                 })
         }
     }
-
 }
 
-function googleShortener(apiKey) {
-    if (!apiKey || apiKey === "API_KEY") {
-        return undefined
-    } else {
-        return async function (url) {
-            const api = "https://www.googleapis.com/urlshortener/v1/url"
-            const endpoint = api + "?key=" + apiKey
-            return StringLoader
-                .loadJson(endpoint, {sendData: JSON.stringify({"longUrl": url}), contentType: "application/json"})
-                .then(function (json) {
-                    return json.id
-                })
-        }
-    }
-}
 
-function tinyURLShortener({endpoint}) {
-    endpoint = endpoint || "https://2et6uxfezb.execute-api.us-east-1.amazonaws.com/dev/tinyurl/"
-    return async function (url) {
-        const enc = encodeURIComponent(url)
-        const response = await fetch(`${endpoint}${enc}`)
-        if (response.ok) {
-            const shortened = await response.text()
-            if (shortened.startsWith("<")) {
-                return url
-            } else {
-                return shortened
-            }
-        } else {
-            throw new Error(response.statusText)
-        }
-    }
-}
-
-function __tinyURLShortener({endpoint, apiKey, api_token}) {
+function tinyURLShortener({endpoint, api_token}) {
     endpoint = endpoint || "https://api.tinyurl.com/create"
-    const token = apiKey || api_token
+    let token = api_token
+    if(token.startsWith("ll4539")) {
+        token = atob(token.substring(6))
+    }
     return async function (url) {
         const response = await fetch(`${endpoint}?api_token=${token}`, {
             method: 'post',

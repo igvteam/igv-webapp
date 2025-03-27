@@ -76,9 +76,10 @@ async function main(container, config) {
         setupNotifications(config.notifications)
     }
 
-    const doEnableGoogle = undefined !== config.clientId
-
-    if (doEnableGoogle) {
+    const isGoogleEnabled = undefined !== config.clientId
+    const isGoogleDriveEnabled = undefined !== config.isGoogleDriveEnabled && true === config.isGoogleDriveEnabled
+    
+    if (isGoogleEnabled && isGoogleDriveEnabled) {
         checkGoogleConfig(config)
         try {
             await GoogleAuth.init({

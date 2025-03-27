@@ -82,7 +82,7 @@ async function main(container, config) {
     isGoogleEnabled = undefined !== config.clientId
     isGoogleDriveEnabled = (true === isGoogleEnabled) && (undefined !== config.isGoogleDriveEnabled && true === config.isGoogleDriveEnabled)
 
-    if (isGoogleEnabled && isGoogleDriveEnabled) {
+    if (isGoogleEnabled) {
         checkGoogleConfig(config)
         try {
             await GoogleAuth.init({

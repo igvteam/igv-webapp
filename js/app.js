@@ -57,7 +57,10 @@ import NotificationDialog from "./widgets/notificationDialog.js"
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
 let isDropboxEnabled = false
-let googleEnabled = false
+
+let isGoogleEnabled
+let isGoogleDriveEnabled
+
 let currentGenomeId
 const googleWarningFlag = "googleWarningShown"
 
@@ -76,9 +79,9 @@ async function main(container, config) {
         setupNotifications(config.notifications)
     }
 
-    const isGoogleEnabled = undefined !== config.clientId
-    const isGoogleDriveEnabled = undefined !== config.isGoogleDriveEnabled && true === config.isGoogleDriveEnabled
-    
+    isGoogleEnabled = undefined !== config.clientId
+    isGoogleDriveEnabled = (true === isGoogleEnabled) && (undefined !== config.isGoogleDriveEnabled && true === config.isGoogleDriveEnabled)
+
     if (isGoogleEnabled && isGoogleDriveEnabled) {
         checkGoogleConfig(config)
         try {
@@ -87,7 +90,6 @@ async function main(container, config) {
                 apiKey: config.apiKey,
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
-            googleEnabled = true
 
             // Reset google warning flag on success
             localStorage.removeItem(googleWarningFlag)
@@ -164,7 +166,7 @@ async function main(container, config) {
         $('#igv-app-dropdown-local-track-file-input'),
         initializeDropbox,
         config.dropboxAPIKey ? $('#igv-app-dropdown-dropbox-track-file-button') : undefined,
-        googleEnabled,
+        isGoogleDriveEnabled,
         $('#igv-app-dropdown-google-drive-track-file-button'),
         ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
@@ -259,7 +261,7 @@ async function initializationHelper(browser, container, options) {
             localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
             initializeDropbox,
             dropboxButton: options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-genome-file-button') : undefined,
-            googleEnabled: googleEnabled,
+            googleEnabled: isGoogleDriveEnabled,
             googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
             loadHandler: async configuration => {
 
@@ -290,7 +292,15 @@ async function initializationHelper(browser, container, options) {
         }
     }
 
-    createSampleInfoMenu(document.getElementById('igv-main'), document.getElementById('igv-app-sample-info-dropdown-local-track-file-input'), initializeDropbox, options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-sample-info-file-button') : undefined, googleEnabled, document.getElementById('igv-app-dropdown-google-drive-sample-info-file-button'), 'igv-app-sample-info-from-url-modal', sampleInfoFileLoader)
+    createSampleInfoMenu(
+        document.getElementById('igv-main'),
+        document.getElementById('igv-app-sample-info-dropdown-local-track-file-input'),
+        initializeDropbox,
+        options.dropboxAPIKey ? document.getElementById('igv-app-dropdown-dropbox-sample-info-file-button') : undefined,
+        isGoogleDriveEnabled,
+        document.getElementById('igv-app-dropdown-google-drive-sample-info-file-button'),
+        'igv-app-sample-info-from-url-modal',
+        sampleInfoFileLoader)
 
     const sessionSaver = () => {
         try {
@@ -321,7 +331,7 @@ async function initializationHelper(browser, container, options) {
         'igv-app-dropdown-google-drive-session-file-button',
         'igv-app-session-url-modal',
         'igv-app-session-save-modal',
-        googleEnabled,
+        isGoogleDriveEnabled,
         sessionLoader,
         sessionSaver)
 
@@ -624,7 +634,7 @@ function createSampleInfoMenu(igvMain,
 
 function configureGoogleSignInButton() {
 
-    if (true === googleEnabled) {
+    if (true === isGoogleEnabled) {
 
         const dropdownToggle = document.querySelector('#igv-google-drive-dropdown-toggle')
         dropdownToggle.style.display = 'block'

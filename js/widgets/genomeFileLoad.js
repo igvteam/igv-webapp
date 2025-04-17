@@ -21,6 +21,10 @@ class GenomeFileLoad extends FileLoad {
 
         let configuration = undefined
 
+        if(paths.length == 0) {
+            return
+        }
+
         const filenames = []
         for(let p of paths) {
             const filename = await MultipleTrackFileLoad.getFilename(p)
@@ -29,15 +33,15 @@ class GenomeFileLoad extends FileLoad {
 
         paths.map(async path => await MultipleTrackFileLoad.getFilename(path))
 
+        const path1 = paths[0]
         if(1 === paths.length) {
-
-            const extension = FileUtils.getExtension(paths[0])
+            const extension = FileUtils.getExtension(path1)
             if ('json' === extension) {
-                configuration = await igvxhr.loadJson(paths[0])
+                configuration = await igvxhr.loadJson(path1)
             } else if (filenames[0].endsWith("hub.txt") ) {
-                configuration = {url: paths[0]}
+                configuration = {url: path1}
             } else if ('gbk' === extension) {
-                configuration = {gbkURL: paths[0]}
+                configuration = {gbkURL: path1}
             }
             //else if ('2bit' === extension) {
             //    configuration = {twoBitURL: paths[0]}
@@ -45,21 +49,22 @@ class GenomeFileLoad extends FileLoad {
             else {
                 // Assume this is a fasta file.  There is no standard extension, and no way to really know for sure.
                 // If we can determine the file size and it is not too large relax requirement for an index file
-                let fileSize = await igvxhr.getContentLength(paths[0])
+                let fileSize = await igvxhr.getContentLength(path1)
                 if (fileSize > 0 && fileSize < 10000000) {
-                    configuration = {fastaURL: paths[0]}
+                    configuration = {fastaURL: path1}
                 }
             }
         } else {   // 2 paths entered, assume they are a fasta and index file
+            const path2 = paths[1];
 
             if (await this.isGzipped(filenames[0]) || await this.isGzipped(filenames[1])) {
                 throw new Error('Genome did not load - Gzipped fasta files with indexes are not supported')
             }
-            const [_0, _1] = filenames.map(file => FileUtils.getExtension(file))
-            if ('fai' === _0) {
-                configuration = {fastaURL: paths[1], indexURL: paths[0]}
-            } else if ('fai' === _1) {
-                configuration = {fastaURL: paths[0], indexURL: paths[1]}
+            const [ext1, ext2] = filenames.map(file => FileUtils.getExtension(file))
+            if ('fai' === ext1) {
+                configuration = {fastaURL: path2, indexURL: path1}
+            } else if ('fai' === ext2) {
+                configuration = {fastaURL: path1, indexURL: path2}
             } else {
                 throw new Error('Genome did not load - did not detect index file (expected extension .fai)')
             }

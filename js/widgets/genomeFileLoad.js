@@ -1,6 +1,6 @@
 import {FileUtils, igvxhr, StringUtils} from "../../node_modules/igv-utils/src/index.js"
 import FileLoad from "./fileLoad.js"
-import MultipleTrackFileLoad from './multipleTrackFileLoad.js'
+import MultipleTrackFileLoad from "./multipleTrackFileLoad.js"
 
 class GenomeFileLoad extends FileLoad {
 
@@ -9,71 +9,74 @@ class GenomeFileLoad extends FileLoad {
         this.loadHandler = loadHandler
     }
 
+    /**
+     * Load a reference genome, which can be  is a JSON, hub.txt, .gbk, .2bit, or a fasta file with an index.  The
+     * function takes an array of paths, which be either url or file paths.  With the exception of the fasta file
+     * the paths array should only contain one element.  The fasta file can be a single file, or a pair of files.
+     *
+     * @param paths
+     * @returns {Promise<void>}
+     */
     async loadPaths(paths) {
 
-        const status = await GenomeFileLoad.isGZip(paths)
+        let configuration = undefined
 
-        if (true === status) {
-            throw new Error('Genome did not load - gzip files are not supported')
-        } else {
+        const filenames = []
+        for(let p of paths) {
+            const filename = await MultipleTrackFileLoad.getFilename(p)
+            filenames.push(filename)
+        }
 
-            let configuration = undefined
+        paths.map(async path => await MultipleTrackFileLoad.getFilename(path))
 
-            const jsonFiles = paths.filter(path => 'json' === FileUtils.getExtension(path))
-            const hubFiles = paths.filter(path => StringUtils.isString(path) && path.endsWith("/hub.txt"))
-            const gbkFile = paths.filter(path => 'gbk' === FileUtils.getExtension(path))
+        if(1 === paths.length) {
 
-            // If one of the paths is .json, unpack and send to loader
-            // TODO -- what if multiple json files are selected?  This is surely an error
-            if (jsonFiles.length > 0) {
-                configuration = await igvxhr.loadJson(jsonFiles[0])
-            } else if (hubFiles.length > 0) {
-                configuration = {url: hubFiles[0]}
-            } else if (gbkFile.length > 0) {
-
-                configuration = {gbkURL: gbkFile[0]}
-            } else if (2 === paths.length) {
-                const [_0, _1] = await GenomeFileLoad.getExtension(paths)
-                if ('fai' === _0) {
-                    configuration = {fastaURL: paths[1], indexURL: paths[0]}
-                } else if ('fai' === _1) {
-                    configuration = {fastaURL: paths[0], indexURL: paths[1]}
+            const extension = FileUtils.getExtension(paths[0])
+            if ('json' === extension) {
+                configuration = await igvxhr.loadJson(paths[0])
+            } else if (filenames[0].endsWith("hub.txt") ) {
+                configuration = {url: paths[0]}
+            } else if ('gbk' === extension) {
+                configuration = {gbkURL: paths[0]}
+            }
+            //else if ('2bit' === extension) {
+            //    configuration = {twoBitURL: paths[0]}
+            //}
+            else {
+                // Assume this is a fasta file.  There is no standard extension, and no way to really know for sure.
+                // If we can determine the file size and it is not too large relax requirement for an index file
+                let fileSize = await igvxhr.getContentLength(paths[0])
+                if (fileSize > 0 && fileSize < 10000000) {
+                    configuration = {fastaURL: paths[0]}
                 }
             }
+        } else {   // 2 paths entered, assume they are a fasta and index file
 
-            if (undefined === configuration) {
-                throw new Error('Genome requires either a single JSON file, UCSC hub.txt file, genbank ".gbk" file, or a FASTA & index file')
+            if (await this.isGzipped(filenames[0]) || await this.isGzipped(filenames[1])) {
+                throw new Error('Genome did not load - Gzipped fasta files with indexes are not supported')
+            }
+            const [_0, _1] = filenames.map(file => FileUtils.getExtension(file))
+            if ('fai' === _0) {
+                configuration = {fastaURL: paths[1], indexURL: paths[0]}
+            } else if ('fai' === _1) {
+                configuration = {fastaURL: paths[0], indexURL: paths[1]}
             } else {
-                this.loadHandler(configuration)
-            }
-
-
-        }
-
-    }
-
-    static async isGZip(paths) {
-
-        for (let path of paths) {
-            const filename = await MultipleTrackFileLoad.getFilename(path)
-            if (true === filename.endsWith('.gz')) {
-                return true
+                throw new Error('Genome did not load - did not detect index file (expected extension .fai)')
             }
         }
 
-        return false
+        if (undefined === configuration) {
+            throw new Error('Genome requires either a single JSON, UCSC hub.txt, genbank ".gbk", or a FASTA & index file')
+        } else {
+            this.loadHandler(configuration)
+        }
     }
 
-    static async getExtension(paths) {
-
-        const a = await MultipleTrackFileLoad.getFilename(paths[0])
-        const b = await MultipleTrackFileLoad.getFilename(paths[1])
-
-        return [a, b].map(name => FileUtils.getExtension(name))
-
+    async isGzipped(name) {
+        return name.endsWith(".gz")
     }
-
 
 }
+
 
 export default GenomeFileLoad

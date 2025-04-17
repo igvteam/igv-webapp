@@ -1,4 +1,5 @@
-import StringLoader from "./stringLoader.js"
+import {igvxhr} from "../node_modules/igv-utils/src/index.js"
+
 
 function bitlyShortener(accessToken) {
 
@@ -12,7 +13,7 @@ function bitlyShortener(accessToken) {
                 url = url.replace("localhost", devIP)
             }  // Dev hack
             let endpoint = api + "?access_token=" + accessToken + "&longUrl=" + encodeURIComponent(url)
-            return StringLoader.loadJson(endpoint, {})
+            return igvxhr.loadJson(endpoint, {})
                 .then(function (json) {
                     return json.data.url
                 })

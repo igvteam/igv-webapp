@@ -49,6 +49,8 @@ import {sessionURL} from './shareHelper.js'
 import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
+import OKCancelDialog from "./widgets/okCancelDialog.js"
+
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 import { FileUtils } from '../node_modules/igv-utils/src/index.js'
 import * as DOMUtils from "./widgets/utils/dom-utils.js"
@@ -68,8 +70,10 @@ let svgSaveImageModal
 let pngSaveImageModal
 
 let notificationDialog
-async function main(container, config) {
 
+let okCancelDialog
+
+async function main(container, config) {
     alertSingleton.init(document.getElementById('igv-main'))
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
@@ -217,6 +221,8 @@ async function main(container, config) {
     if (browser) {
         Globals.browser = browser
         await initializationHelper(browser, container, config)
+
+        testOKCancelDialog(container)
     }
 
     function checkGoogleConfig(config) {
@@ -227,6 +233,7 @@ async function main(container, config) {
             config.clientId = atob(config.clientId.substring(6))
         }
     }
+
 }
 
 async function initializationHelper(browser, container, options) {
@@ -411,6 +418,28 @@ async function initializationHelper(browser, container, options) {
 
     }
 
+
+}
+
+// Test function for OKCancelDialog
+function testOKCancelDialog(container) {
+
+    okCancelDialog = new OKCancelDialog(
+        document.getElementById('igv-main'),
+        () => { console.log('OK clicked!'); },
+        () => { console.log('Cancel clicked!'); }
+    );
+
+    // Use the navbar button to show dialog
+    const button = document.getElementById('igv-app-test-dialog-button');
+    if (button) {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            okCancelDialog.present('This is a test of the OK/Cancel dialog. Choose an option.');
+        });
+    } else {
+        console.error('Test dialog button not found in the DOM');
+    }
 }
 
 async function checkFileExists(url) {

@@ -2,7 +2,7 @@ class OKCancelDialog {
     constructor(parent, okHandler, cancelHandler) {
 
         this.card = document.createElement('div');
-        this.card.className = "card custom-dialog-card";
+        this.card.className = "card ok-cancel-dialog-card";
         parent.appendChild(this.card);
 
         this.cardBody = document.createElement('div');

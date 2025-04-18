@@ -1,14 +1,15 @@
-.card.custom-dialog-card {
+.card.ok-cancel-dialog-card {
 
     font-size: .85rem;
-    background-color: rgb(202, 227, 241);
+    background-color: rgb(245, 245, 245);
 
     position: fixed;
     top: 10vh;
     left: 50%;
     transform: translateX(-50%);
 
-    width: 80vw;
+    //width: 80vw;
+    width: 300px;
 
     margin: .5rem;
 }

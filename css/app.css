@@ -209,12 +209,12 @@ select#igv-app-track-select-modal-select option[disabled] {
 
 .card.custom-dialog-card {
   font-size: 0.85rem;
-  background-color: rgb(202, 227, 241);
+  background-color: rgb(245, 245, 245);
   position: fixed;
   top: 10vh;
   left: 50%;
   transform: translateX(-50%);
-  width: 80vw;
+  width: 25vw;
   margin: 0.5rem;
 }
 

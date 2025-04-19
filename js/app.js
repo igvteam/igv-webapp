@@ -50,7 +50,6 @@ import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
 import OKCancelDialog from "./widgets/okCancelDialog.js"
-
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 import { FileUtils } from '../node_modules/igv-utils/src/index.js'
 import * as DOMUtils from "./widgets/utils/dom-utils.js"
@@ -231,7 +230,6 @@ async function main(container, config) {
             config.clientId = atob(config.clientId.substring(6))
         }
     }
-
 }
 
 async function initializationHelper(browser, container, options) {

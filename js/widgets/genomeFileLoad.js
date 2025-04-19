@@ -52,6 +52,12 @@ class GenomeFileLoad extends FileLoad {
                 let fileSize = await igvxhr.getContentLength(path1)
                 if (fileSize > 0 && fileSize < 10000000) {
                     configuration = {fastaURL: path1}
+                } else {
+                    if(confirm("Missing index file.  This fasta is large, or its size unknown, and loading without an index file may be slow or freeze the browser.  Proceed?")) {
+                        configuration = {fastaURL: path1}
+                    } else {
+                        return
+                    }
                 }
             }
         } else {   // 2 paths entered, assume they are a fasta and index file

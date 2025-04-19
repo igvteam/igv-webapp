@@ -415,10 +415,7 @@ async function initializationHelper(browser, container, options) {
         $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
 
     }
-
-
 }
-
 
 async function checkFileExists(url) {
     try {

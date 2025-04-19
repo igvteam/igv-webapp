@@ -421,26 +421,6 @@ async function initializationHelper(browser, container, options) {
 
 }
 
-// Test function for OKCancelDialog
-function testOKCancelDialog(container) {
-
-    okCancelDialog = new OKCancelDialog(
-        document.getElementById('igv-main'),
-        () => { console.log('OK clicked!'); },
-        () => { console.log('Cancel clicked!'); }
-    );
-
-    // Use the navbar button to show dialog
-    const button = document.getElementById('igv-app-test-dialog-button');
-    if (button) {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            okCancelDialog.present('This is a test of the OK/Cancel dialog. Choose an option.');
-        });
-    } else {
-        console.error('Test dialog button not found in the DOM');
-    }
-}
 
 async function checkFileExists(url) {
     try {

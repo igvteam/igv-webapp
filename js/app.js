@@ -221,8 +221,6 @@ async function main(container, config) {
     if (browser) {
         Globals.browser = browser
         await initializationHelper(browser, container, config)
-
-        testOKCancelDialog(container)
     }
 
     function checkGoogleConfig(config) {

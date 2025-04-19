@@ -218,6 +218,17 @@ select#igv-app-track-select-modal-select option[disabled] {
   margin: 0.5rem;
 }
 
+.card.ok-cancel-dialog-card {
+  font-size: 0.85rem;
+  background-color: rgb(245, 245, 245);
+  position: fixed;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  margin: 0.5rem;
+}
+
 .igv-file-load-widget-container {
   position: relative;
   border-color: transparent;

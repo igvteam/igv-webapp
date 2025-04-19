@@ -114,7 +114,7 @@ select#igv-app-track-select-modal-select option {
   font-size: 1rem;
 }
 select#igv-app-track-select-modal-select option[disabled] {
-  color: rgb(175, 175, 175);
+  color: #afafaf;
 }
 
 .igv-widgets-alert-dialog-container {
@@ -209,23 +209,12 @@ select#igv-app-track-select-modal-select option[disabled] {
 
 .card.custom-dialog-card {
   font-size: 0.85rem;
-  background-color: rgb(202, 227, 241);
+  background-color: #cae3f1;
   position: fixed;
   top: 10vh;
   left: 50%;
   transform: translateX(-50%);
   width: 80vw;
-  margin: 0.5rem;
-}
-
-.card.ok-cancel-dialog-card {
-  font-size: 0.85rem;
-  background-color: rgb(245, 245, 245);
-  position: fixed;
-  top: 10vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
   margin: 0.5rem;
 }
 

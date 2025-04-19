@@ -49,7 +49,6 @@ import {sessionURL} from './shareHelper.js'
 import {createSaveImageWidget} from './saveImageWidget.js'
 import GtexUtils from "./gtexUtils.js"
 import version from "./version.js"
-import OKCancelDialog from "./widgets/okCancelDialog.js"
 import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 import { FileUtils } from '../node_modules/igv-utils/src/index.js'
 import * as DOMUtils from "./widgets/utils/dom-utils.js"
@@ -69,10 +68,8 @@ let svgSaveImageModal
 let pngSaveImageModal
 
 let notificationDialog
-
-let okCancelDialog
-
 async function main(container, config) {
+
     alertSingleton.init(document.getElementById('igv-main'))
 
     $('#igv-app-version').text(`IGV-Web app version ${version()}`)
@@ -413,6 +410,7 @@ async function initializationHelper(browser, container, options) {
         $('#igv-app-circular-view-resize-modal').on('shown.bs.modal', () => document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString())
 
     }
+
 }
 
 async function checkFileExists(url) {

@@ -26,7 +26,7 @@ function createToolsWidgets(rootContainer,
         {
             title: 'Enter BLAT Sequence',
             type: 'textarea',
-            rows: 20,
+            rows: 10,
             cols: 80,
             minLength: 20,
             maxLength: 8000,

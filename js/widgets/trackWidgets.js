@@ -5,7 +5,7 @@ import alertSingleton from './alertSingleton.js'
 import {createGenericSelectModal} from './genericSelectModal.js'
 import {createTrackURLModalElement} from './trackURLModal.js'
 import FileLoadManager from "./fileLoadManager.js"
-import FileLoadWidget from "./fileLoadWidget.js"
+import URLLoadWidget from "./urlLoadWidget.js"
 import MultipleTrackFileLoad from "./multipleTrackFileLoad.js"
 import * as Utils from './utils.js'
 
@@ -49,13 +49,11 @@ function createTrackWidgetsWithTrackRegistry($igvMain,
             widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Track',
             indexTitle: 'Index',
-            mode: 'url',
             fileLoadManager: new FileLoadManager(),
-            dataOnly: false,
-            doURL: true
+            dataOnly: false
         }
 
-    fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
+    fileLoadWidget = new URLLoadWidget(fileLoadWidgetConfig)
 
     trackWidgetModal = new bootstrap.Modal(urlModalElement)
     Utils.configureModal(fileLoadWidget, trackWidgetModal, async fileLoadWidget => {

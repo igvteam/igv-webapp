@@ -5,7 +5,7 @@ import Globals from "../globals.js"
 import alertSingleton from "./alertSingleton.js"
 import {createURLModalElement} from "./urlModal.js"
 import FileLoadManager from "./fileLoadManager.js"
-import FileLoadWidget from "./fileLoadWidget.js"
+import URLLoadWidget from "./urlLoadWidget.js"
 import * as Utils from './utils.js'
 import {genarkDatasourceConfigurator} from "./genarkDatasourceConfigurator.js"
 
@@ -40,14 +40,12 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
     igvMain.appendChild(urlModalElement)
 
     // File widget
-    const fileLoadWidget = new FileLoadWidget({
+    const fileLoadWidget = new URLLoadWidget({
         widgetParent: urlModalElement.querySelector('.modal-body'),
         dataTitle: 'Genome',
         indexTitle: 'Index',
-        mode: 'url',
         fileLoadManager: new FileLoadManager(),
-        dataOnly: false,
-        doURL: true
+        dataOnly: false
     })
 
     // Configures both file widget and url modal, a bit confusing

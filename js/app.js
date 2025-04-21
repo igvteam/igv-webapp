@@ -40,7 +40,7 @@ import {
 } from "./widgets/markupFactory.js"
 import GenomeFileLoad from "./widgets/genomeFileLoad.js"
 import FileLoadManager from "./widgets/fileLoadManager.js"
-import FileLoadWidget from "./widgets/fileLoadWidget.js"
+import URLLoadWidget from "./widgets/urlLoadWidget.js"
 import * as Utils from './widgets/utils.js'
 import Globals from "./globals.js"
 import {createGenomeWidgets, initializeGenomeWidgets, loadGenome} from './widgets/genomeWidgets.js'
@@ -548,13 +548,11 @@ function createSampleInfoURLWidget(urlModalId, igvMain, sampleInfoFileLoadHandle
             widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Sample Info',
             indexTitle: 'Index',
-            mode: 'url',
             fileLoadManager: new FileLoadManager(),
-            dataOnly: true,
-            doURL: true
+            dataOnly: true
         }
 
-    const fileLoadWidget = new FileLoadWidget(fileLoadWidgetConfig)
+    const fileLoadWidget = new URLLoadWidget(fileLoadWidgetConfig)
 
     sampleInfoURLModal = new bootstrap.Modal(urlModalElement)
     Utils.configureModal(fileLoadWidget, sampleInfoURLModal, async fileLoadWidget => {

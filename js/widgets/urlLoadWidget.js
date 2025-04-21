@@ -1,9 +1,9 @@
 import * as DOMUtils from "./utils/dom-utils.js"
 import * as UIUtils from "./utils/ui-utils.js"
 
-class FileLoadWidget {
+class URLLoadWidget {
 
-    constructor({widgetParent, dataTitle, indexTitle, mode, fileLoadManager, dataOnly, doURL}) {
+    constructor({widgetParent, dataTitle, indexTitle, fileLoadManager, dataOnly}) {
 
         dataTitle = dataTitle || 'Data'
 
@@ -13,36 +13,19 @@ class FileLoadWidget {
 
         dataOnly = dataOnly || false
 
-        // TODO: Remove?
-        doURL = doURL || false
 
         // file load widget
         this.container = DOMUtils.div({class: 'igv-file-load-widget-container'})
         widgetParent.appendChild(this.container)
 
-        let config
-        if ('localFile' === mode) {
-            // local data/index
-            config =
+        const  config =
                 {
                     parent: this.container,
-                    doURL: false,
-                    dataTitle: dataTitle + ' file',
-                    indexTitle: indexTitle + ' file',
-                    dataOnly
-                }
-        } else {
-
-            // url data/index
-            config =
-                {
-                    parent: this.container,
-                    doURL: true,
                     dataTitle: dataTitle + ' URL',
                     indexTitle: indexTitle + ' URL',
                     dataOnly
                 }
-        }
+
 
         this.createInputContainer(config)
 
@@ -138,11 +121,7 @@ class FileLoadWidget {
         input_data_row.appendChild(label)
         label.textContent = dataTitle
 
-        if (true === doURL) {
             this.createURLContainer(input_data_row, 'igv-flw-data-url', false)
-        } else {
-            this.createLocalFileContainer(input_data_row, 'igv-flw-local-data-file', false)
-        }
 
         if (true === dataOnly) {
             return
@@ -157,11 +136,7 @@ class FileLoadWidget {
         input_index_row.appendChild(label)
         label.textContent = indexTitle
 
-        if (true === doURL) {
             this.createURLContainer(input_index_row, 'igv-flw-index-url', true)
-        } else {
-            this.createLocalFileContainer(input_index_row, 'igv-flw-local-index-file', true)
-        }
 
     }
 
@@ -180,45 +155,6 @@ class FileLoadWidget {
 
     }
 
-    createLocalFileContainer(parent, id, isIndexFile) {
-
-        const file_chooser_container = DOMUtils.div({class: 'igv-flw-file-chooser-container'})
-        parent.appendChild(file_chooser_container)
-
-        const str = `${id}${DOMUtils.guid()}`
-
-        const label = DOMUtils.create('label')
-        label.setAttribute('for', str)
-
-        file_chooser_container.appendChild(label)
-        label.textContent = 'Choose file'
-
-        const input = DOMUtils.create('input', {class: 'igv-flw-file-chooser-input'})
-        input.setAttribute('id', str)
-        input.setAttribute('name', str)
-        input.setAttribute('type', 'file')
-        file_chooser_container.appendChild(input)
-
-        const file_name = DOMUtils.div({class: 'igv-flw-local-file-name-container'})
-        parent.appendChild(file_name)
-
-        DOMUtils.hide(file_name)
-
-        input.addEventListener('change', e => {
-
-            this.dismissErrorMessage()
-
-            const file = e.target.files[0]
-            this.fileLoadManager.inputHandler(file, isIndexFile)
-
-            const {name} = file
-            file_name.textContent = name
-            file_name.setAttribute('title', name)
-            DOMUtils.show(file_name)
-        })
-
-    }
-
 }
 
-export default FileLoadWidget
+export default URLLoadWidget

@@ -39,7 +39,6 @@ import {
     googleDriveDropdownItem
 } from "./widgets/markupFactory.js"
 import GenomeFileLoad from "./widgets/genomeFileLoad.js"
-import FileLoadManager from "./widgets/fileLoadManager.js"
 import URLLoadWidget from "./widgets/urlLoadWidget.js"
 import * as Utils from './widgets/utils.js'
 import Globals from "./globals.js"
@@ -548,7 +547,6 @@ function createSampleInfoURLWidget(urlModalId, igvMain, sampleInfoFileLoadHandle
             widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Sample Info',
             indexTitle: 'Index',
-            fileLoadManager: new FileLoadManager(),
             dataOnly: true
         }
 

@@ -1,5 +1,4 @@
 import {FileUtils} from '../../node_modules/igv-utils/src/index.js'
-import FileLoadManager from './fileLoadManager.js'
 import URLLoadWidget from './urlLoadWidget.js'
 import SessionFileLoad from "./sessionFileLoad.js"
 import {createURLModalElement} from './urlModal.js'
@@ -32,7 +31,6 @@ function createSessionWidgets($rootContainer,
             widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Session',
             indexTitle: undefined,
-            fileLoadManager: new FileLoadManager(),
             dataOnly: true
         }
 

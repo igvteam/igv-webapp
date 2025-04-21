@@ -3,28 +3,25 @@ import * as UIUtils from "./utils/ui-utils.js"
 
 class URLLoadWidget {
 
-    constructor({widgetParent, dataTitle, indexTitle, fileLoadManager, dataOnly}) {
+    constructor({widgetParent, dataTitle, indexTitle, dataOnly}) {
 
         dataTitle = dataTitle || 'Data'
 
         indexTitle = indexTitle || 'Index'
 
-        this.fileLoadManager = fileLoadManager
-
         dataOnly = dataOnly || false
-
-
+        
         // file load widget
         this.container = DOMUtils.div({class: 'igv-file-load-widget-container'})
         widgetParent.appendChild(this.container)
 
-        const  config =
-                {
-                    parent: this.container,
-                    dataTitle: dataTitle + ' URL',
-                    indexTitle: indexTitle + ' URL',
-                    dataOnly
-                }
+        const config =
+            {
+                parent: this.container,
+                dataTitle: dataTitle + ' URL',
+                indexTitle: indexTitle + ' URL',
+                dataOnly
+            }
 
 
         this.createInputContainer(config)
@@ -47,20 +44,9 @@ class URLLoadWidget {
 
     retrievePaths() {
 
-        this.fileLoadManager.ingestPath(this.inputData.value, false)
+        const paths = [this.inputData.value]
         if (this.inputIndex) {
-            this.fileLoadManager.ingestPath(this.inputIndex.value, true)
-        }
-
-        let paths = []
-        if (this.fileLoadManager.dictionary) {
-
-            if (this.fileLoadManager.dictionary.data) {
-                paths.push(this.fileLoadManager.dictionary.data)
-            }
-            if (this.fileLoadManager.dictionary.index) {
-                paths.push(this.fileLoadManager.dictionary.index)
-            }
+            paths.push(this.inputIndex.value)
         }
 
         // clear input elements
@@ -100,7 +86,6 @@ class URLLoadWidget {
             div.querySelector('input').value = ''
         })
 
-        this.fileLoadManager.reset()
 
     }
 
@@ -121,7 +106,7 @@ class URLLoadWidget {
         input_data_row.appendChild(label)
         label.textContent = dataTitle
 
-            this.createURLContainer(input_data_row, 'igv-flw-data-url', false)
+        this.createURLContainer(input_data_row, 'igv-flw-data-url', false)
 
         if (true === dataOnly) {
             return
@@ -136,7 +121,7 @@ class URLLoadWidget {
         input_index_row.appendChild(label)
         label.textContent = indexTitle
 
-            this.createURLContainer(input_index_row, 'igv-flw-index-url', true)
+        this.createURLContainer(input_index_row, 'igv-flw-index-url', true)
 
     }
 

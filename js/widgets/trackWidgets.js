@@ -4,7 +4,6 @@ import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDa
 import alertSingleton from './alertSingleton.js'
 import {createGenericSelectModal} from './genericSelectModal.js'
 import {createTrackURLModalElement} from './trackURLModal.js'
-import FileLoadManager from "./fileLoadManager.js"
 import URLLoadWidget from "./urlLoadWidget.js"
 import MultipleTrackFileLoad from "./multipleTrackFileLoad.js"
 import * as Utils from './utils.js'
@@ -49,7 +48,6 @@ function createTrackWidgetsWithTrackRegistry($igvMain,
             widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Track',
             indexTitle: 'Index',
-            fileLoadManager: new FileLoadManager(),
             dataOnly: false
         }
 

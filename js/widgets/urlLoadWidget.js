@@ -10,7 +10,7 @@ class URLLoadWidget {
         indexTitle = indexTitle || 'Index'
 
         dataOnly = dataOnly || false
-        
+
         // file load widget
         this.container = DOMUtils.div({class: 'igv-file-load-widget-container'})
         widgetParent.appendChild(this.container)
@@ -89,7 +89,7 @@ class URLLoadWidget {
 
     }
 
-    createInputContainer({parent, doURL, dataTitle, indexTitle, dataOnly}) {
+    createInputContainer({parent, dataTitle, indexTitle, dataOnly}) {
 
         // container
         const container = DOMUtils.div({class: 'igv-flw-input-container'})

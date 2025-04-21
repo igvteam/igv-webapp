@@ -1,5 +1,5 @@
 import createStringInputModal from "./stringInputModal.js"
-
+import alertSingleton from "./alertSingleton.js"
 
 function createToolsWidgets(rootContainer,
                             options,
@@ -12,7 +12,7 @@ function createToolsWidgets(rootContainer,
 
         if (blatSequence) {
             if (blatSequence.length < 20 || blatSequence.length > 8000) {
-                alert("BLAT sequences must be between 20 and 8000 bases in length.")
+                alertSingleton.present("BLAT sequences must be between 20 and 8000 bases in length.")
                 return false
             } else {
                 await browser.blat(blatSequence, options)

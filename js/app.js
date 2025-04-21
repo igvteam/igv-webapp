@@ -53,6 +53,7 @@ import {createCircularViewResizeModal} from "./circularViewResizeModal.js"
 import { FileUtils } from '../node_modules/igv-utils/src/index.js'
 import * as DOMUtils from "./widgets/utils/dom-utils.js"
 import NotificationDialog from "./widgets/notificationDialog.js"
+import {createToolsWidgets} from "./widgets/toolsWidgets.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -323,6 +324,7 @@ async function initializationHelper(browser, container, options) {
 
     }
 
+    // Sessions
     createSessionWidgets($igvMain,
         'igv-webapp',
         'igv-app-dropdown-local-session-file-input',
@@ -349,6 +351,10 @@ async function initializationHelper(browser, container, options) {
         document.getElementById('igv-session-list-divider').style.display = 'none'
     }
 
+    // Tools
+    createToolsWidgets($igvMain, options, browser)
+
+    // Image save
     svgSaveImageModal = new bootstrap.Modal(document.getElementById('igv-app-svg-save-modal'))
     createSaveImageWidget({ browser, saveModal: svgSaveImageModal, imageType: 'svg' })
 

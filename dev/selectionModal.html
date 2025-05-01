@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>IGV</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <style>
+        /* Scoped styles for the custom modal */
+        .custom-modal .modal-dialog {
+            resize: both; /* Enables resizing */
+            overflow: auto; /* Ensures content is scrollable */
+            max-width: 100%; /* Prevents exceeding the viewport width */
+            max-height: 100%; /* Prevents exceeding the viewport height */
+            width: 1000px; /* Initial width */
+            height: 600px; /* Initial height */
+            position: relative; /* Required for proper resizing behavior */
+            box-sizing: border-box; /* Ensures padding and borders are included in size calculations */
+        }
+
+        .custom-modal .modal-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* Full height for the modal */
+        }
+
+        .custom-modal .modal-body {
+            flex: 1; /* Allow the body to take up available space */
+            overflow-y: auto; /* Make the body scrollable */
+        }
+
+        .custom-modal .modal-footer {
+            flex-shrink: 0; /* Prevent the footer from shrinking */
+        }
+
+        .custom-modal .modal-header .additional-html {
+            margin-top: 10px; /* Add vertical gap */
+            text-align: left; /* Ensure left alignment */
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+<script type="module">
+    const createResizableModal = (id, title, sections, headerHtml = '') => {
+        const html = `
+      <div id="${id}" class="modal fade custom-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg resizable">
+          <div class="modal-content">
+            <div class="modal-header flex-column">
+              <h5 class="modal-title text-center w-100">${title}</h5>
+              <div class="additional-html w-100">${headerHtml}</div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ${sections.map((section, index) => `
+                <div class="mb-3">
+                  <div class="bg-light text-center py-2 d-flex justify-content-between align-items-center" role="button" data-bs-toggle="collapse" data-bs-target="#collapseSection${index}" aria-expanded="true" aria-controls="collapseSection${index}">
+                    <span>${section.title}</span>
+                    <span id="collapseIcon${index}" class="bi bi-dash"></span>
+                  </div>
+                  <div class="collapse show" id="collapseSection${index}">
+                    <form>
+                      <div class="container">
+                        <div class="row g-2">
+                          ${section.checkboxes.map((checkbox) => `
+                            <div class="col-6 col-md-4">
+                              <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" id="${checkbox.id}" ${checkbox.checked ? 'checked' : ''} ${checkbox.disabled ? 'disabled' : ''}>
+                                <label class="form-check-label ms-2 me-2" for="${checkbox.id}">
+                                  ${checkbox.label}
+                                </label>
+                                ${checkbox.infoUrl ? `
+                                  <a href="${checkbox.infoUrl}" target="_blank" class="text-info">
+                                    <i class="bi bi-info-circle"></i>
+                                  </a>` : ''}
+                              </div>
+                            </div>
+                          `).join('')}
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+
+        const tempDiv = document.createElement('div')
+        tempDiv.innerHTML = html.trim()
+        return tempDiv.firstChild
+    }
+
+    // Example usage
+    const sections = [
+        {
+            title: 'Section 1',
+            checkboxes: Array.from({length: 20}, (_, i) => ({
+                id: `checkbox1-${i + 1}`,
+                label: `Option ${i + 1}`,
+                checked: i % 2 === 0,
+                disabled: i % 2 === 0,
+                url: `https://example.com/section1/option${i + 1}`
+            }))
+        },
+        {
+            title: 'Section 2',
+            checkboxes: Array.from({length: 20}, (_, i) => ({
+                id: `checkbox2-${i + 1}`,
+                label: `Option ${i + 1}`,
+                infoUrl: `https://example.com/info${i + 21}`,
+                checked: i === 0,
+                url: `https://example.com/section2/option${i + 1}`
+            }))
+        },
+        {
+            title: 'Section 3',
+            checkboxes: Array.from({length: 20}, (_, i) => ({
+                id: `checkbox3-${i + 1}`,
+                label: `Option ${i + 1}`,
+                infoUrl: `https://example.com/info${i + 41}`,
+                url: `https://example.com/section3/option${i + 1}`
+            }))
+        }
+    ]
+
+    const headerHtml = '<div class="text-muted">Additional Header Content</div>'
+    const modalElement = createResizableModal('exampleModal', 'Resizable Modal with Sections', sections, headerHtml)
+    document.body.appendChild(modalElement)
+
+    const modalElementFromDOM = document.getElementById('exampleModal')
+    const modal = new bootstrap.Modal(modalElementFromDOM, {
+        backdrop: 'static',
+        keyboard: false
+    })
+
+
+    let modalAction = null // Variable to track the action
+
+    // Add event listeners to buttons
+    document.querySelector('#exampleModal .btn-secondary').addEventListener('click', () => {
+        modalAction = 'ok'
+    })
+    document.querySelector('#exampleModal .btn-outline-secondary').addEventListener('click', () => {
+        modalAction = 'cancel'
+    })
+
+    // Listen for the modal close event
+    modalElementFromDOM.addEventListener('hidden.bs.modal', () => {
+        if (modalAction === 'ok') {
+            console.log('Modal closed with OK button')
+            const checkedCheckboxes = Array.from(modalElementFromDOM.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(checkbox => {
+                    const section = sections.find(section =>
+                        section.checkboxes.some(cb => cb.id === checkbox.id)
+                    )
+                    return section ? section.checkboxes.find(cb => cb.id === checkbox.id).url : null
+                })
+                .filter(url => url !== null) // Filter out null values
+
+            console.log('URLs of checked checkboxes:', checkedCheckboxes)
+        } else if (modalAction === 'cancel') {
+            console.log('Modal closed with Cancel button')
+        } else {
+            console.log('Modal closed by other means')
+        }
+
+        // Clean up resources
+        modal.dispose(); // Dispose of the Bootstrap modal instance
+        modalElementFromDOM.remove(); // Remove the modal element from the DOM
+        modalAction = null; // Reset the action
+    })
+
+    modal.show()
+</script>
+
+</body>
+
+</html>

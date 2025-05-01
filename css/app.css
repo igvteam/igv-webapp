@@ -117,6 +117,52 @@ select#igv-app-track-select-modal-select option[disabled] {
   color: #afafaf;
 }
 
+/* Scoped styles for the custom modal */
+.igv-app-track-select-modal .modal-dialog {
+  resize: both;
+  /* Enables resizing */
+  overflow: auto;
+  /* Ensures content is scrollable */
+  max-width: 100%;
+  /* Prevents exceeding the viewport width */
+  max-height: 100%;
+  /* Prevents exceeding the viewport height */
+  width: 1000px;
+  /* Initial width */
+  height: 600px;
+  /* Initial height */
+  position: relative;
+  /* Required for proper resizing behavior */
+  box-sizing: border-box;
+  /* Ensures padding and borders are included in size calculations */
+}
+
+.igv-app-track-select-modal .modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* Full height for the modal */
+}
+
+.igv-app-track-select-modal .modal-body {
+  flex: 1;
+  /* Allow the body to take up available space */
+  overflow-y: auto;
+  /* Make the body scrollable */
+}
+
+.igv-app-track-select-modal .modal-footer {
+  flex-shrink: 0;
+  /* Prevent the footer from shrinking */
+}
+
+.igv-app-track-select-modal .modal-header .additional-html {
+  margin-top: 10px;
+  /* Add vertical gap */
+  text-align: left;
+  /* Ensure left alignment */
+}
+
 .igv-widgets-alert-dialog-container {
   box-sizing: content-box;
   position: absolute;

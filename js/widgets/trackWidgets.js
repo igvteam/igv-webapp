@@ -6,7 +6,9 @@ import {createGenericSelectModal} from './genericSelectModal.js'
 import {createTrackURLModalElement} from './trackURLModal.js'
 import URLLoadWidget from "./urlLoadWidget.js"
 import MultipleTrackFileLoad from "./multipleTrackFileLoad.js"
+import createTrackSelectionModal from './trackSelectionModal.js'
 import * as Utils from './utils.js'
+import Globals from "../globals.js"
 
 const id_prefix = 'genome_specific_'
 
@@ -147,7 +149,7 @@ function createGenericSelectModalWidget($igvMain, selectModalIdOrUndefined, trac
         $genericSelectModal.find('select').find('option').each(function () {
 
             const trackConfiguration = $(this).data('track')
-            trackConfigList.push({element: $(this).get(0), trackConfiguration })
+            trackConfigList.push({element: $(this).get(0), trackConfiguration})
         })
 
         trackMenuHandler(trackConfigList)
@@ -157,7 +159,7 @@ function createGenericSelectModalWidget($igvMain, selectModalIdOrUndefined, trac
 
 }
 
-async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUndefined, trackConfigurations, $dropdownMenu) {
+async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUndefined, trackConfigurations, $dropdownMenu, trackLoadHandler) {
 
     discardTrackMenuItems($dropdownMenu)
 
@@ -172,7 +174,7 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
             encodeModalTables[1].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-other')))
             encodeModalTables[2].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'other')))
         }
-        trackConfiguration.igvxhr = igvxhr;
+        trackConfiguration.igvxhr = igvxhr
         buttonConfigurations.push(trackConfiguration)
 
     } // for(jsons)
@@ -218,103 +220,11 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
 
             createDropdownButton($divider, buttonConfiguration.label, id_prefix)
                 .on('click', () => {
-                    configureSelectModal($genericSelectModal, buttonConfiguration)
-                    $genericSelectModal.modal('show')
-                })
-
-        }
-    } // for (buttonConfigurations)
-
-}
-
-async function updateTrackMenus(genomeID, GtexUtilsOrUndefined, trackRegistryFile, $dropdownMenu) {
-
-    const id_prefix = 'genome_specific_'
-
-    const $divider = $dropdownMenu.find('.dropdown-divider')
-
-    const searchString = '[id^=' + id_prefix + ']'
-    const $found = $dropdownMenu.find(searchString)
-    $found.remove()
-
-    const paths = await getPathsWithTrackRegistryFile(genomeID, trackRegistryFile)
-
-    if (undefined === paths) {
-        console.warn(`There are no tracks in the track registry for genome ${genomeID}`)
-        return
-    }
-
-    let responses = []
-    try {
-        responses = await Promise.all(paths.map(path => fetch(path)))
-    } catch (e) {
-        alertSingleton.present(e.message)
-    }
-
-    let jsons = []
-    try {
-        jsons = await Promise.all(responses.map(response => response.json()))
-    } catch (e) {
-        alertSingleton.present(e.message)
-    }
-
-    let buttonConfigurations = []
-
-    for (let json of jsons) {
-
-        if (true === supportsGenome(genomeID) && 'ENCODE' === json.type) {
-            encodeModalTables[0].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-chip')))
-            encodeModalTables[1].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-other')))
-            encodeModalTables[2].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'other')))
-        }
-
-        buttonConfigurations.push(json)
-
-    } // for(jsons)
-
-    for (let buttonConfiguration of buttonConfigurations.reverse()) {
-
-        if (buttonConfiguration.type && 'custom-data-modal' === buttonConfiguration.type) {
-
-            createDropdownButton($divider, buttonConfiguration.label, id_prefix)
-                .on('click', () => {
-
-                    if (buttonConfiguration.description) {
-                        customModalTable.setDescription(buttonConfiguration.description)
-                    }
-
-                    customModalTable.setDatasource(new GenericDataSource(buttonConfiguration))
-                    customModalTable.setTitle(buttonConfiguration.label)
-                    customModalTable.$modal.modal('show')
-                })
-
-        } else if (buttonConfiguration.type && 'ENCODE' === buttonConfiguration.type) {
-
-            if (true === supportsGenome(genomeID)) {
-
-                if (buttonConfiguration.description) {
-                    encodeModalTables[0].setDescription(buttonConfiguration.description)
-                    encodeModalTables[1].setDescription(buttonConfiguration.description)
-                    encodeModalTables[2].setDescription(buttonConfiguration.description)
-                }
-
-                createDropdownButton($divider, 'ENCODE Other', id_prefix)
-                    .on('click', () => encodeModalTables[2].$modal.modal('show'))
-
-                createDropdownButton($divider, 'ENCODE Signals - Other', id_prefix)
-                    .on('click', () => encodeModalTables[1].$modal.modal('show'))
-
-                createDropdownButton($divider, 'ENCODE Signals - ChIP', id_prefix)
-                    .on('click', () => encodeModalTables[0].$modal.modal('show'))
-
-            }
-
-        } else if ($genericSelectModal) {
-
-            createDropdownButton($divider, buttonConfiguration.label, id_prefix)
-                .on('click', () => {
-                    configureSelectModal($genericSelectModal, buttonConfiguration)
-                    $genericSelectModal.modal('show')
+                    //configureSelectModal($genericSelectModal, buttonConfiguration)
+                    //$genericSelectModal.modal('show')
+                    const loadedURLS = Globals.browser ? new Set(Globals.browser.tracks.filter(t => t.url).map(t => t.url)) : new Set()
+                    const modal = configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLS)
+                    modal.show()
                 })
 
         }
@@ -330,30 +240,67 @@ function createDropdownButton($divider, buttonText, id_prefix) {
     return $button
 }
 
-function configureSelectModal($genericSelectModal, buttonConfiguration) {
 
-    $genericSelectModal.find('.modal-title').text(`${buttonConfiguration.label}`)
+function configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLS) {
 
-    let $select = $genericSelectModal.find('select')
-    $select.empty()
-
-    buttonConfiguration.tracks.reduce(($accumulator, configuration) => {
-
-        const $option = $('<option>', {value: configuration.name, text: configuration.name})
-        $select.append($option)
-
-        $option.data('track', configuration)
-
-        $accumulator.append($option)
-
-        return $accumulator
-    }, $select)
-
-    if (buttonConfiguration.description) {
-        $genericSelectModal.find('#igv-widgets-generic-select-modal-footnotes').html(buttonConfiguration.description)
+    const id = buttonConfiguration.id ? buttonConfiguration.id : '__trackselect__'
+    const section = {
+        title: buttonConfiguration.label,
+        tracks: buttonConfiguration.tracks.map(track => ({
+            label: track.name,
+            checked: loadedURLS.has(track.url),
+            disabled: loadedURLS.has(track.url),
+            infoURL: track.infoURL,
+            config: track
+        }))
     }
 
+    const okHandler = (selections) => {
+
+        const trackConfigs = selections.map(s => s.config)
+        if (trackConfigs.length > 0) {
+            trackLoadHandler(trackConfigs)
+        }
+    }
+
+    const modal = createTrackSelectionModal({
+        id,
+        title: buttonConfiguration.label,
+        sections: [section],
+        headerHtml: buttonConfiguration.description,
+        okHandler,
+        cancelHandler: () => {
+            console.log('Cancel clicked')
+            modal.hide()
+        }
+    })
+
+    return modal
+
 }
+
+// function configureSelectModal($genericSelectModal, buttonConfiguration) {
+//     $genericSelectModal.find('.modal-title').text(`${buttonConfiguration.label}`)
+//
+//     let $select = $genericSelectModal.find('select')
+//     $select.empty()
+//
+//     buttonConfiguration.tracks.reduce(($accumulator, configuration) => {
+//
+//         const $option = $('<option>', {value: configuration.name, text: configuration.name})
+//         $select.append($option)
+//
+//         $option.data('track', configuration)
+//
+//         $accumulator.append($option)
+//
+//         return $accumulator
+//     }, $select)
+//
+//     if (buttonConfiguration.description) {
+//         $genericSelectModal.find('#igv-widgets-generic-select-modal-footnotes').html(buttonConfiguration.description)
+//     }
+// }
 
 async function getPathsWithTrackRegistryFile(genomeID, trackRegistryFile) {
 
@@ -387,6 +334,10 @@ async function getPathsWithTrackRegistryFile(genomeID, trackRegistryFile) {
         alertSingleton.present(e.message)
     }
 
+    /*
+
+     */
+
     let trackConfigurations = []
     try {
         trackConfigurations = await Promise.all(responses.map(response => response.json()))
@@ -408,7 +359,6 @@ function discardTrackMenuItems($dropdownMenu) {
 
 export {
     discardTrackMenuItems,
-    updateTrackMenus,
     updateTrackMenusWithTrackConfigurations,
     createTrackWidgetsWithTrackRegistry,
     getPathsWithTrackRegistryFile

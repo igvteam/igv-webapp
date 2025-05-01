@@ -170,7 +170,6 @@ async function main(container, config) {
         $('#igv-app-dropdown-google-drive-track-file-button'),
         ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal'],
         'igv-app-track-from-url-modal',
-        'igv-app-track-select-modal',
         GtexUtils,
         config.trackRegistryFile,
         trackLoader,

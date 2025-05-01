@@ -16,7 +16,6 @@ let fileLoadWidget
 let multipleTrackFileLoad
 let encodeModalTables = []
 let customModalTable
-let $genericSelectModal = undefined
 let trackWidgetModal
 const defaultCustomModalTableConfig =
     {
@@ -36,7 +35,6 @@ function createTrackWidgetsWithTrackRegistry($igvMain,
                                              $googleDriveButton,
                                              encodeTrackModalIds,
                                              urlModalId,
-                                             selectModalIdOrUndefined,
                                              GtexUtilsOrUndefined,
                                              trackRegistryFile,
                                              trackLoadHandler,
@@ -98,65 +96,6 @@ function createTrackWidgetsWithTrackRegistry($igvMain,
         title: 'UNTITLED',
         okHandler: trackLoadHandler, ...defaultCustomModalTableConfig
     })
-
-    if (selectModalIdOrUndefined) {
-        createGenericSelectModalWidget($igvMain, selectModalIdOrUndefined, trackLoadHandler, trackMenuHandler)
-    }
-
-}
-
-function createGenericSelectModalWidget($igvMain, selectModalIdOrUndefined, trackLoadHandler, trackMenuHandler) {
-
-    $genericSelectModal = $(createGenericSelectModal(selectModalIdOrUndefined, `${selectModalIdOrUndefined}-select`))
-
-    $igvMain.append($genericSelectModal)
-    const $select = $genericSelectModal.find('select')
-
-    const $dismiss = $genericSelectModal.find('.modal-footer button:nth-child(1)')
-    $dismiss.on('click', () => $genericSelectModal.modal('hide'))
-
-    const $ok = $genericSelectModal.find('.modal-footer button:nth-child(2)')
-
-    const okHandler = () => {
-
-        const configurations = []
-        const $selectedOptions = $select.find('option:selected')
-        $selectedOptions.each(function () {
-            // console.log(`${ $(this).val() } was selected`)
-            configurations.push($(this).data('track'))
-            $(this).removeAttr('selected')
-        })
-
-        if (configurations.length > 0) {
-            trackLoadHandler(configurations)
-        }
-
-        $genericSelectModal.modal('hide')
-
-    }
-
-    $ok.on('click', okHandler)
-
-    $genericSelectModal.get(0).addEventListener('keypress', event => {
-        if ('Enter' === event.key) {
-            okHandler()
-        }
-    })
-
-    $genericSelectModal.on('show.bs.modal', () => {
-
-        const trackConfigList = []
-        $genericSelectModal.find('select').find('option').each(function () {
-
-            const trackConfiguration = $(this).data('track')
-            trackConfigList.push({element: $(this).get(0), trackConfiguration})
-        })
-
-        trackMenuHandler(trackConfigList)
-
-    })
-
-
 }
 
 async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUndefined, trackConfigurations, $dropdownMenu, trackLoadHandler) {
@@ -216,12 +155,40 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
 
             }
 
-        } else if ($genericSelectModal) {
-
+        } else {
             createDropdownButton($divider, buttonConfiguration.label, id_prefix)
+
                 .on('click', () => {
                     const loadedURLs = Globals.browser ? new Set(Globals.browser.tracks.filter(t => t.url).map(t => t.url)) : new Set()
-                    const modal = configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLs)
+                    const id = buttonConfiguration.id ? buttonConfiguration.id : `_${Math.random().toString(36).substring(2, 9)}`
+                    const section = {
+                        title: buttonConfiguration.label,
+                        tracks: buttonConfiguration.tracks.map(track => ({
+                            id: track.name,
+                            label: track.name,
+                            checked: loadedURLs.has(track.url),
+                            disabled: loadedURLs.has(track.url),
+                            infoURL: track.infoURL,
+                            config: track
+                        }))
+                    }
+
+                    const modal = createTrackSelectionModal({
+                        id,
+                        title: buttonConfiguration.label,
+                        sections: [section],
+                        headerHtml: buttonConfiguration.description,
+                        okHandler: (selections) => {
+                            const trackConfigs = selections.map(s => s.config).filter(config => !loadedURLs.has(config.url))
+                            if (trackConfigs.length > 0) {
+                                trackLoadHandler(trackConfigs)
+                            }
+                        },
+                        cancelHandler: () => {
+                            console.log('Cancel clicked')
+                            modal.hide()
+                        }
+                    })
                     modal.show()
                 })
 
@@ -241,7 +208,7 @@ function createDropdownButton($divider, buttonText, id_prefix) {
 
 function configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLs) {
 
-    const id = buttonConfiguration.id ? buttonConfiguration.id : `__trackselect__${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    const id = buttonConfiguration.id ? buttonConfiguration.id : `__trackselect__${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
     const section = {
         title: buttonConfiguration.label,
         tracks: buttonConfiguration.tracks.map(track => ({

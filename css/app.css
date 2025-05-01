@@ -107,16 +107,6 @@ input#igv-app-share-input {
   align-items: center;
 }
 
-select#igv-app-track-select-modal-select {
-  height: 200px;
-}
-select#igv-app-track-select-modal-select option {
-  font-size: 1rem;
-}
-select#igv-app-track-select-modal-select option[disabled] {
-  color: #afafaf;
-}
-
 /* Scoped styles for the custom modal */
 .igv-app-track-select-modal .modal-dialog {
   resize: both;

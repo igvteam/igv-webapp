@@ -191,11 +191,15 @@ async function main(container, config) {
                 }
 
                 if (configs) {
-                    await updateTrackMenusWithTrackConfigurations(genome.id, undefined, configs, $('#igv-app-track-dropdown-menu'))
+                    await updateTrackMenusWithTrackConfigurations(
+                        genome.id,
+                        undefined,
+                        configs,
+                        $('#igv-app-track-dropdown-menu'),
+                        trackLoader)
                 } else {
                     discardTrackMenuItems($('#igv-app-track-dropdown-menu'))
                 }
-
             }
         }
     }

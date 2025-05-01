@@ -220,10 +220,8 @@ async function updateTrackMenusWithTrackConfigurations(genomeID, GtexUtilsOrUnde
 
             createDropdownButton($divider, buttonConfiguration.label, id_prefix)
                 .on('click', () => {
-                    //configureSelectModal($genericSelectModal, buttonConfiguration)
-                    //$genericSelectModal.modal('show')
-                    const loadedURLS = Globals.browser ? new Set(Globals.browser.tracks.filter(t => t.url).map(t => t.url)) : new Set()
-                    const modal = configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLS)
+                    const loadedURLs = Globals.browser ? new Set(Globals.browser.tracks.filter(t => t.url).map(t => t.url)) : new Set()
+                    const modal = configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLs)
                     modal.show()
                 })
 
@@ -241,15 +239,16 @@ function createDropdownButton($divider, buttonText, id_prefix) {
 }
 
 
-function configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLS) {
+function configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLs) {
 
     const id = buttonConfiguration.id ? buttonConfiguration.id : '__trackselect__'
     const section = {
         title: buttonConfiguration.label,
         tracks: buttonConfiguration.tracks.map(track => ({
+            id: track.name,
             label: track.name,
-            checked: loadedURLS.has(track.url),
-            disabled: loadedURLS.has(track.url),
+            checked: loadedURLs.has(track.url),
+            disabled: loadedURLs.has(track.url),
             infoURL: track.infoURL,
             config: track
         }))
@@ -257,7 +256,7 @@ function configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLS)
 
     const okHandler = (selections) => {
 
-        const trackConfigs = selections.map(s => s.config)
+        const trackConfigs = selections.map(s => s.config).filter(config => !loadedURLs.has(config.url))
         if (trackConfigs.length > 0) {
             trackLoadHandler(trackConfigs)
         }
@@ -276,31 +275,7 @@ function configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLS)
     })
 
     return modal
-
 }
-
-// function configureSelectModal($genericSelectModal, buttonConfiguration) {
-//     $genericSelectModal.find('.modal-title').text(`${buttonConfiguration.label}`)
-//
-//     let $select = $genericSelectModal.find('select')
-//     $select.empty()
-//
-//     buttonConfiguration.tracks.reduce(($accumulator, configuration) => {
-//
-//         const $option = $('<option>', {value: configuration.name, text: configuration.name})
-//         $select.append($option)
-//
-//         $option.data('track', configuration)
-//
-//         $accumulator.append($option)
-//
-//         return $accumulator
-//     }, $select)
-//
-//     if (buttonConfiguration.description) {
-//         $genericSelectModal.find('#igv-widgets-generic-select-modal-footnotes').html(buttonConfiguration.description)
-//     }
-// }
 
 async function getPathsWithTrackRegistryFile(genomeID, trackRegistryFile) {
 

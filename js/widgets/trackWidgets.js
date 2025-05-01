@@ -241,7 +241,7 @@ function createDropdownButton($divider, buttonText, id_prefix) {
 
 function configureSelectModal(buttonConfiguration, trackLoadHandler, loadedURLs) {
 
-    const id = buttonConfiguration.id ? buttonConfiguration.id : '__trackselect__'
+    const id = buttonConfiguration.id ? buttonConfiguration.id : `__trackselect__${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     const section = {
         title: buttonConfiguration.label,
         tracks: buttonConfiguration.tracks.map(track => ({

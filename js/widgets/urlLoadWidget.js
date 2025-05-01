@@ -45,7 +45,7 @@ class URLLoadWidget {
     retrievePaths() {
 
         const paths = [this.inputData.value]
-        if (this.inputIndex) {
+        if (this.inputIndex && this.inputIndex.value) {
             paths.push(this.inputIndex.value)
         }
 

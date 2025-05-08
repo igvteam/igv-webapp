@@ -1,0 +1,3083 @@
+
+<div id="customModal" class="modal fade igv-app-track-select-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg resizable">
+        <div class="modal-content">
+            <div class="modal-header flex-column">
+                <h5 class="modal-title text-center w-100"></h5>
+                <div class="additional-html w-100"><div class='text-muted'>Additional Header Content</div></div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+
+                    <div class="bg-light text-center py-2 d-flex justify-content-between align-items-center" role="button" data-bs-toggle="collapse" data-bs-target="#collapseSection0" aria-expanded="true" aria-controls="collapseSection0">
+                        <span>Genes and Gene Predictions</span>
+                        <span id="collapseIcon0" class="bi bi-dash"></span>
+                    </div>
+                    <div class="collapse show" id="collapseSection0">
+
+
+                        <form>
+                            <div class="container">
+                                <div class="row g-2">
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Refseq Select"  >
+                                            <label class="form-check-label ms-2 me-2" for="Refseq Select">
+                                                Refseq Select
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Refseq Curated"  >
+                                            <label class="form-check-label ms-2 me-2" for="Refseq Curated">
+                                                Refseq Curated
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Refseq All"  >
+                                            <label class="form-check-label ms-2 me-2" for="Refseq All">
+                                                Refseq All
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="MANE v1.0 - Refseq"  >
+                                            <label class="form-check-label ms-2 me-2" for="MANE v1.0 - Refseq">
+                                                MANE v1.0 - Refseq
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Augustus"  >
+                                            <label class="form-check-label ms-2 me-2" for="Augustus">
+                                                Augustus
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="RefSeq mRNAs"  >
+                                            <label class="form-check-label ms-2 me-2" for="RefSeq mRNAs">
+                                                RefSeq mRNAs
+                                            </label>
+
+                                            <a href="https://www.ncbi.nlm.nih.gov/nuccore/$$" target="_blank" style="color: darkblue;">
+                                                <i class="bi bi-info-circle"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="mt-3">
+                                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+
+                                        <div class="bg-light text-center py-2 d-flex justify-content-between align-items-center" role="button" data-bs-toggle="collapse" data-bs-target="#collapseSection0" aria-expanded="true" aria-controls="collapseSection0">
+                                            <span>GENCODE</span>
+                                            <span id="collapseIcon0" class="bi bi-dash"></span>
+                                        </div>
+                                        <div class="collapse show" id="collapseSection0">
+
+
+                                            <form>
+                                                <div class="container">
+                                                    <div class="row g-2">
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V47"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V47">
+                                                                    GENCODE V47
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V36"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V36">
+                                                                    GENCODE V36
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V38"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V38">
+                                                                    GENCODE V38
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V39"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V39">
+                                                                    GENCODE V39
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V43"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V43">
+                                                                    GENCODE V43
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V44"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V44">
+                                                                    GENCODE V44
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V45"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V45">
+                                                                    GENCODE V45
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="GENCODE V46"  >
+                                                                <label class="form-check-label ms-2 me-2" for="GENCODE V46">
+                                                                    GENCODE V46
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="mt-3"></div>
+                                                </div>
+                                            </form>
+
+                                            </p?</fieldset>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                                        <fieldset class="border rounded-3 p-3">
+                                            <legend class="float-none w-auto px-3">
+                                                UniProt SwissProt/TrEMBL Protein Annotations
+                                            </legend><p>
+
+                                            <form>
+                                                <div class="container">
+                                                    <div class="row g-2">
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Seq. Conflicts"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Seq. Conflicts">
+                                                                    Seq. Conflicts
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Repeats"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Repeats">
+                                                                    Repeats
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Structure"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Structure">
+                                                                    Structure
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Other Annot."  >
+                                                                <label class="form-check-label ms-2 me-2" for="Other Annot.">
+                                                                    Other Annot.
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Mutations"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Mutations">
+                                                                    Mutations
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="AA Modifications"  >
+                                                                <label class="form-check-label ms-2 me-2" for="AA Modifications">
+                                                                    AA Modifications
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Domains"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Domains">
+                                                                    Domains
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Disulf. Bonds"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Disulf. Bonds">
+                                                                    Disulf. Bonds
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Chains"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Chains">
+                                                                    Chains
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Cytoplasmic"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Cytoplasmic">
+                                                                    Cytoplasmic
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Transmembrane"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Transmembrane">
+                                                                    Transmembrane
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Interest"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Interest">
+                                                                    Interest
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Extracellular"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Extracellular">
+                                                                    Extracellular
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="form-check d-flex align-items-center">
+                                                                <input class="form-check-input" type="checkbox" id="Signal Peptide"  >
+                                                                <label class="form-check-label ms-2 me-2" for="Signal Peptide">
+                                                                    Signal Peptide
+                                                                </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="mt-3"></div>
+                                                </div>
+                                            </form>
+
+                                            </p?</fieldset>
+
+                                    </div>
+                                </div>
+
+                                <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                                    <fieldset class="border rounded-3 p-3">
+                                        <legend class="float-none w-auto px-3">
+                                            RefSeq gene predictions from NCBI
+                                        </legend><p>
+
+                                        <form>
+                                            <div class="container">
+                                                <div class="row g-2">
+
+                                                    <div class="col-6 col-md-4">
+                                                        <div class="form-check d-flex align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="RefSeq All"  >
+                                                            <label class="form-check-label ms-2 me-2" for="RefSeq All">
+                                                                RefSeq All
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6 col-md-4">
+                                                        <div class="form-check d-flex align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="RefSeq Curated"  >
+                                                            <label class="form-check-label ms-2 me-2" for="RefSeq Curated">
+                                                                RefSeq Curated
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6 col-md-4">
+                                                        <div class="form-check d-flex align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="RefSeq Predicted"  >
+                                                            <label class="form-check-label ms-2 me-2" for="RefSeq Predicted">
+                                                                RefSeq Predicted
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6 col-md-4">
+                                                        <div class="form-check d-flex align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="RefSeq Other"  >
+                                                            <label class="form-check-label ms-2 me-2" for="RefSeq Other">
+                                                                RefSeq Other
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6 col-md-4">
+                                                        <div class="form-check d-flex align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="RefSeq Select"  >
+                                                            <label class="form-check-label ms-2 me-2" for="RefSeq Select">
+                                                                RefSeq Select
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="mt-3"></div>
+                                            </div>
+                                        </form>
+
+                                        </p?</fieldset>
+
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                </form>
+
+                </p?</fieldset>
+
+            </div>
+        </div>
+
+        <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+            <fieldset class="border rounded-3 p-3">
+                <legend class="float-none w-auto px-3">
+                    Phenotype, Variants, and Literature
+                </legend><p>
+
+                <form>
+                    <div class="container">
+                        <div class="row g-2">
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="AbSplice Scores"  >
+                                    <label class="form-check-label ms-2 me-2" for="AbSplice Scores">
+                                        AbSplice Scores
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="Avada Variants"  >
+                                    <label class="form-check-label ms-2 me-2" for="Avada Variants">
+                                        Avada Variants
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="CADD 1.7 Del"  >
+                                    <label class="form-check-label ms-2 me-2" for="CADD 1.7 Del">
+                                        CADD 1.7 Del
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="CADD 1.7 Ins"  >
+                                    <label class="form-check-label ms-2 me-2" for="CADD 1.7 Ins">
+                                        CADD 1.7 Ins
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="CADD 1.6 Del"  >
+                                    <label class="form-check-label ms-2 me-2" for="CADD 1.6 Del">
+                                        CADD 1.6 Del
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="CADD 1.6 Ins"  >
+                                    <label class="form-check-label ms-2 me-2" for="CADD 1.6 Ins">
+                                        CADD 1.6 Ins
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="CIViC"  >
+                                    <label class="form-check-label ms-2 me-2" for="CIViC">
+                                        CIViC
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="COVID Rare Harmful Var"  >
+                                    <label class="form-check-label ms-2 me-2" for="COVID Rare Harmful Var">
+                                        COVID Rare Harmful Var
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="DECIPHER CNVs"  >
+                                    <label class="form-check-label ms-2 me-2" for="DECIPHER CNVs">
+                                        DECIPHER CNVs
+                                    </label>
+
+                                    <a href="https://www.deciphergenomics.org/patient/$$" target="_blank" style="color: darkblue;">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="DECIPHER Population CNVs"  >
+                                    <label class="form-check-label ms-2 me-2" for="DECIPHER Population CNVs">
+                                        DECIPHER Population CNVs
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="GenCC"  >
+                                    <label class="form-check-label ms-2 me-2" for="GenCC">
+                                        GenCC
+                                    </label>
+
+                                    <a href="https://search.thegencc.org/genes/$<gene_curie>" target="_blank" style="color: darkblue;">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="GeneReviews"  >
+                                    <label class="form-check-label ms-2 me-2" for="GeneReviews">
+                                        GeneReviews
+                                    </label>
+
+                                    <a href="https://www.ncbi.nlm.nih.gov/books/NBK1116/?term=$$" target="_blank" style="color: darkblue;">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="HGMD public"  >
+                                    <label class="form-check-label ms-2 me-2" for="HGMD public">
+                                        HGMD public
+                                    </label>
+
+                                    <a href="http://www.hgmd.cf.ac.uk/ac/gene.php?gene=$P&accession=$p" target="_blank" style="color: darkblue;">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="HMC"  >
+                                    <label class="form-check-label ms-2 me-2" for="HMC">
+                                        HMC
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="Gene Interactions"  >
+                                    <label class="form-check-label ms-2 me-2" for="Gene Interactions">
+                                        Gene Interactions
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="JARVIS"  >
+                                    <label class="form-check-label ms-2 me-2" for="JARVIS">
+                                        JARVIS
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="Mastermind Variants"  >
+                                    <label class="form-check-label ms-2 me-2" for="Mastermind Variants">
+                                        Mastermind Variants
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="Orphanet"  >
+                                    <label class="form-check-label ms-2 me-2" for="Orphanet">
+                                        Orphanet
+                                    </label>
+
+                                    <a href="http://www.orpha.net/consor/cgi-bin/OC_Exp.php?lng=en&Expert=$$" target="_blank" style="color: darkblue;">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="UniProt Variants"  >
+                                    <label class="form-check-label ms-2 me-2" for="UniProt Variants">
+                                        UniProt Variants
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="UKB Depl. Rank Score"  >
+                                    <label class="form-check-label ms-2 me-2" for="UKB Depl. Rank Score">
+                                        UKB Depl. Rank Score
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="enGenome VarChat"  >
+                                    <label class="form-check-label ms-2 me-2" for="enGenome VarChat">
+                                        enGenome VarChat
+                                    </label>
+
+                                    <a href="https://varchat.engenome.com/search?source=ucsc&text=$<VariantUrl>" target="_blank" style="color: darkblue;">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mt-3">
+                            <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                                <fieldset class="border rounded-3 p-3">
+                                    <legend class="float-none w-auto px-3">
+                                        AlphaMissense
+                                    </legend><p>
+
+                                    <form>
+                                        <div class="container">
+                                            <div class="row g-2">
+
+                                                <div class="col-6 col-md-4">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input" type="checkbox" id="Mutation: T"  >
+                                                        <label class="form-check-label ms-2 me-2" for="Mutation: T">
+                                                            Mutation: T
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6 col-md-4">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input" type="checkbox" id="Mutation: G"  >
+                                                        <label class="form-check-label ms-2 me-2" for="Mutation: G">
+                                                            Mutation: G
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6 col-md-4">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input" type="checkbox" id="Mutation: C"  >
+                                                        <label class="form-check-label ms-2 me-2" for="Mutation: C">
+                                                            Mutation: C
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6 col-md-4">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input" type="checkbox" id="Mutation: A"  >
+                                                        <label class="form-check-label ms-2 me-2" for="Mutation: A">
+                                                            Mutation: A
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="mt-3"></div>
+                                        </div>
+                                    </form>
+
+                                    </p?</fieldset>
+
+                            </div>
+                        </div>
+
+                        <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                            <fieldset class="border rounded-3 p-3">
+                                <legend class="float-none w-auto px-3">
+                                    CADD 1.6
+                                </legend><p>
+
+                                <form>
+                                    <div class="container">
+                                        <div class="row g-2">
+
+                                            <div class="col-6 col-md-4">
+                                                <div class="form-check d-flex align-items-center">
+                                                    <input class="form-check-input" type="checkbox" id="Mutation: T"  >
+                                                    <label class="form-check-label ms-2 me-2" for="Mutation: T">
+                                                        Mutation: T
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 col-md-4">
+                                                <div class="form-check d-flex align-items-center">
+                                                    <input class="form-check-input" type="checkbox" id="Mutation: G"  >
+                                                    <label class="form-check-label ms-2 me-2" for="Mutation: G">
+                                                        Mutation: G
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 col-md-4">
+                                                <div class="form-check d-flex align-items-center">
+                                                    <input class="form-check-input" type="checkbox" id="Mutation: C"  >
+                                                    <label class="form-check-label ms-2 me-2" for="Mutation: C">
+                                                        Mutation: C
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 col-md-4">
+                                                <div class="form-check d-flex align-items-center">
+                                                    <input class="form-check-input" type="checkbox" id="Mutation: A"  >
+                                                    <label class="form-check-label ms-2 me-2" for="Mutation: A">
+                                                        Mutation: A
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="mt-3"></div>
+                                    </div>
+                                </form>
+
+                                </p?</fieldset>
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                        <fieldset class="border rounded-3 p-3">
+                            <legend class="float-none w-auto px-3">
+                                CADD 1.7
+                            </legend><p>
+
+                            <form>
+                                <div class="container">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Mutation: T"  >
+                                                <label class="form-check-label ms-2 me-2" for="Mutation: T">
+                                                    Mutation: T
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Mutation: G"  >
+                                                <label class="form-check-label ms-2 me-2" for="Mutation: G">
+                                                    Mutation: G
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Mutation: C"  >
+                                                <label class="form-check-label ms-2 me-2" for="Mutation: C">
+                                                    Mutation: C
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Mutation: A"  >
+                                                <label class="form-check-label ms-2 me-2" for="Mutation: A">
+                                                    Mutation: A
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="mt-3"></div>
+                                </div>
+                            </form>
+
+                            </p?</fieldset>
+
+                    </div>
+        </div>
+
+        <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+            <fieldset class="border rounded-3 p-3">
+                <legend class="float-none w-auto px-3">
+                    ClinGen
+                </legend><p>
+
+                <form>
+                    <div class="container">
+                        <div class="row g-2">
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="ClinGen VCEP Specifications"  >
+                                    <label class="form-check-label ms-2 me-2" for="ClinGen VCEP Specifications">
+                                        ClinGen VCEP Specifications
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="ClinGen Validity"  >
+                                    <label class="form-check-label ms-2 me-2" for="ClinGen Validity">
+                                        ClinGen Validity
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="ClinGen Triplosensitivity"  >
+                                    <label class="form-check-label ms-2 me-2" for="ClinGen Triplosensitivity">
+                                        ClinGen Triplosensitivity
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox" id="ClinGen Haploinsufficiency"  >
+                                    <label class="form-check-label ms-2 me-2" for="ClinGen Haploinsufficiency">
+                                        ClinGen Haploinsufficiency
+                                    </label>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mt-3"></div>
+                    </div>
+                </form>
+
+                </p?</fieldset>
+
+        </div>
+    </div>
+
+    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+        <fieldset class="border rounded-3 p-3">
+            <legend class="float-none w-auto px-3">
+                ClinVar Variants
+            </legend><p>
+
+            <form>
+                <div class="container">
+                    <div class="row g-2">
+
+                        <div class="col-6 col-md-4">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" id="ClinVar CNVs"  >
+                                <label class="form-check-label ms-2 me-2" for="ClinVar CNVs">
+                                    ClinVar CNVs
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" id="ClinVar SNVs"  >
+                                <label class="form-check-label ms-2 me-2" for="ClinVar SNVs">
+                                    ClinVar SNVs
+                                </label>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-3"></div>
+                </div>
+            </form>
+
+            </p?</fieldset>
+
+    </div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            MITOMAP: A human mitochondrial genome database
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="MITOMAP Disease Muts"  >
+                            <label class="form-check-label ms-2 me-2" for="MITOMAP Disease Muts">
+                                MITOMAP Disease Muts
+                            </label>
+
+                            <a href="https://www.mitomap.org/foswiki/bin/view/MITOMAP/$<_mutsCodingOrRNA>" target="_blank" style="color: darkblue;">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="MITOMAP Variants"  >
+                            <label class="form-check-label ms-2 me-2" for="MITOMAP Variants">
+                                MITOMAP Variants
+                            </label>
+
+                            <a href="https://www.mitomap.org/foswiki/bin/view/MITOMAP/$<_varType>" target="_blank" style="color: darkblue;">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Genomics England PanelApp Diagnostics
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="PanelApp STRs"  >
+                            <label class="form-check-label ms-2 me-2" for="PanelApp STRs">
+                                PanelApp STRs
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="PanelApp Genes"  >
+                            <label class="form-check-label ms-2 me-2" for="PanelApp Genes">
+                                PanelApp Genes
+                            </label>
+
+                            <a href="https://panelapp.genomicsengland.co.uk/panels/$<panelID>/gene/$<geneSymbol>/" target="_blank" style="color: darkblue;">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="PanelApp CNVs"  >
+                            <label class="form-check-label ms-2 me-2" for="PanelApp CNVs">
+                                PanelApp CNVs
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            REVEL Scores
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="REVEL overlaps"  >
+                            <label class="form-check-label ms-2 me-2" for="REVEL overlaps">
+                                REVEL overlaps
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Mutation: T"  >
+                            <label class="form-check-label ms-2 me-2" for="Mutation: T">
+                                Mutation: T
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Mutation: G"  >
+                            <label class="form-check-label ms-2 me-2" for="Mutation: G">
+                                Mutation: G
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Mutation: C"  >
+                            <label class="form-check-label ms-2 me-2" for="Mutation: C">
+                                Mutation: C
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Mutation: A"  >
+                            <label class="form-check-label ms-2 me-2" for="Mutation: A">
+                                Mutation: A
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            SNPedia
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="SNPedia all"  >
+                            <label class="form-check-label ms-2 me-2" for="SNPedia all">
+                                SNPedia all
+                            </label>
+
+                            <a href="https://www.snpedia.com/index.php/$$" target="_blank" style="color: darkblue;">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            SpliceAI: Splice Variant Prediction Score
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="SpliceAI indels (masked)"  >
+                            <label class="form-check-label ms-2 me-2" for="SpliceAI indels (masked)">
+                                SpliceAI indels (masked)
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="SpliceAI SNVs (masked)"  >
+                            <label class="form-check-label ms-2 me-2" for="SpliceAI SNVs (masked)">
+                                SpliceAI SNVs (masked)
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="SpliceAI indels"  >
+                            <label class="form-check-label ms-2 me-2" for="SpliceAI indels">
+                                SpliceAI indels
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="SpliceAI SNVs"  >
+                            <label class="form-check-label ms-2 me-2" for="SpliceAI SNVs">
+                                SpliceAI SNVs
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+</div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Human Pangenome - HPRC
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="HPRC All Variants"  >
+                            <label class="form-check-label ms-2 me-2" for="HPRC All Variants">
+                                HPRC All Variants
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="HPRC Variants > 3bp"  >
+                            <label class="form-check-label ms-2 me-2" for="HPRC Variants > 3bp">
+                                HPRC Variants > 3bp
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="HPRC Variants <= 3bp"  >
+                            <label class="form-check-label ms-2 me-2" for="HPRC Variants <= 3bp">
+                                HPRC Variants <= 3bp
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3">
+                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                        <fieldset class="border rounded-3 p-3">
+                            <legend class="float-none w-auto px-3">
+                                Rearrangements
+                            </legend><p>
+
+                            <form>
+                                <div class="container">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Other Rearrangements"  >
+                                                <label class="form-check-label ms-2 me-2" for="Other Rearrangements">
+                                                    Other Rearrangements
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Duplications"  >
+                                                <label class="form-check-label ms-2 me-2" for="Duplications">
+                                                    Duplications
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Inversions"  >
+                                                <label class="form-check-label ms-2 me-2" for="Inversions">
+                                                    Inversions
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Deletions"  >
+                                                <label class="form-check-label ms-2 me-2" for="Deletions">
+                                                    Deletions
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Insertions"  >
+                                                <label class="form-check-label ms-2 me-2" for="Insertions">
+                                                    Insertions
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="mt-3"></div>
+                                </div>
+                            </form>
+
+                            </p?</fieldset>
+
+                    </div>
+                </div>
+            </div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Expression
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                </div>
+                <div class="mt-3">
+                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                        <fieldset class="border rounded-3 p-3">
+                            <legend class="float-none w-auto px-3">
+                                Promoters from EPDnew
+                            </legend><p>
+
+                            <form>
+                                <div class="container">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="EPDnew NC v1"  >
+                                                <label class="form-check-label ms-2 me-2" for="EPDnew NC v1">
+                                                    EPDnew NC v1
+                                                </label>
+
+                                                <a href="https://epd.epfl.ch/cgi-bin/get_doc?db=hsNCEpdNew&format=genome&entry=$$" target="_blank" style="color: darkblue;">
+                                                    <i class="bi bi-info-circle"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="EPDnew v6"  >
+                                                <label class="form-check-label ms-2 me-2" for="EPDnew v6">
+                                                    EPDnew v6
+                                                </label>
+
+                                                <a href="https://epd.epfl.ch/cgi-bin/get_doc?db=hgEpdNew&format=genome&entry=$$" target="_blank" style="color: darkblue;">
+                                                    <i class="bi bi-info-circle"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="mt-3"></div>
+                                </div>
+                            </form>
+
+                            </p?</fieldset>
+
+                    </div>
+                </div>
+
+                <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                    <fieldset class="border rounded-3 p-3">
+                        <legend class="float-none w-auto px-3">
+                            GTEx V8 RNA-Seq Read Coverage by Tissue
+                        </legend><p>
+
+                        <form>
+                            <div class="container">
+                                <div class="row g-2">
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Whole Blood"  >
+                                            <label class="form-check-label ms-2 me-2" for="Whole Blood">
+                                                Whole Blood
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Vagina"  >
+                                            <label class="form-check-label ms-2 me-2" for="Vagina">
+                                                Vagina
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Uterus"  >
+                                            <label class="form-check-label ms-2 me-2" for="Uterus">
+                                                Uterus
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Thyroid"  >
+                                            <label class="form-check-label ms-2 me-2" for="Thyroid">
+                                                Thyroid
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Testis"  >
+                                            <label class="form-check-label ms-2 me-2" for="Testis">
+                                                Testis
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Stomach"  >
+                                            <label class="form-check-label ms-2 me-2" for="Stomach">
+                                                Stomach
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Spleen"  >
+                                            <label class="form-check-label ms-2 me-2" for="Spleen">
+                                                Spleen
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Small Intestine"  >
+                                            <label class="form-check-label ms-2 me-2" for="Small Intestine">
+                                                Small Intestine
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Skin sun exp"  >
+                                            <label class="form-check-label ms-2 me-2" for="Skin sun exp">
+                                                Skin sun exp
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Skin not sun exp"  >
+                                            <label class="form-check-label ms-2 me-2" for="Skin not sun exp">
+                                                Skin not sun exp
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Prostate"  >
+                                            <label class="form-check-label ms-2 me-2" for="Prostate">
+                                                Prostate
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Pituitary"  >
+                                            <label class="form-check-label ms-2 me-2" for="Pituitary">
+                                                Pituitary
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Pancreas"  >
+                                            <label class="form-check-label ms-2 me-2" for="Pancreas">
+                                                Pancreas
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Ovary"  >
+                                            <label class="form-check-label ms-2 me-2" for="Ovary">
+                                                Ovary
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Nerve Tibial"  >
+                                            <label class="form-check-label ms-2 me-2" for="Nerve Tibial">
+                                                Nerve Tibial
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Muscle Skeletal"  >
+                                            <label class="form-check-label ms-2 me-2" for="Muscle Skeletal">
+                                                Muscle Skeletal
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Minor Saliv Gland"  >
+                                            <label class="form-check-label ms-2 me-2" for="Minor Saliv Gland">
+                                                Minor Saliv Gland
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Lung"  >
+                                            <label class="form-check-label ms-2 me-2" for="Lung">
+                                                Lung
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Liver"  >
+                                            <label class="form-check-label ms-2 me-2" for="Liver">
+                                                Liver
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Kidney Medulla"  >
+                                            <label class="form-check-label ms-2 me-2" for="Kidney Medulla">
+                                                Kidney Medulla
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Kidney Cortex"  >
+                                            <label class="form-check-label ms-2 me-2" for="Kidney Cortex">
+                                                Kidney Cortex
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Heart Left Ventr"  >
+                                            <label class="form-check-label ms-2 me-2" for="Heart Left Ventr">
+                                                Heart Left Ventr
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Heart Atr Append"  >
+                                            <label class="form-check-label ms-2 me-2" for="Heart Atr Append">
+                                                Heart Atr Append
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Fallopian Tube"  >
+                                            <label class="form-check-label ms-2 me-2" for="Fallopian Tube">
+                                                Fallopian Tube
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Esoph Muscularis"  >
+                                            <label class="form-check-label ms-2 me-2" for="Esoph Muscularis">
+                                                Esoph Muscularis
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Esoph Mucosa"  >
+                                            <label class="form-check-label ms-2 me-2" for="Esoph Mucosa">
+                                                Esoph Mucosa
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Esoph Gastroes Junc"  >
+                                            <label class="form-check-label ms-2 me-2" for="Esoph Gastroes Junc">
+                                                Esoph Gastroes Junc
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Colon Transverse"  >
+                                            <label class="form-check-label ms-2 me-2" for="Colon Transverse">
+                                                Colon Transverse
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Colon Sigmoid"  >
+                                            <label class="form-check-label ms-2 me-2" for="Colon Sigmoid">
+                                                Colon Sigmoid
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Cervix Endocerv"  >
+                                            <label class="form-check-label ms-2 me-2" for="Cervix Endocerv">
+                                                Cervix Endocerv
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Cervix Ectocerv"  >
+                                            <label class="form-check-label ms-2 me-2" for="Cervix Ectocerv">
+                                                Cervix Ectocerv
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Cells fibrobl cult"  >
+                                            <label class="form-check-label ms-2 me-2" for="Cells fibrobl cult">
+                                                Cells fibrobl cult
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Cells EBV lymphoc"  >
+                                            <label class="form-check-label ms-2 me-2" for="Cells EBV lymphoc">
+                                                Cells EBV lymphoc
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Breast Mammary"  >
+                                            <label class="form-check-label ms-2 me-2" for="Breast Mammary">
+                                                Breast Mammary
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Subst nigr"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Subst nigr">
+                                                Brain Subst nigr
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Spinal cord cerv"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Spinal cord cerv">
+                                                Brain Spinal cord cerv
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Put bas gang"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Put bas gang">
+                                                Brain Put bas gang
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Nucl acc bas gang"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Nucl acc bas gang">
+                                                Brain Nucl acc bas gang
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Hypothal"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Hypothal">
+                                                Brain Hypothal
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Hippocamp"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Hippocamp">
+                                                Brain Hippocamp
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Front Cortex"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Front Cortex">
+                                                Brain Front Cortex
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Cortex"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Cortex">
+                                                Brain Cortex
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Cereb Hemisph"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Cereb Hemisph">
+                                                Brain Cereb Hemisph
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Cereb"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Cereb">
+                                                Brain Cereb
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Caud bas gangl"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Caud bas gangl">
+                                                Brain Caud bas gangl
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Ant cin cort"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Ant cin cort">
+                                                Brain Ant cin cort
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Brain Amygd"  >
+                                            <label class="form-check-label ms-2 me-2" for="Brain Amygd">
+                                                Brain Amygd
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Bladder"  >
+                                            <label class="form-check-label ms-2 me-2" for="Bladder">
+                                                Bladder
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Artery Tibia"  >
+                                            <label class="form-check-label ms-2 me-2" for="Artery Tibia">
+                                                Artery Tibia
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Artery Coron"  >
+                                            <label class="form-check-label ms-2 me-2" for="Artery Coron">
+                                                Artery Coron
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Artery Aorta"  >
+                                            <label class="form-check-label ms-2 me-2" for="Artery Aorta">
+                                                Artery Aorta
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Adren Gland"  >
+                                            <label class="form-check-label ms-2 me-2" for="Adren Gland">
+                                                Adren Gland
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Adip Visc Om"  >
+                                            <label class="form-check-label ms-2 me-2" for="Adip Visc Om">
+                                                Adip Visc Om
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Adip Subcut"  >
+                                            <label class="form-check-label ms-2 me-2" for="Adip Subcut">
+                                                Adip Subcut
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="mt-3"></div>
+                            </div>
+                        </form>
+
+                        </p?</fieldset>
+
+                </div>
+            </div>
+</div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Regulation
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="TF rPeak Clusters"  >
+                            <label class="form-check-label ms-2 me-2" for="TF rPeak Clusters">
+                                TF rPeak Clusters
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="ENCODE cCREs"  >
+                            <label class="form-check-label ms-2 me-2" for="ENCODE cCREs">
+                                ENCODE cCREs
+                            </label>
+
+                            <a href="https://screen-v2.wenglab.org/search/?q=$$&assembly=GRCh38" target="_blank" style="color: darkblue;">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="RefSeq Func Elems"  >
+                            <label class="form-check-label ms-2 me-2" for="RefSeq Func Elems">
+                                RefSeq Func Elems
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="VISTA Enhancers"  >
+                            <label class="form-check-label ms-2 me-2" for="VISTA Enhancers">
+                                VISTA Enhancers
+                            </label>
+
+                            <a href="https://enhancer.lbl.gov/vista/browse?filter=$$" target="_blank" style="color: darkblue;">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3">
+                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                        <fieldset class="border rounded-3 p-3">
+                            <legend class="float-none w-auto px-3">
+                                CpG Islands (Islands < 300 Bases are Light Green)
+                            </legend><p>
+
+                            <form>
+                                <div class="container">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="CpG Islands"  >
+                                                <label class="form-check-label ms-2 me-2" for="CpG Islands">
+                                                    CpG Islands
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="mt-3"></div>
+                                </div>
+                            </form>
+
+                            </p?</fieldset>
+
+                    </div>
+                </div>
+
+                <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                    <fieldset class="border rounded-3 p-3">
+                        <legend class="float-none w-auto px-3">
+                            ReMap Atlas of Regulatory Regions
+                        </legend><p>
+
+                        <form>
+                            <div class="container">
+                                <div class="row g-2">
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="ReMap ChIP-seq"  >
+                                            <label class="form-check-label ms-2 me-2" for="ReMap ChIP-seq">
+                                                ReMap ChIP-seq
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="ReMap density"  >
+                                            <label class="form-check-label ms-2 me-2" for="ReMap density">
+                                                ReMap density
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="mt-3"></div>
+                            </div>
+                        </form>
+
+                        </p?</fieldset>
+
+                </div>
+            </div>
+
+            <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                <fieldset class="border rounded-3 p-3">
+                    <legend class="float-none w-auto px-3">
+                        GeneHancer
+                    </legend><p>
+
+                    <form>
+                        <div class="container">
+                            <div class="row g-2">
+
+                            </div>
+                            <div class="mt-3">
+                                <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                                    <fieldset class="border rounded-3 p-3">
+                                        <legend class="float-none w-auto px-3">
+                                            Reg Elem
+                                        </legend><p>
+
+                                        <form>
+                                            <div class="container">
+                                                <div class="row g-2">
+
+                                                    <div class="col-6 col-md-4">
+                                                        <div class="form-check d-flex align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="GH Reg Elems"  >
+                                                            <label class="form-check-label ms-2 me-2" for="GH Reg Elems">
+                                                                GH Reg Elems
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6 col-md-4">
+                                                        <div class="form-check d-flex align-items-center">
+                                                            <input class="form-check-input" type="checkbox" id="GH Reg Elems (DE)"  >
+                                                            <label class="form-check-label ms-2 me-2" for="GH Reg Elems (DE)">
+                                                                GH Reg Elems (DE)
+                                                            </label>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="mt-3"></div>
+                                            </div>
+                                        </form>
+
+                                        </p?</fieldset>
+
+                                </div>
+                            </div>
+
+                            <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                                <fieldset class="border rounded-3 p-3">
+                                    <legend class="float-none w-auto px-3">
+                                        Gene TSS
+                                    </legend><p>
+
+                                    <form>
+                                        <div class="container">
+                                            <div class="row g-2">
+
+                                                <div class="col-6 col-md-4">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input" type="checkbox" id="GH genes TSS"  >
+                                                        <label class="form-check-label ms-2 me-2" for="GH genes TSS">
+                                                            GH genes TSS
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-6 col-md-4">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input" type="checkbox" id="GH genes TSS (DE)"  >
+                                                        <label class="form-check-label ms-2 me-2" for="GH genes TSS (DE)">
+                                                            GH genes TSS (DE)
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="mt-3"></div>
+                                        </div>
+                                    </form>
+
+                                    </p?</fieldset>
+
+                            </div>
+                        </div>
+            </div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            GTEx fine-mapped cis-eQTLs
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="GTEx DAP-G eQTLs"  >
+                            <label class="form-check-label ms-2 me-2" for="GTEx DAP-G eQTLs">
+                                GTEx DAP-G eQTLs
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="GTEx CAVIAR eQTLs"  >
+                            <label class="form-check-label ms-2 me-2" for="GTEx CAVIAR eQTLs">
+                                GTEx CAVIAR eQTLs
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            JASPAR Transcription Factor Binding Site Database
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="JASPAR 2018 TFBS"  >
+                            <label class="form-check-label ms-2 me-2" for="JASPAR 2018 TFBS">
+                                JASPAR 2018 TFBS
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="JASPAR 2020 TFBS"  >
+                            <label class="form-check-label ms-2 me-2" for="JASPAR 2020 TFBS">
+                                JASPAR 2020 TFBS
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="JASPAR 2022 TFBS"  >
+                            <label class="form-check-label ms-2 me-2" for="JASPAR 2022 TFBS">
+                                JASPAR 2022 TFBS
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="JASPAR 2024 TFBS"  >
+                            <label class="form-check-label ms-2 me-2" for="JASPAR 2024 TFBS">
+                                JASPAR 2024 TFBS
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+</div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Variation
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                </div>
+                <div class="mt-3">
+                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                        <fieldset class="border rounded-3 p-3">
+                            <legend class="float-none w-auto px-3">
+                                Short Genetic Variants from dbSNP release 155
+                            </legend><p>
+
+                            <form>
+                                <div class="container">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="All dbSNP(155)"  >
+                                                <label class="form-check-label ms-2 me-2" for="All dbSNP(155)">
+                                                    All dbSNP(155)
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Mult. dbSNP(155)"  >
+                                                <label class="form-check-label ms-2 me-2" for="Mult. dbSNP(155)">
+                                                    Mult. dbSNP(155)
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="ClinVar dbSNP(155)"  >
+                                                <label class="form-check-label ms-2 me-2" for="ClinVar dbSNP(155)">
+                                                    ClinVar dbSNP(155)
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Common dbSNP(155)"  >
+                                                <label class="form-check-label ms-2 me-2" for="Common dbSNP(155)">
+                                                    Common dbSNP(155)
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Map Err dbSnp(155)"  >
+                                                <label class="form-check-label ms-2 me-2" for="Map Err dbSnp(155)">
+                                                    Map Err dbSnp(155)
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="mt-3"></div>
+                                </div>
+                            </form>
+
+                            </p?</fieldset>
+
+                    </div>
+                </div>
+
+                <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                    <fieldset class="border rounded-3 p-3">
+                        <legend class="float-none w-auto px-3">
+                            DGV Struct Var
+                        </legend><p>
+
+                        <form>
+                            <div class="container">
+                                <div class="row g-2">
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="DGV Gold Standard"  >
+                                            <label class="form-check-label ms-2 me-2" for="DGV Gold Standard">
+                                                DGV Gold Standard
+                                            </label>
+
+                                            <a href="http://dgv.tcag.ca/gb2/gbrowse_details/dgv2_hg38?ref=$S;start=${;end=$};name=$$;class=Sequence" target="_blank" style="color: darkblue;">
+                                                <i class="bi bi-info-circle"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="DGV Supp Var"  >
+                                            <label class="form-check-label ms-2 me-2" for="DGV Supp Var">
+                                                DGV Supp Var
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="DGV Struct Var"  >
+                                            <label class="form-check-label ms-2 me-2" for="DGV Struct Var">
+                                                DGV Struct Var
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="mt-3"></div>
+                            </div>
+                        </form>
+
+                        </p?</fieldset>
+
+                </div>
+            </div>
+
+            <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                <fieldset class="border rounded-3 p-3">
+                    <legend class="float-none w-auto px-3">
+                        Platinum genome variants
+                    </legend><p>
+
+                    <form>
+                        <div class="container">
+                            <div class="row g-2">
+
+                                <div class="col-6 col-md-4">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="NA12878"  >
+                                        <label class="form-check-label ms-2 me-2" for="NA12878">
+                                            NA12878
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="NA12877"  >
+                                        <label class="form-check-label ms-2 me-2" for="NA12877">
+                                            NA12877
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="hybrid"  >
+                                        <label class="form-check-label ms-2 me-2" for="hybrid">
+                                            hybrid
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="mt-3"></div>
+                        </div>
+                    </form>
+
+                    </p?</fieldset>
+
+            </div>
+</div>
+</div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Repeats
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Simple Repeats"  >
+                            <label class="form-check-label ms-2 me-2" for="Simple Repeats">
+                                Simple Repeats
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="NuMTs Sequence"  >
+                            <label class="form-check-label ms-2 me-2" for="NuMTs Sequence">
+                                NuMTs Sequence
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3">
+                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                        <fieldset class="border rounded-3 p-3">
+                            <legend class="float-none w-auto px-3">
+                                Repeating Elements by RepeatMasker
+                            </legend><p>
+
+                            <form>
+                                <div class="container">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="SINE"  >
+                                                <label class="form-check-label ms-2 me-2" for="SINE">
+                                                    SINE
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="LINE"  >
+                                                <label class="form-check-label ms-2 me-2" for="LINE">
+                                                    LINE
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="LTR"  >
+                                                <label class="form-check-label ms-2 me-2" for="LTR">
+                                                    LTR
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="DNA"  >
+                                                <label class="form-check-label ms-2 me-2" for="DNA">
+                                                    DNA
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Simple"  >
+                                                <label class="form-check-label ms-2 me-2" for="Simple">
+                                                    Simple
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Low Complexity"  >
+                                                <label class="form-check-label ms-2 me-2" for="Low Complexity">
+                                                    Low Complexity
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Satellite"  >
+                                                <label class="form-check-label ms-2 me-2" for="Satellite">
+                                                    Satellite
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="RNA"  >
+                                                <label class="form-check-label ms-2 me-2" for="RNA">
+                                                    RNA
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Other"  >
+                                                <label class="form-check-label ms-2 me-2" for="Other">
+                                                    Other
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="mt-3"></div>
+                                </div>
+                            </form>
+
+                            </p?</fieldset>
+
+                    </div>
+                </div>
+            </div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Mapping and Sequencing
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="GC Percent"  >
+                            <label class="form-check-label ms-2 me-2" for="GC Percent">
+                                GC Percent
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Recomb. 1k Genomes"  >
+                            <label class="form-check-label ms-2 me-2" for="Recomb. 1k Genomes">
+                                Recomb. 1k Genomes
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Recomb. deCODE Avg"  >
+                            <label class="form-check-label ms-2 me-2" for="Recomb. deCODE Avg">
+                                Recomb. deCODE Avg
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Recomb. deCODE Dmn"  >
+                            <label class="form-check-label ms-2 me-2" for="Recomb. deCODE Dmn">
+                                Recomb. deCODE Dmn
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Recomb. deCODE Evts"  >
+                            <label class="form-check-label ms-2 me-2" for="Recomb. deCODE Evts">
+                                Recomb. deCODE Evts
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Recomb. deCODE Mat"  >
+                            <label class="form-check-label ms-2 me-2" for="Recomb. deCODE Mat">
+                                Recomb. deCODE Mat
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Recomb. deCODE Pat"  >
+                            <label class="form-check-label ms-2 me-2" for="Recomb. deCODE Pat">
+                                Recomb. deCODE Pat
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3">
+                    <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                        <fieldset class="border rounded-3 p-3">
+                            <legend class="float-none w-auto px-3">
+                                Paired identical sequences
+                            </legend><p>
+
+                            <form>
+                                <div class="container">
+                                    <div class="row g-2">
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input" type="checkbox" id="Tandem Dups"  >
+                                                <label class="form-check-label ms-2 me-2" for="Tandem Dups">
+                                                    Tandem Dups
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="mt-3"></div>
+                                </div>
+                            </form>
+
+                            </p?</fieldset>
+
+                    </div>
+                </div>
+
+                <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                    <fieldset class="border rounded-3 p-3">
+                        <legend class="float-none w-auto px-3">
+                            Highly Reproducible genomic regions and variants
+                        </legend><p>
+
+                        <form>
+                            <div class="container">
+                                <div class="row g-2">
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="HR_NA12878 Variants"  >
+                                            <label class="form-check-label ms-2 me-2" for="HR_NA12878 Variants">
+                                                HR_NA12878 Variants
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="HR_NA12249 Variants"  >
+                                            <label class="form-check-label ms-2 me-2" for="HR_NA12249 Variants">
+                                                HR_NA12249 Variants
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="HR_NA12248 Variants"  >
+                                            <label class="form-check-label ms-2 me-2" for="HR_NA12248 Variants">
+                                                HR_NA12248 Variants
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="HR_NA10835 Variants"  >
+                                            <label class="form-check-label ms-2 me-2" for="HR_NA10835 Variants">
+                                                HR_NA10835 Variants
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="CQ-8 Variants"  >
+                                            <label class="form-check-label ms-2 me-2" for="CQ-8 Variants">
+                                                CQ-8 Variants
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="CQ-7 Variants"  >
+                                            <label class="form-check-label ms-2 me-2" for="CQ-7 Variants">
+                                                CQ-7 Variants
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="CQ-56 Variants"  >
+                                            <label class="form-check-label ms-2 me-2" for="CQ-56 Variants">
+                                                CQ-56 Variants
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input" type="checkbox" id="Highly Reproducible Regions"  >
+                                            <label class="form-check-label ms-2 me-2" for="Highly Reproducible Regions">
+                                                Highly Reproducible Regions
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="mt-3"></div>
+                            </div>
+                        </form>
+
+                        </p?</fieldset>
+
+                </div>
+            </div>
+
+            <div class="mb-3" xmlns="http://www.w3.org/1999/html">
+                <fieldset class="border rounded-3 p-3">
+                    <legend class="float-none w-auto px-3">
+                        Problematic Regions
+                    </legend><p>
+
+                    <form>
+                        <div class="container">
+                            <div class="row g-2">
+
+                                <div class="col-6 col-md-4">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="GRC Exclusions"  >
+                                        <label class="form-check-label ms-2 me-2" for="GRC Exclusions">
+                                            GRC Exclusions
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="ENCODE Blacklist V2"  >
+                                        <label class="form-check-label ms-2 me-2" for="ENCODE Blacklist V2">
+                                            ENCODE Blacklist V2
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input" type="checkbox" id="UCSC Unusual Regions"  >
+                                        <label class="form-check-label ms-2 me-2" for="UCSC Unusual Regions">
+                                            UCSC Unusual Regions
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="mt-3"></div>
+                        </div>
+                    </form>
+
+                    </p?</fieldset>
+
+            </div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Difficult regions from GIAB via NCBI
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Not lowMap+SegDup"  >
+                            <label class="form-check-label ms-2 me-2" for="Not lowMap+SegDup">
+                                Not lowMap+SegDup
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Not difficult regions"  >
+                            <label class="form-check-label ms-2 me-2" for="Not difficult regions">
+                                Not difficult regions
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="LowMap+SegDup"  >
+                            <label class="form-check-label ms-2 me-2" for="LowMap+SegDup">
+                                LowMap+SegDup
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="All difficult regions"  >
+                            <label class="form-check-label ms-2 me-2" for="All difficult regions">
+                                All difficult regions
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+
+<div class="mb-3" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="border rounded-3 p-3">
+        <legend class="float-none w-auto px-3">
+            Single-read and multi-read mappability by Umap
+        </legend><p>
+
+        <form>
+            <div class="container">
+                <div class="row g-2">
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap M100"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap M100">
+                                Umap M100
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap M50"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap M50">
+                                Umap M50
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap M36"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap M36">
+                                Umap M36
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap M24"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap M24">
+                                Umap M24
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap S100"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap S100">
+                                Umap S100
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap S50"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap S50">
+                                Umap S50
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap S36"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap S36">
+                                Umap S36
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="Umap S24"  >
+                            <label class="form-check-label ms-2 me-2" for="Umap S24">
+                                Umap S24
+                            </label>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-3"></div>
+            </div>
+        </form>
+
+        </p?</fieldset>
+
+</div>
+</div>
+</div>
+</div>
+</form>
+
+</p?</fieldset>
+
+</div>
+</div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
+</div>
+</div>
+</div>
+</div>

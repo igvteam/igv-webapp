@@ -21,7 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.min.js'
+import igv from '../node_modules/igv/dist/igv.esm.js'
 import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
 import makeDraggable from "./widgets/utils/draggable.js"
 import alertSingleton from "./widgets/alertSingleton.js"
@@ -91,17 +91,10 @@ async function main(container, config) {
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
 
-            // Reset google warning flag on success
-            localStorage.removeItem(googleWarningFlag)
-
         } catch (e) {
-            const str = `Error initializing Google Drive: ${e.message || e.details}`
+            const str = `Error Google oAuth: ${e.message || e.details}`
+            alertSingleton.present(str)
             console.error(str)
-            const googleWarning = "true" === localStorage.getItem(googleWarningFlag)
-            if (!googleWarning) {
-                localStorage.setItem(googleWarningFlag, "true")
-                alertSingleton.present(str)
-            }
         }
     }
 
@@ -301,7 +294,7 @@ function setupNotifications(notificatons) {
             const [key, value] = Object.entries(notification).flat()
             notificationDialog = new NotificationDialog(document.body, key)
 
-            const status = "true" === localStorage.getItem(key)
+            const status = "true" === localStorage.getItem(`note_${key}`)
             if (!status) {
                 notificationDialog.present(value)
             }

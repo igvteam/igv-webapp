@@ -21,7 +21,7 @@
  *
  */
 
-import igv from '../node_modules/igv/dist/igv.esm.min.js'
+import igv from '../node_modules/igv/dist/igv.esm.js'
 import alertSingleton from './widgets/alertSingleton.js'
 import {QRCode} from './widgets/qrcode.js'
 import {doShortenURL, setURLShortener, shortSessionURL} from './shareHelper.js'

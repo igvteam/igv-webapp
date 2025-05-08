@@ -41,7 +41,7 @@ class NotificationDialog {
     }
 
     handleGotIt(key) {
-        localStorage.setItem(key, "true")
+        localStorage.setItem(`note_${key}`, "true")
         this.card.style.display = 'none';
     }
 

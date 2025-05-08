@@ -22,6 +22,7 @@ let predefinedGenomeIds
 let predefinedGenomes
 let genarkModalTable
 let genomeWidgetModal
+let predefinedGenomesMap = new Map()
 
 async function createGenomeWidgets(igvMain, browser, genomes) {
 
@@ -95,6 +96,11 @@ async function initializeGenomeWidgets(genomes) {
     try {
         predefinedGenomes = genomes.reverse() // Default genome list
         predefinedGenomeIds = new Set(predefinedGenomes.map(g => g.id))
+        for(const genomeJson of genomes) {
+            if (genomeJson.id) {
+                predefinedGenomesMap.set(genomeJson.id, genomeJson)
+            }
+        }
         updateGenomeList()
 
     } catch (e) {
@@ -110,29 +116,37 @@ function getRecentGenomes() {
 
 function updateGenomeList() {
 
-    const $dropdown_menu = $('#igv-app-genome-dropdown-menu')
+    const dropdownMenu = document.getElementById('igv-app-genome-dropdown-menu')
 
-    // NOTE:  MUST USE ID HERE, THERE CAN BE MULTIPLE DIVIDERS.  JQUERY DOES WEIRD THINGS IN THE CODE THAT FOLLOWS IF $divider IS A COLLECTION
-    const $divider = $dropdown_menu.find('#igv-app-genome-dropdown-divider')
+    // NOTE:  MUST USE ID HERE, THERE CAN BE MULTIPLE DIVIDERS.
+    const divider = dropdownMenu.querySelector('#igv-app-genome-dropdown-divider')
 
     // discard all buttons following the divider div
-    $divider.nextAll().off()
-    $divider.nextAll().remove()
+    let sibling = divider.nextElementSibling
+    while (sibling) {
+        const nextSibling = sibling.nextElementSibling
+        sibling.remove()
+        sibling = nextSibling
+    }
 
     const addEntryFor = (genomeJson) => {
         const key = genomeJson.id
-        const value = genomeJson
+        let value = genomeJson
 
-        const $button = createButton(value.name)
-        $button.insertAfter($divider)
+        const button = document.createElement('button')
+        button.className = 'dropdown-item'
+        button.type = 'button'
+        button.textContent = value.name
 
-        $button.data('id', key)
+        divider.insertAdjacentElement('afterend', button)
 
-        const str = `click.genome-dropdown.${key}`
-
-        $button.on(str, async () => {
-            const id = $button.data('id')
+        button.dataset.id = key
+        button.addEventListener('click', async () => {
+            const id = button.dataset.id
             if (id !== Globals.browser.genome.id) {
+                if(predefinedGenomesMap.has(id)) {
+                    value = predefinedGenomesMap.get(id)
+                }
                 await loadGenome(value)
             }
         })
@@ -148,22 +162,15 @@ function updateGenomeList() {
 
     const recentGenomes = getRecentGenomes()
     if (recentGenomes && recentGenomes.length > 0) {
-        $('<div class="dropdown-divider"></div>').insertAfter($divider)
+        const divider2 = document.createElement('div')
+        divider2.className = 'dropdown-divider'
+        divider.insertAdjacentElement('afterend', divider2)
         for (let genomeJson of recentGenomes) {
             addEntryFor(genomeJson)
         }
-
     }
-
 }
 
-function createButton(title) {
-
-    let $button = $('<button>', {class: 'dropdown-item', type: 'button'})
-    $button.text(title)
-
-    return $button
-}
 
 async function loadGenome(genomeConfiguration) {
 
@@ -176,8 +183,7 @@ async function loadGenome(genomeConfiguration) {
                 // Last loaded genome ID, reloaded automatically on next page load
                 localStorage.setItem("genomeID", g.id)
 
-                // Update the custom list
-                // hub.txt genomes are indirect, record name and id
+                // Update the recent genomes list
                 if (StringUtils.isString(genomeConfiguration)) {
                     genomeConfiguration = {id: genomeConfiguration}
                 } else {

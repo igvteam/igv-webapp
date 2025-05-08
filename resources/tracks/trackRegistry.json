@@ -5,10 +5,6 @@
   "dm6": [
     "resources/tracks/dm6_4dn.json"
   ],
-  "hg19": [
-    "resources/tracks/hg19_platinum_genomes.json",
-    "resources/tracks/hg19_tutorials.json"
-  ],
   "hg38": [
     "resources/tracks/hg38_gtex.json",
     "resources/tracks/hg38_4dn.json"

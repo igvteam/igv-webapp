@@ -1,6 +1,6 @@
 var igvwebConfig = {
 
-    genomes: "https://igv.org/genomes/genomes.json",
+    genomes: "resources/genomes.json",
     trackRegistryFile: "resources/tracks/trackRegistry.json",
     //sessionRegistryFile: "resources/sessions/sessionRegistry.json",
 
@@ -39,7 +39,6 @@ var igvwebConfig = {
         {
             genome: "hg38",
             locus: "all",
-            genomeList: "https://igv.org/genomes/genomes3.json",
             loadDefaultGenomes: false,
             queryParametersSupported: true,
             showChromosomeWidget: true,

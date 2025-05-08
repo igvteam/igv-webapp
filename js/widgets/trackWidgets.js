@@ -17,7 +17,7 @@ import createTrackSelectionModal from './trackSelectionModal.js'
 import * as Utils from './utils.js'
 import {GooglePicker} from "../../node_modules/igv-utils/src/index.js"
 import {initializeDropbox} from "./dropbox.js"
-import igv from '../../node_modules/igv/dist/igv.esm.min.js'
+import igv from '../../node_modules/igv/dist/igv.esm.js'
 
 const id_prefix = 'genome_specific_'
 
@@ -166,7 +166,9 @@ async function trackMenuGenomeChange(browser, genome) {
             }
         }
 
-        if (trackMenuConfigurations) configs.push(...trackMenuConfigurations.map(c => prepRegistryConfig(c)))
+        if (trackMenuConfigurations) {
+            configs.push(...trackMenuConfigurations.map(c => prepRegistryConfig(c)))
+        }
 
         for (let config of configs.reverse()) {
 

@@ -1,4 +1,4 @@
-{
+export default {
     "label": "Annotations",
     "description": "Annotations from the <a href=https://genome.ucsc.edu/target=_blank>UCSC Genome Browser</a>",
     "link": "https://hgdownload.soe.ucsc.edu/downloads.html",
@@ -8,8 +8,8 @@
             "type": "annotation",
             "format": "ensgene",
             "displayMode": "EXPANDED",
-            "url": "https://s3.amazonaws.com/igv.org.genomes/gorGor4/ensGene.txt.gz",
-            "indexURL": "https://s3.amazonaws.com/igv.org.genomes/gorGor4/ensGene.txt.gz.tbi",
+            "url": "https://s3.amazonaws.com/igv.org.genomes/bosTau9/ensGene.txt.gz",
+            "indexURL": "https://s3.amazonaws.com/igv.org.genomes/bosTau9/ensGene.txt.gz.tbi",
             "visibilityWindow": 20000000
         },
         {
@@ -17,8 +17,8 @@
             "type": "annotation",
             "format": "rmsk",
             "displayMode": "EXPANDED",
-            "url": "https://s3.amazonaws.com/igv.org.genomes/gorGor4/rmsk.txt.gz",
-            "indexURL": "https://s3.amazonaws.com/igv.org.genomes/gorGor4/rmsk.txt.gz.tbi",
+            "url": "https://s3.amazonaws.com/igv.org.genomes/bosTau9/rmsk.txt.gz",
+            "indexURL": "https://s3.amazonaws.com/igv.org.genomes/bosTau9/rmsk.txt.gz.tbi",
             "visibilityWindow": 1000000
         },
         {
@@ -26,7 +26,7 @@
             "type": "annotation",
             "format": "cpgIslandExt",
             "displayMode": "EXPANDED",
-            "url": "https://s3.amazonaws.com/igv.org.genomes/gorGor4/cpgIslandExt.txt.gz"
+            "url": "https://s3.amazonaws.com/igv.org.genomes/bosTau9/cpgIslandExt.txt.gz"
         }
     ]
 }

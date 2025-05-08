@@ -1,10 +1,15 @@
 import alertSingleton from './alertSingleton.js'
-import * as DOMUtils from "./utils/dom-utils.js"
 import {GooglePicker} from "../../node_modules/igv-utils/src/index.js"
+import {initializeDropbox} from "./dropbox.js"
+
+/**
+ * FileLoad is a base class that handles loading files from local file input, Dropbox, and Google Drive.  Used
+ * by SessionFileLoad and GenomeFileLoad.
+ */
 
 class FileLoad {
 
-    constructor({localFileInput, initializeDropbox, dropboxButton, googleEnabled, googleDriveButton}) {
+    constructor({localFileInput, dropboxButton, googleDriveButton}) {
 
         localFileInput.addEventListener('change', async () => {
 
@@ -21,44 +26,40 @@ class FileLoad {
 
         })
 
-        if (dropboxButton) dropboxButton.addEventListener('click', async () => {
+        if (dropboxButton) {
+            dropboxButton.addEventListener('click', async () => {
 
-            const result = await initializeDropbox()
+                const result = await initializeDropbox()
 
-            if (true === result) {
+                if (true === result) {
 
-                const config =
-                    {
-                        success: async dbFiles => {
-                            try {
-                                await this.loadPaths(dbFiles.map(dbFile => dbFile.link))
-                            } catch (e) {
-                                console.error(e)
-                                alertSingleton.present(e)
-                            }
-                        },
-                        cancel: () => {
-                        },
-                        linkType: 'preview',
-                        multiselect: true,
-                        folderselect: false,
-                    }
+                    const config =
+                        {
+                            success: async dbFiles => {
+                                try {
+                                    await this.loadPaths(dbFiles.map(dbFile => dbFile.link))
+                                } catch (e) {
+                                    console.error(e)
+                                    alertSingleton.present(e)
+                                }
+                            },
+                            cancel: () => {
+                            },
+                            linkType: 'preview',
+                            multiselect: true,
+                            folderselect: false,
+                        }
 
-                Dropbox.choose(config)
+                    Dropbox.choose(config)
 
-            } else {
-                alertSingleton.present('Cannot connect to Dropbox')
-            }
+                } else {
+                    alertSingleton.present('Cannot connect to Dropbox')
+                }
 
-        })
-
-
-        if (false === googleEnabled) {
-            DOMUtils.hide(googleDriveButton.parentElement)
+            })
         }
 
-        if (true === googleEnabled && googleDriveButton) {
-
+        if (googleDriveButton) {
             googleDriveButton.addEventListener('click', () => {
                 GooglePicker.createDropdownButtonPicker(true, async responses => {
 

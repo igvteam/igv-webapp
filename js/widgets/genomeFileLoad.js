@@ -1,11 +1,11 @@
 import {FileUtils, igvxhr, StringUtils} from "../../node_modules/igv-utils/src/index.js"
 import FileLoad from "./fileLoad.js"
-import MultipleTrackFileLoad from "./multipleTrackFileLoad.js"
+import MultipleTrackLoadHelper from "./multipleTrackLoadHelper.js"
 
 class GenomeFileLoad extends FileLoad {
 
-    constructor({localFileInput, initializeDropbox, dropboxButton, googleEnabled, googleDriveButton, loadHandler}) {
-        super({localFileInput, initializeDropbox, dropboxButton, googleEnabled, googleDriveButton})
+    constructor({localFileInput, dropboxButton, googleDriveButton, loadHandler}) {
+        super({localFileInput, dropboxButton, googleDriveButton})
         this.loadHandler = loadHandler
     }
 
@@ -27,11 +27,11 @@ class GenomeFileLoad extends FileLoad {
 
         const filenames = []
         for(let p of paths) {
-            const filename = await MultipleTrackFileLoad.getFilename(p)
+            const filename = await MultipleTrackLoadHelper.getFilename(p)
             filenames.push(filename)
         }
 
-        paths.map(async path => await MultipleTrackFileLoad.getFilename(path))
+        paths.map(async path => await MultipleTrackLoadHelper.getFilename(path))
 
         const path1 = paths[0]
         if(1 === paths.length) {

@@ -1,36 +1,36 @@
 {
 "sessions": [
   {
-    "name": "Examples - Sample Information"
+    "label": "Examples - Sample Information"
   },
   {
-    "name": "Segmented Copy Number",
+    "label": "Segmented Copy Number",
     "description": "Segmented copy number for TCGA GBM data",
     "url": "resources/sessions/gbm-copynumber.json"
   },
   {
-    "name": "1KG Variants",
+    "label": "1KG Variants",
     "description": "1000 genomes variants",
     "url": "resources/sessions/1kg-variants-session.json"
   },
   {
-    "name": "Examples - Base Modifications"
+    "label": "Examples - Base Modifications"
   },
   {
-    "name": "5mC and 6mA Modifications",
+    "label": "5mC and 6mA Modifications",
     "description": "5mC and 6mA Modifications",
     "url": "resources/sessions/6mA_pacbio.json"
   },
   {
-    "name": "Examples - Circular View"
+    "label": "Examples - Circular View"
   },
   {
-    "name": "SKBR3 - Illumina (Schatz)",
+    "label": "SKBR3 - Illumina (Schatz)",
     "description": "SKBR3 - Illumina (Schatz)",
     "url": "resources/sessions/SKBR3-illumina-session.json"
   },
   {
-    "name": "SKBR3 - Pacbio (Schatz)",
+    "label": "SKBR3 - Pacbio (Schatz)",
     "description": "SKBR3 - Pacbio (Schatz)",
     "url": "resources/sessions/SKBR3-pacbio-session.json"
   }

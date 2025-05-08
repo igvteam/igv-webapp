@@ -30,9 +30,7 @@ class GenomeFileLoad extends FileLoad {
             const filename = await MultipleTrackLoadHelper.getFilename(p)
             filenames.push(filename)
         }
-
-        paths.map(async path => await MultipleTrackLoadHelper.getFilename(path))
-
+        
         const path1 = paths[0]
         if(1 === paths.length) {
             const extension = FileUtils.getExtension(path1)

@@ -93,6 +93,7 @@ async function main(container, config) {
 
         } catch (e) {
             const str = `Error Google oAuth: ${e.message || e.details}`
+            alertSingleton.present(str)
             console.error(str)
         }
     }

@@ -44,8 +44,8 @@ export default function createTrackSelectionModal({id, label = '', sections, des
               ${section.tracks ? section.tracks.map((track) => `
                 <div class="col-6 col-md-4">
                   <div class="form-check d-flex align-items-center">
-                    <input class="form-check-input" type="checkbox" id="${track.name}" ${track.checked ? 'checked' : ''} ${track.disabled ? 'disabled' : ''}>
-                    <label class="form-check-label ms-2 me-2" for="${track.name}">
+                    <input class="form-check-input" type="checkbox" id="${track._id}" ${track._checked ? 'checked' : ''} ${track.disabled ? 'disabled' : ''}>
+                    <label class="form-check-label ms-2 me-2" for="${track._id}">
                       ${track.name}
                     </label>
                     ${track.html ? `
@@ -89,7 +89,7 @@ export default function createTrackSelectionModal({id, label = '', sections, des
         sections.forEach(section => {
             if (section.tracks) {
                 section.tracks.forEach(track => {
-                    trackMap.set(track.name, track)
+                    trackMap.set(track._id, track)
                 })
             }
             if (section.children) {
@@ -108,7 +108,8 @@ export default function createTrackSelectionModal({id, label = '', sections, des
             const checkedTracks =
                 checkboxes
                     .map(checkbox => {
-                        return trackMap.get(checkbox.id)
+                        const trackConfig = trackMap.get(checkbox.id)
+                        return trackConfig
                     })
 
             if (okHandler) {

@@ -265,12 +265,12 @@ ignore@^5.1.1:
 
 "igv-utils@github:igvteam/igv-utils#v1.5.11":
   version "1.5.11"
-  resolved "git+ssh://git@github.com/igvteam/igv-utils.git#b66af749ce62129e9dbd12751d817c7fa4bd68f2"
+  resolved "git+ssh://git@github.com/igvteam/igv-utils.git"
+  integrity sha512-QTvvKOAOTCvx7o3AdfOMx9EG2Ts6Z7XU1Z752n1roPVw4ns689zOuixF78/53ISK2n6X0L3yZ4gscxCqEmzm7A==
 
-igv@^3.2.5:
-  version "3.2.5"
-  resolved "https://registry.npmjs.org/igv/-/igv-3.2.5.tgz"
-  integrity sha512-iBYiLsGfdvEMZOxd/QXVSd7T5TlS9ybNamQsS9M1CvuPfmOrNUfQHsEilgTABKYiB0K63cc1RcaEDCDjUqiJuQ==
+"igv@github:igvteam/igv.js":
+  version "3.2.6"
+  resolved "git+ssh://git@github.com/igvteam/igv.js.git#bd8e99ae4c94850723496712f8d189a7b6a846f8"
 
 inflight@^1.0.4:
   version "1.0.6"

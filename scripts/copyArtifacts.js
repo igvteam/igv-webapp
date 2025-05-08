@@ -13,18 +13,10 @@ fs.copySync(__dirname + '/../favicon.ico', __dirname + '/../dist/favicon.ico');
 
 const indexPath =  __dirname + '/../index.html';
 let ping = fs.readFileSync(indexPath, 'utf-8');
-const lines = ping.split(/\r?\n/);
+const pong = ping.replace('src="js/app.js"', `src="./app_bundle-${pkg.version}.esm.js"`)
 
 const out = __dirname + '/../dist/index.html';
 var fd = fs.openSync(out, 'w');
 
-let written = false;
-for (let line of lines) {
-
-    if(!written && line.includes("<script") && line.includes("module") && line.includes("app.js")) {
-        fs.writeSync(fd, '\t<script src=./app_bundle-' + pkg.version + '.js></script>\n', null, 'utf-8');
-        written = true;
-    } else {
-        fs.writeSync(fd, line + '\n', null, 'utf-8')
-    }
-}
+fs.writeSync(fd, pong, null, 'utf-8');
+fs.closeSync(fd);

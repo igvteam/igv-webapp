@@ -7,8 +7,8 @@ export default [
     {
         input: 'js/app.js',
         output: [
-            {file: `dist/app_bundle-${pkg.version}.js`, format: 'umd', name: 'igv_webapp'},
-            {file: `dist/app_bundle-${pkg.version}.min.js`, format: 'umd', name: 'igv_webapp', sourcemap: true, plugins: [terser()]}
+            {file: `dist/app_bundle-${pkg.version}.esm.js`, format: 'es'},
+            {file: `dist/app_bundle-${pkg.version}.esm.min.js`, format: 'es', sourcemap: true, plugins: [terser()]}
         ],
         plugins: [
             strip({

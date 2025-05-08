@@ -2,8 +2,8 @@ import FileLoad from "./fileLoad.js"
 
 class SessionFileLoad extends FileLoad {
 
-    constructor({localFileInput, initializeDropbox, dropboxButton, googleEnabled, googleDriveButton, loadHandler}) {
-        super({localFileInput, initializeDropbox, dropboxButton, googleEnabled, googleDriveButton})
+    constructor({localFileInput, dropboxButton, googleEnabled, googleDriveButton, loadHandler}) {
+        super({localFileInput, dropboxButton, googleEnabled, googleDriveButton})
         this.loadHandler = loadHandler
     }
 

@@ -1,9 +1,7 @@
 import createStringInputModal from "./stringInputModal.js"
 import alertSingleton from "./alertSingleton.js"
 
-function createToolsWidgets(rootContainer,
-                            options,
-                            browser) {
+function createToolsWidgets(rootContainer, browser, options) {
 
 
     // Blat

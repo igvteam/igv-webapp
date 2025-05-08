@@ -1,112 +1,23 @@
 {
-  "bosTau8": [
-    "resources/tracks/bosTau8_annotations.json"
-  ],
-  "bosTau9": [
-    "resources/tracks/bosTau9_annotations.json"
-  ],
-  "canFam3": [
-    "resources/tracks/canFam3_annotations.json"
-  ],
-  "canFam5": [
-    "resources/tracks/canFam5_annotations.json"
-  ],
-  "ce11": [
-    "resources/tracks/ce11_annotations.json"
-  ],
-  "danRer10": [
-    "resources/tracks/danRer10_annotations.json"
-  ],
   "danRer11": [
-    "resources/tracks/danRer11_annotations.json",
     "resources/tracks/danRer11_4dn.json"
   ],
-  "dm3": [
-    "resources/tracks/dm3_encode.json"
-  ],
   "dm6": [
-    "resources/tracks/dm6_annotations.json",
-    "resources/tracks/dm6_encode.json",
     "resources/tracks/dm6_4dn.json"
   ],
-  "galGal6": [
-    "resources/tracks/galGal6_annotations.json"
-  ],
-  "gorGor4": [
-    "resources/tracks/gorGor4_annotations.json"
-  ],
-  "gorGor6": [
-    "resources/tracks/gorGor6_annotations.json"
-  ],
   "hg19": [
-    "resources/tracks/hg19_annotations.json",
-    "resources/tracks/hg19_variants.json",
-    "resources/tracks/hg19_encode.json",
     "resources/tracks/hg19_platinum_genomes.json",
     "resources/tracks/hg19_tutorials.json"
   ],
   "hg38": [
-    "resources/tracks/hg38_annotations.json",
-    "resources/tracks/hg38_encode.json",
-    "resources/tracks/hg38_4dn.json",
-    "resources/tracks/hg38_gtex.json"
+    "resources/tracks/hg38_gtex.json",
+    "resources/tracks/hg38_4dn.json"
   ],
   "hg38_1kg": [
-    "resources/tracks/hg38_annotations.json",
-    "resources/tracks/hg38_encode.json",
     "resources/tracks/hg38_1KG_lowCoverageCrams.json",
     "resources/tracks/hg38_4dn.json"
   ],
-  "mm9": [
-    "resources/tracks/mm9_annotations.json"
-  ],
   "mm10": [
-    "resources/tracks/mm10_annotations.json",
-    "resources/tracks/mm10_encode.json",
     "resources/tracks/mm10_4dn.json"
-  ],
-  "panPan2": [
-    "resources/tracks/panPan2_annotations.json"
-  ],
-  "panTro4": [
-    "resources/tracks/panTro4_annotations.json"
-  ],
-  "rn6": [
-    "resources/tracks/rn6_annotations.json"
-  ],
-  "rn7": [
-    "resources/tracks/rn7_annotations.json"
-  ],
-  "susScr11": [
-    "resources/tracks/susScr11_annotations.json"
-  ],
-  "chm13v2.0": [
-    "resources/tracks/chm13v2.0/genes.json",
-    "resources/tracks/chm13v2.0/map.json",
-    "resources/tracks/chm13v2.0/varRep.json",
-    "resources/tracks/chm13v2.0/rna.json",
-    "resources/tracks/chm13v2.0/regulation.json",
-    "resources/tracks/chm13v2.0/compGeno.json"
-  ],
-  "GCA_011100615.1": [
-    "resources/tracks/GCA_011100615.1_genes.json",
-    "resources/tracks/GCA_011100615.1_map.json",
-    "resources/tracks/GCA_011100615.1_regulation.json",
-    "resources/tracks/GCA_011100615.1_rna.json",
-    "resources/tracks/GCA_011100615.1_varRep.json"
-  ],
-  "GCF_016699485.2": [
-    "resources/tracks/GCF_016699485.2/GCF_016699485.2_genes.json",
-    "resources/tracks/GCF_016699485.2/GCF_016699485.2_map.json",
-    "resources/tracks/GCF_016699485.2/GCF_016699485.2_regulation.json",
-    "resources/tracks/GCF_016699485.2/GCF_016699485.2_rna.json",
-    "resources/tracks/GCF_016699485.2/GCF_016699485.2_varRep.json"
-  ],
-  "GCA_000182895.1": [
-  "resources/tracks/GCA_000182895.1/GCA_000182895.1_genes.json",
-  "resources/tracks/GCA_000182895.1/GCA_000182895.1_map.json",
-  "resources/tracks/GCA_000182895.1/GCA_000182895.1_regulation.json",
-  "resources/tracks/GCA_000182895.1/GCA_000182895.1_rna.json",
-  "resources/tracks/GCA_000182895.1/GCA_000182895.1_varRep.json"
-]
+  ]
 }

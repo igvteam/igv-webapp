@@ -4,8 +4,8 @@
   overflow: auto; /* Ensures content is scrollable */
   max-width: 100%; /* Prevents exceeding the viewport width */
   max-height: 100%; /* Prevents exceeding the viewport height */
-  width: 1000px; /* Initial width */
-  height: 600px; /* Initial height */
+  width: 80%; /* Initial width */
+  height: 80%; /* Initial height */
   position: relative; /* Required for proper resizing behavior */
   box-sizing: border-box; /* Ensures padding and borders are included in size calculations */
 }

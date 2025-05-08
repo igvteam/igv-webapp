@@ -1,8 +1,8 @@
-export default function createStringInputModal($rootContainer, modalID, handler,
+export default function createStringInputModal(rootContainer, modalID, handler,
                                                {title, prompt, type, rows, cols, minLength, maxLength, placeholder}) {
 
     const blatModalElement = createModalElement(modalID, title)
-    $rootContainer.get(0).appendChild(blatModalElement)
+    rootContainer.appendChild(blatModalElement)
     const blatModal = new bootstrap.Modal(blatModalElement)
 
     const parent = blatModalElement.querySelector('.modal-body')

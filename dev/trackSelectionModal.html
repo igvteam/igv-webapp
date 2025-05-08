@@ -31,53 +31,78 @@
 <script type="module">
 
     import createTrackSelectionModal from "../js/widgets/trackSelectionModal.js"
+    import hubJson from "./hubJson.js"
+    import registryJson from "./registryJson.js"
+
 
     // Example usage
     const sections = [
         {
-            title: 'Section 1',
+            label: 'Section 1',
             tracks: Array.from({length: 20}, (_, i) => ({
-                id: `checkbox1-${i + 1}`,
-                label: `Option ${i + 1}`,
+                name: `Option ${i + 1}`,
                 checked: i % 2 === 0,
                 disabled: i % 2 === 0,
                 url: `https://example.com/section1/option${i + 1}`
             }))
         },
         {
-            title: 'Section 2',
-            tracks: Array.from({length: 20}, (_, i) => ({
-                id: `checkbox2-${i + 1}`,
-                label: `Option ${i + 1}`,
-                infoURL: `https://example.com/info${i + 21}`,
-                checked: i === 0,
-                url: `https://example.com/section2/option${i + 1}`
-            }))
+            label: 'Section 2',
+            children: [
+                {
+                    label: 'Section 2.1',
+                    tracks: Array.from({length: 20}, (_, i) => ({
+                        name: `Option ${i + 1}`,
+                        infoURL: `https://example.com/info${i + 1}`,
+                        checked: i === 0,
+                        url: `https://example.com/section2/option${i + 1}`
+                    }))
+                },
+                {
+                    label: 'Section 2.2',
+                    tracks: Array.from({length: 20}, (_, i) => ({
+                        name: `Option ${i + 1}`,
+                        infoURL: `https://example.com/info${i + 21}`,
+                        url: `https://example.com/section2/option${i + 1}`
+                    }))
+                }
+            ]
         },
         {
-            title: 'Section 3',
+            label: 'Section 3',
             tracks: Array.from({length: 20}, (_, i) => ({
-                id: `checkbox3-${i + 1}`,
-                label: `Option ${i + 1}`,
+                name: `Option ${i + 1}`,
                 infoURL: `https://example.com/info${i + 41}`,
                 url: `https://example.com/section3/option${i + 1}`
             }))
         }
     ]
 
-    const headerHtml = '<div class="text-muted">Additional Header Content</div>'
+    const description = '<div class="text-muted">Additional Header Content</div>'
 
     const okHandler = (selectedTracks) => {
         console.log('OK clicked with selected tracks:', selectedTracks)
     }
 
     const id = 'customModal'
+    //
+    // const modal = createTrackSelectionModal({
+    //     id,
+    //     title: registryJson[0]["label"],
+    //     sections: registryJson,
+    //     description: registryJson[0]["description"],
+    //     okHandler,
+    //     cancelHandler: () => {
+    //         console.log('Cancel clicked')
+    //         modal.hide()
+    //     }
+    // })
 
     const modal = createTrackSelectionModal({
         id,
-        title: 'Custom Modal Title',
-        sections,
-        headerHtml,
+        title: "hub",
+        sections: hubJson,
+        description: "<div class='text-muted'>Additional Header Content</div>",
         okHandler,
         cancelHandler: () => {
             console.log('Cancel clicked')

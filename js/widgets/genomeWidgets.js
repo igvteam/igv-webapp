@@ -1,3 +1,10 @@
+/**
+ * Helper functions and objects for the genome dropdown menu.  Exports a single function:
+ *
+ * -  createGenomeWidgets(igvMain, browser, genomes)
+ */
+
+
 import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/index.js'
 import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 
@@ -7,6 +14,7 @@ import {createURLModalElement} from "./urlModal.js"
 import URLLoadWidget from "./urlLoadWidget.js"
 import * as Utils from './utils.js'
 import {genarkDatasourceConfigurator} from "./genarkDatasourceConfigurator.js"
+import GenomeFileLoad from "./genomeFileLoad.js"
 
 const MAX_CUSTOM_GENOMES = 5
 
@@ -15,7 +23,10 @@ let predefinedGenomes
 let genarkModalTable
 let genomeWidgetModal
 
-function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad}) {
+async function createGenomeWidgets(igvMain, browser, genomes) {
+
+    const urlModalId = 'igv-app-genome-from-url-modal'
+    const genarkModalId = 'igv-app-genome-genark-modal'
 
     const genarkModalTableConfig =
         {
@@ -28,7 +39,6 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
                 loadGenome({genarkAccession: accession})
             }
         }
-
     genarkModalTable = new ModalTable(genarkModalTableConfig)
 
     const dataSource = new GenericDataSource(genarkDatasourceConfigurator())
@@ -46,6 +56,18 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
         dataOnly: false
     })
 
+    const genomeFileLoad = new GenomeFileLoad(
+        {
+            localFileInput: document.getElementById('igv-app-dropdown-local-genome-file-input'),
+            dropboxButton: document.getElementById('igv-app-dropdown-dropbox-genome-file-button'),
+            googleDriveButton: document.getElementById('igv-app-dropdown-google-drive-genome-file-button'),
+            loadHandler: async configuration => {
+                if (configuration.id !== browser.genome.id) {
+                    await loadGenome(configuration)
+                }
+            }
+        })
+
     // Configures both file widget and url modal, a bit confusing
     genomeWidgetModal = new bootstrap.Modal(urlModalElement)
     Utils.configureModal(fileLoadWidget, genomeWidgetModal, async fileLoadWidget => {
@@ -58,6 +80,8 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
         }
 
     })
+
+    initializeGenomeWidgets(genomes)
 }
 
 /**
@@ -69,35 +93,12 @@ function createGenomeWidgets({igvMain, urlModalId, genarkModalId, genomeFileLoad
  */
 async function initializeGenomeWidgets(genomes) {
     try {
-        predefinedGenomes = (await getAppLaunchGenomes(genomes)).reverse() // Default genome list
+        predefinedGenomes = genomes.reverse() // Default genome list
         predefinedGenomeIds = new Set(predefinedGenomes.map(g => g.id))
         updateGenomeList()
 
     } catch (e) {
         alertSingleton.present(e.message)
-    }
-}
-
-async function getAppLaunchGenomes(genomes) {
-
-    if (undefined === genomes) {
-        return undefined
-    }
-    if (Array.isArray(genomes)) {
-        return genomes
-    } else {
-
-        let response = undefined
-        try {
-            response = await fetch(genomes)
-        } catch (e) {
-            alertSingleton.present(e.message)
-        }
-
-        if (response) {
-            let json = await response.json()
-            return json
-        }
     }
 }
 
@@ -210,5 +211,5 @@ async function loadGenome(genomeConfiguration) {
 
 }
 
-export {createGenomeWidgets, loadGenome, initializeGenomeWidgets}
+export {createGenomeWidgets}
 

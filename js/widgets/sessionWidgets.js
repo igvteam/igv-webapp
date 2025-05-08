@@ -1,30 +1,46 @@
-import {FileUtils} from '../../node_modules/igv-utils/src/index.js'
+import {FileUtils, igvxhr} from '../../node_modules/igv-utils/src/index.js'
 import URLLoadWidget from './urlLoadWidget.js'
 import SessionFileLoad from "./sessionFileLoad.js"
 import {createURLModalElement} from './urlModal.js'
 import * as Utils from './utils.js'
+import alertSingleton from "./alertSingleton.js"
+import * as DOMUtils from "./utils/dom-utils.js"
+
+
 
 let fileLoadWidget
 let sessionWidgetModal
 let saveSessionModal
-function createSessionWidgets($rootContainer,
-                              prefix,
-                              localFileInputId,
-                              initializeDropbox,
-                              dropboxButtonId,
-                              googleDriveButtonId,
-                              urlModalId,
-                              sessionSaveModalId,
-                              googleEnabled,
-                              loadHandler,
-                              JSONProvider) {
+
+async function createSessionWidgets(rootContainer, browser, options) {
+
+    const prefix = 'igv-webapp'
+    const localFileInputId = 'igv-app-dropdown-local-session-file-input'
+    const dropboxButtonId = 'igv-app-dropdown-dropbox-session-file-button'
+    const googleDriveButtonId = 'igv-app-dropdown-google-drive-session-file-button'
+    const urlModalId = 'igv-app-session-url-modal'
+    const sessionSaveModalId = 'igv-app-session-save-modal'
 
     const urlModalElement = createURLModalElement(urlModalId, 'Session URL')
-    $rootContainer.get(0).appendChild(urlModalElement)
+    rootContainer.appendChild(urlModalElement)
 
-    if (!googleEnabled) {
-        $(`#${googleDriveButtonId}`).parent().hide()
+    const loadHandler = async config => {
+        try {
+            await browser.loadSession(config)
+        } catch (e) {
+            console.error(e)
+            alertSingleton.present(e)
+        }
     }
+
+    const localFileInput = document.getElementById(`${localFileInputId}`)
+    const dropboxButton = document.getElementById(`${dropboxButtonId}`)
+    const googleDriveButton = document.getElementById(`${googleDriveButtonId}`)
+
+    const sessionFileLoad = new SessionFileLoad({localFileInput, dropboxButton, googleDriveButton, loadHandler})
+
+    sessionWidgetModal = new bootstrap.Modal(urlModalElement)
+
 
     const fileLoadWidgetConfig =
         {
@@ -36,32 +52,40 @@ function createSessionWidgets($rootContainer,
 
     fileLoadWidget = new URLLoadWidget(fileLoadWidgetConfig)
 
-    const sessionFileLoadConfig =
-        {
-            localFileInput: document.querySelector(`#${localFileInputId}`),
-            initializeDropbox,
-            dropboxButton: dropboxButtonId ? document.querySelector(`#${dropboxButtonId}`) : undefined,
-            googleEnabled,
-            googleDriveButton: document.querySelector(`#${googleDriveButtonId}`),
-            loadHandler
-        }
-
-    const sessionFileLoad = new SessionFileLoad(sessionFileLoadConfig)
-
-    sessionWidgetModal = new bootstrap.Modal(urlModalElement)
     Utils.configureModal(fileLoadWidget, sessionWidgetModal, async fileLoadWidget => {
         await sessionFileLoad.loadPaths(fileLoadWidget.retrievePaths())
         return true
     })
 
-    saveSessionModal = configureSaveSessionModal($rootContainer, prefix, JSONProvider, sessionSaveModalId)
+    const JSONProvider = () => {
+        try {
+            return browser.toJSON()
+        } catch (e) {
+            console.error(e)
+            alertSingleton.present(e)
+            return undefined
+        }
+    }
+    saveSessionModal = configureSaveSessionModal(rootContainer, prefix, JSONProvider, sessionSaveModalId)
+
+    if (options.sessionRegistryFile) {
+        try {
+            const sessionJson = await igvxhr.loadJson(options.sessionRegistryFile)
+            createSessionMenu('igv-session-list-divider', sessionJson, loadHandler)
+        } catch (e) {
+            console.error(e)
+            document.getElementById('igv-session-list-divider').style.display = 'none'
+        }
+    } else {
+        document.getElementById('igv-session-list-divider').style.display = 'none'
+    }
 
 }
 
-function configureSaveSessionModal($rootContainer, prefix, JSONProvider, sessionSaveModalId) {
+function configureSaveSessionModal(rootContainer, prefix, JSONProvider, sessionSaveModalId) {
 
     const html =
-    `<div id="${sessionSaveModalId}" class="modal fade igv-app-file-save-modal" tabindex="-1">
+        `<div id="${sessionSaveModalId}" class="modal fade igv-app-file-save-modal" tabindex="-1">
 
         <div class="modal-dialog modal-lg">
     
@@ -96,13 +120,13 @@ function configureSaveSessionModal($rootContainer, prefix, JSONProvider, session
     
         </div>
     
-    </div>`;
+    </div>`
 
 
     const fragment = document.createRange().createContextualFragment(html)
     const modalElement = fragment.firstChild
 
-    $rootContainer.get(0).appendChild(modalElement)
+    rootContainer.appendChild(modalElement)
 
     const modal = new bootstrap.Modal(modalElement)
 
@@ -145,6 +169,49 @@ function configureSaveSessionModal($rootContainer, prefix, JSONProvider, session
     })
 
     return modal
+}
+
+export function createSessionMenu(sessionListDivider, sessionJSON, sessionLoader) {
+
+    const id_prefix = 'session_file'
+
+    const searchString = `[id^=${id_prefix}]`
+    const elements = document.querySelectorAll(searchString)
+    if (elements.length > 0) {
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].remove()
+        }
+    }
+
+    const sessions = sessionJSON['sessions']
+
+    for (let {label, url, description} of sessions.reverse()) {
+
+        const referenceNode = document.getElementById(sessionListDivider)
+
+        if (!url) {
+
+            const section_id = `${id_prefix}_${DOMUtils.guid()}`
+            const html = `<div id="${section_id}" class="dropdown-header">${label}</div>`
+            const fragment = document.createRange().createContextualFragment(html)
+            referenceNode.after(fragment.firstChild)
+
+        } else {
+            const button_id = `${id_prefix}_${DOMUtils.guid()}`
+            const html = `<button id="${button_id}" class="dropdown-item" type="button" ${description ? `title="${description}"` : ''}>${label}</button>`
+            const fragment = document.createRange().createContextualFragment(html)
+            referenceNode.after(fragment.firstChild)
+            const button = document.getElementById(button_id)
+            button.addEventListener('click', () => {
+                const config = {}
+                const key = true === FileUtils.isFilePath(url) ? 'file' : 'url'
+                config[key] = url
+
+                sessionLoader(config)
+
+            })
+        }
+    }
 }
 
 export {createSessionWidgets}

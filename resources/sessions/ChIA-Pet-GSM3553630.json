@@ -1,0 +1,53 @@
+{
+  "version": "2.10.5",
+  "showSampleNames": false,
+  "genome":  "hg19",
+  "locus": [
+    "chr7:55,202,455-55,336,909",
+    "chr8:128,718,692-128,773,416",
+    "chr12:58,126,892-58,168,226"
+  ],
+  "tracks": [
+    {
+      "url": "https://s3.amazonaws.com/igv.org.demo/GSM3553630_HF-3177_chiapet.trans.chiasig.itx.ge2.bedpe.gz",
+      "name": "Trans Interactions",
+      "format": "bedpe",
+      "type": "interact",
+      "color": "rgb(180,25,137)",
+      "arcType": "chiapet",
+      "arcOrientation": true,
+      "showBlocks": false,
+      "blockHeight": 3,
+      "thickness": 1,
+      "alpha": 0.02,
+      "order": 5,
+      "min": 0,
+      "max": 459
+    },
+    {
+      "url": "https://s3.amazonaws.com/igv.org.demo/GSM3553630_HF-3177_chiapet.cis.chiasig.sigf.itx.bedpe.gz",
+      "name": "Cis Interactions",
+      "format": "bedpe",
+      "type": "interact",
+      "color": "#ff2987",
+      "arcType": "chiapetoutbound",
+      "arcOrientation": false,
+      "showBlocks": false,
+      "blockHeight": 3,
+      "thickness": 1,
+      "alpha": 0.02,
+      "order": 6
+    },
+    {
+      "name": "Refseq Genes",
+      "format": "refgene",
+      "url": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz",
+      "indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
+      "visibilityWindow": -1,
+      "removable": false,
+      "order": 1000000,
+      "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$",
+      "type": "annotation"
+    }
+  ]
+}

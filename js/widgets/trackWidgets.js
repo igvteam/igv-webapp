@@ -41,7 +41,12 @@ async function createTrackWidgets(igvMain, browser, config) {
 
     trackLoadHandler = async configurations => {
         try {
-            await browser.loadTrackList(configurations)
+            const trackConfigs = configurations.filter(c => c.format !== 'sampleinfo')
+            const sampleInfoConfigs = configurations.filter(c => c.format === 'sampleinfo')
+            await Promise.all([
+                browser.loadTrackList(trackConfigs),
+                ...sampleInfoConfigs.map(config => browser.loadSampleInfo(config))
+            ])
         } catch (e) {
             console.error(e)
             alertSingleton.present(e)
@@ -212,9 +217,7 @@ async function trackMenuGenomeChange(browser, genome) {
                             const trackConfigs = selections.filter(config => !loadedURLs.has(config.url))
                             if (trackConfigs.length > 0) {
                                 try {
-                                    browser.loadTrackList(trackConfigs)
-
-
+                                    trackLoadHandler(trackConfigs)
                                 } catch (e) {
                                     console.error(e)
                                     alertSingleton.present(e)

@@ -1,3 +1,5 @@
+import {igvxhr} from "../../node_modules/igv-utils/src/index.js"
+
 /**
  * Factory function to create a configuration object for the EncodeTrackDatasource given a genomicId and type
  *
@@ -7,23 +9,24 @@
  */
 function encodeTrackDatasourceConfigurator(genomeId, type) {
 
-    const root = 'https://s3.amazonaws.com/igv.org.app/encode/'
+    const root = 'https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/encode/'
     let url
 
     switch (type) {
         case 'signals-chip':
-            url = `${root}${canonicalId(genomeId)}.signals.chip.txt`
+            url = `${root}${canonicalId(genomeId)}.signals.chip.txt.gz`
             break
         case 'signals-other':
-            url = `${root}${canonicalId(genomeId)}.signals.other.txt`
+            url = `${root}${canonicalId(genomeId)}.signals.other.txt.gz`
             break
         case 'other':
-            url = `${root}${canonicalId(genomeId)}.other.txt`
+            url = `${root}${canonicalId(genomeId)}.other.txt.gz`
             break
 
     }
 
     return {
+        igvxhr: igvxhr,     // Neccessary to handle gzip files
         isJSON: false,
         url,
         sort: encodeSort,

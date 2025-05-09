@@ -270,7 +270,8 @@ ignore@^5.1.1:
 
 "igv@github:igvteam/igv.js#dat_inputdialog_positioning":
   version "3.2.6"
-  resolved "git+ssh://git@github.com/igvteam/igv.js.git#0f729194f4b97bc2a14334e1603383c68fee420d"
+  resolved "git+ssh://git@github.com/igvteam/igv.js.git"
+  integrity sha512-eQeqzLqo6lI7p//STBauiGELGQMsvxmfkFRu4QYfwpTQuwmXxZbMV7hoQeTY2izOYaB44xRLNn0QPOATTYWEZA==
 
 inflight@^1.0.4:
   version "1.0.6"

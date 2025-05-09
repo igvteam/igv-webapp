@@ -14,20 +14,15 @@
       {
         "id": "ncbiRefSeqCurated",
         "name": "RefSeq Curated",
-        "longLabel": "NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)",
         "url": "https://hgdownload.soe.ucsc.edu/gbdb/hs1/ncbiRefSeq/ncbiRefSeqCurated.bb",
         "trixURL": "https://hgdownload.soe.ucsc.edu/gbdb/hs1/ncbiRefSeq/ncbiRefSeqCurated.ix",
         "format": "biggenepred",
         "displayMode": "EXPANDED",
-        "description": "NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)",
         "color": "rgb(12,12,120)",
-        "visible": true,
         "searchIndex": "name",
-        "group": "genes",
         "html": "https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hs1&g=refSeqComposite",
         "labelField": "geneName2",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -47,14 +42,10 @@
       {
         "id": "refseqSelect",
         "name": "Refseq Select",
-        "longLabel": "Refseq Select",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeqSelect.txt.gz",
         "format": "refgene",
-        "description": "Refseq Select",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -77,14 +68,10 @@
       {
         "id": "refseqSelect",
         "name": "Refseq Select",
-        "longLabel": "Refseq Select",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/ncbiRefSeqSelect.txt.gz",
         "format": "refgene",
-        "description": "Refseq Select",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -104,15 +91,10 @@
       {
         "id": "refseqSelect",
         "name": "Refseq Select",
-        "longLabel": "Refseq Select",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/ncbiRefSeqSelect.txt.gz",
         "format": "refgene",
-        "description": "Refseq Select",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -134,14 +116,10 @@
       {
         "id": "refGene",
         "name": "RefSeq Genes",
-        "longLabel": "RefSeq Genes",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg18/database/refGene.txt.gz",
         "format": "refgene",
-        "description": "RefSeq Genes",
-        "visible": true,
-        "group": "genes",
         "html": "https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg18&g=refGene",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -163,16 +141,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/mm39/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -195,15 +168,10 @@
       {
         "id": "ncbiRefSeq",
         "name": "RefSeq All",
-        "longLabel": "NCBI RefSeq genes, curated and predicted (NM_*, XM_*, NR_*, XR_*, NP_*, YP_*)",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/mm10/database/ncbiRefSeq.txt.gz",
         "format": "refgene",
-        "description": "NCBI RefSeq genes, curated and predicted (NM_*, XM_*, NR_*, XR_*, NP_*, YP_*)",
         "color": "rgb(12,12,120)",
-        "visible": true,
-        "group": "genes",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -223,7 +191,8 @@
         "name": "Refseq Genes",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/refGene.txt.gz",
         "format": "refgene",
-        "indexed": false
+        "indexed": false,
+        "order": 100000
       }
     ]
   },
@@ -244,16 +213,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/rn7/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -276,20 +240,15 @@
       {
         "id": "ncbiRefSeq",
         "name": "RefSeq All",
-        "longLabel": "NCBI RefSeq genes, curated and predicted sets (NM_*, XM_*, NR_*, XR_*, NP_* or YP_*)",
         "url": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/895/GCF_000001895.5/bbi/GCF_000001895.5_Rnor_6.0.ncbiRefSeq.bb",
         "trixURL": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/895/GCF_000001895.5/ixIxx/GCF_000001895.5_Rnor_6.0.ncbiRefSeq.ix",
         "format": "biggenepred",
         "displayMode": "EXPANDED",
-        "description": "NCBI RefSeq genes, curated and predicted sets (NM_*, XM_*, NR_*, XR_*, NP_* or YP_*)",
         "color": "rgb(12,12,120)",
-        "visible": true,
         "searchIndex": "name",
-        "group": "genes",
         "html": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/895/GCF_000001895.5/html/GCF_000001895.5_Rnor_6.0.refSeqComposite",
         "labelField": "geneName2",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -309,16 +268,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/gorGor6/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -340,7 +294,8 @@
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/gorGor4/database/refGene.txt.gz",
         "format": "refgene",
         "visibilityWindow": -1,
-        "indexed": false
+        "indexed": false,
+        "order": 100000
       }
     ]
   },
@@ -360,7 +315,7 @@
         "name": "Refseq Curated",
         "format": "refgene",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/panTro6/database/ncbiRefSeqCurated.txt.gz",
-        "order": 1000000
+        "order": 100000
       }
     ],
     "hubs": [
@@ -380,7 +335,7 @@
         "name": "Refseq Genes",
         "format": "refgene",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/panTro5/database/ncbiRefSeq.txt.gz",
-        "order": 1000000,
+        "order": 100000,
         "visibilityWindow": 0
       }
     ]
@@ -399,7 +354,8 @@
         "name": "Refseq Genes",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/panTro4/database/ncbiRefSeq.txt.gz",
         "format": "refgene",
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "order": 100000
       }
     ]
   },
@@ -415,7 +371,7 @@
         "name": "Refseq Curated Genes",
         "format": "refgene",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/macFas5/database/ncbiRefSeqCurated.txt.gz",
-        "order": 1000000
+        "order": 100000
       }
     ],
     "hubs": [
@@ -438,20 +394,15 @@
       {
         "id": "ncbiRefSeqCurated",
         "name": "RefSeq Curated",
-        "longLabel": "NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)",
         "url": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/258/655/GCF_000258655.2/bbi/GCF_000258655.2_panpan1.1.ncbiRefSeqCurated.bb",
         "trixURL": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/258/655/GCF_000258655.2/ixIxx/GCF_000258655.2_panpan1.1.ncbiRefSeqCurated.ix",
         "format": "biggenepred",
         "displayMode": "EXPANDED",
-        "description": "NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)",
         "color": "rgb(12,12,120)",
-        "visible": true,
         "searchIndex": "name",
-        "group": "genes",
         "html": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/258/655/GCF_000258655.2/html/GCF_000258655.2_panpan1.1.refSeqComposite",
         "labelField": "geneName2",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -472,7 +423,7 @@
         "name": "Refseq Curated",
         "format": "refgene",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/canFam6/database/ncbiRefSeqCurated.txt.gz",
-        "order": 1000000
+        "order": 100000
       }
     ],
     "hubs": [
@@ -493,12 +444,9 @@
       {
         "id": "refgene",
         "name": "RefSeq Genes",
-        "longLabel": "RefSeq Genes",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/canFam5/database/refGene.txt.gz",
         "format": "refgene",
-        "visible": true,
-        "group": "genes",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -519,15 +467,10 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/canFam4/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -547,16 +490,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/canFam3/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -576,16 +514,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/bosTau9/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -606,7 +539,8 @@
         "name": "Refseq Genes",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/bosTau8/database/refGene.txt.gz",
         "format": "refgene",
-        "indexed": false
+        "indexed": false,
+        "order": 100000
       }
     ]
   },
@@ -623,16 +557,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/susScr11/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -651,16 +580,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/galGal6/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "EXPANDED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -681,20 +605,15 @@
       {
         "id": "ncbiRefSeqCurated",
         "name": "RefSeq Curated",
-        "longLabel": "NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)",
         "url": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/035/GCF_000002035.6/bbi/GCF_000002035.6_GRCz11.ncbiRefSeqCurated.bb",
         "trixURL": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/035/GCF_000002035.6/ixIxx/GCF_000002035.6_GRCz11.ncbiRefSeqCurated.ix",
         "format": "biggenepred",
         "displayMode": "EXPANDED",
-        "description": "NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)",
         "color": "rgb(12,12,120)",
-        "visible": true,
         "searchIndex": "name",
-        "group": "genes",
         "html": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/035/GCF_000002035.6/html/GCF_000002035.6_GRCz11.refSeqComposite",
         "labelField": "geneName2",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -714,16 +633,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/danRer10/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -743,15 +657,10 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/ce11/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -770,16 +679,11 @@
       {
         "id": "refseqCurated",
         "name": "Refseq Curated",
-        "longLabel": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/dm6/database/ncbiRefSeqCurated.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq Curated",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -798,7 +702,8 @@
         "name": "Refseq Curated",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/dm3/database/refGene.txt.gz",
         "format": "refgene",
-        "indexed": false
+        "indexed": false,
+        "order": 100000
       }
     ]
   },
@@ -819,16 +724,11 @@
       {
         "id": "refseqAll",
         "name": "Refseq All",
-        "longLabel": "Refseq All",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/sacCer3/database/ncbiRefSeq.txt.gz",
         "format": "refgene",
         "displayMode": "COLLAPSED",
-        "description": "Refseq All",
-        "visible": true,
-        "group": "genes",
         "html": "https://www.ncbi.nlm.nih.gov/refseq/refseq_select/",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -851,10 +751,10 @@
         "format": "biggenepred",
         "url": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/945/GCF_000002945.1/bbi/GCF_000002945.1_ASM294v2.ncbiRefSeqCurated.bb",
         "displayMode": "EXPANDED",
-        "description": "<a target=\"_blank\" href=\"https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/945/GCF_000002945.1/html/GCF_000002945.1_ASM294v2.refSeqComposite\">NCBI RefSeq genes, curated subset (NM_*, NR_*, NP_* or YP_*)</a>",
         "searchIndex": "name",
         "trixURL": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/945/GCF_000002945.1/ixIxx/GCF_000002945.1_ASM294v2.ncbiRefSeqCurated.ix",
-        "visibilityWindow": -1
+        "visibilityWindow": -1,
+        "order": 100000
       }
     ],
     "hubs": [
@@ -875,21 +775,17 @@
       {
         "id": "ncbiGene",
         "name": "NCBI Genes",
-        "longLabel": "NCBI gene predictions",
         "url": "https://hgdownload.soe.ucsc.edu/hubs/GCF/009/858/895/GCF_009858895.2/bbi/GCF_009858895.2_ASM985889v3.ncbiGene.bb",
         "trixURL": "https://hgdownload.soe.ucsc.edu/hubs/GCF/009/858/895/GCF_009858895.2/ixIxx/GCF_009858895.2_ASM985889v3.ncbiGene.ix",
         "format": "biggenepred",
         "displayMode": "EXPANDED",
-        "description": "NCBI gene predictions",
         "color": "rgb(0,80,150)",
         "altColor": "rgb(150,80,0)",
-        "visible": true,
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$",
         "searchIndex": "name",
-        "group": "genes",
         "html": "https://hgdownload.soe.ucsc.edu/hubs/GCF/009/858/895/GCF_009858895.2/html/GCF_009858895.2_ASM985889v3.ncbiGene",
         "labelField": "geneName2",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -910,20 +806,15 @@
       {
         "id": "ncbiRefSeq",
         "name": "RefSeq All",
-        "longLabel": "NCBI RefSeq genes, curated and predicted sets (NM_*, XM_*, NR_*, XR_*, NP_* or YP_*)",
         "url": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/735/GCF_000001735.3/bbi/GCF_000001735.3_TAIR10.ncbiRefSeq.bb",
         "trixURL": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/735/GCF_000001735.3/ixIxx/GCF_000001735.3_TAIR10.ncbiRefSeq.ix",
         "format": "biggenepred",
         "displayMode": "EXPANDED",
-        "description": "NCBI RefSeq genes, curated and predicted sets (NM_*, XM_*, NR_*, XR_*, NP_* or YP_*)",
         "color": "rgb(12,12,120)",
-        "visible": true,
         "searchIndex": "name",
-        "group": "genes",
         "html": "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/735/GCF_000001735.3/html/GCF_000001735.3_TAIR10.refSeqComposite",
         "labelField": "geneName2",
-        "stanzaParent": "refSeqComposite",
-        "attributes": {}
+        "order": 100000
       }
     ],
     "hubs": [
@@ -948,13 +839,12 @@
         "format": "biggenepred",
         "url": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/022/165/GCA_000022165.1/bbi/GCA_000022165.1_ASM2216v1.ncbiGene.bb",
         "displayMode": "EXPANDED",
-        "description": "<a target=\"_blank\" href=\"https://hgdownload.soe.ucsc.edu/hubs/GCA/000/022/165/GCA_000022165.1/html/GCA_000022165.1_ASM2216v1.ncbiGene\">Gene models submitted to NCBI</a>",
         "color": "rgb(0,80,150)",
         "altColor": "rgb(150,80,0)",
         "infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$",
         "searchIndex": "name",
         "trixURL": "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/022/165/GCA_000022165.1/ixIxx/GCA_000022165.1_ASM2216v1.ncbiGene.ix",
-        "order": 10000,
+        "order": 100000,
         "type": "annotation",
         "height": 70,
         "visibilityWindow": 0

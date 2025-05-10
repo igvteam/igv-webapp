@@ -9,7 +9,7 @@ import {igvxhr} from "../../node_modules/igv-utils/src/index.js"
  */
 function encodeTrackDatasourceConfigurator(genomeId, type) {
 
-    const root = 'https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/encode/'
+    const root = 'https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/data/encode/'
     let url
 
     switch (type) {

@@ -284,7 +284,7 @@ function addEncodeButtons(genomeID, $divider) {
     encodeModalTables[1].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-other')))
     encodeModalTables[2].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'other')))
 
-    const description = "<a href=hhttps://www.encodeproject.org/ target=_blank>Encylopedia of Genomic Elements</a>"
+    const description = "<a href=https://www.encodeproject.org/ target=_blank>Encylopedia of Genomic Elements</a>"
     encodeModalTables[0].setDescription(description)
     encodeModalTables[1].setDescription(description)
     encodeModalTables[2].setDescription(description)

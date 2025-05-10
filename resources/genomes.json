@@ -26,7 +26,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hs1/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hs1/hub.txt"
     ]
   },
   {
@@ -35,7 +35,7 @@
     "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.2bit",
     "wholeGenomeView": true,
     "cytobandURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/cytoBandIdeo.txt.gz",
-    "aliasURL": "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/data/hg38/hg38_alias.tab",
+    "aliasURL": "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/data/hg38/hg38_alias.tab",
     "chromosomeOrder": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
     "chromSizesURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes",
     "tracks": [
@@ -49,7 +49,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg38/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg38/hub.txt"
     ]
   },
   {
@@ -61,7 +61,7 @@
     "cytobandURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/cytoBandIdeo.txt.gz",
     "blatDB": "hg38",
     "ucscID": "hg38",
-    "aliasURL": "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/data/hg38/hg38_alias.tab",
+    "aliasURL": "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/data/hg38/hg38_alias.tab",
     "chromosomeOrder": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
     "chromSizesURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.chrom.sizes",
     "tracks": [
@@ -75,7 +75,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg38/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg38/hub.txt"
     ]
   },
   {
@@ -84,7 +84,7 @@
     "twoBitURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.2bit",
     "wholeGenomeView": true,
     "cytobandURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz",
-    "aliasURL": "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/data/hg19/hg19_alias.tab",
+    "aliasURL": "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/data/hg19/hg19_alias.tab",
     "chromosomeOrder": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
     "chromSizesURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes",
     "tracks": [
@@ -98,10 +98,10 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg19/hub.txt",
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg19/1kg/hub.txt",
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg19/platinum_genomes/hub.txt",
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg19/tutorials/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg19/hub.txt",
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg19/1kg/hub.txt",
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg19/platinum_genomes/hub.txt",
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg19/tutorials/hub.txt"
     ]
   },
   {
@@ -123,9 +123,9 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg18/hub.txt",
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/hg18/tumorscape/hub.txt",
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/gbm/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg18/hub.txt",
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg18/tumorscape/hub.txt",
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/data/encodegbm/hub.txt"
     ]
   },
   {
@@ -149,7 +149,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/mm39/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/mm39/hub.txt"
     ]
   },
   {
@@ -175,7 +175,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/mm10/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/mm10/hub.txt"
     ]
   },
   {
@@ -221,7 +221,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/rn7/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/rn7/hub.txt"
     ]
   },
   {
@@ -276,7 +276,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/gorGor6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/gorGor6/hub.txt"
     ]
   },
   {
@@ -319,7 +319,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/panTro6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/panTro6/hub.txt"
     ]
   },
   {
@@ -375,7 +375,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/macFas5/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/macFas5/hub.txt"
     ]
   },
   {
@@ -427,7 +427,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/canFam6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam6/hub.txt"
     ]
   },
   {
@@ -450,7 +450,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/canFam5/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam5/hub.txt"
     ]
   },
   {
@@ -474,7 +474,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/canFam4/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam4/hub.txt"
     ]
   },
   {
@@ -498,7 +498,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/canFam3/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam3/hub.txt"
     ]
   },
   {
@@ -522,7 +522,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/bosTau9/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/bosTau9/hub.txt"
     ]
   },
   {
@@ -565,7 +565,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/susScr11/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/susScr11/hub.txt"
     ]
   },
   {
@@ -588,7 +588,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/galGal6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/galGal6/hub.txt"
     ]
   },
   {
@@ -617,7 +617,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/danRer11/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/danRer11/hub.txt"
     ]
   },
   {
@@ -641,7 +641,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/danRer10/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/danRer10/hub.txt"
     ]
   },
   {
@@ -664,7 +664,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/ce11/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/ce11/hub.txt"
     ]
   },
   {
@@ -687,7 +687,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/dm6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/dm6/hub.txt"
     ]
   },
   {
@@ -732,7 +732,7 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-genomes/refs/heads/main/hubs/sacCer3/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/sacCer3/hub.txt"
     ]
   },
   {

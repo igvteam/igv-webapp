@@ -26,7 +26,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hs1/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hs1/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/gbdb/hs1/hubs/public/hub.txt"
     ]
   },
   {
@@ -49,7 +50,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg38/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg38/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/405/GCF_000001405.40/hub.txt"
     ]
   },
   {
@@ -75,7 +77,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg38/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg38/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/405/GCF_000001405.40/hub.txt"
     ]
   },
   {
@@ -125,7 +128,7 @@
     "hubs": [
       "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg18/hub.txt",
       "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/hg18/tumorscape/hub.txt",
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/data/encodegbm/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/gbm/hub.txt"
     ]
   },
   {
@@ -149,7 +152,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/mm39/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/mm39/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/635/GCF_000001635.27/hub.txt"
     ]
   },
   {
@@ -175,7 +179,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/mm10/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/mm10/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/635/GCF_000001635.26/hub.txt"
     ]
   },
   {
@@ -221,7 +226,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/rn7/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/rn7/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/015/227/675/GCF_015227675.2/hub.txt"
     ]
   },
   {
@@ -276,7 +282,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/gorGor6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/gorGor6/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/008/122/165/GCF_008122165.1/hub.txt"
     ]
   },
   {
@@ -315,11 +322,12 @@
         "name": "Refseq Curated",
         "format": "refgene",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/panTro6/database/ncbiRefSeqCurated.txt.gz",
-        "order": 100000
+        "order": 1000000
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/panTro6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/panTro6/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCA/002/880/755/GCA_002880755.3/hub.txt"
     ]
   },
   {
@@ -371,11 +379,12 @@
         "name": "Refseq Curated Genes",
         "format": "refgene",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/macFas5/database/ncbiRefSeqCurated.txt.gz",
-        "order": 100000
+        "order": 1000000
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/macFas5/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/macFas5/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCA/000/364/345/GCA_000364345.1/hub.txt"
     ]
   },
   {
@@ -423,11 +432,12 @@
         "name": "Refseq Curated",
         "format": "refgene",
         "url": "https://hgdownload.soe.ucsc.edu/goldenPath/canFam6/database/ncbiRefSeqCurated.txt.gz",
-        "order": 100000
+        "order": 1000000
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam6/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/285/GCF_000002285.5/hub.txt"
     ]
   },
   {
@@ -474,7 +484,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam4/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/canFam4/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/011/100/685/GCF_011100685.1/hub.txt"
     ]
   },
   {
@@ -522,7 +533,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/bosTau9/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/bosTau9/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/002/263/795/GCF_002263795.1/hub.txt"
     ]
   },
   {
@@ -565,7 +577,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/susScr11/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/susScr11/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/003/025/GCF_000003025.6/hub.txt"
     ]
   },
   {
@@ -588,7 +601,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/galGal6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/galGal6/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/315/GCF_000002315.6/hub.txt"
     ]
   },
   {
@@ -664,7 +678,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/ce11/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/ce11/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/002/985/GCF_000002985.6/hub.txt"
     ]
   },
   {
@@ -687,7 +702,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/dm6/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/dm6/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/001/215/GCF_000001215.4/hub.txt"
     ]
   },
   {
@@ -732,7 +748,8 @@
       }
     ],
     "hubs": [
-      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/sacCer3/hub.txt"
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/hubs/sacCer3/hub.txt",
+      "https://hgdownload.soe.ucsc.edu/hubs/GCF/000/146/045/GCF_000146045.2/hub.txt"
     ]
   },
   {

@@ -271,7 +271,7 @@ async function prepHubConfig(hubURL, genomeID) {
     const groups = await hub.getGroupedTrackConfigurations(genomeID)
     return {
         id: `_${Math.random().toString(36).substring(2, 9)}`,
-        label: hub.getShortLabel(),
+        label: `hub: ${hub.getShortLabel()}`,
         description: descriptionUrl ? `<a target=_blank href="${descriptionUrl}">${descriptionUrl}</a>` : '',
         sections: groups
     }

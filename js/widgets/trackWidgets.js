@@ -205,16 +205,17 @@ async function trackMenuGenomeChange(browser, genome) {
                             annotateTracks(group)
                         }
 
-                        config.okHandler = (selections) => {
+                        config.okHandler = (checkedTracks, uncheckedTracks) => {
 
-                            const checkedURLs = new Set(selections.map(s => s.url))
-                            const toUnload = new Set(Array.from(loadedURLs).filter(url => !checkedURLs.has(url)))
+                            const checkedURLs = new Set(checkedTracks.map(s => s.url))
+                            const uncheckedURLs = new Set(uncheckedTracks.map(s => s.url))
+                            const toUnload = new Set(Array.from(loadedURLs).filter(url => !checkedURLs.has(url) && uncheckedURLs.has(url)))
                             const tracksToUnload = browser.findTracks(track => track.url && toUnload.has(track.url))
                             for (let t of tracksToUnload) {
                                 browser.removeTrack(t)
                             }
 
-                            const trackConfigs = selections.filter(config => !loadedURLs.has(config.url))
+                            const trackConfigs = checkedTracks.filter(config => !loadedURLs.has(config.url))
                             if (trackConfigs.length > 0) {
                                 try {
                                     trackLoadHandler(trackConfigs)

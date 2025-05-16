@@ -104,16 +104,23 @@ export default function createTrackSelectionModal({id, label = '', sections, des
     modalElement.addEventListener('hidden.bs.modal', () => {
         if (modalAction === 'ok') {
             console.log('Modal closed with OK button')
-            const checkboxes = Array.from(modalElement.querySelectorAll('input[type="checkbox"]:checked'))
+            const checkedCheckboxes = Array.from(modalElement.querySelectorAll('input[type="checkbox"]:checked'))
             const checkedTracks =
-                checkboxes
+                checkedCheckboxes
+                    .map(checkbox => {
+                        const trackConfig = trackMap.get(checkbox.id)
+                        return trackConfig
+                    })
+            const uncheckedCheckboxes = Array.from(modalElement.querySelectorAll('input[type="checkbox"]:not(:checked)'))
+            const uncheckedTracks =
+                uncheckedCheckboxes
                     .map(checkbox => {
                         const trackConfig = trackMap.get(checkbox.id)
                         return trackConfig
                     })
 
             if (okHandler) {
-                okHandler(checkedTracks)
+                okHandler(checkedTracks, uncheckedTracks)
             } else {
                 console.log('URLs of checked tracks:', checkedTracks)
             }

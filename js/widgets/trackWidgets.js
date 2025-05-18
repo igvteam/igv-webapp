@@ -189,13 +189,15 @@ async function trackMenuGenomeChange(browser, genome) {
                 createDropdownButton($divider, config.label, id_prefix)
 
                     .on('click', () => {
-                        const loadedURLs = browser ? new Set(browser.findTracks(t => t.url).map(t => t.url)) : new Set()
 
+                        // Collect url-name pairs for loaded tracks with urls.  This will serve as unique IDs to compare with track configs
+                        const loaded = browser ? new Set(browser.findTracks(t => t.url).map(t => `${t.url}-${t.name}`)) : new Set()
+
+                        // Annotate track config objects with a unique ID comprised of url + name
                         const annotateTracks = (section) => {
                             for (const track of section.tracks) {
-                                track._id = `${track.name}-${Math.random().toString(36).substring(2, 9)}`
-                                track._checked = loadedURLs.has(track.url)
-                                //track.disabled = loadedURLs.has(track.url)
+                                track._id = `${track.url}-${track.name}`
+                                track._checked = loaded.has(track._id)
                             }
                             if (section.children) for (const child of section.children) {
                                 annotateTracks(child)
@@ -207,15 +209,13 @@ async function trackMenuGenomeChange(browser, genome) {
 
                         config.okHandler = (checkedTracks, uncheckedTracks) => {
 
-                            const checkedURLs = new Set(checkedTracks.map(s => s.url))
-                            const uncheckedURLs = new Set(uncheckedTracks.map(s => s.url))
-                            const toUnload = new Set(Array.from(loadedURLs).filter(url => !checkedURLs.has(url) && uncheckedURLs.has(url)))
-                            const tracksToUnload = browser.findTracks(track => track.url && toUnload.has(track.url))
-                            for (let t of tracksToUnload) {
-                                browser.removeTrack(t)
-                            }
+                            // Remove tracks that are unchecked
+                            const uncheckedIDs = new Set(uncheckedTracks.map(s => s._id))
+                            const toUnload = new Set(Array.from(loaded).filter(id => uncheckedIDs.has(id)))
+                            browser.findTracks(track => toUnload.has(`${track.url}-${track.name}`))
+                                .forEach(track => browser.removeTrack(track))
 
-                            const trackConfigs = checkedTracks.filter(config => !loadedURLs.has(config.url))
+                            const trackConfigs = checkedTracks.filter(config => !loaded.has(`${config.url}-${config.name}`))
                             if (trackConfigs.length > 0) {
                                 try {
                                     trackLoadHandler(trackConfigs)

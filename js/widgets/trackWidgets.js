@@ -191,13 +191,13 @@ async function trackMenuGenomeChange(browser, genome) {
                     .on('click', () => {
 
                         // Collect url-name pairs for loaded tracks with urls.  This will serve as unique IDs to compare with track configs
-                        const loaded = browser ? new Set(browser.findTracks(t => t.url).map(t => `${t.url}-${t.name}`)) : new Set()
+                        const loadedIDs = browser ? new Set(browser.findTracks(t => t.url).map(t => `${t.url}-${t.name}`)) : new Set()
 
                         // Annotate track config objects with a unique ID comprised of url + name
                         const annotateTracks = (section) => {
                             for (const track of section.tracks) {
                                 track._id = `${track.url}-${track.name}`
-                                track._checked = loaded.has(track._id)
+                                track._checked = loadedIDs.has(track._id)
                             }
                             if (section.children) for (const child of section.children) {
                                 annotateTracks(child)
@@ -211,11 +211,11 @@ async function trackMenuGenomeChange(browser, genome) {
 
                             // Remove tracks that are unchecked
                             const uncheckedIDs = new Set(uncheckedTracks.map(s => s._id))
-                            const toUnload = new Set(Array.from(loaded).filter(id => uncheckedIDs.has(id)))
+                            const toUnload = new Set(Array.from(loadedIDs).filter(id => uncheckedIDs.has(id)))
                             browser.findTracks(track => toUnload.has(`${track.url}-${track.name}`))
                                 .forEach(track => browser.removeTrack(track))
 
-                            const trackConfigs = checkedTracks.filter(config => !loaded.has(`${config.url}-${config.name}`))
+                            const trackConfigs = checkedTracks.filter(config => !loadedIDs.has(`${config.url}-${config.name}`))
                             if (trackConfigs.length > 0) {
                                 try {
                                     trackLoadHandler(trackConfigs)

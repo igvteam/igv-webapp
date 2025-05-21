@@ -136,10 +136,14 @@ async function main(container, config) {
     }
     try {
         browser = await igv.createBrowser(container, igvConfig)
+
     } catch (e) {
         // Try configured genome
         if(igvConfigGenome !== igvConfig.genome) {
             igvConfig.genome = igvConfigGenome
+            if(browser) {
+                igv.removeBrowser(browser)
+            }
             browser = await igv.createBrowser(container, igvConfig)
         } else {
             console.error(e)

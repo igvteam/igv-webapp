@@ -138,7 +138,7 @@ async function createTrackWidgets(igvMain, browser, config) {
 }
 
 async function trackMenuGenomeChange(browser, genome) {
-    console.log("trackMenuGenomeChange", genome.id)
+
     // Remove existing items
     const $dropdownMenu = $('#igv-app-track-dropdown-menu')
     discardTrackMenuItems($dropdownMenu)
@@ -147,94 +147,102 @@ async function trackMenuGenomeChange(browser, genome) {
 
     const genomeID = genome.id
 
-    const $divider = $dropdownMenu.find('.dropdown-divider')
+    const $divider = $dropdownMenu.find('#igv-app-annotations-section')
 
     if (true === supportsGenome(genomeID)) {
         addEncodeButtons(genomeID, $divider)
     }
 
+
     const trackMenuConfigurations = trackRegistry ? await getTrackMenuConfigurationsFromRegistry(genome.id) : []
-    const hubURLs = genome.getHubURLs()
 
-    if (trackMenuConfigurations || hubURLs) {
+    const genomeHubURLs = genome.getHubURLs() || []
+    const configs = []
 
-        // Process hubs one at a time to prevent  a single failure from blocking others
-        const configs = []
-        if (hubURLs) {
-            for (const url of hubURLs) {
-                try {
-                    const config = await prepHubConfig(url, genomeID)
-                    configs.push(config)
-                } catch (e) {
-                    console.error(e)
-                }
+    // Process hubs one at a time to prevent  a single failure from blocking others
+    if (genomeHubURLs) {
+        for (const url of genomeHubURLs) {
+            try {
+                configs.push(await prepHubConfig(url, genomeID))
+            } catch (e) {
+                console.error(`Error loading hub configuration from URL: ${url}`, e)
             }
         }
+    }
 
-        if (trackMenuConfigurations) {
-            configs.push(...trackMenuConfigurations.map(c => prepRegistryConfig(c)))
-        }
+    if (trackMenuConfigurations) {
+        configs.push(...trackMenuConfigurations)
+    }
 
-        for (let config of configs.reverse()) {
 
-            if (config.customModalTable) {
+    for (let config of configs.reverse()) {
 
-                // Custom data table modal
-                createDropdownButton($divider, config.label, id_prefix)
-                    .on('click', () => config.customModalTable.modal.show())
+        if ('---' === config) {
+            // Add a separator
+            const divider = document.createElement('div')
+            divider.className = 'dropdown-divider'
+            $divider[0].parentNode.insertBefore(divider, $divider[0].nextSibling)
 
-            } else {
+        } else if (config.customModalTable) {
 
-                // Track selection modal
-                createDropdownButton($divider, config.label, id_prefix)
+            // Custom data table modal
+            createDropdownButton($divider, config.label, id_prefix)
+                .on('click', () => config.customModalTable.modal.show())
 
-                    .on('click', () => {
+        } else {
 
-                        // Collect url-name pairs for loaded tracks with urls.  This will serve as unique IDs to compare with track configs
-                        const loadedIDs = browser ? new Set(browser.findTracks(t => t.url).map(t => `${t.url}-${t.name}`)) : new Set()
+            // Track selection modal
+            createDropdownButton($divider, config.label, id_prefix)
 
-                        // Annotate track config objects with a unique ID comprised of url + name
-                        const annotateTracks = (section) => {
+                .on('click', () => {
+
+                    // Collect url-name pairs for loaded tracks with urls.  This will serve as unique IDs to compare with track configs
+                    const loadedIDs = browser ? new Set(browser.findTracks(t => t.url).map(t => `${t.url}-${t.name}`)) : new Set()
+
+                    // Annotate track config objects with a unique ID comprised of url + name
+                    const annotateTracks = (section) => {
+                        if (section.tracks) {
                             for (const track of section.tracks) {
                                 track._id = `${track.url}-${track.name}`
                                 track._checked = loadedIDs.has(track._id)
                             }
-                            if (section.children) for (const child of section.children) {
-                                annotateTracks(child)
+                        }
+                        if (section.children) for (const child of section.children) {
+                            annotateTracks(child)
+                        }
+                    }
+                    for (const group of config.sections) {
+                        annotateTracks(group)
+                    }
+
+                    config.okHandler = (checkedTracks, uncheckedTracks) => {
+
+                        // Remove tracks that are unchecked
+                        const uncheckedIDs = new Set(uncheckedTracks.map(s => s._id))
+                        const toUnload = new Set(Array.from(loadedIDs).filter(id => uncheckedIDs.has(id)))
+                        browser.findTracks(track => toUnload.has(`${track.url}-${track.name}`))
+                            .forEach(track => browser.removeTrack(track))
+
+                        const trackConfigs = checkedTracks.filter(config => !loadedIDs.has(`${config.url}-${config.name}`))
+                        if (trackConfigs.length > 0) {
+                            try {
+                                trackLoadHandler(trackConfigs)
+                            } catch (e) {
+                                console.error(e)
+                                alertSingleton.present(e)
                             }
                         }
-                        for (const group of config.sections) {
-                            annotateTracks(group)
-                        }
+                    }
+                    config.cancelHandler = () => {
+                        modal.hide()
+                    }
 
-                        config.okHandler = (checkedTracks, uncheckedTracks) => {
-
-                            // Remove tracks that are unchecked
-                            const uncheckedIDs = new Set(uncheckedTracks.map(s => s._id))
-                            const toUnload = new Set(Array.from(loadedIDs).filter(id => uncheckedIDs.has(id)))
-                            browser.findTracks(track => toUnload.has(`${track.url}-${track.name}`))
-                                .forEach(track => browser.removeTrack(track))
-
-                            const trackConfigs = checkedTracks.filter(config => !loadedIDs.has(`${config.url}-${config.name}`))
-                            if (trackConfigs.length > 0) {
-                                try {
-                                    trackLoadHandler(trackConfigs)
-                                } catch (e) {
-                                    console.error(e)
-                                    alertSingleton.present(e)
-                                }
-                            }
-                        }
-                        config.cancelHandler = () => {
-                            modal.hide()
-                        }
-
-                        const modal = createTrackSelectionModal(config)
-                        modal.show()
-                    })
-            }
+                    const modal = createTrackSelectionModal(config)
+                    modal.show()
+                })
         }
     }
+
 }
 
 function prepRegistryConfig(registry) {
@@ -273,7 +281,7 @@ async function prepHubConfig(hubURL, genomeID) {
     return {
         id: `_${Math.random().toString(36).substring(2, 9)}`,
         label: `${hub.getShortLabel()}`,
-        description: descriptionUrl ? `<a target=_blank href="${descriptionUrl}">${descriptionUrl}</a>` : '',
+        description: descriptionUrl ? `<a target=_blank href="${descriptionUrl}">${hub.getLongLabel()}</a>` : '',
         sections: groups
     }
 }
@@ -322,17 +330,31 @@ function createDropdownButton($divider, buttonText, id_prefix) {
 
 async function getTrackMenuConfigurationsFromRegistry(genomeID) {
 
+    const configs = []
     if (trackRegistry) {
-        const JSONFilePaths = trackRegistry[genomeID]
-        if (JSONFilePaths) {
-            try {
-                return await Promise.all(JSONFilePaths.map(path => igvxhr.loadJson(path)))
-            } catch (e) {
-                alertSingleton.present(e.message)
+        const paths = trackRegistry[genomeID]
+        if (paths) {
+            // Load track configurations, which can be either JSON files or hub URLs, one at a time to prevent a single failure from blocking others
+            for (let path of paths) {
+                try {
+                    if (path === '---') {
+                        configs.push('---')
+                    } else if (path.endsWith('.json')) {
+                        configs.push(prepRegistryConfig(await igvxhr.loadJson(path)))
+                    } else {
+                        configs.push(await prepHubConfig(path, genomeID))
+                    }
+                } catch (e) {
+                    console.error(`Error loading track configuration from registry: ${path}`, e)
+                }
             }
         }
     }
+
+    // No registry or no paths
+    return configs
 }
+
 
 function discardTrackMenuItems($dropdownMenu) {
 

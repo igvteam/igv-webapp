@@ -18,7 +18,7 @@
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
     "fs-extra": "^8.1.0",
-    "igv": "github:igvteam/igv.js#dat-filter-per-track",
+    "igv": "github:igvteam/igv.js#dat-whole-lotta-cbio",
     "data-modal": "github:igvteam/data-modal#v1.6.2",
     "igv-utils": "github:igvteam/igv-utils#v1.5.11",
     "google-utils": "github:igvteam/google-utils#v1.0.2",

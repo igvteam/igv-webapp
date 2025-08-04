@@ -44,6 +44,10 @@ function createShareWidgets(container, browser, options) {
 
     modal = new bootstrap.Modal(modalElement)
 
+    if (options.urlShortener) {
+        setURLShortener(options.urlShortener) !== undefined;
+    }
+
 // Function to show the modal
     modalElement.addEventListener('show.bs.modal', (e) => {
         iframeButton.style.display = 'none'

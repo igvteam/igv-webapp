@@ -98,6 +98,13 @@ async function main(container, config) {
         }
     }
 
+    // If a proxy is defined for CORS errors, set it here.  Currently igv and igv-webapp maintain separate instances
+    // of igvxhr, set it in both places.   TODO -- unify igvxhr instances
+    if (config.corsProxy) {
+        igvxhr.corsProxy = config.corsProxy
+        igv.setCORSProxy(config.corsProxy)
+    }
+
     // Load pre-defined genomes for use by igv.js and webapp
     if (config.genomes) {
         config.genomes = await getGenomesArray(config.genomes)

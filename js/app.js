@@ -77,7 +77,7 @@ async function main(container, config) {
 
     isDropboxEnabled = undefined !== config.dropboxAPIKey
     isGoogleEnabled = undefined !== config.clientId
-    isGoogleDriveEnabled = config.googleDriveEnabled && isGoogleEnabled
+    const isGoogleDriveEnabled = config.googleDriveEnabled === true
 
     configureCloudButtons(config)
 
@@ -146,9 +146,9 @@ async function main(container, config) {
 
     } catch (e) {
         // Try configured genome
-        if(igvConfigGenome !== igvConfig.genome) {
+        if (igvConfigGenome !== igvConfig.genome) {
             igvConfig.genome = igvConfigGenome
-            if(browser) {
+            if (browser) {
                 igv.removeBrowser(browser)
             }
             browser = await igv.createBrowser(container, igvConfig)
@@ -186,14 +186,13 @@ async function main(container, config) {
     await createTrackWidgets(igvMain, browser, config)
 
     browser.on("genomechange", async ({genome, trackConfigurations}) => {
-            if (currentGenomeId !== genome.id) {
-                currentGenomeId = genome.id
-                await trackMenuGenomeChange(browser, genome)
-            }
-        })
+        if (currentGenomeId !== genome.id) {
+            currentGenomeId = genome.id
+            await trackMenuGenomeChange(browser, genome)
+        }
+    })
     // Manually fire the genome change event to initialize the track menu.
     await trackMenuGenomeChange(browser, browser.genome)
-
 
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'))

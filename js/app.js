@@ -77,7 +77,7 @@ async function main(container, config) {
 
     isDropboxEnabled = undefined !== config.dropboxAPIKey
     isGoogleEnabled = undefined !== config.clientId
-    const isGoogleDriveEnabled = config.googleDriveEnabled === true
+    isGoogleDriveEnabled = config.googleDriveEnabled === true
 
     configureCloudButtons(config)
 

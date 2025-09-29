@@ -36,5 +36,8 @@
   "mm10": [
     "https://ftp.ncbi.nlm.nih.gov/refseq/FunctionalElements/trackhub/hub.txt",
     "resources/tracks/mm10_4dn.json"
+  ],
+  "galGal5": [
+    "resources/tracks/galGal5_4dn.json"
   ]
 }

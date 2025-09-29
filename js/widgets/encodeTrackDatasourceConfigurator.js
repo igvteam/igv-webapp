@@ -66,7 +66,7 @@ function encodeTrackDatasourceConfigurator(genomeId, type) {
 
 
 function supportsGenome(genomeId) {
-    const knownGenomes = new Set(["ce10", "ce11", "dm3", "dm6", "GRCh38", "hg19", "mm9", "mm10"])
+    const knownGenomes = new Set(["ce10", "ce11", "dm3", "dm6", "GRCh38", "GRCh39", "hg19", "mm9", "mm10", "hs1", "T2T-CHM13"])
     const id = canonicalId(genomeId)
     return knownGenomes.has(id)
 }

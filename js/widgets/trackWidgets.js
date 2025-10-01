@@ -7,7 +7,8 @@
 
 
 import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/src/index.js'
-import {GooglePicker, igvxhr, URIUtils} from '../../node_modules/igv-utils/src/index.js'
+import {igvxhr, URIUtils} from '../../node_modules/igv-utils/src/index.js'
+import * as GooglePicker from './googleFilePicker.js'
 import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDatasourceConfigurator.js'
 import alertSingleton from './alertSingleton.js'
 import {createTrackURLModalElement} from './trackURLModal.js'

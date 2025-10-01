@@ -1,5 +1,5 @@
 import alertSingleton from './alertSingleton.js'
-import {GooglePicker} from "../../node_modules/igv-utils/src/index.js"
+import * as GooglePicker from './googleFilePicker.js'
 import {initializeDropbox} from "./dropbox.js"
 
 /**

@@ -1,6 +1,6 @@
 // javascript
 import alertSingleton from './alertSingleton.js'
-import {FileUtils, GoogleDrive, GoogleUtils, URIUtils} from "../../node_modules/igv-utils/src/index.js"
+import {FileUtils} from "../../node_modules/igv-utils/src/index.js"
 
 class MultipleTrackLoadHelper {
 

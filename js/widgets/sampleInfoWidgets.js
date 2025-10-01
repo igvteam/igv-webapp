@@ -2,7 +2,7 @@ import URLLoadWidget from "./urlLoadWidget.js"
 import * as Utils from "./utils.js"
 import alertSingleton from "./alertSingleton.js"
 import {initializeDropbox} from "./dropbox.js"
-import * as GooglePicker from "../../node_modules/igv-utils/src/google-utils/googleFilePicker.js"
+import * as GooglePicker from './googleFilePicker.js'
 
 /**
  *  Create the sample info load widgets (local file, Dropbox, Google Drive, URL) and associated event handlers.

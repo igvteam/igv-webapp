@@ -71,8 +71,10 @@ export function createSampleInfoWidgets(igvMain, browser) {
         googleDriveButton.addEventListener('click', () => {
 
             const filePickerHandler = async responses => {
-                const paths = responses.map(({url}) => url)
-                await sampleInfoFileLoadHandler({url: paths[0]})
+                const paths = responses.map(({id}) => `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`)
+                for(let path of paths) {
+                    await sampleInfoFileLoadHandler({url: path})
+                }
             }
 
             GooglePicker.createDropdownButtonPicker(false, filePickerHandler)

@@ -6,8 +6,8 @@
  */
 
 
-import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/index.js'
-import {igvxhr} from '../../node_modules/igv-utils/src/index.js'
+import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/src/index.js'
+import {GooglePicker, igvxhr} from '../../node_modules/igv-utils/src/index.js'
 import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDatasourceConfigurator.js'
 import alertSingleton from './alertSingleton.js'
 import {createTrackURLModalElement} from './trackURLModal.js'
@@ -15,7 +15,6 @@ import URLLoadWidget from "./urlLoadWidget.js"
 import MultipleTrackLoadHelper from "./multipleTrackLoadHelper.js"
 import createTrackSelectionModal from './trackSelectionModal.js'
 import * as Utils from './utils.js'
-import {GooglePicker} from "../../node_modules/igv-utils/src/index.js"
 import {initializeDropbox} from "./dropbox.js"
 import igv from '../../node_modules/igv/dist/igv.esm.js'
 
@@ -59,7 +58,7 @@ async function createTrackWidgets(igvMain, browser, config) {
     localFileInput.addEventListener('change', async () => {
         if (localFileInput.files && localFileInput.files.length > 0) {
             const {files} = localFileInput
-            const paths = Array.from(files)
+            const paths = Array.from(files).map(f => ({path: f, name: f.name}))
             localFileInput.value = ''
             await trackLoadHelper.loadPaths(paths)
         }
@@ -81,7 +80,7 @@ async function createTrackWidgets(igvMain, browser, config) {
 
     Utils.configureModal(urlLoadWidget, urlLoadModal, async urlLoadWidget => {
         const paths = urlLoadWidget.retrievePaths()
-        await trackLoadHelper.loadPaths(paths)
+        await trackLoadHelper.loadPaths(paths.map(path => ({path})))
         return true
     })
 
@@ -117,7 +116,15 @@ async function createTrackWidgets(igvMain, browser, config) {
     if (googleDriveButton) {
         googleDriveButton.addEventListener('click', () => {
             GooglePicker.createDropdownButtonPicker(true,
-                async responses => await trackLoadHelper.loadPaths(responses.map(({name, url}) => url)))
+                async responses => {
+                    await trackLoadHelper.loadPaths(responses.map(response => {
+                        const {id, name} = response
+                        return {
+                            path: `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`,
+                            name
+                        }
+                    }))
+                })
         })
     }
 
@@ -134,7 +141,6 @@ async function createTrackWidgets(igvMain, browser, config) {
             }
         encodeModalTables.push(new ModalTable(encodeModalTableConfig))
     }
-
 }
 
 async function trackMenuGenomeChange(browser, genome) {

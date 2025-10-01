@@ -62,9 +62,8 @@ class FileLoad {
         if (googleDriveButton) {
             googleDriveButton.addEventListener('click', () => {
                 GooglePicker.createDropdownButtonPicker(true, async responses => {
-
                     try {
-                        await this.loadPaths(responses.map(({url}) => url))
+                        await this.loadPaths(responses.map(({id}) => `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`))
                     } catch (e) {
                         console.error(e)
                         alertSingleton.present(e)

@@ -10,7 +10,7 @@ class MultipleTrackLoadHelper {
     }
 
 
-    async loadPaths(paths) {
+    async loadPaths(files) {
 
         const fileLoadHandler = this.fileLoadHandler
 
@@ -18,48 +18,45 @@ class MultipleTrackLoadHelper {
             // Search for index files  (.bai, .csi, .tbi, .idx)
             const indexLUT = new Map()
 
-            const dataPaths = []
-            for (let path of paths) {
+            const dataFiles = []
 
-                const name = await MultipleTrackLoadHelper.getFilename(path)
+            for (let {path, name} of files) {
+
+                if(!name) {
+                    name = await MultipleTrackLoadHelper.getFilename(path)
+                }
+
                 const extension = FileUtils.getExtension(name)
 
                 if (indexExtensions.has(extension)) {
 
-                    // key is the data file name
+                    // key is the presumed data file name
                     const key = createIndexLUTKey(name, extension)
-                    indexLUT.set(key, {
-                        indexURL: path,
-                        indexFilename: MultipleTrackLoadHelper.isGoogleDrivePath(path) ? name : undefined
-                    })
+                    indexLUT.set(key, path)
                 } else {
-                    dataPaths.push(path)
+                    dataFiles.push({path, name})
                 }
-
             }
 
             const configurations = []
 
-            for (let dataPath of dataPaths) {
+            for (let {path, name} of dataFiles) {
 
-                const filename = await MultipleTrackLoadHelper.getFilename(dataPath)
+                if (indexLUT.has(name)) {
 
-                if (indexLUT.has(filename)) {
-
-                    const {indexURL, indexFilename} = indexLUT.get(filename)
+                    const indexURL = indexLUT.get(name)
                     configurations.push({
-                        url: dataPath,
-                        filename,
+                        url: path,
+                        filename: name,
                         indexURL,
-                        indexFilename,
-                        name: filename,
+                        name: name,
                         _derivedName: true
                     })
 
-                } else if (requireIndex.has(FileUtils.getExtension(filename))) {
-                    throw new Error(`Unable to load track file ${filename} - you must select both ${filename} and its corresponding index file`)
+                } else if (requireIndex.has(FileUtils.getExtension(name))) {
+                    throw new Error(`Unable to load track file ${name} - you must select both ${name} and its corresponding index file`)
                 } else {
-                    configurations.push({url: dataPath, filename, name: filename, _derivedName: true})
+                    configurations.push({url: path, name,  filename: name, _derivedName: true})
                 }
 
             }
@@ -106,7 +103,7 @@ const createIndexLUTKey = (name, extension) => {
 
     // bam and cram files (.bai, .crai) have 2 conventions:
     // <data>.bam.bai
-    // <data>.bai - we will support this one
+    // <data>.bai
 
     if ('bai' === extension && !key.endsWith('bam')) {
         return `${key}.bam`

@@ -22,7 +22,7 @@
  */
 
 import igv from '../node_modules/igv/dist/igv.esm.js'
-import * as GoogleAuth from '../node_modules/google-utils/src/googleAuth.js'
+import * as GoogleAuth from '../node_modules/igv-utils/src/google-utils/googleAuth.js'
 import makeDraggable from "./widgets/utils/draggable.js"
 import alertSingleton from "./widgets/alertSingleton.js"
 import {createSessionWidgets} from "./widgets/sessionWidgets.js"
@@ -88,6 +88,7 @@ async function main(container, config) {
             await GoogleAuth.init({
                 client_id: config.clientId,
                 apiKey: config.apiKey,
+                appId: config.appId,
                 scope: 'https://www.googleapis.com/auth/userinfo.profile',
             })
 

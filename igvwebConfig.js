@@ -12,9 +12,10 @@ var igvwebConfig = {
     // Supply a Google client id to support Google Cloud Storage, and optionally Google Drive.  This is optional
     // clientId: "your Google client id",
 
-    // Enable Google Drive support.  Default is false, if enabled you must supply a clientId and apiKey
-    // googleDriveEnabled: true,
-   //  apiKey: "your Google api key",
+    // Enable Google Drive support.  If enabled you must supply a clientId, apiKey, and appId
+    //  googleDriveEnabled: true,
+    //  apiKey: "your Google api key",
+    //  appId: "your Google app ID",    // The Google project number
 
     // Provide a URL shorterner function or object.   This is optional.  If not supplied
     // sharable URLs will not be shortened.  If using tinyURL supply an api token

@@ -10,89 +10,63 @@ class MultipleTrackLoadHelper {
 
     /**
      * Load one or more track files.
-     * @param files - array of objects with 'path' and optional 'name' attributes. Path can be a File object or a URL string.
+     * @param descriptors - array of objects with 'path' and optional 'name' attributes. Path can be a File object
+     * or a URL string.
      *
      * @returns {Promise<void>}
      */
-    async loadTrackFiles(files) {
+    async loadTrackFiles(descriptors) {
 
-        if (!Array.isArray(files) || files.length === 0) return
-
-        const fileLoadHandler = this.fileLoadHandler
+        if (!Array.isArray(descriptors) || descriptors.length === 0) {
+            return
+        }
 
         try {
-            // Search for index files  (.bai, .csi, .tbi, .idx)
+            // Step 1: Resolve all filenames in parallel
+            const files = await Promise.all(descriptors.map(({path, name}) => {
+                const resolvedName = name
+                const extension = (FileUtils.getExtension(resolvedName) || '').toLowerCase()
+                return {path, name: resolvedName, extension}
+            }))
+
+            // Step 2: Separate index files from data files
             const indexLUT = new Map()
             const dataFiles = []
-
-            for (let {path, name} of files) {
-
-                if (!name) {
-                    name = await MultipleTrackLoadHelper.getFilename(path)
-                }
-
-                const extension = (FileUtils.getExtension(name) || '').toLowerCase()
-
-                if (indexExtensions.has(extension)) {
-                    // key is the presumed data file name
-                    const key = createIndexLUTKey(name, extension)
-                    indexLUT.set(key, path)
+            for (const file of files) {
+                if (indexExtensions.has(file.extension)) {
+                    const key = createIndexLUTKey(file.name, file.extension)
+                    indexLUT.set(key, file.path)
                 } else {
-                    dataFiles.push({path, name})
+                    dataFiles.push(file)
                 }
             }
 
-            const configurations = []
-
-            for (let {path, name} of dataFiles) {
+            // Step 3: Build configurations
+            const configurations = dataFiles.map(({path, name, extension}) => {
+                const config = {
+                    url: path,
+                    name: name,
+                    filename: name,    // Important for Google Drive files
+                    _derivedName: true
+                }
 
                 if (indexLUT.has(name)) {
-
-                    const indexURL = indexLUT.get(name)
-                    configurations.push({
-                        url: path,
-                        filename: name,
-                        indexURL,
-                        name: name,
-                        _derivedName: true
-                    })
-
-                } else if (requireIndex.has((FileUtils.getExtension(name) || '').toLowerCase())) {
+                    config.indexURL = indexLUT.get(name)
+                } else if (requireIndex.has(extension)) {
                     throw new Error(`Unable to load track file ${name} - you must select both ${name} and its corresponding index file`)
-                } else {
-                    configurations.push({url: path, name, filename: name, _derivedName: true})
                 }
+                return config
+            })
 
-            }
-
+            // Step 4: Load configurations
             if (configurations.length > 0) {
-                await fileLoadHandler(configurations)
+                await this.fileLoadHandler(configurations)
             }
 
         } catch (e) {
             console.error(e)
             alertSingleton.present(e.message || `${e}`)
         }
-
-    }
-
-    /**
-     * Derive a filename from a File object or URL string.
-     * @param path
-     * @returns {Promise<string>}
-     */
-    static async getFilename(path) {
-
-        if (path instanceof File) {
-            return path.name
-        } else if (GoogleUtils.isGoogleDriveURL(path)) {
-            const info = await GoogleDrive.getDriveFileInfo(path)
-            return info.name || info.originalFileName
-        } else {
-            const result = URIUtils.parseUri(path)
-            return result.file
-        }
-
     }
 }
 

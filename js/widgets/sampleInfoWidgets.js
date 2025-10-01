@@ -4,15 +4,18 @@ import alertSingleton from "./alertSingleton.js"
 import {initializeDropbox} from "./dropbox.js"
 import * as GooglePicker from "../../node_modules/igv-utils/src/google-utils/googleFilePicker.js"
 
-let sampleInfoURLModal
-
+/**
+ *  Create the sample info load widgets (local file, Dropbox, Google Drive, URL) and associated event handlers.
+ *
+ * @param igvMain
+ * @param browser
+ */
 export function createSampleInfoWidgets(igvMain, browser) {
 
     const localFileInput = document.getElementById('igv-app-sample-info-dropdown-local-track-file-input')
     const dropboxButton = document.getElementById('igv-app-dropdown-dropbox-sample-info-file-button')
     const googleDriveButton = document.getElementById('igv-app-dropdown-google-drive-sample-info-file-button')
     const urlModalId = 'igv-app-sample-info-from-url-modal'
-
 
     const sampleInfoFileLoadHandler = async configuration => {
         try {
@@ -23,60 +26,51 @@ export function createSampleInfoWidgets(igvMain, browser) {
         }
     }
 
-    // local file
+    // Local file
     localFileInput.addEventListener('change', async () => {
-
         const {files} = localFileInput
-
-        const paths = Array.from(files)
-
-        localFileInput.value = ''
-
-        await sampleInfoFileLoadHandler({url: paths[0]})
+        if (files.length > 0) {
+            const paths = Array.from(files)
+            localFileInput.value = ''
+            await sampleInfoFileLoadHandler({url: paths[0]})
+        }
     })
 
-    //  Dropbox
-    if (dropboxButton) dropboxButton.addEventListener('click', async () => {
-
-        const result = await initializeDropbox()
-
-        if (true === result) {
-
-            const obj =
-                {
+    // Dropbox
+    if (dropboxButton) {
+        dropboxButton.addEventListener('click', async () => {
+            const result = await initializeDropbox()
+            if (result) {
+                Dropbox.choose({
                     success: dbFiles => {
-
-                        const configList = dbFiles.map(({link}) => {
-                            return {url: link}
-                        })
-
-                        sampleInfoFileLoadHandler(configList[0])
+                        if (dbFiles.length > 0) {
+                            const config = {url: dbFiles[0].link}
+                            sampleInfoFileLoadHandler(config)
+                        }
                     },
                     cancel: () => {
                     },
                     linkType: "preview",
                     multiselect: false,
                     folderselect: false,
-                }
-
-            Dropbox.choose(obj)
-
-        } else {
-            alertSingleton.present('Cannot connect to Dropbox')
-        }
-    })
+                })
+            } else {
+                alertSingleton.present('Cannot connect to Dropbox')
+            }
+        })
+    }
 
     // Google Drive
     if (googleDriveButton) {
         googleDriveButton.addEventListener('click', () => {
-
             const filePickerHandler = async responses => {
-                const paths = responses.map(({id}) => `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`)
-                for(let path of paths) {
+                if (responses?.length > 0) {
+                    const {id} = responses[0]
+                    const path = `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`
                     await sampleInfoFileLoadHandler({url: path})
                 }
             }
-
+            // The first argument `false` disables multi-selection.
             GooglePicker.createDropdownButtonPicker(false, filePickerHandler)
         })
     }
@@ -105,27 +99,29 @@ function createSampleInfoURLWidget(urlModalId, igvMain, sampleInfoFileLoadHandle
                 </div>
             </div>
         </div>
-    </div>`
+    </div>`;
 
-    const fragment = document.createRange().createContextualFragment(html)
-    const urlModalElement = fragment.firstChild
+    const fragment = document.createRange().createContextualFragment(html);
+    const urlModalElement = fragment.firstChild;
 
-    igvMain.appendChild(urlModalElement)
+    igvMain.appendChild(urlModalElement);
 
-    const fileLoadWidgetConfig =
-        {
-            widgetParent: urlModalElement.querySelector('.modal-body'),
-            dataTitle: 'Sample Info',
-            indexTitle: 'Index',
-            dataOnly: true
+    const urlWidgetConfig = {
+        widgetParent: urlModalElement.querySelector('.modal-body'),
+        dataTitle: 'Sample Info',
+        indexTitle: 'Index',
+        dataOnly: true
+    };
+
+    const urlLoadWidget = new URLLoadWidget(urlWidgetConfig);
+
+    const sampleInfoURLModal = new bootstrap.Modal(urlModalElement);
+
+    Utils.configureModal(urlLoadWidget, sampleInfoURLModal, async fileLoadWidget => {
+        const paths = fileLoadWidget.retrievePaths();
+        if (paths?.length > 0) {
+            await sampleInfoFileLoadHandler({ url: paths[0] });
         }
-
-    const fileLoadWidget = new URLLoadWidget(fileLoadWidgetConfig)
-
-    sampleInfoURLModal = new bootstrap.Modal(urlModalElement)
-    Utils.configureModal(fileLoadWidget, sampleInfoURLModal, async fileLoadWidget => {
-        const paths = fileLoadWidget.retrievePaths()
-        await sampleInfoFileLoadHandler({url: paths[0]})
-        return true
-    })
+        return true;
+    });
 }

@@ -1,91 +1,126 @@
-import {FileUtils, igvxhr, StringUtils} from "../../node_modules/igv-utils/src/index.js"
+import alertSingleton from './alertSingleton.js'
+import {FileUtils, igvxhr} from "../../node_modules/igv-utils/src/index.js"
 import FileLoad from "./fileLoad.js"
 import MultipleTrackLoadHelper from "./multipleTrackLoadHelper.js"
 
+/**
+ * Extends the FileLoad class and is designed to handle the loading of reference genome files in various formats,
+ * such as JSON, hub.txt, .gbk, .2bit, or FASTA files (with an optional .fai index). It provides a constructor
+ * to initialize the class and a key method, loadFiles, to process and validate the input descriptors.
+ */
 class GenomeFileLoad extends FileLoad {
 
+    /**
+     * Constructor for the GenomeFileLoad class.  Initializes the class with input elements and a load handler.
+     *
+     * @param localFileInput
+     * @param dropboxButton
+     * @param googleDriveButton
+     * @param loadHandler
+     */
     constructor({localFileInput, dropboxButton, googleDriveButton, loadHandler}) {
         super({localFileInput, dropboxButton, googleDriveButton})
         this.loadHandler = loadHandler
     }
 
     /**
-     * Load a reference genome, which can be  is a JSON, hub.txt, .gbk, .2bit, or a fasta file with an index.  The
-     * function takes an array of paths, which be either url or file paths.  With the exception of the fasta file
-     * the paths array should only contain one element.  The fasta file can be a single file, or a pair of files.
-     *
-     * @param paths
-     * @returns {Promise<void>}
+     * Load a reference genome from JSON, hub.txt, .gbk, .2bit, or FASTA (+ optional .fai).
+     * `descriptors`: array of { path: File|string, name?: string }.
      */
-    async loadFiles(paths) {
 
-        let configuration = undefined
-
-        if(paths.length == 0) {
-            return
-        }
-
-        const filenames = []
-        for(let p of paths) {
-            const filename = await MultipleTrackLoadHelper.getFilename(p)
-            filenames.push(filename)
-        }
-        
-        const path1 = paths[0]
-        if(1 === paths.length) {
-            const extension = FileUtils.getExtension(filenames[0])
-            if ('json' === extension) {
-                configuration = await igvxhr.loadJson(path1)
-            } else if (filenames[0].endsWith("hub.txt") ) {
-                configuration = {url: path1}
-            } else if ('gbk' === extension) {
-                configuration = {gbkURL: path1}
+    async loadFiles(descriptors) {
+        try {
+            if (!Array.isArray(descriptors)) {
+                throw new Error('Error: non\-array `descriptors` passed to GenomeFileLoad.loadFiles')
             }
-            //else if ('2bit' === extension) {
-            //    configuration = {twoBitURL: paths[0]}
-            //}
-            else {
-                // Assume this is a fasta file.  There is no standard extension, and no way to really know for sure.
-                // If we can determine the file size and it is not too large relax requirement for an index file
-                let fileSize = await igvxhr.getContentLength(path1)
-                if (fileSize > 0 && fileSize < 10000000) {
-                    configuration = {fastaURL: path1}
-                } else {
-                    if(confirm("Missing index file.  This fasta is large, or its size unknown, and loading without an index file may be slow or freeze the browser.  Proceed?")) {
-                        configuration = {fastaURL: path1}
+
+            const items = descriptors.filter(d => d && d.path)
+            if (items.length === 0) {
+                throw new Error(`Error: no valid ` +
+                    `descriptors with \`path\` provided (received=${descriptors.length})`)
+            }
+
+
+            // Enrich with name, lowercased name, and extension
+            const files = []
+            for (const d of items) {
+                const name = d.name
+                const lower = String(name).toLowerCase()
+                const ext = (FileUtils.getExtension(name) || '').toLowerCase()
+                files.push({path: d.path, name, lower, ext})
+            }
+
+            const getSize = async (path) => {
+                try {
+                    if (path instanceof File) {
+                        return typeof path.size === 'number' ? path.size : -1
                     } else {
-                        return
+                        return await igvxhr.getContentLength(path)
                     }
+                } catch {
+                    return -1
                 }
             }
-        } else {   // 2 paths entered, assume they are a fasta and index file
-            const path2 = paths[1];
 
-            if (await this.isGzipped(filenames[0]) || await this.isGzipped(filenames[1])) {
-                throw new Error('Genome did not load - Gzipped fasta files with indexes are not supported')
-            }
-            const [ext1, ext2] = filenames.map(file => FileUtils.getExtension(file))
-            if ('fai' === ext1) {
-                configuration = {fastaURL: path2, indexURL: path1}
-            } else if ('fai' === ext2) {
-                configuration = {fastaURL: path1, indexURL: path2}
+            let configuration
+
+            if (files.length === 1) {
+                const {path, lower, ext} = files[0]
+                if (ext === 'json') {
+                    configuration = await igvxhr.loadJson(path)
+                } else if (lower.endsWith('hub.txt')) {
+                    configuration = {url: path}
+                } else if (ext === 'gbk') {
+                    configuration = {gbkURL: path}
+                } else if (ext === '2bit') {
+                    configuration = {twoBitURL: path}
+                } else {
+                    // Assume FASTA; warn for large or unknown sizes
+                    const size = await getSize(path)
+                    if (size > 0 && size < 10000000) {
+                        configuration = {fastaURL: path}
+                    } else {
+                        const ok = typeof confirm === 'function'
+                            ? confirm('Missing index file. This FASTA is large, or its size is unknown. Loading without an index may be slow or freeze the browser. Proceed?')
+                            : false
+                        if (!ok) return
+                        configuration = {fastaURL: path}
+                    }
+                }
             } else {
-                throw new Error('Genome did not load - did not detect index file (expected extension .fai)')
+                if (files.length !== 2) {
+                    throw new Error('Genome did not load:  expected exactly 2 files: FASTA and .fai index')
+                }
+
+                const [a, b] = files
+                if (a.lower.endsWith('.gz') || b.lower.endsWith('.gz')) {
+                    throw new Error('Genome did not load:  gzipped FASTA files with indexes are not supported')
+                }
+
+                const aIsFai = a.ext === 'fai'
+                const bIsFai = b.ext === 'fai'
+                if (aIsFai && !bIsFai) {
+                    configuration = {fastaURL: b.path, indexURL: a.path}
+                } else if (bIsFai && !aIsFai) {
+                    configuration = {fastaURL: a.path, indexURL: b.path}
+                } else {
+                    throw new Error('Genome did not load:  did not detect index file (expected extension .fai)')
+                }
+            }
+
+            if (!configuration) {
+                throw new Error('Genome requires either JSON, UCSC hub.txt, GenBank \".gbk\", or a FASTA & .fai index')
+            }
+
+            await this.loadHandler(configuration)
+        } catch (e) {
+            console.error(e)
+            try {
+                alertSingleton.present(e.message || String(e))
+            } catch { /* no-op */
             }
         }
-
-        if (undefined === configuration) {
-            throw new Error('Genome requires either a single JSON, UCSC hub.txt, genbank ".gbk", or a FASTA & index file')
-        } else {
-            this.loadHandler(configuration)
-        }
     }
-
-    async isGzipped(name) {
-        return name.endsWith(".gz")
-    }
-
 }
-
 
 export default GenomeFileLoad

@@ -36,7 +36,7 @@ class FileLoad {
                     const config =
                         {
                             success: dbFiles => {
-                                return trackLoadHelper.loadTrackFiles(dbFiles.map(({link, name}) => ({
+                                return this.loadFiles(dbFiles.map(({link, name}) => ({
                                     path: link,
                                     name: name
                                 })))
@@ -70,11 +70,14 @@ class FileLoad {
             })
 
         }
-
     }
 
-    async loadFiles(paths) {
-        //console.log('FileLoad: loadPaths(...)');
+    /**
+     * Load files from an array of file descriptors
+     * `descriptors`: array of { path: File|string, name?: string }.
+     */
+    async loadFiles(descriptors) {
+        throw new Error('loadFiles method must be implemented by subclass')
     }
 
     static isValidLocalFileInput(input) {

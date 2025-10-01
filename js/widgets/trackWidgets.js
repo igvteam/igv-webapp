@@ -7,7 +7,7 @@
 
 
 import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/src/index.js'
-import {GooglePicker, igvxhr} from '../../node_modules/igv-utils/src/index.js'
+import {GooglePicker, igvxhr, URIUtils} from '../../node_modules/igv-utils/src/index.js'
 import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDatasourceConfigurator.js'
 import alertSingleton from './alertSingleton.js'
 import {createTrackURLModalElement} from './trackURLModal.js'
@@ -55,14 +55,15 @@ async function createTrackWidgets(igvMain, browser, config) {
 
     // Local files
     const localFileInput = document.getElementById('igv-app-dropdown-local-track-file-input')
-    localFileInput.addEventListener('change', async () => {
-        if (localFileInput.files && localFileInput.files.length > 0) {
-            const {files} = localFileInput
-            const paths = Array.from(files).map(f => ({path: f, name: f.name}))
-            localFileInput.value = ''
-            await trackLoadHelper.loadPaths(paths)
-        }
-    })
+    if (localFileInput) {
+        localFileInput.addEventListener('change', async () => {
+            if (localFileInput.files && localFileInput.files.length > 0) {
+                const {files} = localFileInput
+                await trackLoadHelper.loadTrackFiles(Array.from(files).map(f => ({path: f, name: f.name})))
+                localFileInput.value = ''
+            }
+        })
+    }
 
     // Load from URL
     const urlModalId = 'igv-app-track-from-url-modal'
@@ -79,8 +80,11 @@ async function createTrackWidgets(igvMain, browser, config) {
     })
 
     Utils.configureModal(urlLoadWidget, urlLoadModal, async urlLoadWidget => {
-        const paths = urlLoadWidget.retrievePaths()
-        await trackLoadHelper.loadPaths(paths.map(path => ({path})))
+        const urls = urlLoadWidget.retrievePaths()
+        await trackLoadHelper.loadTrackFiles(urls.map(url => {
+            const name = URIUtils.parseUri(url).file
+            return {path: url, name: name}
+        }))
         return true
     })
 
@@ -95,10 +99,15 @@ async function createTrackWidgets(igvMain, browser, config) {
             if (true === result) {
                 const obj =
                     {
-                        success: dbFiles => trackLoadHelper.loadPaths(dbFiles.map(({link}) => link)),
+                        success: dbFiles => {
+                            return trackLoadHelper.loadTrackFiles(dbFiles.map(({link, name}) => ({
+                                path: link,
+                                name: name
+                            })))
+                        },
                         cancel: () => {
                         },
-                        linkType: "preview",
+                        linkType: "direct",
                         multiselect: true,
                         folderselect: false,
                     }
@@ -117,10 +126,10 @@ async function createTrackWidgets(igvMain, browser, config) {
         googleDriveButton.addEventListener('click', () => {
             GooglePicker.createDropdownButtonPicker(true,
                 async responses => {
-                    await trackLoadHelper.loadPaths(responses.map(response => {
+                    await trackLoadHelper.loadTrackFiles(responses.map(response => {
                         const {id, name} = response
                         return {
-                            path: `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`,
+                            path: `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsAllDrives=true`,
                             name
                         }
                     }))
@@ -130,16 +139,18 @@ async function createTrackWidgets(igvMain, browser, config) {
 
 
     // Prepare ENCODE modal tables -- these are resued for all genomes that support ENCODE
-    for (let modalID of encodeTrackModalIds) {
-        const encodeModalTableConfig =
-            {
-                id: modalID,
-                title: 'ENCODE',
-                selectionStyle: 'multi',
-                pageLength: 100,
-                okHandler: trackLoadHandler
-            }
-        encodeModalTables.push(new ModalTable(encodeModalTableConfig))
+    if (encodeModalTables.length === 0) {
+        for (let modalID of encodeTrackModalIds) {
+            const encodeModalTableConfig =
+                {
+                    id: modalID,
+                    title: 'ENCODE',
+                    selectionStyle: 'multi',
+                    pageLength: 100,
+                    okHandler: trackLoadHandler
+                }
+            encodeModalTables.push(new ModalTable(encodeModalTableConfig))
+        }
     }
 }
 
@@ -221,24 +232,23 @@ async function trackMenuGenomeChange(browser, genome) {
                         annotateTracks(group)
                     }
 
-                    config.okHandler = (checkedTracks, uncheckedTracks) => {
-
-                        // Remove tracks that are unchecked
+                    config.okHandler = async (checkedTracks, uncheckedTracks) => {
                         const uncheckedIDs = new Set(uncheckedTracks.map(s => s._id))
                         const toUnload = new Set(Array.from(loadedIDs).filter(id => uncheckedIDs.has(id)))
                         browser.findTracks(track => toUnload.has(`${track.url}-${track.name}`))
                             .forEach(track => browser.removeTrack(track))
 
-                        const trackConfigs = checkedTracks.filter(config => !loadedIDs.has(`${config.url}-${config.name}`))
+                        const trackConfigs = checkedTracks.filter(c => !loadedIDs.has(`${c.url}-${c.name}`))
                         if (trackConfigs.length > 0) {
                             try {
-                                trackLoadHandler(trackConfigs)
+                                await trackLoadHandler(trackConfigs)
                             } catch (e) {
                                 console.error(e)
                                 alertSingleton.present(e)
                             }
                         }
                     }
+
                     config.cancelHandler = () => {
                         modal.hide()
                     }
@@ -316,15 +326,12 @@ function addEncodeButtons(genomeID, $divider) {
 
 
 /**
- * Called upon a genome change.
- *
- * @param genomeID
- * @param trackConfigurations
- * @param $dropdownMenu
- * @param trackLoadHandler
- * @returns {Promise<void>}
+ * Create a dropdown button and insert it after the annotations divider.
+ * @param {JQuery} $divider
+ * @param {string} buttonText
+ * @param {string} id_prefix
+ * @returns {JQuery}
  */
-
 function createDropdownButton($divider, buttonText, id_prefix) {
     const $button = $('<button>', {class: 'dropdown-item', type: 'button'})
     $button.text(`${buttonText} ...`)
@@ -361,14 +368,10 @@ async function getTrackMenuConfigurationsFromRegistry(genomeID) {
     return configs
 }
 
-
 function discardTrackMenuItems($dropdownMenu) {
-
-    $dropdownMenu.find('.dropdown-divider')
-    const searchString = '[id^=' + id_prefix + ']'
-    const $found = $dropdownMenu.find(searchString)
-    $found.remove()
-
+    $dropdownMenu.find('.dropdown-divider').remove()
+    const searchString = `[id^=${id_prefix}]`
+    $dropdownMenu.find(searchString).remove()
 }
 
 export {

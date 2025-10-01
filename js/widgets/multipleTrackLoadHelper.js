@@ -1,35 +1,39 @@
+// javascript
 import alertSingleton from './alertSingleton.js'
-import {FileUtils, URIUtils, GoogleUtils, GoogleDrive, GooglePicker} from "../../node_modules/igv-utils/src/index.js"
+import {FileUtils, GoogleDrive, GoogleUtils, URIUtils} from "../../node_modules/igv-utils/src/index.js"
 
 class MultipleTrackLoadHelper {
 
     constructor(fileLoadHandler) {
-
         this.fileLoadHandler = fileLoadHandler
-
     }
 
+    /**
+     * Load one or more track files.
+     * @param files - array of objects with 'path' and optional 'name' attributes. Path can be a File object or a URL string.
+     *
+     * @returns {Promise<void>}
+     */
+    async loadTrackFiles(files) {
 
-    async loadPaths(files) {
+        if (!Array.isArray(files) || files.length === 0) return
 
         const fileLoadHandler = this.fileLoadHandler
 
         try {
             // Search for index files  (.bai, .csi, .tbi, .idx)
             const indexLUT = new Map()
-
             const dataFiles = []
 
             for (let {path, name} of files) {
 
-                if(!name) {
+                if (!name) {
                     name = await MultipleTrackLoadHelper.getFilename(path)
                 }
 
-                const extension = FileUtils.getExtension(name)
+                const extension = (FileUtils.getExtension(name) || '').toLowerCase()
 
                 if (indexExtensions.has(extension)) {
-
                     // key is the presumed data file name
                     const key = createIndexLUTKey(name, extension)
                     indexLUT.set(key, path)
@@ -53,25 +57,30 @@ class MultipleTrackLoadHelper {
                         _derivedName: true
                     })
 
-                } else if (requireIndex.has(FileUtils.getExtension(name))) {
+                } else if (requireIndex.has((FileUtils.getExtension(name) || '').toLowerCase())) {
                     throw new Error(`Unable to load track file ${name} - you must select both ${name} and its corresponding index file`)
                 } else {
-                    configurations.push({url: path, name,  filename: name, _derivedName: true})
+                    configurations.push({url: path, name, filename: name, _derivedName: true})
                 }
 
             }
 
-            if (configurations) {
-                fileLoadHandler(configurations)
+            if (configurations.length > 0) {
+                await fileLoadHandler(configurations)
             }
 
         } catch (e) {
             console.error(e)
-            alertSingleton.present(e.message)
+            alertSingleton.present(e.message || `${e}`)
         }
 
     }
 
+    /**
+     * Derive a filename from a File object or URL string.
+     * @param path
+     * @returns {Promise<string>}
+     */
     static async getFilename(path) {
 
         if (path instanceof File) {
@@ -85,13 +94,7 @@ class MultipleTrackLoadHelper {
         }
 
     }
-
-    static isGoogleDrivePath(path) {
-        return path instanceof File ? false : GoogleUtils.isGoogleDriveURL(path)
-    }
-
 }
-
 
 const indexExtensions = new Set(['bai', 'csi', 'tbi', 'idx', 'crai', 'fai'])
 

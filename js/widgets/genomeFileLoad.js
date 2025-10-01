@@ -17,7 +17,7 @@ class GenomeFileLoad extends FileLoad {
      * @param paths
      * @returns {Promise<void>}
      */
-    async loadPaths(paths) {
+    async loadFiles(paths) {
 
         let configuration = undefined
 
@@ -33,7 +33,7 @@ class GenomeFileLoad extends FileLoad {
         
         const path1 = paths[0]
         if(1 === paths.length) {
-            const extension = FileUtils.getExtension(path1)
+            const extension = FileUtils.getExtension(filenames[0])
             if ('json' === extension) {
                 configuration = await igvxhr.loadJson(path1)
             } else if (filenames[0].endsWith("hub.txt") ) {

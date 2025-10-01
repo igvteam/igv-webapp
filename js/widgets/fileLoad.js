@@ -16,7 +16,7 @@ class FileLoad {
             if (true === FileLoad.isValidLocalFileInput(localFileInput)) {
 
                 try {
-                    await this.loadPaths(Array.from(localFileInput.files))
+                    await this.loadFiles(Array.from(localFileInput.files).map(file => ({path: file, name: file.name})))
                 } catch (e) {
                     console.error(e)
                     alertSingleton.present(e)
@@ -35,17 +35,15 @@ class FileLoad {
 
                     const config =
                         {
-                            success: async dbFiles => {
-                                try {
-                                    await this.loadPaths(dbFiles.map(dbFile => dbFile.link))
-                                } catch (e) {
-                                    console.error(e)
-                                    alertSingleton.present(e)
-                                }
+                            success: dbFiles => {
+                                return trackLoadHelper.loadTrackFiles(dbFiles.map(({link, name}) => ({
+                                    path: link,
+                                    name: name
+                                })))
                             },
                             cancel: () => {
                             },
-                            linkType: 'preview',
+                            linkType: 'direct',
                             multiselect: true,
                             folderselect: false,
                         }
@@ -63,7 +61,7 @@ class FileLoad {
             googleDriveButton.addEventListener('click', () => {
                 GooglePicker.createDropdownButtonPicker(true, async responses => {
                     try {
-                        await this.loadPaths(responses.map(({id}) => `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`))
+                        await this.loadFiles(responses.map(({id, name}) => ({path: `https://www.googleapis.com/drive/v3/files/${id}?alt=media&supportsTeamDrives=true`, name})))
                     } catch (e) {
                         console.error(e)
                         alertSingleton.present(e)
@@ -75,7 +73,7 @@ class FileLoad {
 
     }
 
-    async loadPaths(paths) {
+    async loadFiles(paths) {
         //console.log('FileLoad: loadPaths(...)');
     }
 

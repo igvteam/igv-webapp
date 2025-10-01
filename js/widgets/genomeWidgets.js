@@ -5,7 +5,7 @@
  */
 
 
-import {ModalTable, GenericDataSource} from '../../node_modules/data-modal/src/index.js'
+import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/src/index.js'
 import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 
 import Globals from "../globals.js"
@@ -15,10 +15,10 @@ import URLLoadWidget from "./urlLoadWidget.js"
 import * as Utils from './utils.js'
 import {genarkDatasourceConfigurator} from "./genarkDatasourceConfigurator.js"
 import GenomeFileLoad from "./genomeFileLoad.js"
+import {FileUtils} from "../../node_modules/igv-utils/src/index.js"
 
 const MAX_CUSTOM_GENOMES = 5
 
-let predefinedGenomeIds
 let predefinedGenomes
 let genarkModalTable
 let genomeWidgetModal
@@ -29,17 +29,22 @@ async function createGenomeWidgets(igvMain, browser, genomes) {
     const urlModalId = 'igv-app-genome-from-url-modal'
     const genarkModalId = 'igv-app-genome-genark-modal'
 
-    const genarkModalTableConfig =
-        {
-            id: genarkModalId,
-            title: 'UCSC GenArk',
-            selectionStyle: 'single',
-            pageLength: 100,
-            okHandler: result => {
-                const {accession} = result[0]
-                loadGenome({genarkAccession: accession})
+    const genarkModalTableConfig = {
+        id: genarkModalId,
+        title: 'UCSC GenArk',
+        selectionStyle: 'single',
+        pageLength: 100,
+        okHandler: async result => {
+            const first = Array.isArray(result) && result.length ? result[0] : undefined
+            if (!first?.accession) return
+            try {
+                await loadGenome({genarkAccession: first.accession})
+            } catch (e) {
+                console.error(e)
+                alertSingleton.present(e.message || `${e}`)
             }
         }
+    }
     genarkModalTable = new ModalTable(genarkModalTableConfig)
 
     const dataSource = new GenericDataSource(genarkDatasourceConfigurator())
@@ -50,7 +55,7 @@ async function createGenomeWidgets(igvMain, browser, genomes) {
     igvMain.appendChild(urlModalElement)
 
     // File widget
-    const fileLoadWidget = new URLLoadWidget({
+    const urlLoadWidget = new URLLoadWidget({
         widgetParent: urlModalElement.querySelector('.modal-body'),
         dataTitle: 'Genome',
         indexTitle: 'Index',
@@ -69,12 +74,14 @@ async function createGenomeWidgets(igvMain, browser, genomes) {
             }
         })
 
-    // Configures both file widget and url modal, a bit confusing
+
     genomeWidgetModal = new bootstrap.Modal(urlModalElement)
-    Utils.configureModal(fileLoadWidget, genomeWidgetModal, async fileLoadWidget => {
+    Utils.configureModal(urlLoadWidget, genomeWidgetModal, async urlLoadWidget => {
 
         try {
-            await genomeFileLoad.loadPaths(fileLoadWidget.retrievePaths())
+            const paths = urlLoadWidget.retrievePaths()
+            const files = paths.map(path => ({path, name: FileUtils.getFilename(path)}))
+            await genomeFileLoad.loadFiles(files)
         } catch (e) {
             console.error(e)
             alertSingleton.present(e)
@@ -95,7 +102,6 @@ async function createGenomeWidgets(igvMain, browser, genomes) {
 async function initializeGenomeWidgets(genomes) {
     try {
         predefinedGenomes = genomes.reverse() // Default genome list
-        predefinedGenomeIds = new Set(predefinedGenomes.map(g => g.id))
         for(const genomeJson of genomes) {
             if (genomeJson.id) {
                 predefinedGenomesMap.set(genomeJson.id, genomeJson)
@@ -104,22 +110,29 @@ async function initializeGenomeWidgets(genomes) {
         updateGenomeList()
 
     } catch (e) {
-        alertSingleton.present(e.message)
+        alertSingleton.present(e.message || `${e}`)
     }
 }
 
 function getRecentGenomes() {
-    const customGenomeString = localStorage.getItem("recentGenomes")
-    return customGenomeString ? JSON.parse(customGenomeString).reverse() : []
+    const s = localStorage.getItem('recentGenomes')
+    if (!s) return []
+    try {
+        const arr = JSON.parse(s)
+        return Array.isArray(arr) ? arr.reverse() : []
+    } catch (e) {
+        console.error('Invalid recentGenomes:', e)
+        localStorage.removeItem('recentGenomes')
+        return []
+    }
 }
 
-
 function updateGenomeList() {
-
     const dropdownMenu = document.getElementById('igv-app-genome-dropdown-menu')
+    if (!dropdownMenu) return
 
-    // NOTE:  MUST USE ID HERE, THERE CAN BE MULTIPLE DIVIDERS.
     const divider = dropdownMenu.querySelector('#igv-app-genome-dropdown-divider')
+    if (!divider) return
 
     // discard all buttons following the divider div
     let sibling = divider.nextElementSibling
@@ -171,7 +184,6 @@ function updateGenomeList() {
     }
 }
 
-
 async function loadGenome(genomeConfiguration) {
 
     let g = undefined
@@ -209,12 +221,10 @@ async function loadGenome(genomeConfiguration) {
                 console.error(e)
             }
         }
-
     } catch (e) {
         console.error(e)
-        alertSingleton.present(e)
+        alertSingleton.present(e.message || `${e}`)
     }
-
 }
 
 export {createGenomeWidgets}

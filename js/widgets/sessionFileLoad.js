@@ -7,12 +7,12 @@ class SessionFileLoad extends FileLoad {
         this.loadHandler = loadHandler
     }
 
-    async loadPaths(paths) {
+    async loadFiles(files) {
 
-        const path = paths[0]
+        const {path, name} = files[0]
 
         try {
-            this.loadHandler({url: path})
+            this.loadHandler({url: path, filename: name})
 
         } catch (e) {
             throw new Error('Session file did not load' + e.message)

@@ -8,7 +8,7 @@ import * as DOMUtils from "./utils/dom-utils.js"
 
 
 
-let fileLoadWidget
+let urlLoadWidget
 let sessionWidgetModal
 let saveSessionModal
 
@@ -42,7 +42,7 @@ async function createSessionWidgets(rootContainer, browser, options) {
     sessionWidgetModal = new bootstrap.Modal(urlModalElement)
 
 
-    const fileLoadWidgetConfig =
+    const urlWidgetConfig =
         {
             widgetParent: urlModalElement.querySelector('.modal-body'),
             dataTitle: 'Session',
@@ -50,10 +50,12 @@ async function createSessionWidgets(rootContainer, browser, options) {
             dataOnly: true
         }
 
-    fileLoadWidget = new URLLoadWidget(fileLoadWidgetConfig)
+    urlLoadWidget = new URLLoadWidget(urlWidgetConfig)
 
-    Utils.configureModal(fileLoadWidget, sessionWidgetModal, async fileLoadWidget => {
-        await sessionFileLoad.loadPaths(fileLoadWidget.retrievePaths())
+    Utils.configureModal(urlLoadWidget, sessionWidgetModal, async urlLoadWidget => {
+        const paths = urlLoadWidget.retrievePaths()
+        const files = paths.map(path => ({path, name: FileUtils.getFilename(path)}))
+        await sessionFileLoad.loadFiles(files)
         return true
     })
 

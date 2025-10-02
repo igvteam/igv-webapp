@@ -157,6 +157,8 @@ async function createTrackWidgets(igvMain, browser, config) {
 
 async function trackMenuGenomeChange(browser, genome) {
 
+    const d = document.getElementById('igv-app-annotations-section')
+
     // Remove existing items
     const $dropdownMenu = $('#igv-app-track-dropdown-menu')
     discardTrackMenuItems($dropdownMenu)
@@ -166,6 +168,7 @@ async function trackMenuGenomeChange(browser, genome) {
     const genomeID = genome.id
 
     const $divider = $dropdownMenu.find('#igv-app-annotations-section')
+
 
     if (true === supportsGenome(genomeID)) {
         addEncodeButtons(genomeID, $divider)
@@ -370,7 +373,7 @@ async function getTrackMenuConfigurationsFromRegistry(genomeID) {
 }
 
 function discardTrackMenuItems($dropdownMenu) {
-    $dropdownMenu.find('.dropdown-divider').remove()
+    $dropdownMenu.find('.dropdown-divider')
     const searchString = `[id^=${id_prefix}]`
     $dropdownMenu.find(searchString).remove()
 }

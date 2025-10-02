@@ -155,23 +155,22 @@ async function createTrackWidgets(igvMain, browser, config) {
     }
 }
 
+
 async function trackMenuGenomeChange(browser, genome) {
 
-    // Remove existing items
+    const genomeID = genome.id
+    
+    // Remove existing genome specific items
     const $dropdownMenu = $('#igv-app-track-dropdown-menu')
-    discardTrackMenuItems($dropdownMenu)
+    const $divider = $dropdownMenu.find('#igv-app-annotations-section')
+    $divider.nextAll().remove()
+
     customModalTables.forEach(modalTable => modalTable.remove())
     customModalTables = []
-
-    const genomeID = genome.id
-
-    const $divider = $dropdownMenu.find('#igv-app-annotations-section')
-
 
     if (true === supportsGenome(genomeID)) {
         addEncodeButtons(genomeID, $divider)
     }
-
 
     const trackMenuConfigurations = trackRegistry ? await getTrackMenuConfigurationsFromRegistry(genome.id) : []
 
@@ -370,11 +369,6 @@ async function getTrackMenuConfigurationsFromRegistry(genomeID) {
     return configs
 }
 
-function discardTrackMenuItems($dropdownMenu) {
-    $dropdownMenu.find('.dropdown-divider')
-    const searchString = `[id^=${id_prefix}]`
-    $dropdownMenu.find(searchString).remove()
-}
 
 export {
     trackMenuGenomeChange,

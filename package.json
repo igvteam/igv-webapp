@@ -1,6 +1,6 @@
 {
   "name": "igv-webapp",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "igv web app",
   "keywords": ["genomics", "visualization", "genome browser"],
   "author": "Douglass Turner and Jim Robinson",

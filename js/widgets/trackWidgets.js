@@ -157,8 +157,6 @@ async function createTrackWidgets(igvMain, browser, config) {
 
 async function trackMenuGenomeChange(browser, genome) {
 
-    const d = document.getElementById('igv-app-annotations-section')
-
     // Remove existing items
     const $dropdownMenu = $('#igv-app-track-dropdown-menu')
     discardTrackMenuItems($dropdownMenu)

@@ -18,7 +18,7 @@
   "homepage": "https://github.com/igvteam/igv-webapp#readme",
   "devDependencies": {
     "fs-extra": "^8.1.0",
-    "igv": "^3.5.3",
+    "igv": "^3.5.4",
     "data-modal": "github:igvteam/data-modal#v1.6.2",
     "igv-utils": "github:igvteam/igv-utils#v1.7.1",
     "rollup": "^2.28.1",

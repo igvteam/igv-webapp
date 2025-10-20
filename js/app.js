@@ -36,7 +36,6 @@ import {
     googleDriveButtonImageBase64,
     googleDriveDropdownItem
 } from "./widgets/markupFactory.js"
-import Globals from "./globals.js"
 import {createGenomeWidgets} from './widgets/genomeWidgets.js'
 import {createShareWidgets} from './shareWidgets.js'
 import {sessionURL} from './shareHelper.js'
@@ -47,21 +46,15 @@ import {igvxhr} from '../node_modules/igv-utils/src/index.js'
 import NotificationDialog from "./widgets/notificationDialog.js"
 import {createToolsWidgets} from "./widgets/toolsWidgets.js"
 import {createSampleInfoWidgets} from "./widgets/sampleInfoWidgets.js"
+import startMCPServer from "./mcp.js"
 
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
 let isDropboxEnabled = false
-
 let isGoogleEnabled
 let isGoogleDriveEnabled
-
 let currentGenomeId
-const googleWarningFlag = "googleWarningShown"
-
-let svgSaveImageModal
-let pngSaveImageModal
-
 let notificationDialog
 
 async function main(container, config) {
@@ -159,7 +152,7 @@ async function main(container, config) {
             return
         }
     }
-    Globals.browser = browser
+    //Globals.browser = browser
 
     const igvMain = document.getElementById('igv-main')
 
@@ -251,6 +244,9 @@ async function main(container, config) {
         })
     }
 
+    if(config.enableMCP) {
+        startMCPServer(browser)
+    }
 }
 
 

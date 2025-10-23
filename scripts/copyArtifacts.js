@@ -23,4 +23,3 @@ const updatedIndex = fs.readFileSync(indexPath, 'utf-8')
     .replace('src="js/app.js"', `src="./app_bundle-${pkg.version}.esm.min.js"`);
 
 fs.writeFileSync(distDir + '/index.html', updatedIndex, 'utf-8');
-fs.closeSync(fd);

@@ -3,20 +3,23 @@
 const fs = require('fs-extra');
 const pkg = require('../package.json');
 
-fs.copySync(__dirname + '/../igvwebConfig.js', __dirname + '/../dist/igvwebConfig.js');
-fs.copySync(__dirname + '/../css/app.css', __dirname + '/../dist/css/app.css');
-fs.copySync(__dirname + '/../css/webfonts', __dirname + '/../dist/css/webfonts');
-fs.copySync(__dirname + '/../css/fontawesome', __dirname + '/../dist/css/fontawesome');
-fs.copySync(__dirname + '/../img', __dirname + '/../dist/img');
-fs.copySync(__dirname + '/../resources', __dirname + '/../dist/resources');
-fs.copySync(__dirname + '/../favicon.ico', __dirname + '/../dist/favicon.ico');
+const distDir = __dirname + '/../dist';
+const filesToCopy = [
+    { src: '/../igvwebConfig.js', dest: '/igvwebConfig.js' },
+    { src: '/../css/app.css', dest: '/css/app.css' },
+    { src: '/../css/webfonts', dest: '/css/webfonts' },
+    { src: '/../css/fontawesome', dest: '/css/fontawesome' },
+    { src: '/../img', dest: '/img' },
+    { src: '/../resources', dest: '/resources' },
+    { src: '/../favicon.ico', dest: '/favicon.ico' }
+];
 
-const indexPath =  __dirname + '/../index.html';
-let ping = fs.readFileSync(indexPath, 'utf-8');
-const pong = ping.replace('src="js/app.js"', `src="./app_bundle-${pkg.version}.esm.js"`)
+filesToCopy.forEach(file => {
+    fs.copySync(__dirname + file.src, distDir + file.dest);
+});
 
-const out = __dirname + '/../dist/index.html';
-var fd = fs.openSync(out, 'w');
+const indexPath = __dirname + '/../index.html';
+const updatedIndex = fs.readFileSync(indexPath, 'utf-8')
+    .replace('src="js/app.js"', `src="./app_bundle-${pkg.version}.esm.min.js"`);
 
-fs.writeSync(fd, pong, null, 'utf-8');
-fs.closeSync(fd);
+fs.writeFileSync(distDir + '/index.html', updatedIndex, 'utf-8');s.closeSync(fd);

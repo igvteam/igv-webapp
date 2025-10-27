@@ -28,6 +28,8 @@ var igvwebConfig = {
 
     restoreLastGenome: true,
 
+    enableMCP: true,
+
     igvConfig:
         {
             genome: "hg38",

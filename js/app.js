@@ -36,6 +36,7 @@ import {
     googleDriveButtonImageBase64,
     googleDriveDropdownItem
 } from "./widgets/markupFactory.js"
+import Globals from "./globals.js"
 import {createGenomeWidgets} from './widgets/genomeWidgets.js'
 import {createShareWidgets} from './shareWidgets.js'
 import {sessionURL} from './shareHelper.js'

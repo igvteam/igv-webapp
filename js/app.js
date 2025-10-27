@@ -152,7 +152,7 @@ async function main(container, config) {
             return
         }
     }
-    //Globals.browser = browser
+    Globals.browser = browser
 
     const igvMain = document.getElementById('igv-main')
 

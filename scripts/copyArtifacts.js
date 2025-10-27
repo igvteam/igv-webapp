@@ -20,6 +20,6 @@ filesToCopy.forEach(file => {
 
 const indexPath = __dirname + '/../index.html';
 const updatedIndex = fs.readFileSync(indexPath, 'utf-8')
-    .replace('src="js/app.js"', `src="./app_bundle-${pkg.version}.esm.min.js"`);
+    .replace('src="js/app.js"', `src="./app_bundle-${pkg.version}.esm.js"`);
 
 fs.writeFileSync(distDir + '/index.html', updatedIndex, 'utf-8');

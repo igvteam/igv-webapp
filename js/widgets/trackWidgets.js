@@ -9,7 +9,7 @@
 import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/src/index.js'
 import {igvxhr, URIUtils} from '../../node_modules/igv-utils/src/index.js'
 import * as GooglePicker from './googleFilePicker.js'
-import {encodeTrackDatasourceConfigurator, supportsGenome} from './encodeTrackDatasourceConfigurator.js'
+import {encodeTrackDatasourceConfigurator, supportsENCODE} from './encodeTrackDatasourceConfigurator.js'
 import alertSingleton from './alertSingleton.js'
 import {createTrackURLModalElement} from './trackURLModal.js'
 import URLLoadWidget from "./urlLoadWidget.js"
@@ -25,7 +25,11 @@ let encodeModalTables = []
 let customModalTables = []
 let trackLoadHandler
 
-const encodeTrackModalIds = ['igv-app-encode-signals-chip-modal', 'igv-app-encode-signals-other-modal', 'igv-app-encode-others-modal']
+const encodeTrackModalIds = [
+    'igv-app-encode-signals-chip-modal',
+    'igv-app-encode-signals-other-modal',
+    'igv-app-encode-others-modal',
+    'igv-app-encode-hic-modal']
 
 let trackRegistry
 
@@ -159,7 +163,7 @@ async function createTrackWidgets(igvMain, browser, config) {
 async function trackMenuGenomeChange(browser, genome) {
 
     const genomeID = genome.id
-    
+
     // Remove existing genome specific items
     const $dropdownMenu = $('#igv-app-track-dropdown-menu')
     const $divider = $dropdownMenu.find('#igv-app-annotations-section')
@@ -168,7 +172,7 @@ async function trackMenuGenomeChange(browser, genome) {
     customModalTables.forEach(modalTable => modalTable.remove())
     customModalTables = []
 
-    if (true === supportsGenome(genomeID)) {
+    if (true === supportsENCODE(genomeID)) {
         addEncodeButtons(genomeID, $divider)
     }
 
@@ -306,6 +310,8 @@ async function prepHubConfig(hubURL, genomeID) {
 
 function addEncodeButtons(genomeID, $divider) {
 
+    const hasHIC = genomeID.startsWith("hg") || genomeID.startsWith("mm")
+
     encodeModalTables[0].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-chip')))
     encodeModalTables[1].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'signals-other')))
     encodeModalTables[2].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'other')))
@@ -315,6 +321,15 @@ function addEncodeButtons(genomeID, $divider) {
     encodeModalTables[1].setDescription(description)
     encodeModalTables[2].setDescription(description)
 
+    if (hasHIC) {
+        encodeModalTables[3].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'hic')))
+        encodeModalTables[3].setDescription(description)
+        if (hasHIC) {
+            createDropdownButton($divider, 'ENCODE HIC', id_prefix)
+                .on('click', () => encodeModalTables[3].modal.show())
+        }
+    }
+
     createDropdownButton($divider, 'ENCODE Other', id_prefix)
         .on('click', () => encodeModalTables[2].modal.show())
 
@@ -323,6 +338,7 @@ function addEncodeButtons(genomeID, $divider) {
 
     createDropdownButton($divider, 'ENCODE Signals - ChIP', id_prefix)
         .on('click', () => encodeModalTables[0].modal.show())
+
 }
 
 

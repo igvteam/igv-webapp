@@ -48,6 +48,7 @@ import NotificationDialog from "./widgets/notificationDialog.js"
 import {createToolsWidgets} from "./widgets/toolsWidgets.js"
 import {createSampleInfoWidgets} from "./widgets/sampleInfoWidgets.js"
 import startMCPServer from "./mcp.js"
+import createWebSocketClient from "./websocket/websocketClient.js"
 
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
@@ -247,6 +248,11 @@ async function main(container, config) {
 
     if(config.enableMCP) {
         startMCPServer(browser)
+    }
+    if(config.enableWebsocket) {
+        const wsHost = config.websocketHost || 'localhost'
+        const wsPort = config.websocketPort || 60141
+        createWebSocketClient(wsHost, wsPort, browser)
     }
 }
 

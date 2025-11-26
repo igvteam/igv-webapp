@@ -28,7 +28,8 @@ var igvwebConfig = {
 
     restoreLastGenome: true,
 
-    enableMCP: true,
+    // Uncomment to enable websocket support.
+    //enableWebsocket: true,
 
     igvConfig:
         {

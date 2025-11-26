@@ -1,18 +1,10 @@
-/**
- * Handles incoming WebSocket messages and performs actions on the genome browser instance.  Developed for
- * a prototype MCP server, but could be used for other purposes.
- *
- * @param message -- message object.  Must contain 'uniqueID' and 'type' fields, and may contain an 'args' field.
- * @param browser
- * @returns {Promise<{uniqueID}>}
- */
+export default async function handleMessage(json, browser) {
 
-export default async function handleMessage(message, browser) {
-
-    const returnMsg = {uniqueID: message.uniqueID}
+    const returnMsg = {uniqueID: json.uniqueID, message: '', status: 'ok'}
 
     try {
-        const {type, args} = message
+        let tracks
+        const {type, args} = json
         switch (type) {
 
             case 'loadTrack': {
@@ -52,8 +44,14 @@ export default async function handleMessage(message, browser) {
 
             case "setColor":
 
-                const {color, trackName} = args
-                let tracks = browser.findTracks(t => trackName ? t.name === trackName : true)
+                let {color, trackName} = args
+
+                if(color.contains(",") && !color.startsWith("rgb(")) {
+                    // Convert "R,G,B" to "rgb(R,G,B)"
+                    color = `rgb(${color})`
+                }
+
+                tracks = browser.findTracks(t => trackName ? t.name === trackName : true)
                 if (tracks) {
                     tracks.forEach(t => t.color = color)
                     browser.repaintViews()
@@ -73,6 +71,7 @@ export default async function handleMessage(message, browser) {
                         t.name = newName
                         browser.fireEvent('tracknamechange', [t])
                     })
+                    returnMsg.message = `Renamed ${tracks.length} track(s) from ${currentName} to ${newName}`
                 } else {
                     returnMsg.message = `No track found with name ${currentName}`
                     returnMsg.status = 'warning'

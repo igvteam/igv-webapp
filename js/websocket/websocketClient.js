@@ -33,7 +33,7 @@ import handleMessage from "./messageHandler.js"
                 socket.addEventListener('open', function (event) {
                     console.log('Connected to WebSocket server');
                     retryInterval = 1000; // Reset retry interval on successful connection
-                    sendJSON({message: 'Hello from browser client'});
+            socket.send('Hello from browser client');
                 });
 
                 // Handle messages from the server
@@ -47,10 +47,10 @@ import handleMessage from "./messageHandler.js"
                         // Check if the error is from JSON.parse or something else
                         if (e instanceof SyntaxError) {
                              console.log('Received non-JSON message from server:', event.data);
-                             sendJSON({
-                                 status: 'warn',
-                                 message: 'Received non-JSON message from server'
-                             })
+                             // sendJSON({
+                             //     status: 'warn',
+                             //     message: 'Received non-JSON message from server'
+                             // })
                         } else {
                             console.error('Error handling message:', e);
                             sendJSON({
@@ -79,7 +79,7 @@ import handleMessage from "./messageHandler.js"
 
             window.addEventListener('beforeunload', function (event) {
                 clearTimeout(reconnectTimer); // Don't try to reconnect when page is closing
-                if (socket && socket.readyState < WebSocket.CLOSING) {
+        if (socket && socket.readyState === WebSocket.OPEN) {
                     socket.close();
                 }
             });

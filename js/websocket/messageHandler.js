@@ -46,7 +46,7 @@ export default async function handleMessage(json, browser) {
 
                 let {color, trackName} = args
 
-                if(color.contains(",") && !color.startsWith("rgb(")) {
+                if (color.includes(",") && !color.startsWith("rgb(")) {
                     // Convert "R,G,B" to "rgb(R,G,B)"
                     color = `rgb(${color})`
                 }

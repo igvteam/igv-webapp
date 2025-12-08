@@ -1,3 +1,12 @@
+/**
+ * Handles incoming messages from the WebSocket connection.
+ *
+ * @param json
+ * @param browser
+ * @returns {Promise<{uniqueID, message: string, status: string}>}
+ */
+
+
 export default async function handleMessage(json, browser) {
 
     const returnMsg = {uniqueID: json.uniqueID, message: '', status: 'ok'}

@@ -49,7 +49,7 @@ import {createToolsWidgets} from "./widgets/toolsWidgets.js"
 import {createSampleInfoWidgets} from "./widgets/sampleInfoWidgets.js"
 import startMCPServer from "./mcp.js"
 import createWebSocketClient from "./websocket/websocketClient.js"
-
+import {setupScrollWheelZoom, setupKeyboardZoom} from "./hotkeys.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
 
@@ -190,6 +190,11 @@ async function main(container, config) {
     // Manually fire the genome change event to initialize the track menu.
     await trackMenuGenomeChange(browser, browser.genome)
 
+    // Add scroll wheel zoom support with shift key modifier
+    setupScrollWheelZoom(container, browser)
+
+    // Add keyboard shortcuts for zoom in/out
+    setupKeyboardZoom(browser)
 
     createAppBookmarkHandler($('#igv-app-bookmark-button'))
 

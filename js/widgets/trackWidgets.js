@@ -156,7 +156,7 @@ async function createTrackWidgets(igvMain, browser, config) {
                 {
                     id: modalID,
                     title: 'ENCODE',
-                    selectionStyle: 'multi',
+                    // selectionStyle: 'multi',
                     pageLength: 100,
                     okHandler: trackLoadHandler
                 }
@@ -279,7 +279,7 @@ function prepRegistryConfig(registry) {
             id: `igv-custom-modal-${Math.random().toString(36).substring(2, 9)}`,
             title: registry.label,
             okHandler: trackLoadHandler,
-            selectionStyle: 'multi',
+            // selectionStyle: 'multi',
             pageLength: 100,
             datasource: new GenericDataSource(registry),
             description: registry.description

@@ -21,6 +21,12 @@ import igv from '../../node_modules/igv/dist/igv.esm.js'
 
 const id_prefix = 'genome_specific_'
 
+// Helper to construct a canonical track identifier from a track or track-like object.
+// Uses optional chaining and nullish coalescing so only null/undefined fall back to empty string.
+function trackId(track) {
+    return `${track?.url ?? ''}-${track?.name ?? ''}`
+}
+
 let encodeModalTables = []
 let customModalTables = []
 let trackLoadHandler
@@ -199,7 +205,7 @@ async function trackMenuGenomeChange(browser, genome) {
 
     for (let config of configs.reverse()) {
 
-        if ('---' === config) {
+         if ('---' === config) {
             // Add a separator
             const divider = document.createElement('div')
             divider.className = 'dropdown-divider'
@@ -219,13 +225,13 @@ async function trackMenuGenomeChange(browser, genome) {
                 .on('click', () => {
 
                     // Collect url-name pairs for loaded tracks with urls.  This will serve as unique IDs to compare with track configs
-                    const loadedIDs = browser ? new Set(browser.findTracks(t => t.url).map(t => `${t.url}-${t.name}`)) : new Set()
+                    const loadedIDs = browser ? new Set(browser.findTracks(true).map(t => trackId(t))) : new Set()
 
                     // Annotate track config objects with a unique ID comprised of url + name
                     const annotateTracks = (section) => {
                         if (section.tracks) {
                             for (const track of section.tracks) {
-                                track._id = `${track.url}-${track.name}`
+                                track._id = trackId(track)
                                 track._checked = loadedIDs.has(track._id)
                             }
                         }
@@ -240,29 +246,29 @@ async function trackMenuGenomeChange(browser, genome) {
                     config.okHandler = async (checkedTracks, uncheckedTracks) => {
                         const uncheckedIDs = new Set(uncheckedTracks.map(s => s._id))
                         const toUnload = new Set(Array.from(loadedIDs).filter(id => uncheckedIDs.has(id)))
-                        browser.findTracks(track => toUnload.has(`${track.url}-${track.name}`))
-                            .forEach(track => browser.removeTrack(track))
+                        browser.findTracks(track => toUnload.has(trackId(track)))
+                             .forEach(track => browser.removeTrack(track))
 
-                        const trackConfigs = checkedTracks.filter(c => !loadedIDs.has(`${c.url}-${c.name}`))
-                        if (trackConfigs.length > 0) {
-                            try {
-                                await trackLoadHandler(trackConfigs)
-                            } catch (e) {
-                                console.error(e)
-                                alertSingleton.present(e)
-                            }
-                        }
-                    }
+                        const trackConfigs = checkedTracks.filter(c => !loadedIDs.has(trackId(c)))
+                         if (trackConfigs.length > 0) {
+                             try {
+                                 await trackLoadHandler(trackConfigs)
+                             } catch (e) {
+                                 console.error(e)
+                                 alertSingleton.present(e)
+                             }
+                         }
+                     }
 
-                    config.cancelHandler = () => {
-                        modal.hide()
-                    }
+                     config.cancelHandler = () => {
+                         modal.hide()
+                     }
 
-                    const modal = createTrackSelectionModal(config)
-                    modal.show()
-                })
-        }
-    }
+                     const modal = createTrackSelectionModal(config)
+                     modal.show()
+                 })
+         }
+     }
 
 }
 
@@ -390,4 +396,3 @@ export {
     trackMenuGenomeChange,
     createTrackWidgets
 }
-

@@ -1,22 +1,22 @@
-export default function createTrackSelectionListModal({id, label = '', sections, description = '', okHandler}) {
+export default function createTrackSelectionListModal({id, label = '', groups, description = '', okHandler}) {
 
-    // Flatten sections to get all tracks.
+    // Flatten groups to get all tracks.
     const tracks = []
     const trackMap = new Map()
-    const flattenSections = (sections) => {
-        sections.forEach(section => {
-            if (section.tracks) {
-                section.tracks.forEach(track => {
+    const flattenGroups = (groups) => {
+        groups.forEach(group => {
+            if (group.tracks) {
+                group.tracks.forEach(track => {
                     tracks.push(track)
                     trackMap.set(track._id, track)
                 })
             }
-            if (section.children) {
-                flattenSections(section.children)
+            if (group.children) {
+                flattenGroups(group.children)
             }
         })
     }
-    flattenSections(sections)
+    flattenGroups(groups)
 
     // Generate the HTML for the modal
     const renderTracks = (tracks) => {

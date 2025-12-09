@@ -229,18 +229,18 @@ async function trackMenuGenomeChange(browser, genome) {
                     const loadedIDs = browser ? new Set(browser.findTracks(true).map(t => trackId(t))) : new Set()
 
                     // Annotate track config objects with a unique ID comprised of url + name
-                    const annotateTracks = (section) => {
-                        if (section.tracks) {
-                            for (const track of section.tracks) {
+                    const annotateTracks = (groups) => {
+                        if (groups.tracks) {
+                            for (const track of groups.tracks) {
                                 track._id = trackId(track)
                                 track._loaded = loadedIDs.has(track._id)
                             }
                         }
-                        if (section.children) for (const child of section.children) {
+                        if (groups.children) for (const child of groups.children) {
                             annotateTracks(child)
                         }
                     }
-                    for (const group of config.sections) {
+                    for (const group of config.groups) {
                         annotateTracks(group)
                     }
 
@@ -292,15 +292,18 @@ function prepRegistryConfig(registry) {
         registry.customModalTable = customModalTable
         return registry
     } else {
+
+        const groups = registry.groups || [{
+            label: registry.label,
+            tracks: registry.tracks
+        }]
+
         return {
             type: registry.type || 'track-selection-modal',
             id: `_${Math.random().toString(36).substring(2, 9)}`,
             label: registry.label,
             description: registry.description,
-            sections: [{
-                label: registry.label,
-                tracks: registry.tracks
-            }],
+            groups: groups
         }
     }
 }
@@ -315,7 +318,7 @@ async function prepHubConfig(hubURL, genomeID) {
         id: `_${Math.random().toString(36).substring(2, 9)}`,
         label: `${hub.getShortLabel()}`,
         description: descriptionUrl ? `<a target=_blank href="${descriptionUrl}">${hub.getLongLabel()}</a>` : '',
-        sections: groups
+        groups: groups
     }
 }
 

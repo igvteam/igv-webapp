@@ -1,4 +1,4 @@
-export default function createTrackSelectionModal({id, label = '', sections, description = '', okHandler}) {
+export default function createTrackSelectionModal({id, label = '', groups, description = '', okHandler}) {
     const html = `
   <div id="${id}" class="modal fade igv-app-track-select-modal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -9,7 +9,7 @@ export default function createTrackSelectionModal({id, label = '', sections, des
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body overflow-auto" style="max-height: 70vh;">
-          ${renderSections(sections, 0)}
+          ${renderGroups(groups, 0)}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -20,15 +20,15 @@ export default function createTrackSelectionModal({id, label = '', sections, des
   </div>
 `
 
-    function renderSections(sections, level) {
-        return sections.map((section, index) => {
-            //console.log(`Rendering section: ${section.label}, level: ${level}`);
+    function renderGroups(groups, level) {
+        return groups.map((group, index) => {
+            //console.log(`Rendering group: ${group.label}, level: ${level}`);
             return `
     <div class="mb-3">
     
       ${level === 0 ? `
       <div class="bg-light text-center py-2 d-flex justify-content-between align-items-center" role="button" data-bs-toggle="collapse" data-bs-target="#collapseSection${index}" aria-expanded="true" aria-controls="collapseSection${index}">
-        <span style="font-size: 1.2rem;">${section.label}</span>
+        <span style="font-size: 1.2rem;">${group.label}</span>
         <span id="collapseIcon${index}" class="bi bi-dash"></span>
       </div>` : ''}        
 
@@ -36,12 +36,12 @@ export default function createTrackSelectionModal({id, label = '', sections, des
                 `<div class="collapse show mt-3" id="collapseSection${index}">` :
                 `<fieldset class="border rounded-3 p-3">
           <legend class="form-check-label float-none w-auto px-3" style="font-size: 1.0rem;">
-             ${section.label}
+             ${group.label}
           </legend><div>`}
         <form>
           <div class="container">
             <div class="row g-2">
-              ${section.tracks ? section.tracks.map((track) => `
+              ${group.tracks ? group.tracks.map((track) => `
                 <div class="col-6 col-md-4">
                   <div class="form-check d-flex align-items-center">
                     <input class="form-check-input" type="checkbox" id="${track._id}" ${track._loaded ? 'checked' : ''} ${track.disabled ? 'disabled' : ''}>
@@ -56,7 +56,7 @@ export default function createTrackSelectionModal({id, label = '', sections, des
                 </div>
               `).join('') : ''}
             </div>
-            ${section.children ? `<div class="mt-3">${renderSections(section.children, level + 1)}</div>` : ''}
+            ${group.children ? `<div class="mt-3">${renderGroups(group.children, level + 1)}</div>` : ''}
           </div>
         </form>
       ${level === 0 ? `</div>` : '</div></fieldset>'}
@@ -85,19 +85,19 @@ export default function createTrackSelectionModal({id, label = '', sections, des
     })
 
     const trackMap = new Map()
-    const fillTrackMap = (sections) => {
-        sections.forEach(section => {
-            if (section.tracks) {
-                section.tracks.forEach(track => {
+    const fillTrackMap = (groups) => {
+        groups.forEach(group => {
+            if (group.tracks) {
+                group.tracks.forEach(track => {
                     trackMap.set(track._id, track)
                 })
             }
-            if (section.children) {
-                fillTrackMap(section.children)
+            if (group.children) {
+                fillTrackMap(group.children)
             }
         })
     }
-    fillTrackMap(sections)
+    fillTrackMap(groups)
 
 
     // Listen for the modal close event

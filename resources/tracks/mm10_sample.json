@@ -1,0 +1,48 @@
+{
+  "label": "mm10 Sample Tracks",
+  "type": "hub",
+  "description": "Some sample tracks for the mm10 genome",
+  "groups": [
+    {
+      "label": "Genes and Gene Predictions",
+      "tracks": [
+        {
+          "id": "HLTOGAannotvHg38v1",
+          "name": "TOGA vs. hg38",
+          "url": "https://hgdownload.soe.ucsc.edu/gbdb/mm10/TOGAvHg38v1/HLTOGAannotVsHg38v1.bb"
+        },
+        {
+          "id": "crisprAllTargets",
+          "name": "CRISPR Targets",
+          "group": "genes",
+          "url": "https://hgdownload.soe.ucsc.edu/gbdb/mm10/crisprAll/crispr.bb",
+          "html": "https://crispor.gi.ucsc.edu/crispor.py?org=$D&pos=$S:$E&pam=NGG"
+        }
+      ]
+    },
+    {
+      "label": "Regulation",
+      "tracks": [
+        {
+          "id": "encodeCcreCombined",
+          "name": "ENCODE cCREs",
+          "url": "https://hgdownload.soe.ucsc.edu/gbdb/mm10/encode3/ccre/encodeCcreCombined.bb",
+          "html": "https://screen-v2.wenglab.org/search/?q=$$&assembly=mm10"
+        },
+        {
+          "id": "refSeqFuncElems",
+          "name": "RefSeq Func Elems",
+          "group": "regulation",
+          "url": "https://hgdownload.soe.ucsc.edu/gbdb/mm10/ncbiRefSeq/refSeqFuncElems.bb"
+        },
+        {
+          "id": "vistaEnhancersBb",
+          "name": "VISTA Enhancers",
+          "group": "regulation",
+          "url": "https://hgdownload.soe.ucsc.edu/gbdb/mm10/vistaEnhancers/vistaEnhancers.bb",
+          "html": "https://enhancer.lbl.gov/cgi-bin/imagedb3.pl?form=presentation&show=1&organism_id=2&experiment_id=$<experimentId>"
+        }
+      ]
+    }
+  ]
+}

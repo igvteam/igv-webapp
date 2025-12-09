@@ -16,7 +16,7 @@
           "name": "CRISPR Targets",
           "group": "genes",
           "url": "https://hgdownload.soe.ucsc.edu/gbdb/mm10/crisprAll/crispr.bb",
-          "html": "https://crispor.gi.ucsc.edu/crispor.py?org=$D&pos=$S:${&pam=NGG"
+          "html": "https://crispor.gi.ucsc.edu/crispor.py?org=$D&pos=$S:$E&pam=NGG"
         }
       ]
     },

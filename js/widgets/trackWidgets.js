@@ -18,6 +18,7 @@ import createTrackSelectionModal from './trackSelectionModal.js'
 import * as Utils from './utils.js'
 import {initializeDropbox} from "./dropbox.js"
 import igv from '../../node_modules/igv/dist/igv.esm.js'
+import createTrackSelectionListModal from "./trackSelectionListModal.js"
 
 const id_prefix = 'genome_specific_'
 
@@ -232,7 +233,7 @@ async function trackMenuGenomeChange(browser, genome) {
                         if (section.tracks) {
                             for (const track of section.tracks) {
                                 track._id = trackId(track)
-                                track._checked = loadedIDs.has(track._id)
+                                track._loaded = loadedIDs.has(track._id)
                             }
                         }
                         if (section.children) for (const child of section.children) {
@@ -264,7 +265,9 @@ async function trackMenuGenomeChange(browser, genome) {
                          modal.hide()
                      }
 
-                     const modal = createTrackSelectionModal(config)
+                     const modal = 'hub' === config.type ?
+                         createTrackSelectionModal(config) :
+                         createTrackSelectionListModal(config)
                      modal.show()
                  })
          }
@@ -276,6 +279,7 @@ function prepRegistryConfig(registry) {
 
     if ('custom-data-modal' === registry.type) {
         const customModalTable = new ModalTable({
+            type: registry.type,
             id: `igv-custom-modal-${Math.random().toString(36).substring(2, 9)}`,
             title: registry.label,
             okHandler: trackLoadHandler,
@@ -289,6 +293,7 @@ function prepRegistryConfig(registry) {
         return registry
     } else {
         return {
+            type: registry.type || 'track-selection-modal',
             id: `_${Math.random().toString(36).substring(2, 9)}`,
             label: registry.label,
             description: registry.description,
@@ -306,6 +311,7 @@ async function prepHubConfig(hubURL, genomeID) {
     let descriptionUrl = hub.getDescriptionUrl()
     const groups = await hub.getGroupedTrackConfigurations(genomeID)
     return {
+        type: 'hub',
         id: `_${Math.random().toString(36).substring(2, 9)}`,
         label: `${hub.getShortLabel()}`,
         description: descriptionUrl ? `<a target=_blank href="${descriptionUrl}">${hub.getLongLabel()}</a>` : '',

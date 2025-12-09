@@ -28,14 +28,14 @@ export default function createTrackSelectionModal({id, label = '', groups, descr
     
       ${level === 0 ? `
       <div class="bg-light text-center py-2 d-flex justify-content-between align-items-center" role="button" data-bs-toggle="collapse" data-bs-target="#collapseSection${index}" aria-expanded="true" aria-controls="collapseSection${index}">
-        <span style="font-size: 1.2rem;">${group.label}</span>
+        <span style="font-size: 1.0rem;">${group.label}</span>
         <span id="collapseIcon${index}" class="bi bi-dash"></span>
       </div>` : ''}        
 
       ${level === 0 ?
                 `<div class="collapse show mt-3" id="collapseSection${index}">` :
                 `<fieldset class="border rounded-3 p-3">
-          <legend class="form-check-label float-none w-auto px-3" style="font-size: 1.0rem;">
+          <legend class="form-check-label float-none w-auto px-3" style="font-size: 0.8rem;">
              ${group.label}
           </legend><div>`}
         <form>
@@ -45,7 +45,7 @@ export default function createTrackSelectionModal({id, label = '', groups, descr
                 <div class="col-6 col-md-4">
                   <div class="form-check d-flex align-items-center">
                     <input class="form-check-input" type="checkbox" id="${track._id}" ${track._loaded ? 'checked' : ''} ${track.disabled ? 'disabled' : ''}>
-                    <label class="form-check-label ms-2 me-2" for="${track._id}">
+                    <label class="form-check-label ms-2 me-2" for="${track._id}" style="font-size: 0.9rem;">
                       ${track.name}
                     </label>
                     ${track.html ? `

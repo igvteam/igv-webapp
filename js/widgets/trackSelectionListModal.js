@@ -21,7 +21,7 @@ export default function createTrackSelectionListModal({id, label = '', sections,
     // Generate the HTML for the modal
     const renderTracks = (tracks) => {
         // Generate options for the select element
-        // Modify the options to disable those tracks whose _id exists in trackMap
+        // Disable options for tracks that are already loaded
         const options = tracks.map(track => {
             const disabled = track._loaded ? 'disabled' : ''
             return `<option value="${track._id}" ${disabled}>${track.name}</option>`

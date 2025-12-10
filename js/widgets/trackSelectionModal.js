@@ -75,6 +75,7 @@ export default function createTrackSelectionModal({id, label = '', groups, descr
     })
 
     let modalAction = null // Variable to track the action
+    let lastCheckedCheckbox = null // Track the last checked checkbox for shift-select
 
     // Add event listeners to buttons
     document.querySelector(`#${id} .btn-secondary`).addEventListener('click', () => {
@@ -82,6 +83,34 @@ export default function createTrackSelectionModal({id, label = '', groups, descr
     })
     document.querySelector(`#${id} .btn-outline-secondary`).addEventListener('click', () => {
         modalAction = 'cancel'
+    })
+
+    // Add shift-select functionality to checkboxes
+    const checkboxes = Array.from(modalElement.querySelectorAll('input[type="checkbox"]'))
+
+    checkboxes.forEach((checkbox, index) => {
+        checkbox.addEventListener('click', (e) => {
+            if (!lastCheckedCheckbox) {
+                lastCheckedCheckbox = checkbox
+                return
+            }
+
+            if (e.shiftKey) {
+                const lastIndex = checkboxes.indexOf(lastCheckedCheckbox)
+                const currentIndex = index
+                const start = Math.min(lastIndex, currentIndex)
+                const end = Math.max(lastIndex, currentIndex)
+
+                // Check all checkboxes in between
+                for (let i = start; i <= end; i++) {
+                    if (!checkboxes[i].disabled) {
+                        checkboxes[i].checked = checkbox.checked
+                    }
+                }
+            }
+
+            lastCheckedCheckbox = checkbox
+        })
     })
 
     const trackMap = new Map()

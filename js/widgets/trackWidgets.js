@@ -121,7 +121,7 @@ async function createTrackWidgets(igvMain, browser, config) {
                         },
                         linkType: "direct",
                         multiselect: true,
-                        folderselect: false,
+                        folderselect: false
                     }
 
                 Dropbox.choose(obj)
@@ -206,7 +206,7 @@ async function trackMenuGenomeChange(browser, genome) {
 
     for (let config of configs.reverse()) {
 
-         if ('---' === config) {
+        if ('---' === config) {
             // Add a separator
             const divider = document.createElement('div')
             divider.className = 'dropdown-divider'
@@ -248,30 +248,31 @@ async function trackMenuGenomeChange(browser, genome) {
                         const uncheckedIDs = new Set(uncheckedTracks.map(s => s._id))
                         const toUnload = new Set(Array.from(loadedIDs).filter(id => uncheckedIDs.has(id)))
                         browser.findTracks(track => toUnload.has(trackId(track)))
-                             .forEach(track => browser.removeTrack(track))
+                            .forEach(track => browser.removeTrack(track))
 
                         const trackConfigs = checkedTracks.filter(c => !loadedIDs.has(trackId(c)))
-                         if (trackConfigs.length > 0) {
-                             try {
-                                 await trackLoadHandler(trackConfigs)
-                             } catch (e) {
-                                 console.error(e)
-                                 alertSingleton.present(e)
-                             }
-                         }
-                     }
+                        if (trackConfigs.length > 0) {
+                            try {
+                                await trackLoadHandler(trackConfigs)
+                            } catch (e) {
+                                console.error(e)
+                                alertSingleton.present(e)
+                            }
+                        }
+                    }
 
-                     config.cancelHandler = () => {
-                         modal.hide()
-                     }
+                    config.cancelHandler = () => {
+                        modal.hide()
+                    }
 
-                     const modal = 'hub' === config.type ?
-                         createTrackSelectionModal(config) :
-                         createTrackSelectionListModal(config)
-                     modal.show()
-                 })
-         }
-     }
+                    const modal = 'list' === config.type ?
+                        createTrackSelectionListModal(config) :
+                        createTrackSelectionModal(config)
+
+                    modal.show()
+                })
+        }
+    }
 
 }
 

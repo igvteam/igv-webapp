@@ -3,10 +3,17 @@ export default function createTrackSelectionModal({id, label = '', groups, descr
   <div id="${id}" class="modal fade igv-app-track-select-modal" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header flex-column position-sticky top-0 bg-white z-index-1">
+        <div class="modal-header flex-column position-sticky top-0 bg-white z-index-1 position-relative">
+          <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
           <h5 class="modal-title text-center w-100">${label}</h5>
           <div class="additional-html w-100">${description}</div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="w-100 d-flex justify-content-between mt-2" style="display: ${groups.length <= 1 ? 'none' : 'flex'} !important;">
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary expand-all-btn">Expand All</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary collapse-all-btn">Collapse All</button>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary deselect-all-btn">Deselect All</button>
+          </div>
         </div>
         <div class="modal-body overflow-auto" style="max-height: 70vh;">
           ${renderGroups(groups, 0)}
@@ -21,19 +28,21 @@ export default function createTrackSelectionModal({id, label = '', groups, descr
 `
 
     function renderGroups(groups, level) {
+        const isSingleGroup = groups.length === 1 && level === 0
         return groups.map((group, index) => {
             //console.log(`Rendering group: ${group.label}, level: ${level}`);
             return `
     <div class="mb-3">
     
-      ${level === 0 ? `
+      ${level === 0 && !isSingleGroup ? `
       <div class="bg-light text-center py-2 d-flex justify-content-between align-items-center" role="button" data-bs-toggle="collapse" data-bs-target="#collapseSection${index}" aria-expanded="true" aria-controls="collapseSection${index}">
         <span style="font-size: 1.0rem;">${group.label}</span>
         <span id="collapseIcon${index}" class="bi bi-dash"></span>
       </div>` : ''}        
 
-      ${level === 0 ?
+      ${level === 0 && !isSingleGroup ?
                 `<div class="collapse show mt-3" id="collapseSection${index}">` :
+                level === 0 && isSingleGroup ? '<div>' :
                 `<fieldset class="border rounded-3 p-3">
           <legend class="form-check-label float-none w-auto px-3" style="font-size: 0.8rem;">
              ${group.label}
@@ -85,8 +94,54 @@ export default function createTrackSelectionModal({id, label = '', groups, descr
         modalAction = 'cancel'
     })
 
+    // Add event listeners for expand/collapse all buttons
+    const collapseSections = modalElement.querySelectorAll('[id^="collapseSection"]')
+    const collapseIcons = modalElement.querySelectorAll('[id^="collapseIcon"]')
+
+    document.querySelector(`#${id} .expand-all-btn`).addEventListener('click', () => {
+        collapseSections.forEach((section, index) => {
+            const bsCollapse = bootstrap.Collapse.getInstance(section) || new bootstrap.Collapse(section, { toggle: false })
+            bsCollapse.show()
+            collapseIcons[index].classList.remove('bi-plus')
+            collapseIcons[index].classList.add('bi-dash')
+        })
+    })
+
+    document.querySelector(`#${id} .collapse-all-btn`).addEventListener('click', () => {
+        collapseSections.forEach((section, index) => {
+            const bsCollapse = bootstrap.Collapse.getInstance(section) || new bootstrap.Collapse(section, { toggle: false })
+            bsCollapse.hide()
+            collapseIcons[index].classList.remove('bi-dash')
+            collapseIcons[index].classList.add('bi-plus')
+        })
+    })
+
+    // Update icons when sections are manually toggled
+    collapseSections.forEach((section, index) => {
+        section.addEventListener('shown.bs.collapse', () => {
+            collapseIcons[index].classList.remove('bi-plus')
+            collapseIcons[index].classList.add('bi-dash')
+        })
+        section.addEventListener('hidden.bs.collapse', () => {
+            collapseIcons[index].classList.remove('bi-dash')
+            collapseIcons[index].classList.add('bi-plus')
+        })
+    })
+
     // Add shift-select functionality to checkboxes
     const checkboxes = Array.from(modalElement.querySelectorAll('input[type="checkbox"]'))
+
+    // Add event listener for Deselect All button
+    const deselectAllBtn = document.querySelector(`#${id} .deselect-all-btn`)
+    if (deselectAllBtn) {
+        deselectAllBtn.addEventListener('click', () => {
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.disabled) {
+                    checkbox.checked = false
+                }
+            })
+        })
+    }
 
     checkboxes.forEach((checkbox, index) => {
         checkbox.addEventListener('click', (e) => {

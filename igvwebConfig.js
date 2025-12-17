@@ -28,9 +28,6 @@ var igvwebConfig = {
 
     restoreLastGenome: true,
 
-    // Uncomment to enable websocket support.
-    //enableWebsocket: true,
-
     igvConfig:
         {
             genome: "hg38",
@@ -39,7 +36,10 @@ var igvwebConfig = {
             queryParametersSupported: true,
             showChromosomeWidget: true,
             showSVGButton: false,
-            tracks: []
+            tracks: [],
+            // Uncomment to enable websocket support.
+            //enableWebsocket: true,
+
         }
 
 }

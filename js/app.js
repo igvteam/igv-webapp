@@ -47,8 +47,6 @@ import {igvxhr} from '../node_modules/igv-utils/src/index.js'
 import NotificationDialog from "./widgets/notificationDialog.js"
 import {createToolsWidgets} from "./widgets/toolsWidgets.js"
 import {createSampleInfoWidgets} from "./widgets/sampleInfoWidgets.js"
-import startMCPServer from "./mcp.js"
-import createWebSocketClient from "./websocket/websocketClient.js"
 import {setupScrollWheelZoom, setupKeyboardZoom} from "./hotkeys.js"
 
 document.addEventListener("DOMContentLoaded", async (event) => await main(document.getElementById('igv-app-container'), igvwebConfig))
@@ -249,15 +247,6 @@ async function main(container, config) {
         document.getElementById('igv-app-circular-view-resize-modal').addEventListener('shown.bs.modal', () => {
             document.getElementById('igv-app-circular-view-resize-modal-input').value = circularViewContainer.clientWidth.toString()
         })
-    }
-
-    if(config.enableMCP) {
-        startMCPServer(browser)
-    }
-    if(config.enableWebsocket) {
-        const wsHost = config.websocketHost || 'localhost'
-        const wsPort = config.websocketPort || 60141
-        createWebSocketClient(wsHost, wsPort, browser)
     }
 }
 

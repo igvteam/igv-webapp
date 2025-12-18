@@ -37,8 +37,8 @@ var igvwebConfig = {
             showChromosomeWidget: true,
             showSVGButton: false,
             tracks: [],
-            // Uncomment to enable websocket support.
-            //enableWebsocket: true,
+            // Uncomment to enable websocket support.  This is required for the mcp server https://github.com/igvteam/igvweb-mcp
+            // enableWebSocket: true,
 
         }
 

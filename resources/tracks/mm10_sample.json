@@ -41,6 +41,33 @@
           "group": "regulation",
           "url": "https://hgdownload.soe.ucsc.edu/gbdb/mm10/vistaEnhancers/vistaEnhancers.bb",
           "html": "https://enhancer.lbl.gov/cgi-bin/imagedb3.pl?form=presentation&show=1&organism_id=2&experiment_id=$<experimentId>"
+        },
+        {
+          "name": "Chormatin Marks in Mus musculus C2C12",
+          "type": "merged",
+          "tracks": [
+            {
+              "name": "Mus musculus C2C12 H3K27me3 (Mus musculus)",
+              "url": "https://www.encodeproject.org/files/ENCFF760HFZ/@@download/ENCFF760HFZ.bigWig",
+              "color": "rgb(200,0,0)",
+              "format": "bigwig",
+              "type": "wig"
+            },
+            {
+              "name": "Mus musculus C2C12 H3K36me3 (Mus musculus)",
+              "url": "https://www.encodeproject.org/files/ENCFF329OGH/@@download/ENCFF329OGH.bigWig",
+              "color": "rgb(0,0,150)",
+              "format": "bigwig",
+              "type": "wig"
+            },
+            {
+              "name": "Mus musculus C2C12 H3K4me3 (Mus musculus)",
+              "url": "https://www.encodeproject.org/files/ENCFF494JHN/@@download/ENCFF494JHN.bigWig",
+              "color": "rgb(0,150,0)",
+              "format": "bigwig",
+              "type": "wig"
+            }
+          ]
         }
       ]
     }

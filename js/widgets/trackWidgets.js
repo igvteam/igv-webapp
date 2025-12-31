@@ -299,8 +299,11 @@ function prepRegistryConfig(registry) {
             tracks: registry.tracks
         }]
 
+        // Default modal type to 'track-selection-modal' if no groups, or 'hub' if groups present
+        const defaultType = registry.groups ? 'hub' : 'track-selection-modal'
+
         return {
-            type: registry.type || 'track-selection-modal',
+            type: registry.type || defaultType,
             id: `_${Math.random().toString(36).substring(2, 9)}`,
             label: registry.label,
             description: registry.description,

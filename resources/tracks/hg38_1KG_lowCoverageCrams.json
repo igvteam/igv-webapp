@@ -1,6 +1,6 @@
 {
   "label": "1KG Low Coverage Alignments",
-  "description": "Low coverage alignments in CRAM format from the 1000 genomes project.  Included for CRAM testing.",
+  "description": "Low coverage alignments from the 1000 genomes project.",
   "tracks": [
     {
       "name": "HG00096",

@@ -20,6 +20,7 @@
     "https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/dbvarhub/hub.txt",
     "https://ftp.ncbi.nlm.nih.gov/refseq/FunctionalElements/trackhub/hub.txt",
     "resources/tracks/hg38_4dn.json",
+    "resources/tracks/hg38_1KG_lowCoverageCrams.json",
     "---"
   ],
   "hg38_1kg": [

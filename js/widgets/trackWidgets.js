@@ -6,7 +6,8 @@
  */
 
 
-import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/src/index.js'
+import GenericDataSource from '../../node_modules/data-modal/src/genericDataSource.js'
+import {createModalTable} from '../../node_modules/infinite-table/src/index.js'
 import {igvxhr, URIUtils} from '../../node_modules/igv-utils/src/index.js'
 import * as GooglePicker from './googleFilePicker.js'
 import {encodeTrackDatasourceConfigurator, supportsENCODE} from './encodeTrackDatasourceConfigurator.js'
@@ -157,11 +158,9 @@ async function createTrackWidgets(igvMain, browser, config) {
                 {
                     id: modalID,
                     title: 'ENCODE',
-                    // selectionStyle: 'multi',
-                    pageLength: 100,
                     okHandler: trackLoadHandler
                 }
-            encodeModalTables.push(new ModalTable(encodeModalTableConfig))
+            encodeModalTables.push(createModalTable(encodeModalTableConfig))
         }
     }
 }
@@ -172,15 +171,17 @@ async function trackMenuGenomeChange(browser, genome) {
     const genomeID = genome.id
 
     // Remove existing genome specific items
-    const $dropdownMenu = $('#igv-app-track-dropdown-menu')
-    const $divider = $dropdownMenu.find('#igv-app-annotations-section')
-    $divider.nextAll().remove()
+    const dropdownMenu = document.getElementById('igv-app-track-dropdown-menu')
+    const divider = document.getElementById('igv-app-annotations-section')
+    while (divider.nextElementSibling) {
+        divider.nextElementSibling.remove()
+    }
 
     customModalTables.forEach(modalTable => modalTable.remove())
     customModalTables = []
 
     if (true === supportsENCODE(genomeID)) {
-        addEncodeButtons(genomeID, $divider)
+        addEncodeButtons(genomeID, divider)
     }
 
     const trackMenuConfigurations = trackRegistry ? await getTrackMenuConfigurationsFromRegistry(genome.id) : []
@@ -208,22 +209,22 @@ async function trackMenuGenomeChange(browser, genome) {
 
         if ('---' === config) {
             // Add a separator
-            const divider = document.createElement('div')
-            divider.className = 'dropdown-divider'
-            $divider[0].parentNode.insertBefore(divider, $divider[0].nextSibling)
+            const sep = document.createElement('div')
+            sep.className = 'dropdown-divider'
+            divider.insertAdjacentElement('afterend', sep)
 
         } else if (config.customModalTable) {
 
             // Custom data table modal
-            createDropdownButton($divider, config.label, id_prefix)
-                .on('click', () => config.customModalTable.modal.show())
+            createDropdownButton(divider, config.label, id_prefix)
+                .addEventListener('click', () => config.customModalTable.modal.show())
 
         } else {
 
             // Track selection modal
-            createDropdownButton($divider, config.label, id_prefix)
+            createDropdownButton(divider, config.label, id_prefix)
 
-                .on('click', () => {
+                .addEventListener('click', () => {
 
                     // Collect url-name pairs for loaded tracks with urls.  This will serve as unique IDs to compare with track configs
                     const loadedIDs = browser ? new Set(browser.findTracks(true).map(t => trackId(t))) : new Set()
@@ -279,13 +280,10 @@ async function trackMenuGenomeChange(browser, genome) {
 function prepRegistryConfig(registry) {
 
     if ('custom-data-modal' === registry.type) {
-        const customModalTable = new ModalTable({
-            type: registry.type,
+        const customModalTable = createModalTable({
             id: `igv-custom-modal-${Math.random().toString(36).substring(2, 9)}`,
             title: registry.label,
             okHandler: trackLoadHandler,
-            // selectionStyle: 'multi',
-            pageLength: 100,
             datasource: new GenericDataSource(registry),
             description: registry.description
         })
@@ -327,7 +325,7 @@ async function prepHubConfig(hubURL, genomeID) {
 }
 
 
-function addEncodeButtons(genomeID, $divider) {
+function addEncodeButtons(genomeID, divider) {
 
     const hasHIC = genomeID.startsWith("hg") || genomeID.startsWith("mm")
 
@@ -343,37 +341,30 @@ function addEncodeButtons(genomeID, $divider) {
     if (hasHIC) {
         encodeModalTables[3].setDatasource(new GenericDataSource(encodeTrackDatasourceConfigurator(genomeID, 'hic')))
         encodeModalTables[3].setDescription(description)
-        if (hasHIC) {
-            createDropdownButton($divider, 'ENCODE HIC', id_prefix)
-                .on('click', () => encodeModalTables[3].modal.show())
-        }
+        createDropdownButton(divider, 'ENCODE HIC', id_prefix)
+            .addEventListener('click', () => encodeModalTables[3].modal.show())
     }
 
-    createDropdownButton($divider, 'ENCODE Other', id_prefix)
-        .on('click', () => encodeModalTables[2].modal.show())
+    createDropdownButton(divider, 'ENCODE Other', id_prefix)
+        .addEventListener('click', () => encodeModalTables[2].modal.show())
 
-    createDropdownButton($divider, 'ENCODE Signals - Other', id_prefix)
-        .on('click', () => encodeModalTables[1].modal.show())
+    createDropdownButton(divider, 'ENCODE Signals - Other', id_prefix)
+        .addEventListener('click', () => encodeModalTables[1].modal.show())
 
-    createDropdownButton($divider, 'ENCODE Signals - ChIP', id_prefix)
-        .on('click', () => encodeModalTables[0].modal.show())
+    createDropdownButton(divider, 'ENCODE Signals - ChIP', id_prefix)
+        .addEventListener('click', () => encodeModalTables[0].modal.show())
 
 }
 
 
-/**
- * Create a dropdown button and insert it after the annotations divider.
- * @param {JQuery} $divider
- * @param {string} buttonText
- * @param {string} id_prefix
- * @returns {JQuery}
- */
-function createDropdownButton($divider, buttonText, id_prefix) {
-    const $button = $('<button>', {class: 'dropdown-item', type: 'button'})
-    $button.text(`${buttonText} ...`)
-    $button.attr('id', `${id_prefix}${buttonText.toLowerCase().split(' ').join('_')}`)
-    $button.insertAfter($divider)
-    return $button
+function createDropdownButton(divider, buttonText, id_prefix) {
+    const button = document.createElement('button')
+    button.className = 'dropdown-item'
+    button.type = 'button'
+    button.textContent = `${buttonText} ...`
+    button.id = `${id_prefix}${buttonText.toLowerCase().split(' ').join('_')}`
+    divider.insertAdjacentElement('afterend', button)
+    return button
 }
 
 

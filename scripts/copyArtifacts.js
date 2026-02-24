@@ -10,6 +10,7 @@ const filesToCopy = [
     { src: '/../css/webfonts', dest: '/css/webfonts' },
     { src: '/../css/fontawesome', dest: '/css/fontawesome' },
     { src: '/../img', dest: '/img' },
+    { src: '/../node_modules/infinite-table/css', dest: '/node_modules/infinite-table/css' },
     { src: '/../resources', dest: '/resources' },
     { src: '/../favicon.ico', dest: '/favicon.ico' }
 ];

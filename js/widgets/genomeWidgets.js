@@ -5,7 +5,8 @@
  */
 
 
-import {GenericDataSource, ModalTable} from '../../node_modules/data-modal/src/index.js'
+import GenericDataSource from '../../node_modules/data-modal/src/genericDataSource.js'
+import {createModalTable} from '../../node_modules/infinite-table/src/index.js'
 import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 
 import Globals from "../globals.js"
@@ -33,7 +34,6 @@ async function createGenomeWidgets(igvMain, browser, genomes) {
         id: genarkModalId,
         title: 'UCSC GenArk',
         selectionStyle: 'single',
-        pageLength: 100,
         okHandler: async result => {
             const first = Array.isArray(result) && result.length ? result[0] : undefined
             if (!first?.accession) return
@@ -45,7 +45,7 @@ async function createGenomeWidgets(igvMain, browser, genomes) {
             }
         }
     }
-    genarkModalTable = new ModalTable(genarkModalTableConfig)
+    genarkModalTable = createModalTable(genarkModalTableConfig)
 
     const dataSource = new GenericDataSource(genarkDatasourceConfigurator())
     genarkModalTable.setDatasource(dataSource)

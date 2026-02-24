@@ -5,7 +5,7 @@
  */
 
 
-import GenericDataSource from '../../node_modules/data-modal/src/genericDataSource.js'
+import {GenericDataSource} from '../../node_modules/infinite-table/src/index.js'
 import {createModalTable} from '../../node_modules/infinite-table/src/index.js'
 import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 

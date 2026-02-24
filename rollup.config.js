@@ -1,5 +1,5 @@
-import strip from 'rollup-plugin-strip';
-import {terser} from "rollup-plugin-terser"
+import strip from '@rollup/plugin-strip';
+import terser from "@rollup/plugin-terser"
 const pkg = require('./package.json');
 
 export default [

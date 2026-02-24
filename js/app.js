@@ -194,7 +194,7 @@ async function main(container, config) {
     // Add keyboard shortcuts for zoom in/out
     setupKeyboardZoom(browser)
 
-    createAppBookmarkHandler($('#igv-app-bookmark-button'))
+    createAppBookmarkHandler(document.getElementById('igv-app-bookmark-button'))
 
     if (true === config.enableCircularView) {
 
@@ -323,7 +323,7 @@ function configureGoogleSignInButton() {
 
         let currentUserProfile = undefined
 
-        $('#igv-google-drive-dropdown').on('show.bs.dropdown', async () => {
+        document.getElementById('igv-google-drive-dropdown').addEventListener('show.bs.dropdown', async () => {
 
             currentUserProfile = await GoogleAuth.getCurrentUserProfile()
 
@@ -356,9 +356,9 @@ function checkGoogleConfig(config) {
     }
 }
 
-function createAppBookmarkHandler($bookmark_button) {
+function createAppBookmarkHandler(bookmark_button) {
 
-    $bookmark_button.on('click', (e) => {
+    bookmark_button.addEventListener('click', (e) => {
 
         let url = undefined
         try {

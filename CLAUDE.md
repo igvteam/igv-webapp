@@ -35,10 +35,10 @@ For local development, serve the project root with any HTTP server and open `ind
 **Key dependencies (from npm):**
 - `igv` — The core genome browser engine (imported from `node_modules/igv/dist/igv.esm.js`)
 - `igv-utils` — Shared utilities (GoogleAuth, igvxhr) imported at source level from `node_modules/igv-utils/src/`
-- `data-modal` — Modal table component for track/genome selection
+- `infinite-table` — Modal table component for track/genome selection (replaces former `data-modal` package)
 
 **CDN dependencies (loaded in index.html):**
-- Bootstrap 5, jQuery, JBrowse Circular Genome View, Google APIs
+- Bootstrap 5, JBrowse Circular Genome View, Google APIs
 
 **Track registry:** `resources/tracks/trackRegistry.json` maps genome IDs to track list files in `resources/tracks/`.
 
@@ -50,5 +50,5 @@ For local development, serve the project root with any HTTP server and open `ind
 
 - ES6 modules throughout (`import`/`export`)
 - ESLint configured for ES2018, browser environment (`.eslintrc.json`)
-- Bootstrap modals for dialogs, jQuery used in some DOM manipulation
+- Bootstrap modals for dialogs
 - SCSS source in `css/` (compiled to `app.css`)

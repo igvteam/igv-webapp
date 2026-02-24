@@ -133,18 +133,17 @@ function configureSaveSessionModal(rootContainer, prefix, JSONProvider, sessionS
     const modal = new bootstrap.Modal(modalElement)
 
     const inputElement = modalElement.querySelector('input')
-    const $input = $(inputElement)
 
-    modalElement.addEventListener('show.bs.modal', () => $input.val(`${prefix}-session.json`))
+    modalElement.addEventListener('show.bs.modal', () => inputElement.value = `${prefix}-session.json`)
 
     const okHandler = () => {
 
         const extensions = new Set(['json', 'xml'])
 
-        let filename = $input.val()
+        let filename = inputElement.value
 
         if (undefined === filename || '' === filename) {
-            filename = $input.attr('placeholder')
+            filename = inputElement.placeholder
         } else if (false === extensions.has(FileUtils.getExtension(filename))) {
             filename = filename + '.json'
         }

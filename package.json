@@ -26,7 +26,7 @@
     "fs-extra": "^8.1.0",
     "igv": "^3.7.3",
     "igv-utils": "github:igvteam/igv-utils#v1.7.1",
-    "infinite-table": "github:igvteam/infinite-table",
+    "infinite-table": "github:igvteam/infinite-table#274610051c3bb9974a1bed4fdb1f3fc43781b372",
     "rollup": "^2.28.1"
   }
 }

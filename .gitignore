@@ -8,3 +8,4 @@
 /css/.sass-cache
 /scripts/sandbox/
 /yarn.lock
+.netlify

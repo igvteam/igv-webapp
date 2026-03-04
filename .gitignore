@@ -8,3 +8,7 @@
 /css/.sass-cache
 /scripts/sandbox/
 /yarn.lock
+.netlify
+
+# Local genome files (symlinks or copies) - created by scripts/setup-local-genome.sh
+/data/genomes/

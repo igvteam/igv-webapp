@@ -1,0 +1,14 @@
+{
+  "id": "HG00099",
+  "name": "HG00099 test file (Cici) - local",
+  "fastaURL": "http://localhost:8000/data/genomes/HG00099_hap1_hprc_r2_v1.0.1.fa.gz",
+  "indexURL": "http://localhost:8000/data/genomes/HG00099_hap1_hprc_r2_v1.0.1.fa.gz.fai",
+  "tracks": [
+    {
+      "name": "Gene annotations",
+      "url": "http://localhost:8000/data/genomes/HG00099_hap1_hprc_r2_v1.0.1_cat_v1.1.gff3.gz",
+      "format": "gff3",
+      "indexed": false
+    }
+  ]
+}

@@ -426,9 +426,11 @@ async function loadSessionWithLocusOverride(igvConfig) {
         return undefined
     }
 
-    // igv.js resolves the genome of an XML session against its genome registry, which is not initialized until the
-    // first browser is created.  Leave those to igv.js.
-    if (sessionURL.split('?')[0].endsWith('.xml')) {
+    // An XML session needs the genome registry, which igv.js does not initialize until the first browser is
+    // created.  It can be reconstructed here, but only from a genome list supplied by the application.
+    const isXML = sessionURL.split(/[?#]/)[0].endsWith('.xml')
+    const knownGenomeIds = isXML ? configuredGenomeIds(igvConfig) : undefined
+    if (isXML && !knownGenomeIds) {
         return undefined
     }
 
@@ -441,6 +443,10 @@ async function loadSessionWithLocusOverride(igvConfig) {
         return undefined
     }
 
+    if (isXML) {
+        restoreXMLSessionGenome(session, knownGenomeIds)
+    }
+
     // The locus is recorded on igvConfig as well.  Error recovery starts over from igvConfig, and the parameter
     // should be honored by the browser it creates without the session.
     igvConfig.locus = locus
@@ -448,6 +454,33 @@ async function loadSessionWithLocusOverride(igvConfig) {
     // The query parameters have been consumed here.  igv.js must not extract them again, which would restore the
     // session URL and load it a second time.
     return Object.assign({}, igvConfig, session, {locus, queryParametersSupported: false})
+}
+
+/**
+ * The ids of the genomes igv.js will hold in its genome registry, or undefined if they cannot be known here.
+ * igv.js builds the registry from the genome list supplied in the configuration, and, unless loadDefaultGenomes
+ * is false, from a default list it fetches itself.  Only the supplied list is available before a browser exists.
+ */
+function configuredGenomeIds(igvConfig) {
+
+    if (false !== igvConfig.loadDefaultGenomes || !Array.isArray(igvConfig.genomes)) {
+        return undefined
+    }
+
+    return new Set(igvConfig.genomes.map(({id}) => id))
+}
+
+/**
+ * Restore the genome of a session parsed from XML without igv.js's genome registry.  igv.js records the "genome"
+ * attribute of a session as an id when the registry holds it, and as a FASTA URL otherwise, so with no registry to
+ * consult every genome is read as a FASTA URL.  Repeat the lookup and put a known genome back.
+ */
+function restoreXMLSessionGenome(session, knownGenomeIds) {
+
+    if (session.reference && knownGenomeIds.has(session.reference.fastaURL)) {
+        session.genome = session.reference.fastaURL
+        delete session.reference
+    }
 }
 
 /**

@@ -185,6 +185,9 @@ async function main(container, config) {
     }
     Globals.browser = browser
 
+    // A "locus" query parameter takes precedence over the locus of a session loaded with "sessionURL".
+    await applyLocusParameter(browser, igvConfig)
+
     const igvMain = document.getElementById('igv-main')
 
     // Genome widgets
@@ -384,6 +387,41 @@ function checkGoogleConfig(config) {
     }
     if (config.clientId && config.clientId.startsWith("Z_%%12")) {
         config.clientId = atob(config.clientId.substring(6))
+    }
+}
+
+/**
+ * Apply the "locus" query parameter to a browser initialized from a session specified by URL.  igv.js honors the
+ * locus of the session itself in that case, ignoring the parameter, so the search is repeated here.  A browser
+ * initialized without a session is left alone -- igv.js has already applied the parameter.
+ *
+ * The parameter is read from the query string rather than from igvConfig, which carries a default locus from the
+ * application configuration file.  That default must not override the session.
+ *
+ * @param browser
+ * @param igvConfig  the igv.js configuration, with query parameters merged in by igv.createBrowser
+ */
+async function applyLocusParameter(browser, igvConfig) {
+
+    // A session can be specified with any of these.  A "file" parameter naming a session is translated to
+    // "sessionURL" by igv.js.
+    if (!(igvConfig.sessionURL || igvConfig.session || igvConfig.hubURL)) {
+        return
+    }
+
+    const locus = new URLSearchParams(window.location.search).get('locus')
+    if (!locus) {
+        return
+    }
+
+    try {
+        const found = await browser.search(locus)
+        if (!found) {
+            alertSingleton.present(`Locus "${locus}" not found`)
+        }
+    } catch (e) {
+        console.error(e)
+        alertSingleton.present(e)
     }
 }
 

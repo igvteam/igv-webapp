@@ -139,16 +139,47 @@ async function main(container, config) {
         browser = await igv.createBrowser(container, igvConfig)
 
     } catch (e) {
-        // Try configured genome
-        if (igvConfigGenome !== igvConfig.genome) {
-            igvConfig.genome = igvConfigGenome
-            if (browser) {
-                igv.removeBrowser(browser)
-            }
-            browser = await igv.createBrowser(container, igvConfig)
-        } else {
-            console.error(e)
+        console.error(e)
+
+        // createBrowser can fail after the igv.js instance has been inserted into the DOM -- a session (sessionURL
+        // query parameter), genome, or track that fails to load throws from within the partially constructed
+        // browser.  Discard it, otherwise the retry below leaves an orphaned instance in the page.
+        removeOrphanedBrowsers()
+
+        // Query parameters have been merged into igvConfig by the attempt above, so a session specified by the
+        // sessionURL parameter is visible here.
+        const failedSession = igvConfig.sessionURL || igvConfig.session || igvConfig.hubURL
+        const failedGenome = igvConfigGenome !== igvConfig.genome
+
+        if (!failedSession && !failedGenome) {
             alertSingleton.present(e)
+            return
+        }
+
+        if (failedSession) {
+            // The session was explicitly requested, so report the failure, then continue without it.
+            alertSingleton.present(e)
+            delete igvConfig.sessionURL
+            delete igvConfig.session
+            delete igvConfig.hubURL
+        }
+
+        if (failedGenome) {
+            // Fall back to the genome from the configuration file.
+            igvConfig.genome = igvConfigGenome
+            igvConfig.tracks = []
+        }
+
+        // Don't extract the query parameters a second time, that would just restore the session and genome that
+        // failed to load above.
+        igvConfig.queryParametersSupported = false
+
+        try {
+            browser = await igv.createBrowser(container, igvConfig)
+        } catch (e1) {
+            console.error(e1)
+            removeOrphanedBrowsers()
+            alertSingleton.present(e1)
             return
         }
     }
@@ -353,6 +384,19 @@ function checkGoogleConfig(config) {
     }
     if (config.clientId && config.clientId.startsWith("Z_%%12")) {
         config.clientId = atob(config.clientId.substring(6))
+    }
+}
+
+/**
+ * Remove any igv.js browser instances left behind by a failed igv.createBrowser call.  createBrowser inserts the
+ * browser into the DOM before loading the session, genome, and tracks, so a load failure leaves a non-functional
+ * instance in the container with no handle returned to the caller.
+ */
+function removeOrphanedBrowsers() {
+    try {
+        igv.removeAllBrowsers()
+    } catch (e) {
+        console.error(e)
     }
 }
 

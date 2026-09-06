@@ -135,8 +135,12 @@ async function main(container, config) {
             console.error(e)
         }
     }
+    // A "locus" query parameter takes precedence over the locus of a session loaded with "sessionURL".  The
+    // session is patched before the browser is created, so it opens at the requested locus directly.
+    const sessionConfig = await loadSessionWithLocusOverride(igvConfig)
+
     try {
-        browser = await igv.createBrowser(container, igvConfig)
+        browser = await igv.createBrowser(container, sessionConfig || igvConfig)
 
     } catch (e) {
         console.error(e)
@@ -146,9 +150,9 @@ async function main(container, config) {
         // browser.  Discard it, otherwise the retry below leaves an orphaned instance in the page.
         removeOrphanedBrowsers()
 
-        // Query parameters have been merged into igvConfig by the attempt above, so a session specified by the
-        // sessionURL parameter is visible here.
-        const failedSession = igvConfig.sessionURL || igvConfig.session || igvConfig.hubURL
+        // A session is either merged into sessionConfig, or, when it was left to igv.js to load, visible in
+        // igvConfig -- igv.createBrowser merges the query parameters into the configuration it is given.
+        const failedSession = sessionConfig || igvConfig.sessionURL || igvConfig.session || igvConfig.hubURL
         const failedGenome = igvConfigGenome !== igvConfig.genome
 
         if (!failedSession && !failedGenome) {
@@ -185,8 +189,10 @@ async function main(container, config) {
     }
     Globals.browser = browser
 
-    // A "locus" query parameter takes precedence over the locus of a session loaded with "sessionURL".
-    await applyLocusParameter(browser, igvConfig)
+    if (!sessionConfig) {
+        // The session was loaded by igv.js, which ignores the locus parameter in favor of the session's own locus.
+        await applyLocusParameter(browser, igvConfig)
+    }
 
     const igvMain = document.getElementById('igv-main')
 
@@ -391,9 +397,63 @@ function checkGoogleConfig(config) {
 }
 
 /**
- * Apply the "locus" query parameter to a browser initialized from a session specified by URL.  igv.js honors the
- * locus of the session itself in that case, ignoring the parameter, so the search is repeated here.  A browser
- * initialized without a session is left alone -- igv.js has already applied the parameter.
+ * The query parameters of the page location, decoded as igv.js decodes them.  igv.js uses decodeURIComponent,
+ * which leaves "+" as a literal plus sign, whereas URLSearchParams would decode it as a space.
+ */
+function queryParameters() {
+    return new URLSearchParams(window.location.search.replace(/\+/g, '%2B'))
+}
+
+/**
+ * Load the session named by the "sessionURL" parameter and override its locus with the "locus" parameter.  igv.js
+ * gives the session's own locus precedence, so the session is loaded and patched here, before the browser is
+ * created.  Searching for the locus after the fact works, but renders the session's locus first and then jumps.
+ *
+ * Returns a browser configuration with the session merged in, or undefined if the two parameters are not both
+ * present, or if the session cannot be pre-loaded.  The caller then creates the browser from igvConfig, leaving
+ * the session to igv.js, and applies the locus with applyLocusParameter.
+ *
+ * @param igvConfig  the igv.js configuration.  Query parameters have not been extracted into it yet -- that
+ *                   happens in igv.createBrowser -- so they are read here from the location.
+ */
+async function loadSessionWithLocusOverride(igvConfig) {
+
+    const parameters = queryParameters()
+    const locus = parameters.get('locus')
+    const sessionURL = parameters.get('sessionURL') || parameters.get('session') || parameters.get('hubURL')
+
+    if (!locus || !sessionURL) {
+        return undefined
+    }
+
+    // igv.js resolves the genome of an XML session against its genome registry, which is not initialized until the
+    // first browser is created.  Leave those to igv.js.
+    if (sessionURL.split('?')[0].endsWith('.xml')) {
+        return undefined
+    }
+
+    let session
+    try {
+        session = await igv.loadSessionFile({url: sessionURL})
+    } catch (e) {
+        // Let igv.createBrowser load the session and fail in its usual way, so the error is reported once.
+        console.error(e)
+        return undefined
+    }
+
+    // The locus is recorded on igvConfig as well.  Error recovery starts over from igvConfig, and the parameter
+    // should be honored by the browser it creates without the session.
+    igvConfig.locus = locus
+
+    // The query parameters have been consumed here.  igv.js must not extract them again, which would restore the
+    // session URL and load it a second time.
+    return Object.assign({}, igvConfig, session, {locus, queryParametersSupported: false})
+}
+
+/**
+ * Apply the "locus" query parameter to a browser initialized from a session that igv.js loaded itself, which
+ * honors the locus of the session and ignores the parameter.  A browser initialized without a session is left
+ * alone -- igv.js has already applied the parameter.
  *
  * The parameter is read from the query string rather than from igvConfig, which carries a default locus from the
  * application configuration file.  That default must not override the session.
@@ -409,7 +469,7 @@ async function applyLocusParameter(browser, igvConfig) {
         return
     }
 
-    const locus = new URLSearchParams(window.location.search).get('locus')
+    const locus = queryParameters().get('locus')
     if (!locus) {
         return
     }

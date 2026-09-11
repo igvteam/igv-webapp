@@ -21,6 +21,11 @@ user documentation is also provided in the app's Help menu.
 For documentation about hosting your own IGV-Web,
 see [https://igv.org/doc/webapp/#Hosting/](https://igv.org/doc/webapp/#Hosting/)
 
+## More info
+
+The `CLAUDE.md` file provides guidance to Claude Code (claude.ai/code) when working with code in this repository and
+contains useful general information about the app, including build and run commands, architecture, and configuration.
+
 ## License
 
 The IGV-Web app is [MIT](/LICENSE) licensed.

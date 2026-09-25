@@ -25,6 +25,7 @@ import igv from '../node_modules/igv/dist/igv.esm.js'
 import * as GoogleAuth from '../node_modules/igv-utils/src/google-utils/googleAuth.js'
 import makeDraggable from "./widgets/utils/draggable.js"
 import alertSingleton from "./widgets/alertSingleton.js"
+import {presentLoadFailures} from "./widgets/loadFailures.js"
 import {createSessionWidgets} from "./widgets/sessionWidgets.js"
 import {
     createTrackWidgets,
@@ -188,6 +189,9 @@ async function main(container, config) {
         }
     }
     Globals.browser = browser
+
+    // The optional parts and tracks of the initial genome and session that failed to load
+    presentLoadFailures(browser.loadFailures)
 
     if (!sessionConfig) {
         // The session was loaded by igv.js, which ignores the locus parameter in favor of the session's own locus.

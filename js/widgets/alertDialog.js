@@ -42,6 +42,9 @@ class AlertDialog {
         ok_container.appendChild(this.ok)
         this.ok.textContent = 'OK'
 
+        // Alerts presented while one is already showing wait here until the current one is dismissed
+        this.queue = []
+
         const okHandler = () => {
 
             if (typeof this.callback === 'function') {
@@ -50,6 +53,11 @@ class AlertDialog {
             }
             this.body.innerHTML = ''
             DOMUtils.hide(this.container)
+
+            if (this.queue.length > 0) {
+                const {alert, callback} = this.queue.shift()
+                this.show(alert, callback)
+            }
         }
 
         this.ok.addEventListener('click', event => {
@@ -74,6 +82,18 @@ class AlertDialog {
     }
 
     present(alert, callback) {
+        if (this.isVisible()) {
+            this.queue.push({alert, callback})
+        } else {
+            this.show(alert, callback)
+        }
+    }
+
+    isVisible() {
+        return this.container.style.display !== 'none'
+    }
+
+    show(alert, callback) {
 
         this.errorHeadline.textContent = alert.message ? 'ERROR' : ''
         let string = alert.message || alert

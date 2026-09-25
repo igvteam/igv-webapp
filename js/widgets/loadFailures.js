@@ -15,11 +15,8 @@ function presentLoadFailures(loadFailures) {
         return
     }
 
-    // An igv.js message often names the url already ("Error accessing resource: <url> status: 404")
-    const lines = loadFailures.map(({url, message}) => String(message).includes(url) ?
-        escapeHTML(message) :
-        `${escapeHTML(url)}<br>${escapeHTML(message)}`)
-    alertSingleton.present(`Some resources could not be loaded:<br><br>${lines.join('<br><br>')}`)
+    const items = loadFailures.map(({url}) => `<li>${escapeHTML(url)}</li>`)
+    alertSingleton.present(`Error accessing resources:<ul class="igv-load-failure-list">${items.join('')}</ul>`)
 }
 
 // The alert dialog sets innerHTML, and urls and messages come from user-supplied configurations

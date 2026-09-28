@@ -10,6 +10,7 @@ import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 
 import Globals from "../globals.js"
 import alertSingleton from "./alertSingleton.js"
+import {presentLoadFailures} from "./loadFailures.js"
 import {createURLModalElement} from "./urlModal.js"
 import URLLoadWidget from "./urlLoadWidget.js"
 import * as Utils from './utils.js'
@@ -189,6 +190,7 @@ async function loadGenome(genomeConfiguration) {
     let g = undefined
     try {
         g = await Globals.browser.loadGenome(genomeConfiguration)
+        presentLoadFailures(g.loadFailures)
         if (g.id) {
             try {
 

@@ -95,6 +95,11 @@ $igv-alert-dialog-body-copy-margin: 16px;
       background-color: white;
       border: unset;
     }
+
+    // load failures: just the list, with a tighter margin
+    #igv-widgets-alert-dialog-body-copy:has(> .igv-load-failure-list) {
+      margin: 8px;
+    }
   }
 
   // ok - container
@@ -140,4 +145,13 @@ $igv-alert-dialog-body-copy-margin: 16px;
 
   }
 
+}
+
+.igv-load-failure-list {
+  margin: 6px 0 0;
+  padding-left: 16px;
+
+  > li + li {
+    margin-top: 6px;
+  }
 }

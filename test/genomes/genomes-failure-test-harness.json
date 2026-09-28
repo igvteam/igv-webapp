@@ -123,10 +123,11 @@
 },
 
   {
-    "id": "hg19-just-fasta",
+    "id": "hg19-fasta-hacks",
     "name": "Human (hg19 just FASTA)",
-    "fastaURL": "https://igv.org/genomes/data/hg19/hg19.fasta",
+    "fastaURL": "https://dl.dropboxusercontent.com/scl/fi/9jqhp3vg52w27sqmayjwh/hg19.fasta.gz?rlkey=taenl2kobve895soksr4cgtak",
     "indexURL": "https://igv.org/genomes/data/hg19/hg19.fasta.fai",
+    "compressedIndexURL": "www.apple.com/bad",
     "cytobandURL": "https://igv.org/genomes/data/hg19/cytoBand.txt.gz",
     "aliasURL": "https://igv.org/genomes/data/hg19/hg19_alias.tab",
     "chromSizesURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes",
@@ -177,6 +178,60 @@
 
   {
     "id": "hg19",
+    "name": "Human (GRCh37/hg19)",
+    "fastaURL": "https://igv.org/genomes/data/hg19/hg19.fasta",
+    "indexURL": "https://igv.org/genomes/data/hg19/hg19.fasta.fai",
+    "twoBitURL": "https://igv.org/genomes/data/hg19/hg19.2bit",
+    "cytobandURL": "https://igv.org/genomes/data/hg19/cytoBand.txt.gz",
+    "aliasURL": "https://igv.org/genomes/data/hg19/hg19_alias.tab",
+    "chromSizesURL": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes",
+    "maneBbURL": "https://igv.org/genomes/data/hg19/ncbiRefSeqSelect.bb",
+    "chromosomeOrder": [
+      "chr1",
+      "chr2",
+      "chr3",
+      "chr4",
+      "chr5",
+      "chr6",
+      "chr7",
+      "chr8",
+      "chr9",
+      "chr10",
+      "chr11",
+      "chr12",
+      "chr13",
+      "chr14",
+      "chr15",
+      "chr16",
+      "chr17",
+      "chr18",
+      "chr19",
+      "chr20",
+      "chr21",
+      "chr22",
+      "chrX",
+      "chrY"
+    ],
+    "tracks": [
+      {
+        "id": "refseqAll",
+        "name": "Refseq All",
+        "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/ncbiRefSeq.txt.gz",
+        "indexed": false,
+        "format": "refgene",
+        "html": "https://www.ncbi.nlm.nih.gov/refseq/",
+        "order": 100000
+      }
+    ],
+    "hubs": [
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/genomes/hubs/hg19/hub.txt",
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/genomes/hubs/hg19/hub_1kg.txt",
+      "https://raw.githubusercontent.com/igvteam/igv-data/refs/heads/main/genomes/hubs/hg19/hub_tutorials.txt"
+    ]
+  },
+
+  {
+    "id": "hg19-broken-fastaURL",
     "name": "Human (GRCh37/hg19)",
     "fastaURL": "https://igv.org/genomes/data/hg19/hg19.fasta",
     "indexURL": "https://igv.org/genomes/data/hg19/hg19.fasta.fai",

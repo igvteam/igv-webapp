@@ -4,7 +4,6 @@ import SessionFileLoad from "./sessionFileLoad.js"
 import {createURLModalElement} from './urlModal.js'
 import * as Utils from './utils.js'
 import alertSingleton from "./alertSingleton.js"
-import {presentLoadFailures} from "./loadFailures.js"
 import * as DOMUtils from "./utils/dom-utils.js"
 
 
@@ -27,7 +26,7 @@ async function createSessionWidgets(rootContainer, browser, options) {
 
     const loadHandler = async config => {
         try {
-            presentLoadFailures(await browser.loadSession(config))
+            await browser.loadSession(config)
         } catch (e) {
             console.error(e)
             alertSingleton.present(e)

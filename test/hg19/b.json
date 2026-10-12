@@ -1,8 +1,0 @@
-{
-	"type": "bed",
-	"url": "https://data.broadinstitute.org/igvdata/annotations/hg19/dbSnp/snp137.hg19.bed.gz",
-	"indexURL": "https://data.broadinstitute.org/igvdata/annotations/hg19/dbSnp/snp137.hg19.bed.gz.tbi",
-	"name": "dbSNP 137",
-	"visibilityWindow": 200000
-  }
-  

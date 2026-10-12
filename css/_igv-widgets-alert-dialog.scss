@@ -1,8 +1,8 @@
 
 //$igv-alert-dialog-width: 300px;
 $igv-alert-dialog-width: 400px;
-$igv-alert-dialog-height: 200px;
-$igv-alert-dialog-margin: -150px;
+$igv-alert-dialog-min-height: 200px;
+$igv-alert-dialog-max-height: 45vh;   // The dialog starts halfway down the page, so this keeps it on screen
 
 $igv-alert-dialog-header-height: 24px;
 $igv-alert-dialog-ok-container-height: 64px;
@@ -19,7 +19,11 @@ $igv-alert-dialog-body-copy-margin: 16px;
   left:50%;
 
   width:$igv-alert-dialog-width;
-  height:$igv-alert-dialog-height;
+
+  // Tall enough for the whole message, up to a limit, beyond which the body scrolls
+  height: auto;
+  min-height: $igv-alert-dialog-min-height;
+  max-height: $igv-alert-dialog-max-height;
 
   border-color: $igv-trackgear-grey-color;
   border-radius: $igv-trackgear-popover-border-radius;
@@ -73,9 +77,10 @@ $igv-alert-dialog-body-copy-margin: 16px;
     color: $igv-dark-grey-color;
 
     width: 100%;
-    height: calc(100% - #{$igv-alert-dialog-header-height} - #{$igv-alert-dialog-ok-container-height});
+    flex: 1 1 auto;
+    min-height: 0;   // Let it shrink below its content, so it scrolls instead of overflowing the dialog
 
-    overflow-y: scroll;
+    overflow-y: auto;
 
     #igv-widgets-alert-dialog-body-copy {
       cursor: pointer;
@@ -94,11 +99,6 @@ $igv-alert-dialog-body-copy-margin: 16px;
 
       background-color: white;
       border: unset;
-    }
-
-    // load failures: just the list, with a tighter margin
-    #igv-widgets-alert-dialog-body-copy:has(> .igv-load-failure-list) {
-      margin: 8px;
     }
   }
 
@@ -145,13 +145,4 @@ $igv-alert-dialog-body-copy-margin: 16px;
 
   }
 
-}
-
-.igv-load-failure-list {
-  margin: 6px 0 0;
-  padding-left: 16px;
-
-  > li + li {
-    margin-top: 6px;
-  }
 }

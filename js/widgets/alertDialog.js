@@ -102,7 +102,7 @@ class AlertDialog {
             string = httpMessages[string]
         }
 
-        this.body.innerHTML = string
+        this.body.innerHTML = String(string).replaceAll('\n', '<br>')   // An error's message is plain text, one line per point
         this.callback = callback
         DOMUtils.show(this.container, "flex")
         this.container.focus()

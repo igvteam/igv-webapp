@@ -146,7 +146,9 @@ input#igv-app-share-input {
   top: 50%;
   left: 50%;
   width: 400px;
-  height: 200px;
+  height: auto;
+  min-height: 200px;
+  max-height: 45vh;
   border-color: #7F7F7F;
   border-radius: 4px;
   border-style: solid;
@@ -184,8 +186,9 @@ input#igv-app-share-input {
 .igv-widgets-alert-dialog-container #igv-widgets-alert-dialog-body {
   color: #373737;
   width: 100%;
-  height: calc(100% - 24px - 64px);
-  overflow-y: scroll;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 .igv-widgets-alert-dialog-container #igv-widgets-alert-dialog-body #igv-widgets-alert-dialog-body-copy {
   cursor: pointer;
@@ -196,9 +199,6 @@ input#igv-app-share-input {
   word-break: break-word;
   background-color: white;
   border: unset;
-}
-.igv-widgets-alert-dialog-container #igv-widgets-alert-dialog-body #igv-widgets-alert-dialog-body-copy:has(> .igv-load-failure-list) {
-  margin: 8px;
 }
 .igv-widgets-alert-dialog-container > div:last-child {
   width: 100%;
@@ -230,14 +230,6 @@ input#igv-app-share-input {
   cursor: pointer;
   border-color: #25597f;
   background-color: #25597f;
-}
-
-.igv-load-failure-list {
-  margin: 6px 0 0;
-  padding-left: 16px;
-}
-.igv-load-failure-list > li + li {
-  margin-top: 6px;
 }
 
 .card.custom-dialog-card {

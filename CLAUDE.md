@@ -84,7 +84,10 @@ Key points that span files:
 - **Startup error recovery.** When `igv.createBrowser` fails, igv.js leaves the browser in the page and on
   `error.browser`, with an empty genome (`browser.genome.isEmpty`) if the session or the genome itself failed.
   `main()` reports the error and continues with that browser, so the Genome menu is available to pick another genome.
-  There is deliberately no retry with a different genome. Preserve this when touching startup.
+  The one retry is for the last-used genome restored from `localStorage`: when it fails, `main()` clears the stored
+  `genomeID` and loads the genome and tracks from `igvwebConfig.js` into the same browser (`loadSessionObject`).
+  A failure of the configured genome itself, a session, or a query-parameter genome is not retried. Preserve this
+  when touching startup.
 - **Locus vs. session.** igv.js gives a session's own locus precedence over the `locus` query parameter, so
   `loadSessionWithLocusOverride` pre-loads the session named by `sessionURL`/`session`/`hubURL`, patches the locus, and
   hands the merged config to `createBrowser`. XML sessions additionally need `restoreXMLSessionGenome`, because without

@@ -117,7 +117,9 @@ async function main(container, config) {
     // Initialize igv.js, creating the Browser instance
     const igvConfig = config.igvConfig
 
-    // Optionally change the igv genome to the last genome used.
+    // Optionally change the igv genome to the last genome used.  The genome and tracks from the configuration file
+    // are kept, to fall back on if the last genome used fails to load.
+    let configuredGenome, restoredGenomeId
     if (config.restoreLastGenome) {
         try {
             const lastGenomeId = localStorage.getItem("genomeID")
@@ -125,6 +127,8 @@ async function main(container, config) {
                 if (config.genomes && config.genomes.find(elem => elem.id === lastGenomeId) ||
                     (recentGenomes && recentGenomes.find(elem => elem.id === lastGenomeId)) ||
                     ((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13)) {
+                    configuredGenome = {genome: igvConfig.genome, tracks: igvConfig.tracks}
+                    restoredGenomeId = lastGenomeId
                     igvConfig.genome = lastGenomeId
                     igvConfig.tracks = []
                 }
@@ -139,7 +143,8 @@ async function main(container, config) {
 
     // igv.createBrowser leaves the browser in the page when it fails, on error.browser.  Report the failure and
     // continue with that browser: if the failure came before a genome was set (the session, or the genome itself) it
-    // has an empty genome, and a genome can be chosen from the Genome menu.
+    // has an empty genome, and a genome can be chosen from the Genome menu.  The one exception is the last genome
+    // used, restored from localStorage: when it fails, the genome from the configuration file is loaded instead.
     let browser
     try {
         browser = await igv.createBrowser(container, sessionConfig || igvConfig)
@@ -149,6 +154,18 @@ async function main(container, config) {
         browser = error.browser
         if (!browser) {
             return
+        }
+        if (restoredGenomeId && browser.genome?.isEmpty && isLastGenomeLoad(igvConfig, sessionConfig)) {
+            localStorage.removeItem("genomeID")
+            try {
+                // Tracks from the "file" query parameter (in igvConfig.tracks) were aligned to the genome that failed,
+                // not the configured one, so they are dropped.
+                await browser.loadSessionObject({...igvConfig, ...configuredGenome})
+                alertSingleton.present(`Loaded ${browser.genome.name || browser.genome.id} instead.`)
+            } catch (e) {
+                console.error(e)
+                alertSingleton.present(e)
+            }
         }
     }
     Globals.browser = browser
@@ -480,6 +497,18 @@ async function applyLocusParameter(browser, igvConfig) {
         console.error(e)
         alertSingleton.present(e)
     }
+}
+
+/**
+ * Whether a failed igv.createBrowser was loading the last genome used, restored from localStorage, as opposed to a
+ * session or a genome named in the query parameters.  A session from a "file" parameter is only visible in igvConfig,
+ * where igv.createBrowser puts it as sessionURL.
+ */
+function isLastGenomeLoad(igvConfig, sessionConfig) {
+    const parameters = queryParameters()
+    return !sessionConfig &&
+        !igvConfig.sessionURL && !igvConfig.session && !igvConfig.hubURL &&
+        !['genome', 'reference', 'genarkAccession', 'sessionURL', 'session', 'hubURL'].some(key => parameters.has(key))
 }
 
 function createAppBookmarkHandler($bookmark_button) {

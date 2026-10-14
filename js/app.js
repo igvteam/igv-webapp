@@ -115,15 +115,17 @@ async function main(container, config) {
 
 
     // Initialize igv.js, creating the Browser instance
-    let browser
+    const igvConfig = config.igvConfig
+
+    // The configuration as given, before the last genome used is applied to it, and before igv.createBrowser merges
+    // the query parameters into it.  A failed start is retried from this copy.
+    const configuredIgvConfig = {...igvConfig, tracks: [...(igvConfig.tracks || [])], queryParametersSupported: false}
 
     // Optionally change the igv genome to the last genome used.
-    const igvConfig = config.igvConfig
-    const igvConfigGenome = igvConfig.genome   // the genome specified in the configuration file
     if (config.restoreLastGenome) {
         try {
             const lastGenomeId = localStorage.getItem("genomeID")
-            if (lastGenomeId && lastGenomeId !== igvConfigGenome) {
+            if (lastGenomeId && lastGenomeId !== configuredIgvConfig.genome) {
                 if (config.genomes && config.genomes.find(elem => elem.id === lastGenomeId) ||
                     (recentGenomes && recentGenomes.find(elem => elem.id === lastGenomeId)) ||
                     ((lastGenomeId.startsWith("GCA_") || lastGenomeId.startsWith("GCF_")) && lastGenomeId.length >= 13)) {
@@ -139,59 +141,57 @@ async function main(container, config) {
     // session is patched before the browser is created, so it opens at the requested locus directly.
     const sessionConfig = await loadSessionWithLocusOverride(igvConfig)
 
-    try {
-        browser = await igv.createBrowser(container, sessionConfig || igvConfig)
+    let browserConfig = sessionConfig || igvConfig
+    let {browser, error} = await tryCreateBrowser(container, browserConfig)
 
-    } catch (e) {
-        console.error(e)
-
-        // createBrowser can fail after the igv.js instance has been inserted into the DOM -- a session (sessionURL
-        // query parameter), genome, or track that fails to load throws from within the partially constructed
-        // browser.  Discard it, otherwise the retry below leaves an orphaned instance in the page.
-        removeOrphanedBrowsers()
-
+    if (error) {
         // A session is either merged into sessionConfig, or, when it was left to igv.js to load, visible in
-        // igvConfig -- igv.createBrowser merges the query parameters into the configuration it is given.
+        // igvConfig, as is a genome from the query parameters (as genome, reference, or genarkAccession).
         const failedSession = sessionConfig || igvConfig.sessionURL || igvConfig.session || igvConfig.hubURL
-        const failedGenome = igvConfigGenome !== igvConfig.genome
-
-        if (!failedSession && !failedGenome) {
-            alertSingleton.present(e)
-            return
-        }
+        const failedOtherGenome = ['genome', 'reference', 'genarkAccession'].some(key => igvConfig[key] !== configuredIgvConfig[key])
 
         if (failedSession) {
             // The session was explicitly requested, so report the failure, then continue without it.
-            alertSingleton.present(e)
-            delete igvConfig.sessionURL
-            delete igvConfig.session
-            delete igvConfig.hubURL
+            alertSingleton.present(error)
         }
 
-        if (failedGenome) {
-            // Fall back to the genome from the configuration file.
-            igvConfig.genome = igvConfigGenome
-            igvConfig.tracks = []
+        if (failedSession || failedOtherGenome) {
+            // Retry with the genome from the configuration file, and no session.
+            browserConfig = {...configuredIgvConfig}
+            delete browserConfig.sessionURL
+            delete browserConfig.session
+            delete browserConfig.hubURL
+            ;({browser, error} = await tryCreateBrowser(container, browserConfig))
         }
+    }
 
-        // Don't extract the query parameters a second time, that would just restore the session and genome that
-        // failed to load above.
-        igvConfig.queryParametersSupported = false
-
-        try {
-            browser = await igv.createBrowser(container, igvConfig)
-        } catch (e1) {
-            console.error(e1)
-            removeOrphanedBrowsers()
-            alertSingleton.present(e1)
+    if (error) {
+        // The genome from the configuration file failed to load.  Report it, and load the first other genome from the
+        // genome list, so the app is usable and another genome can be chosen from the menu.  Any other failure ends
+        // the startup.
+        const fallbackGenome = isGenomeLoadError(error) && config.genomes ?
+            config.genomes.find(({id}) => id !== configuredIgvConfig.genome) :
+            undefined
+        if (!fallbackGenome) {
+            alertSingleton.present(error)
             return
         }
+        const genomeError = error
+        browserConfig = {...configuredIgvConfig, genome: fallbackGenome.id, tracks: []}
+        delete browserConfig.reference
+        delete browserConfig.genarkAccession
+        ;({browser, error} = await tryCreateBrowser(container, browserConfig))
+        if (error) {
+            alertSingleton.present(error)
+            return
+        }
+        alertSingleton.present(new Error(`${genomeError.message}\n\nLoaded ${fallbackGenome.name || fallbackGenome.id} instead.`))
     }
     Globals.browser = browser
 
     if (!sessionConfig) {
         // The session was loaded by igv.js, which ignores the locus parameter in favor of the session's own locus.
-        await applyLocusParameter(browser, igvConfig)
+        await applyLocusParameter(browser, browserConfig)
     }
 
     const igvMain = document.getElementById('igv-main')
@@ -516,6 +516,28 @@ async function applyLocusParameter(browser, igvConfig) {
         console.error(e)
         alertSingleton.present(e)
     }
+}
+
+/**
+ * Create the igv.js browser, returning it as {browser}, or the error it failed with as {error}.
+ */
+async function tryCreateBrowser(container, igvConfig) {
+    try {
+        return {browser: await igv.createBrowser(container, igvConfig)}
+    } catch (error) {
+        console.error(error)
+        removeOrphanedBrowsers()
+        return {error}
+    }
+}
+
+/**
+ * Whether an igv.createBrowser failure is the genome failing to load, as opposed to a session, sample info, or
+ * anything else.  igv.js reports a genome failure with a message that leads with the genome: "Genome hg38 could not be
+ * loaded: ..." or "The genome could not be loaded.", and a genome id it does not know with "Unknown genome id: ...".
+ */
+function isGenomeLoadError(error) {
+    return /^((Genome .*|The genome) could not be loaded|Unknown genome id)/.test(error.message || '')
 }
 
 /**

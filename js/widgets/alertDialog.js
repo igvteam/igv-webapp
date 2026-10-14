@@ -102,11 +102,35 @@ class AlertDialog {
             string = httpMessages[string]
         }
 
-        this.body.innerHTML = String(string).replaceAll('\n', '<br>')   // An error's message is plain text, one line per point
+        this.body.replaceChildren(...messageLines(String(string)))
         this.callback = callback
         DOMUtils.show(this.container, "flex")
         this.container.focus()
     }
+}
+
+/**
+ * A message is plain text, one line per point.  A line that is just a URL or file name is set apart from the prose
+ * around it, and a blank line separates paragraphs.
+ */
+function messageLines(message) {
+    return message.split('\n').map(line => {
+        const div = document.createElement('div')
+        if ('' === line) {
+            div.className = 'igv-widgets-alert-dialog-blank-line'
+        } else {
+            div.textContent = line
+            if (isResource(line)) {
+                div.className = 'igv-widgets-alert-dialog-resource'
+            }
+        }
+        return div
+    })
+}
+
+// A single token that is a URL, or a file name with an extension
+function isResource(line) {
+    return /^\S+$/.test(line) && (line.includes('://') || /\.\w+$/.test(line))
 }
 
 export default AlertDialog

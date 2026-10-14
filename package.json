@@ -1,8 +1,12 @@
 {
   "name": "igv-webapp",
-  "version": "2.4.10",
+  "version": "2.4.11",
   "description": "igv web app",
-  "keywords": ["genomics", "visualization", "genome browser"],
+  "keywords": [
+    "genomics",
+    "visualization",
+    "genome browser"
+  ],
   "author": "Douglass Turner and Jim Robinson",
   "license": "MIT",
   "scripts": {
@@ -21,7 +25,7 @@
     "@rollup/plugin-terser": "^1.0.0",
     "data-modal": "git+https://github.com/igvteam/data-modal.git#v1.6.2",
     "fs-extra": "^8.1.0",
-    "igv": "^3.8.9",
+    "igv": "^3.8.10",
     "igv-utils": "git+https://github.com/igvteam/igv-utils.git#v1.8.4",
     "rollup": "^2.28.1"
   }

@@ -67,7 +67,11 @@ class GenomeFileLoad extends FileLoad {
             if (files.length === 1) {
                 const {path, lower, ext} = files[0]
                 if (ext === 'json') {
-                    configuration = await igvxhr.loadJson(path)
+                    try {
+                        configuration = await igvxhr.loadJson(path)
+                    } catch (e) {
+                        throw genomeFileLoadError(path, e)
+                    }
                 } else if (lower.endsWith('hub.txt')) {
                     configuration = {url: path}
                 } else if (ext === 'gbk') {
@@ -121,6 +125,44 @@ class GenomeFileLoad extends FileLoad {
             }
         }
     }
+}
+
+/**
+ * The error loading a genome JSON file fails with, worded as igv.js words its own genome load failures: what could
+ * not be loaded, the file, and a hint, one line each.
+ *
+ * @param path  The File or URL of the genome JSON file
+ * @param error  The error the load failed with, with a status property for a failed request
+ * @returns {Error}  With the error as its cause
+ */
+function genomeFileLoadError(path, error) {
+    const resource = path instanceof File ? path.name : String(path)
+    const message = String(error?.message || error).replaceAll('\n', ' ')
+    let phrase
+    let hint
+    switch (error?.status) {
+        case undefined:
+            phrase = `could not be read: ${message}`
+            break
+        case 0:
+            phrase = message.startsWith("Timed out") ? "could not be reached: the request timed out" : "could not be reached"
+            hint = "Check that the URL is correct. The server may also be down, or may not allow access from this web page (CORS)."
+            break
+        case 401:
+            phrase = "could not be accessed: unauthorized (HTTP status 401)"
+            break
+        case 403:
+            phrase = "could not be accessed: forbidden (HTTP status 403)"
+            break
+        case 404:
+            phrase = "was not found (HTTP status 404)"
+            break
+        default:
+            phrase = `could not be read: the server responded with HTTP status ${error.status}`
+    }
+    const lines = [`The genome could not be loaded: the genome file ${phrase}.`, resource]
+    if (hint) lines.push(hint)
+    return new Error(lines.join('\n'), {cause: error})
 }
 
 export default GenomeFileLoad

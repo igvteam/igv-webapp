@@ -81,13 +81,10 @@ Key points that span files:
 
 - **Browser handle.** `js/globals.js` is a one-property module (`Globals.browser`) used by code that runs outside the
   widget factories (e.g. `shareHelper.js`). Prefer passing `browser` explicitly; `Globals` is the escape hatch.
-- **Startup error recovery.** `main()` keeps a copy of `igvConfig` from before the last-used genome and the query
-  parameters are applied to it (`igv.createBrowser` merges the query parameters into the config it is given). If
-  `createBrowser` fails, it retries from that copy with the session and any restored or query genome dropped, then,
-  if the configured genome itself is what failed (recognized by igv.js's "Genome ... could not be loaded" message),
-  once more with the first other genome from the genome list, so the Genome menu stays usable. Each attempt goes
-  through `tryCreateBrowser`, which calls `igv.removeAllBrowsers()` on failure in case a partially constructed
-  instance was left in the DOM. Preserve this when touching startup.
+- **Startup error recovery.** When `igv.createBrowser` fails, igv.js leaves the browser in the page and on
+  `error.browser`, with an empty genome (`browser.genome.isEmpty`) if the session or the genome itself failed.
+  `main()` reports the error and continues with that browser, so the Genome menu is available to pick another genome.
+  There is deliberately no retry with a different genome. Preserve this when touching startup.
 - **Locus vs. session.** igv.js gives a session's own locus precedence over the `locus` query parameter, so
   `loadSessionWithLocusOverride` pre-loads the session named by `sessionURL`/`session`/`hubURL`, patches the locus, and
   hands the merged config to `createBrowser`. XML sessions additionally need `restoreXMLSessionGenome`, because without
